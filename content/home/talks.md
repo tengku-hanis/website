@@ -38,7 +38,7 @@ item:
   date_start: "2020-11-22"
   description: Download [material](https://github.com/tengku-hanis/relative-survival-nov2020)
   organization: Malaysian R User Group (MyRUG)
-  organization_url: ""
+  organization_url: https://www.facebook.com/rusergroupmalaysia/
   title: Talks - An introduction to relative analysis using R
   url: ""
 ---
