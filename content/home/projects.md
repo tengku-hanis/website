@@ -27,6 +27,14 @@ date_format: Jan 2006
 item:
 - certificate_url: ""
   date_end: ""
+  date_start: "2020-03-15"
+  description: "See [COVID-19 Situation in Malaysia](https://wnarifin.github.io/covid-19-malaysia/#data-and-our-team)"
+  organization: Part of epidemiology and statistical modelling team, USM
+  organization_url: ""
+  title: Situation analysis and modelling of COVID-19 cases in Malaysia
+  url: ""
+- certificate_url: ""
+  date_end: ""
   date_start: "2020-03-30"
   description: ""
   organization: Draft
