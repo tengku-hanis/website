@@ -14,8 +14,9 @@ education:
 email: tengkuhanismokhtar@gmail.com
 highlight_name: false
 interests:
-- Medical statistics
+- Medical statistics; survival analysis, poisson regression, meta-analysis
 - Machine learning in medical sciences
+- Text analysis, bibliometrics, sciencetometrics
 - Use of R and Python in medical sciences
 organizations:
 - name: Universiti Sains Malaysia
