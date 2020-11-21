@@ -53,7 +53,7 @@ experience:
   description: |-
     Responsibilities include :
     * Research medical-related topics
-    * Genere ideas for new content
+    * Generate ideas for new content
     * Prepare well-structured drafts
   location: Remote
   title: Freelance Writer
