@@ -43,8 +43,8 @@ user_groups:
 
 **From medical graduate to data enthusiast**
 
-I am a PhD student in the field of public health epidemiology in Universiti Sains Malaysia under the supervision of one of the well-established medical epidemiologist and biostatistician in Malaysia, [Assoc Prof Kamarul Imran Musa](https://medic.usm.my/jpm/index.php/en/academic-information/587-prof-madya-dr-kamarul-imran-musa).
+I am a PhD student in the field of public health epidemiology in [Universiti Sains Malaysia](https://www.usm.my/) under the supervision of one of the well-established medical epidemiologist and biostatistician in Malaysia, [Assoc Prof Kamarul Imran Musa](https://medic.usm.my/jpm/index.php/en/academic-information/587-prof-madya-dr-kamarul-imran-musa).
 
-I did my degree in medicine. However, I believed that working as a doctor in a clinical setting is not for me. Thus, I continued my study in medical statistics. Data and analysis has sparked my interest since then. I believes that coming from medical background, give me an edge to see data in a new perspective.
+I did my degree in medicine. However, I believed that working as a doctor in a clinical setting is not for me. Thus, I continued my study in [medical statistics](http://www.medic.usm.my/biostat/en/79-main). Data and analysis has sparked my interest since then. I believes that coming from medical background, give me an edge to see data in a new perspective.
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "media/resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
