@@ -29,7 +29,7 @@ I have also come across this interesting [article](https://www.cebm.net/covid-19
 
 **R naught (R~0~)**
 
-The basic idea of R~0~ or basic reproduction number is quite simple. It describes how many secondary infection will derive from the first case. I think figure below describe this idea very well.
+The basic idea of R~0~ or basic reproduction number is quite simple. It describes how many secondary infection will derive from the first case. I think Figure 1 below describe this idea very well.
 
 ```{r, echo=FALSE, out.width='60%', fig.align='center', fig.cap="Basic idea of R~0~(image from https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught)"}
 knitr::include_graphics('./r0.png')
