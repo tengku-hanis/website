@@ -1,7 +1,7 @@
 ---
 title: How many Malaysian should vaccinated to get herd immunity from COVID-19?
 author: Tengku Hanis
-date: '2020-12-08'
+date: '2020-12-07'
 slug: how-many-malaysian-should-vaccinated-to-get-herd-immunity-from-covid-19
 categories:
   - Epidemiology
