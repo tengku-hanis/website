@@ -34,7 +34,7 @@
   
     
   
-  <meta name="description" content="">
+  <meta name="description" content="Recently I have read an article that Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/how-many-malaysian-should-vaccinated-to-get-herd-immunity-from-covid-19/">
@@ -280,7 +280,7 @@
   <meta property="og:site_name" content="Tengku Hanis">
   <meta property="og:url" content="/post/how-many-malaysian-should-vaccinated-to-get-herd-immunity-from-covid-19/">
   <meta property="og:title" content="How many Malaysian should vaccinated to get herd immunity from COVID-19? | Tengku Hanis">
-  <meta property="og:description" content=""><meta property="og:image" content="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="Recently I have read an article that Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated."><meta property="og:image" content="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -330,7 +330,7 @@
       "url": "/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": ""
+  "description": "Recently I have read an article that Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated."
 }
 </script>
 
@@ -753,7 +753,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    0 min read
+    3 min read
   </span>
   
 
@@ -798,7 +798,35 @@
       
 
 
-
+<p>Recently I have read an <a href="https://codeblue.galencentre.org/2020/11/27/malaysia-buying-pfizers-ultra-cold-covid-19-vaccine-posing-major-distribution-issues/#:~:text=According%20to%20BioSpace%2C%20the%20Covid,price%20sold%20to%20the%20US">article</a> that Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated.</p>
+<p>I have also come across this interesting <a href="https://www.cebm.net/covid-19/when-will-it-be-over-an-introduction-to-viral-reproduction-numbers-r0-and-re/">article</a> which explains how we can calculate a minimal number of people to be vaccinated to achieved herd immunity based on R naught (R<sub>0</sub>).</p>
+<p><strong>R naught (R<sub>0</sub>)</strong></p>
+<p>The basic idea of R<sub>0</sub> or basic reproduction number is quite simple. It describes how many secondary infection will derive from the first case. I think Figure 1 below describe this idea very well.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="r0.png" alt="Basic idea of R~0~(image from https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught)" width="60%" />
+<p class="caption">
+Figure 1: Basic idea of R<sub>0</sub>(image from <a href="https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught" class="uri">https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught</a>)
+</p>
+</div>
+<p>So, R<sub>0</sub> can be affected by a few factors such as:</p>
+<ul>
+<li>proportion of susceptible people at initial outbreak</li>
+<li>infectiousness of the virus or the disease</li>
+<li>rate of recovery or death</li>
+<li>and a few other factors</li>
+</ul>
+<p>As R<sub>0</sub> increases more than 1, the spread of the disease will increases, while R<sub>0</sub> below 1 indicates the spread of the disease will decrease and eventually dies out.</p>
+<p>However, I noticed that quite a few including KKM (Ministry of Health, Malaysia) have used the term R<sub>0</sub> in their reports instead of R<sub>e</sub> or R<sub>t</sub> which is the effective reproduction number or time-varying reproduction number. R<sub>0</sub> refers to the initial reproduction number at beginning of the outbreak. The “naught” or “zero” in R naught (R<sub>0</sub>) is referring to population condition that has zero immunity to the disease.</p>
+<p><strong>Herd immunity</strong></p>
+<p>Herd immunity is said to be occurred when a significant proportion of the population is immunized. Subsequently, those whose susceptible (not immunized) will be protected.</p>
+<p><strong>How many should be vaccinated</strong></p>
+<p>So, back to the initial topic. We can use the formula below to answer this question.</p>
+<p><span class="math display">\[P_i &gt; 1 - \frac{1}{R_0}\]</span></p>
+<p>P<sub>i</sub> refers to number of proportion that should be immunized or in this case vaccinated.</p>
+<p>So, after googling I found one calculation by my lecturer in Biostat Unit, USM, <a href="https://wnarifin.github.io/">Dr Wan Arifin</a> and his colleague. The R<sub>0</sub> based on his <a href="https://wnarifin.github.io/covid-19-malaysia-sir/">calculation</a> is 2.673. Also, I found another <a href="https://codeblue.galencentre.org/2020/04/10/mco-slashed-malaysia-covid-19-infection-rate-by-over-three-times/">article</a> reported that the R<sub>0</sub> is 3.55 in March according to KKM.</p>
+<p>Malaysian’s population is estimated at <a href="https://www.dosm.gov.my/v1/index.php?r=column/cthemeByCat&amp;cat=155&amp;bul_id=OVByWjg5YkQ3MWFZRTN5bDJiaEVhZz09&amp;menu_id=L0pheU43NWJwRWVSZklWdzQ4TlhUUT09">32.7 million</a> by the Department of Statistics, Malaysia (DOSM). So, using the formula above, about 63% to 72% of Malaysian population should vaccinated, and this translates to about 20.6 to 23.5 million people.</p>
+<p>The deal that Malaysian government made with Pfizer is far from enough, but of course this is a very good and quick decision. We also have other vaccine like Moderna’s vaccine coming up.</p>
+<p><em>Disclaimer: This is just my opinion. Please take it with a huge grain of salt.</em></p>
 
     </div>
 
