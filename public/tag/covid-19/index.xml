@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts | Tengku Hanis</title>
-    <link>/post/</link>
-      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
-    <description>Posts</description>
+    <title>COVID-19 | Tengku Hanis</title>
+    <link>/tag/covid-19/</link>
+      <atom:link href="/tag/covid-19/index.xml" rel="self" type="application/rss+xml" />
+    <description>COVID-19</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
-      <title>Posts</title>
-      <link>/post/</link>
+      <title>COVID-19</title>
+      <link>/tag/covid-19/</link>
     </image>
     
     <item>
