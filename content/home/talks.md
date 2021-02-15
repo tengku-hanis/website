@@ -30,7 +30,7 @@ item:
   date_start: "2020-09-24"
   description: |- 
     Download [material](https://github.com/tengku-hanis/webinar_biblio24-09-2020)  
-    See [slide](https://docs.google.com/presentation/d/1d_OIOJatvEC14nRP3JY3shRoKb0YEzsnpZF6vaKYxhk/edit#slide=id.p)
+    See [slide](https://www.researchgate.net/publication/345497004_Webinar_An_introduction_to_bibliometric_analysis_using_R)
   organization: Epidemiology and statistical modelling team, USM
   organization_url: ""
   title: Webinar - An introduction to bibliometric analysis using R
