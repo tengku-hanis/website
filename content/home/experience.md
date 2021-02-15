@@ -31,7 +31,7 @@ experience:
   date_start: "2019-11-01"
   description: |-
     Responsibilities include:
-    * Project Financial Management
+    * Project financial management
     * Project documentation
     * Data collection, analysis and publication
   location: Kelantan, Malaysia
