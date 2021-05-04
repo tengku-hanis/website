@@ -1,0 +1,106 @@
+---
+title: Base R vs tidyverse
+author: Tengku Hanis
+date: '2021-05-04'
+slug: []
+categories:
+  - R
+tags:
+  - tidyverse
+  - base R
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-05-04T16:48:49+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First of all, this write up is mean for a beginner in R. 
+
+Things can be done in many ways in R. In facts, R has been very flexible in this regard compared to other statistical softwares. Basic things such as selecting a column, slicing a row, filtering a data based on certain condition can be done using a base R function. However, all these things can also be done using a tidyverse approach. 
+
+[Tidyverse](https://www.tidyverse.org/) basically, a collection of packages that can be loaded in a line of function. 
+
+```{r, eval=FALSE}
+library(tidyverse)
+```
+
+Tidyverse is developed by "RStudio people" pioneered  by [Hadley Wickham](http://hadley.nz/), which means that these packages will be continuously maintained and updated. 
+
+So, without further ado, these are the comparisons between these two approaches for some very basic thingy: 
+1. Select or deselect a column and a row
+```{r, eval=FALSE}
+# Base R
+iris[1:5, c("Sepal.Length", "Sepal.Width")]
+iris[1:5,c(1,2)] # similar to above
+iris[1:5, -1]
+
+# Tidyverse
+iris %>% 
+  select(Sepal.Length, Sepal.Width) %>% 
+  slice(1:5)
+iris %>% 
+  select(-Sepal.Length) %>% 
+  slice(1:5)
+```
+
+2. Filter based on condition
+```{r, eval=FALSE}
+# Base R
+iris[iris$Species == "setosa", ]
+
+# Tidyverse
+iris %>% 
+  filter(Species == "setosa")
+```
+
+3. Mutate (transmute replace the variable)
+```{r,  eval=FALSE}
+# Base R
+iris$SL_minus10 <- iris$Sepal.Length - 10
+
+# Tidyverse
+iris %>% 
+  mutate(SL_minus10 = Sepal.Length - 10)
+```
+
+4. Sort variable
+```{r,  eval=FALSE}
+# Base R
+iris[order(-iris$Sepal.Width),]
+
+# Tidyverse
+iris %>% 
+  arrange(desc(Sepal.Length))
+```
+5. Group by (and get mean for variable Sepal.Width)
+```{r, eval=FALSE}
+# Not really base R
+doBy::summaryBy(Sepal.Width~Species, iris, FUN = mean) 
+
+# Tidyverse
+iris %>% 
+  group_by(Species) %>% 
+  summarise(mean_SW = mean(Sepal.Width))
+```
+
+6. Rename variable
+```{r, eval=FALSE}
+# Base R
+colnames(iris)[6] <- "hanis"
+
+# Tidyverse
+iris %>% 
+  rename(Species = hanis)
+```
+
+So, that's it. Overall, tidyverse give a clarity in understanding the code as it reads from left to right. On the contrary, the base R approach reads from inside to outside, especially for a more complicated code.
