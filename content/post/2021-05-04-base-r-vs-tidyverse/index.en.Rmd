@@ -2,23 +2,18 @@
 title: Base R vs tidyverse
 author: Tengku Hanis
 date: '2021-05-04'
-slug: []
 categories:
   - R
 tags:
-  - tidyverse
   - base R
   - comparison
-subtitle: ''
-summary: ''
-authors: []
+  - tidyverse
 lastmod: '2021-05-04T16:48:49+08:00'
 featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
-projects: []
 ---
 
 ```{r setup, include=FALSE}
