@@ -8,6 +8,7 @@ categories:
 tags:
   - tidyverse
   - base R
+  - comparison
 subtitle: ''
 summary: ''
 authors: []
@@ -82,6 +83,7 @@ iris[order(-iris$Sepal.Width),]
 iris %>% 
   arrange(desc(Sepal.Length))
 ```
+
 5. Group by (and get mean for variable Sepal.Width)
 ```{r, eval=FALSE}
 # Not really base R
