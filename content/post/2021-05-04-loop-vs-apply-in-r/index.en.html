@@ -1,0 +1,59 @@
+---
+title: Loop vs apply in R
+author: Tengku Hanis
+date: '2021-05-04'
+slug: loop-vs-apply-in-r
+categories:
+  - R
+tags:
+  - base R
+  - comparison
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-05-04T17:40:15+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>I have heard quite a several times that apply function is faster than loop function in R. Loop function is said to be inefficient, though in certain situation loop is the only way.</p>
+<p>Let’s compare between loop function and apply function in R.</p>
+<p>First, make a very big fake data contain a list of vector.</p>
+<pre class="r"><code>set.seed(2021)
+xlist &lt;- list(col1 = rnorm(10000000), 
+              col2 = rnorm(10000000),
+              col3 = rnorm(100000000),
+              col4 = rnorm(1000000),
+              col5 = rnorm(10000000), 
+              col6 = rnorm(10000000),
+              col7 = rnorm(100000000),
+              col8 = rnorm(1000000),
+              col9 = rnorm(100000000),
+              col10 = rnorm(1000000)) # this will take a few seconds</code></pre>
+<p>Then, calculate the mean of each vector using <code>for loop()</code>.</p>
+<pre class="r"><code>ptm &lt;- proc.time() #-- start the clock
+
+mean_loop &lt;- vector(&quot;list&quot;, 0) # place holder for a value
+for (i in seq_along(xlist)) {
+  mean_loop[[i]] &lt;- mean(xlist[[i]])
+}
+
+proc.time() - ptm #-- stop the clock (time in seconds)</code></pre>
+<pre><code>##    user  system elapsed 
+##    1.06    0.00    1.06</code></pre>
+<p>Now, using <code>lapply()</code> function.</p>
+<pre class="r"><code>ptm &lt;- proc.time() #-- start the clock
+
+mean_apply &lt;- lapply(xlist, mean)
+
+proc.time() - ptm #-- stop the clock</code></pre>
+<pre><code>##    user  system elapsed 
+##    1.04    0.00    1.05</code></pre>
+<p>So, <code>lapply()</code> is a little bit faster. Obviously, with a very big dataset and a more complicated objective, <code>lapply()</code> is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.</p>
