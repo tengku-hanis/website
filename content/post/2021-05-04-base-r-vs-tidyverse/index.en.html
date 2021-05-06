@@ -2,22 +2,18 @@
 title: Base R vs tidyverse
 author: Tengku Hanis
 date: '2021-05-04'
-slug: []
 categories:
   - R
 tags:
-  - tidyverse
   - base R
-subtitle: ''
-summary: ''
-authors: []
+  - comparison
+  - tidyverse
 lastmod: '2021-05-04T16:48:49+08:00'
 featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
-projects: []
 ---
 
 <script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
@@ -28,8 +24,10 @@ projects: []
 <p><a href="https://www.tidyverse.org/">Tidyverse</a> basically, a collection of packages that can be loaded in a line of function.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <p>Tidyverse is developed by “RStudio people” pioneered by <a href="http://hadley.nz/">Hadley Wickham</a>, which means that these packages will be continuously maintained and updated.</p>
-<p>So, without further ado, these are the comparisons between these two approaches for some very basic thingy:
-1. Select or deselect a column and a row</p>
+<p>So, without further ado, these are the comparisons between these two approaches for some very basic thingy:</p>
+<ol style="list-style-type: decimal">
+<li>Select or deselect a column and a row</li>
+</ol>
 <pre class="r"><code># Base R
 iris[1:5, c(&quot;Sepal.Length&quot;, &quot;Sepal.Width&quot;)]
 iris[1:5,c(1,2)] # similar to above

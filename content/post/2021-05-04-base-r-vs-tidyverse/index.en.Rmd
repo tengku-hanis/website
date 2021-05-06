@@ -32,7 +32,7 @@ library(tidyverse)
 
 Tidyverse is developed by "RStudio people" pioneered  by [Hadley Wickham](http://hadley.nz/), which means that these packages will be continuously maintained and updated. 
 
-So, without further ado, these are the comparisons between these two approaches for some very basic thingy: 
+So, without further ado, these are the comparisons between these two approaches for some very basic thingy:     
 
 1. Select or deselect a column and a row
 ```{r, eval=FALSE}
