@@ -5,7 +5,7 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 04 May 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
@@ -13,42 +13,166 @@
     </image>
     
     <item>
-      <title>How many Malaysian should vaccinated to get herd immunity from COVID-19?</title>
-      <link>/post/how-many-malaysian-should-vaccinated-to-get-herd-immunity-from-covid-19/</link>
+      <title>Base R vs tidyverse</title>
+      <link>/post/2021-05-04-base-r-vs-tidyverse/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      <guid>/post/2021-05-04-base-r-vs-tidyverse/</guid>
+      <description>
+&lt;script src=&#34;/post/2021-05-04-base-r-vs-tidyverse/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;First of all, this write up is mean for a beginner in R.&lt;/p&gt;
+&lt;p&gt;Things can be done in many ways in R. In facts, R has been very flexible in this regard compared to other statistical softwares. Basic things such as selecting a column, slicing a row, filtering a data based on certain condition can be done using a base R function. However, all these things can also be done using a tidyverse approach.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;Tidyverse&lt;/a&gt; basically, a collection of packages that can be loaded in a line of function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tidyverse is developed by “RStudio people” pioneered by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt;, which means that these packages will be continuously maintained and updated.&lt;/p&gt;
+&lt;p&gt;So, without further ado, these are the comparisons between these two approaches for some very basic thingy:
+1. Select or deselect a column and a row&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris[1:5, c(&amp;quot;Sepal.Length&amp;quot;, &amp;quot;Sepal.Width&amp;quot;)]
+iris[1:5,c(1,2)] # similar to above
+iris[1:5, -1]
+
+# Tidyverse
+iris %&amp;gt;% 
+  select(Sepal.Length, Sepal.Width) %&amp;gt;% 
+  slice(1:5)
+iris %&amp;gt;% 
+  select(-Sepal.Length) %&amp;gt;% 
+  slice(1:5)&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Filter based on condition&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris[iris$Species == &amp;quot;setosa&amp;quot;, ]
+
+# Tidyverse
+iris %&amp;gt;% 
+  filter(Species == &amp;quot;setosa&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Mutate (transmute replace the variable)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris$SL_minus10 &amp;lt;- iris$Sepal.Length - 10
+
+# Tidyverse
+iris %&amp;gt;% 
+  mutate(SL_minus10 = Sepal.Length - 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;4&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Sort variable&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris[order(-iris$Sepal.Width),]
+
+# Tidyverse
+iris %&amp;gt;% 
+  arrange(desc(Sepal.Length))&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;5&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Group by (and get mean for variable Sepal.Width)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Not really base R
+doBy::summaryBy(Sepal.Width~Species, iris, FUN = mean) 
+
+# Tidyverse
+iris %&amp;gt;% 
+  group_by(Species) %&amp;gt;% 
+  summarise(mean_SW = mean(Sepal.Width))&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;6&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Rename variable&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+colnames(iris)[6] &amp;lt;- &amp;quot;hanis&amp;quot;
+
+# Tidyverse
+iris %&amp;gt;% 
+  rename(Species = hanis)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, that’s it. Overall, tidyverse give a clarity in understanding the code as it reads from left to right. On the contrary, the base R approach reads from inside to outside, especially for a more complicated code.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Loop vs apply in R</title>
+      <link>/post/loop-vs-apply-in-r/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      <guid>/post/loop-vs-apply-in-r/</guid>
+      <description>
+&lt;script src=&#34;/post/loop-vs-apply-in-r/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;I have heard quite a several times that apply function is faster than loop function in R. Loop function is said to be inefficient, though in certain situation loop is the only way.&lt;/p&gt;
+&lt;p&gt;Let’s compare between loop function and apply function in R.&lt;/p&gt;
+&lt;p&gt;First, make a very big fake data contain a list of vector.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(2021)
+xlist &amp;lt;- list(col1 = rnorm(10000000), 
+              col2 = rnorm(10000000),
+              col3 = rnorm(100000000),
+              col4 = rnorm(1000000),
+              col5 = rnorm(10000000), 
+              col6 = rnorm(10000000),
+              col7 = rnorm(100000000),
+              col8 = rnorm(1000000),
+              col9 = rnorm(100000000),
+              col10 = rnorm(1000000)) # this will take a few seconds&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then, calculate the mean of each vector using &lt;code&gt;for loop()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ptm &amp;lt;- proc.time() #-- start the clock
+
+mean_loop &amp;lt;- vector(&amp;quot;list&amp;quot;, 0) # place holder for a value
+for (i in seq_along(xlist)) {
+  mean_loop[[i]] &amp;lt;- mean(xlist[[i]])
+}
+
+proc.time() - ptm #-- stop the clock (time in seconds)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
+##    1.06    0.00    1.06&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, using &lt;code&gt;lapply()&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ptm &amp;lt;- proc.time() #-- start the clock
+
+mean_apply &amp;lt;- lapply(xlist, mean)
+
+proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
+##    1.04    0.00    1.05&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, &lt;code&gt;lapply()&lt;/code&gt; is a little bit faster. Obviously, with a very big dataset and a more complicated objective, &lt;code&gt;lapply()&lt;/code&gt; is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How many Malaysian should be vaccinated to get herd immunity from COVID-19?</title>
+      <link>/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</link>
       <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
-      <guid>/post/how-many-malaysian-should-vaccinated-to-get-herd-immunity-from-covid-19/</guid>
+      <guid>/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</guid>
       <description>
 
 
-&lt;p&gt;Recently I have read an &lt;a href=&#34;https://codeblue.galencentre.org/2020/11/27/malaysia-buying-pfizers-ultra-cold-covid-19-vaccine-posing-major-distribution-issues/#:~:text=According%20to%20BioSpace%2C%20the%20Covid,price%20sold%20to%20the%20US&#34;&gt;article&lt;/a&gt; that Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated.&lt;/p&gt;
-&lt;p&gt;I have also come across this interesting &lt;a href=&#34;https://www.cebm.net/covid-19/when-will-it-be-over-an-introduction-to-viral-reproduction-numbers-r0-and-re/&#34;&gt;article&lt;/a&gt; which explains how we can calculate a minimal number of people to be vaccinated to achieved herd immunity based on R naught (R&lt;sub&gt;0&lt;/sub&gt;).&lt;/p&gt;
+&lt;p&gt;Recently I have read an &lt;a href=&#34;https://codeblue.galencentre.org/2020/11/27/malaysia-buying-pfizers-ultra-cold-covid-19-vaccine-posing-major-distribution-issues/#:~:text=According%20to%20BioSpace%2C%20the%20Covid,price%20sold%20to%20the%20US&#34;&gt;article&lt;/a&gt; that the Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated.&lt;/p&gt;
+&lt;p&gt;I have also come across this interesting &lt;a href=&#34;https://www.cebm.net/covid-19/when-will-it-be-over-an-introduction-to-viral-reproduction-numbers-r0-and-re/&#34;&gt;article&lt;/a&gt;, which explains how we can calculate a minimal number of people to be vaccinated to achieves herd immunity based on R naught (R&lt;sub&gt;0&lt;/sub&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;R naught (R&lt;sub&gt;0&lt;/sub&gt;)&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The basic idea of R&lt;sub&gt;0&lt;/sub&gt; or basic reproduction number is quite simple. It describes how many secondary infection will derive from the first case. I think Figure 1 below describe this idea very well.&lt;/p&gt;
+&lt;p&gt;The basic idea of R&lt;sub&gt;0&lt;/sub&gt; or basic reproduction number is quite simple. It describes how many secondary infections will derive from the first case. I think Figure 1 below describes this idea very well.&lt;/p&gt;
 &lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
 &lt;img src=&#34;r0.png&#34; alt=&#34;Basic idea of R~0~(image from https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught)&#34; width=&#34;60%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: Basic idea of R&lt;sub&gt;0&lt;/sub&gt;(image from &lt;a href=&#34;https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught&#34; class=&#34;uri&#34;&gt;https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught&lt;/a&gt;)
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;p&gt;So, R&lt;sub&gt;0&lt;/sub&gt; can be affected by a few factors such as:&lt;/p&gt;
+&lt;p&gt;So, R&lt;sub&gt;0&lt;/sub&gt; can be affected by a few factors, such as:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;proportion of susceptible people at initial outbreak&lt;/li&gt;
+&lt;li&gt;proportion of susceptible people at the initial outbreak&lt;/li&gt;
 &lt;li&gt;infectiousness of the virus or the disease&lt;/li&gt;
 &lt;li&gt;rate of recovery or death&lt;/li&gt;
 &lt;li&gt;and a few other factors&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;As R&lt;sub&gt;0&lt;/sub&gt; increases more than 1, the spread of the disease will increases, while R&lt;sub&gt;0&lt;/sub&gt; below 1 indicates the spread of the disease will decrease and eventually dies out.&lt;/p&gt;
-&lt;p&gt;However, I noticed that quite a few including KKM (Ministry of Health, Malaysia) have used the term R&lt;sub&gt;0&lt;/sub&gt; in their reports instead of R&lt;sub&gt;e&lt;/sub&gt; or R&lt;sub&gt;t&lt;/sub&gt; which is the effective reproduction number or time-varying reproduction number. R&lt;sub&gt;0&lt;/sub&gt; refers to the initial reproduction number at beginning of the outbreak. The “naught” or “zero” in R naught (R&lt;sub&gt;0&lt;/sub&gt;) is referring to population condition that has zero immunity to the disease.&lt;/p&gt;
+&lt;p&gt;However, I noticed that quite a few including KKM (Ministry of Health, Malaysia) have used the term R&lt;sub&gt;0&lt;/sub&gt; in their reports instead of R&lt;sub&gt;e&lt;/sub&gt; or R&lt;sub&gt;t&lt;/sub&gt; which is the effective reproduction number or time-varying reproduction number. R&lt;sub&gt;0&lt;/sub&gt; refers to the initial reproduction number at the beginning of the outbreak. The “naught” or “zero” in R naught (R&lt;sub&gt;0&lt;/sub&gt;) is referring to population condition that has zero immunity to the disease.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Herd immunity&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Herd immunity is said to be occurred when a significant proportion of the population is immunized. Subsequently, those whose susceptible (not immunized) will be protected.&lt;/p&gt;
+&lt;p&gt;Herd immunity is said to occur when a significant proportion of the population is immunized. Subsequently, those whose susceptible (not immunized) will be protected.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;How many should be vaccinated&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;So, back to the initial topic. We can use the formula below to answer this question.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P_i &amp;gt; 1 - \frac{1}{R_0}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;P&lt;sub&gt;i&lt;/sub&gt; refers to number of proportion that should be immunized or in this case vaccinated.&lt;/p&gt;
-&lt;p&gt;So, after googling I found one calculation by my lecturer in Biostat Unit, USM, &lt;a href=&#34;https://wnarifin.github.io/&#34;&gt;Dr Wan Arifin&lt;/a&gt; and his colleague. The R&lt;sub&gt;0&lt;/sub&gt; based on his &lt;a href=&#34;https://wnarifin.github.io/covid-19-malaysia-sir/&#34;&gt;calculation&lt;/a&gt; is 2.673. Also, I found another &lt;a href=&#34;https://codeblue.galencentre.org/2020/04/10/mco-slashed-malaysia-covid-19-infection-rate-by-over-three-times/&#34;&gt;article&lt;/a&gt; reported that the R&lt;sub&gt;0&lt;/sub&gt; is 3.55 in March according to KKM.&lt;/p&gt;
+&lt;p&gt;P&lt;sub&gt;i&lt;/sub&gt; refers to the number of proportion that should be immunized or in this case, vaccinated.&lt;/p&gt;
+&lt;p&gt;So, after googling, I found one calculation by my lecturer in Biostat Unit, USM, &lt;a href=&#34;https://wnarifin.github.io/&#34;&gt;Dr Wan Arifin&lt;/a&gt; and his colleague. The R&lt;sub&gt;0&lt;/sub&gt; based on his &lt;a href=&#34;https://wnarifin.github.io/covid-19-malaysia-sir/&#34;&gt;calculation&lt;/a&gt; is 2.673. Also, I found another &lt;a href=&#34;https://codeblue.galencentre.org/2020/04/10/mco-slashed-malaysia-covid-19-infection-rate-by-over-three-times/&#34;&gt;article&lt;/a&gt; reported that the R&lt;sub&gt;0&lt;/sub&gt; is 3.55 in March, according to KKM.&lt;/p&gt;
 &lt;p&gt;Malaysian’s population is estimated at &lt;a href=&#34;https://www.dosm.gov.my/v1/index.php?r=column/cthemeByCat&amp;amp;cat=155&amp;amp;bul_id=OVByWjg5YkQ3MWFZRTN5bDJiaEVhZz09&amp;amp;menu_id=L0pheU43NWJwRWVSZklWdzQ4TlhUUT09&#34;&gt;32.7 million&lt;/a&gt; by the Department of Statistics, Malaysia (DOSM). So, using the formula above, about 63% to 72% of Malaysian population should vaccinated, and this translates to about 20.6 to 23.5 million people.&lt;/p&gt;
-&lt;p&gt;The deal that Malaysian government made with Pfizer is far from enough, but of course this is a very good and quick decision. We also have other vaccine like Moderna’s vaccine coming up.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Disclaimer: This is just my opinion. Please take it with a huge grain of salt.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The deal that the Malaysian government made with Pfizer is far from enough, but of course, this is a very good and quick decision. We also have other vaccines like Moderna’s vaccine coming up.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Disclaimer: This is just my opinion. Please take it with a massive grain of salt.&lt;/em&gt;&lt;/p&gt;
 </description>
     </item>
     
