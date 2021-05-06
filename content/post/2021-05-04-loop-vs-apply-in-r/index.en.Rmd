@@ -29,13 +29,7 @@ set.seed(2021)
 xlist <- list(col1 = rnorm(10000000), 
               col2 = rnorm(10000000),
               col3 = rnorm(100000000),
-              col4 = rnorm(1000000),
-              col5 = rnorm(10000000), 
-              col6 = rnorm(10000000),
-              col7 = rnorm(100000000),
-              col8 = rnorm(1000000),
-              col9 = rnorm(100000000),
-              col10 = rnorm(1000000)) # this will take a few seconds
+              col4 = rnorm(1000000)) # this will take a few seconds
 ```
 
 Then, calculate the mean of each vector using `for loop()`.
