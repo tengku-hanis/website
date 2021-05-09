@@ -23,9 +23,9 @@ projects: []
 <script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
 
 
-<p>I have been reading about lost functions and optimisers in Deep Learning for the last couple of days when I stumble upon the term Exponentially weighted average (EWA). So, in this post I aims to explain my understanding of EWA.</p>
-<div id="overview" class="section level2">
-<h2>Overview</h2>
+<p>I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA.</p>
+<div id="overview-of-ewa" class="section level2">
+<h2>Overview of EWA</h2>
 <p>EWA basically is an important concept in deep learning and have been used in several optimisers to smoothen the noise of the data.</p>
 <p>Let’s see the formula for EWA:</p>
 <p><img src="formula.png" width="60%" style="display: block; margin: auto;" /></p>
@@ -56,7 +56,7 @@ projects: []
 <p><img src="seq1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Keep in mind that <em>t<sub>3</sub></em> is the latest time point, followed by <em>t<sub>2</sub></em> and <em>t<sub>1</sub></em>, respectively. So, if we want to calculate <em>V<sub>3</sub></em>:</p>
 <p><img src="seq2.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>So, if we were to varies the value of <em>B</em> across the equation, we can do so in R.</p>
+<p>So, if we were to varies the value of <em>B</em> across the equation (while the values of <em>a<sub>1</sub>…a<sub>n</sub></em> remain constant), we can do so in R.</p>
 <pre class="r"><code>library(tidyverse) 
 
 func &lt;- function(b) (1 - b) * b^((20:1) - 1)

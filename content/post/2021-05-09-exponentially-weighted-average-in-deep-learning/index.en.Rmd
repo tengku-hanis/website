@@ -24,9 +24,10 @@ projects: []
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-I have been reading about lost functions and optimisers in Deep Learning for the last couple of days when I stumble upon the term Exponentially weighted average (EWA). So, in this post I aims to explain my understanding of EWA. 
+I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA. 
 
-## Overview
+## Overview of EWA   
+
 EWA basically  is an important concept in deep learning and have been used in several optimisers to smoothen the noise of the data.
 
 Let's see the formula for EWA:
@@ -79,7 +80,7 @@ Keep in mind that *t~3~* is the latest time point, followed by *t~2~* and *t~1~*
 knitr::include_graphics('seq2.png')
 ```
 
-So, if we were to varies the value of *B* across the equation, we can do so in R.
+So, if we were to varies the value of *B* across the equation (while the values of *a~1~...a~n~* remain constant), we can do so in R.
 
 ```{r, message=FALSE}
 library(tidyverse) 
