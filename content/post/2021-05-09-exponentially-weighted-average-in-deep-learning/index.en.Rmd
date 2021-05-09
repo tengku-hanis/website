@@ -55,18 +55,19 @@ knitr::include_graphics('SGD-momentum2.png')
 
 2) Adaptive delta (Adadelta) and Root Mean Square Propagation (RMSprop)
 
-Adadelta and RMSprop is proposed in attempt to solve the issue of diminishing learning rate of adaptive gradient (Adagrad) optimiser. The use of EWA in both optimisers actually helps to achieve this. Both optimisers have quite a similar formula, but attached below is the formula for Adadelta.
+Adadelta and RMSprop are proposed in attempt to solve the issue of diminishing learning rate of adaptive gradient (Adagrad) optimiser. The use of EWA in both optimisers actually helps to achieve this. Both optimisers have quite a similar formula, but attached below is the formula for Adadelta.
 
 ```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('adadelta2.png')
 ```
 
-3) Adaptive moment estimation (ADAM)
+3) Adaptive moment estimation (ADAM)   
+
 ADAM basically combined the SGD with momentum with Adadelta. As shown earlier, both optimisers use EWA.
 
 ## More details on EWA
 
-Now, let's go back to EWA. Here, the example of calculation of EWA:
+Now, let's go back to EWA. Here is the example of calculation of EWA:
 
 ```{r, echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics('seq1.png')
@@ -110,7 +111,7 @@ fig
 
 Note that time at t~20~ is the recent time, and t~1~ is the initial time. Thus, two main points from the above plot are:  
 
-1) Thee EWA function acts in a decaying manner.      
+1) The EWA function acts in a decaying manner.      
 2) As beta, *B* increases we actually put more emphasize on the recent data point.                  
 
 
