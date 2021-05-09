@@ -91,7 +91,7 @@ dat <- t(sapply(beta, func)) %>%
   as.data.frame()
 colnames(dat)[1:20] <- 1:20
 
-p <- dat %>%  
+dat %>%  
   mutate(beta = as_factor(beta)) %>%
   pivot_longer(cols = 1:20, names_to = "data_point", values_to = "weight") %>% 
   ggplot(aes(x=as.numeric(data_point), y=weight, color=beta)) +
@@ -104,9 +104,6 @@ p <- dat %>%
   xlab("Time(t)") +
   ylab("Weights/Coefficients") +
   theme_bw()
-
-fig <- plotly::ggplotly(p)
-fig
 ```
 
 Note that time at t~20~ is the recent time, and t~1~ is the initial time. Thus, two main points from the above plot are:  
@@ -114,6 +111,7 @@ Note that time at t~20~ is the recent time, and t~1~ is the initial time. Thus, 
 1) The EWA function acts in a decaying manner.      
 2) As beta, *B* increases we actually put more emphasize on the recent data point.                  
 
+*Side note: I have tried to do the plot in plotly, not sure why it did not work* `r emo::ji("confused")`
 
 References:   
 1) https://towardsdatascience.com/deep-learning-optimizers-436171c9e23f (all the equations are from this reference)   
