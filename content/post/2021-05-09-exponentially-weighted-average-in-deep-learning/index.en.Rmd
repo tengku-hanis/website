@@ -24,27 +24,32 @@ projects: []
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-I have been reading about lost function and optimisers in Deep Learning for the last couple of days when I stumble upon the term Exponentially weighted average (EWA). So, in this post I aims to explain my understanding of EWA. EWA basically  is an important concept in deep learning and have been used in several optimisers to smoothen the noise of the data.
+I have been reading about lost functions and optimisers in Deep Learning for the last couple of days when I stumble upon the term Exponentially weighted average (EWA). So, in this post I aims to explain my understanding of EWA. 
+
+## Overview
+EWA basically  is an important concept in deep learning and have been used in several optimisers to smoothen the noise of the data.
 
 Let's see the formula for EWA:
 
-```{r, echo=FALSE, out.width='60%', fig.align='center', fig.cap="Formula of exponentially weighted average"}
+```{r, echo=FALSE, out.width='60%', fig.align='center'}
 knitr::include_graphics('formula.png')
 ```
 
 *V~t~* is some smoothen value at point *t*, while *S~t~* is a data point at point *t*. *B* here is a hyperparameter that we need to tune in our network. So, the choice of *B* will determine how many data points that we average the value of *V~t~* as shown below:
 
-```{r, echo=FALSE, out.width='60%', fig.align='center'}
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('beta.png')
 ```
 
-So, some of the optimisers that adopt the approach of EWA are:
+## EWA in deep learnings' optimiser
+
+So, some of the optimisers that adopt the approach of EWA are (red box indicates the EWA part in each formula):
 
 1) Stochastic gradient descent (SGD) with momentum
 
 The issue with SGD is the present of noise while searching for global minima. So, SGD with momentum integrated the EWA, which reduces these noises and helps the network converges faster.
 
-```{r, echo=FALSE, out.width='60%', fig.align='center', fig.cap="Red box indicate the EWA part"}
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('SGD-momentum2.png')
 ```
 
@@ -52,22 +57,24 @@ knitr::include_graphics('SGD-momentum2.png')
 
 Adadelta and RMSprop is proposed in attempt to solve the issue of diminishing learning rate of adaptive gradient (Adagrad) optimiser. The use of EWA in both optimisers actually helps to achieve this. Both optimisers have quite a similar formula, but attached below is the formula for Adadelta.
 
-```{r, echo=FALSE, out.width='60%', fig.align='center', fig.cap="Red box indicate the EWA part"}
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('adadelta2.png')
 ```
 
 3) Adaptive moment estimation (ADAM)
 ADAM basically combined the SGD with momentum with Adadelta. As shown earlier, both optimisers use EWA.
 
+## More details on EWA
+
 Now, let's go back to EWA. Here, the example of calculation of EWA:
 
-```{r, echo=FALSE, out.width='60%', fig.align='center'}
+```{r, echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics('seq1.png')
 ```
 
 Keep in mind that *t~3~* is the latest time point, followed by *t~2~* and *t~1~*, respectively. So, if we want to calculate *V~3~*:
 
-```{r, echo=FALSE, out.width='60%', fig.align='center'}
+```{r, echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics('seq2.png')
 ```
 
@@ -101,12 +108,13 @@ fig <- plotly::ggplotly(p)
 fig
 ```
 
-Note that time at t20 is the recent time, and t1 is the initial time. Thus, two main points from the above plot are:
-1) Thee EWA function acts in a decaying manner. 
-2) As beta, *B* increases we actually put more emphasize on the recent data point.              
+Note that time at t~20~ is the recent time, and t~1~ is the initial time. Thus, two main points from the above plot are:  
+
+1) Thee EWA function acts in a decaying manner.      
+2) As beta, *B* increases we actually put more emphasize on the recent data point.                  
 
 
-References:
+References:   
 1) https://towardsdatascience.com/deep-learning-optimizers-436171c9e23f (all the equations are from this reference)   
 2) https://youtu.be/NxTFlzBjS-4   
 3) https://medium.com/@dhartidhami/exponentially-weighted-averages-5de212b5be46   
