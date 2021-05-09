@@ -81,7 +81,7 @@ knitr::include_graphics('seq2.png')
 
 So, if we were to varies the value of *B* across the equation, we can do so in R.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, message=FALSE}
 library(tidyverse) 
 
 func <- function(b) (1 - b) * b^((20:1) - 1)
