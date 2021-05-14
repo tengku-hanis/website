@@ -25,7 +25,7 @@ Imbalance data happens when there is unequal distribution of data within a categ
 
 Generally, there are two types of imbalanced problem:   
 
-- Slight imblance: the imbalance is small, like 4:6
+- Slight imbalance: the imbalance is small, like 4:6
 - Severe imbalance: the imbalance is large, like 1:100 or more
 
 In slight imbalanced cases, usually it is not a concern, while severe imbalanced cases require a more specialised method to to build a predictive model.
