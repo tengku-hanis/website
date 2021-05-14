@@ -667,6 +667,10 @@ df_test  %&amp;lt;&amp;gt;%
   rename(pred_rf = .pred_class)&lt;/code&gt;&lt;/pre&gt;
 &lt;/details&gt;
 &lt;p&gt;Now, let’s get the accuracy, sensitivity, specificity, and &lt;a href=&#34;https://en.wikipedia.org/wiki/Matthews_correlation_coefficient#Advantages_of_MCC_over_accuracy_and_F1_score&#34;&gt;Mathews Correlation Coefficient (MCC)&lt;/a&gt; for each model.&lt;/p&gt;
+&lt;details&gt;
+&lt;summary&gt;
+Show code
+&lt;/summary&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Get all measurements
 df_test$admit %&amp;lt;&amp;gt;% as_factor()
 pred_col &amp;lt;- colnames(df_test)[5:13]
@@ -741,13 +745,14 @@ result %&amp;gt;%
   theme_bw() +
   coord_flip() +
   geom_text(aes(label = paste0(round(value*100, digits = 1), &amp;quot;%&amp;quot;)), 
-            position = position_dodge(0.9), vjust = 0.3, size = 3, hjust = -0.1) +
+            position = position_dodge(0.9), vjust = 0.3, size = 2, hjust = -0.1) +
   labs(title = &amp;quot;Comparison of unbalanced data techniques&amp;quot;, 
        x = &amp;quot;Techniques&amp;quot;, 
        y = &amp;quot;Performance&amp;quot;) +
   scale_fill_discrete(name = &amp;quot;Metrics:&amp;quot;,
                       labels = c(&amp;quot;Accuracy&amp;quot;, &amp;quot;MCC&amp;quot;, &amp;quot;Sensitivity&amp;quot;, &amp;quot;Specificity&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;/details&gt;
 &lt;p&gt;We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).&lt;/p&gt;
 &lt;p&gt;A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;

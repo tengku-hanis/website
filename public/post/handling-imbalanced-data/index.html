@@ -1383,6 +1383,10 @@ df_test  %&lt;&gt;%
   rename(pred_rf = .pred_class)</code></pre>
 </details>
 <p>Now, let’s get the accuracy, sensitivity, specificity, and <a href="https://en.wikipedia.org/wiki/Matthews_correlation_coefficient#Advantages_of_MCC_over_accuracy_and_F1_score">Mathews Correlation Coefficient (MCC)</a> for each model.</p>
+<details>
+<summary>
+Show code
+</summary>
 <pre class="r"><code># Get all measurements
 df_test$admit %&lt;&gt;% as_factor()
 pred_col &lt;- colnames(df_test)[5:13]
@@ -1457,13 +1461,14 @@ result %&gt;%
   theme_bw() +
   coord_flip() +
   geom_text(aes(label = paste0(round(value*100, digits = 1), &quot;%&quot;)), 
-            position = position_dodge(0.9), vjust = 0.3, size = 3, hjust = -0.1) +
+            position = position_dodge(0.9), vjust = 0.3, size = 2, hjust = -0.1) +
   labs(title = &quot;Comparison of unbalanced data techniques&quot;, 
        x = &quot;Techniques&quot;, 
        y = &quot;Performance&quot;) +
   scale_fill_discrete(name = &quot;Metrics:&quot;,
                       labels = c(&quot;Accuracy&quot;, &quot;MCC&quot;, &quot;Sensitivity&quot;, &quot;Specificity&quot;))</code></pre>
-<p><img src="/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure-1.png" width="672" /></p>
+<img src="/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure-1.png" width="672" />
+</details>
 <p>We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).</p>
 <p>A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.</p>
 <p>References:</p>
