@@ -42,7 +42,7 @@ The easiest approach is to collect more data, though this may not be practical i
 
 Here is a summary of resampling techniques available in `themis` package.
 
-```{r, echo=FALSE, out.width='70%', fig.align='center'}
+```{r, echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics('method-themis.png')
 ```
 Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced data, though some references/blogs say otherwise.
@@ -75,6 +75,9 @@ ggplot(df, aes(admit)) +
 ```
 
 Below is the code for each model.
+
+<details>
+  <summary>Toggle answer</summary>
 ```{r code_model, warning=FALSE, message=FALSE}
 # Packages
 library(tidyverse)
@@ -618,6 +621,7 @@ df_test  %<>%
   rename(pred_rf = .pred_class)
 
 ```
+</details>
 
 Now, let's get the accuracy, sensitivity, specificity, and [Mathews Correlation Coefficient (MCC)](https://en.wikipedia.org/wiki/Matthews_correlation_coefficient#Advantages_of_MCC_over_accuracy_and_F1_score) for each model.
 
@@ -711,6 +715,7 @@ A more balanced model probably ADASYN or tomek approaches based on MCC, specific
 
 
 References:  
-1. https://themis.tidymodels.org/reference/index.html
-2. https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/
+
+1. https://themis.tidymodels.org/reference/index.html  
+2. https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/   
 3. https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7
