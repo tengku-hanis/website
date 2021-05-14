@@ -43,129 +43,18 @@ Secondly, accuracy is not a good measure in this case. We may get a good accurac
 <h2>Handling approach</h2>
 <p>The easiest approach is to collect more data, though this may not be practical in all situation. Fortunately, there are a few machine learning techniques available to tackle this problem.</p>
 <p>Here is a summary of resampling techniques available in <code>themis</code> package.</p>
-<p><img src="method-themis.png" width="90%" style="display: block; margin: auto;" />
-Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced data, though some references/blogs say otherwise.</p>
+<p><img src="method-themis.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced data, though some references/blogs say otherwise.</p>
 <p>So, we are going to compare four of over-sampling techniques (upsample, SMOTE, ADASYN, and ROSE), and three of under-sampling techniques (downsample, nearmiss and tomek). The base model is a decision tree, which will be used for all the techniques. The decision trees are not going to be extensively hyperparameter tuned, for the sake of simplicity. Additionally, random forest is also going to be included in the comparison.</p>
 <p>The dataset is from <a href="https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv">here</a>. This is a summary of the dataset.</p>
-<pre class="r"><code>skimr::skim(df)</code></pre>
-<table>
-<caption><span id="tab:summary">Table 1: </span>Data summary</caption>
-<tbody>
-<tr class="odd">
-<td align="left">Name</td>
-<td align="left">df</td>
-</tr>
-<tr class="even">
-<td align="left">Number of rows</td>
-<td align="left">400</td>
-</tr>
-<tr class="odd">
-<td align="left">Number of columns</td>
-<td align="left">4</td>
-</tr>
-<tr class="even">
-<td align="left">_______________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Column type frequency:</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">factor</td>
-<td align="left">2</td>
-</tr>
-<tr class="odd">
-<td align="left">numeric</td>
-<td align="left">2</td>
-</tr>
-<tr class="even">
-<td align="left">________________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Group variables</td>
-<td align="left">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: factor</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="left">ordered</th>
-<th align="right">n_unique</th>
-<th align="left">top_counts</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">admit</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="left">FALSE</td>
-<td align="right">2</td>
-<td align="left">0: 273, 1: 127</td>
-</tr>
-<tr class="even">
-<td align="left">rank</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="left">FALSE</td>
-<td align="right">4</td>
-<td align="left">2: 151, 3: 121, 4: 67, 1: 61</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: numeric</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">mean</th>
-<th align="right">sd</th>
-<th align="right">p0</th>
-<th align="right">p25</th>
-<th align="right">p50</th>
-<th align="right">p75</th>
-<th align="right">p100</th>
-<th align="left">hist</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">gre</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">587.70</td>
-<td align="right">115.52</td>
-<td align="right">220.00</td>
-<td align="right">520.00</td>
-<td align="right">580.0</td>
-<td align="right">660.00</td>
-<td align="right">800</td>
-<td align="left">▁▂▇▇▅</td>
-</tr>
-<tr class="even">
-<td align="left">gpa</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">3.39</td>
-<td align="right">0.38</td>
-<td align="right">2.26</td>
-<td align="right">3.13</td>
-<td align="right">3.4</td>
-<td align="right">3.67</td>
-<td align="right">4</td>
-<td align="left">▁▃▆▇▆</td>
-</tr>
-</tbody>
-</table>
+<pre class="r"><code>summary(df)</code></pre>
+<pre><code>##  admit        gre             gpa        rank   
+##  0:273   Min.   :220.0   Min.   :2.260   1: 61  
+##  1:127   1st Qu.:520.0   1st Qu.:3.130   2:151  
+##          Median :580.0   Median :3.395   3:121  
+##          Mean   :587.7   Mean   :3.390   4: 67  
+##          3rd Qu.:660.0   3rd Qu.:3.670          
+##          Max.   :800.0   Max.   :4.000</code></pre>
 <p>As we can see from the summary, variable admit has a moderate imbalanced data about 3:7 ratio.</p>
 <pre class="r"><code>ggplot(df, aes(admit)) + 
   geom_bar() +
@@ -174,7 +63,7 @@ Over-sampling approach is preferred when the dataset is small. The under-samplin
 <p>Below is the code for each model.</p>
 <details>
 <summary>
-Toggle answer
+Show code
 </summary>
 <pre class="r"><code># Packages
 library(tidyverse)
@@ -792,14 +681,14 @@ result %&gt;%
   theme_bw() +
   coord_flip() +
   geom_text(aes(label = paste0(round(value*100, digits = 1), &quot;%&quot;)), 
-            position = position_dodge(0.9), vjust = 0.3, size = 4, hjust = -0.1) +
+            position = position_dodge(0.9), vjust = 0.3, size = 3, hjust = -0.1) +
   labs(title = &quot;Comparison of unbalanced data techniques&quot;, 
        x = &quot;Techniques&quot;, 
        y = &quot;Performance&quot;) +
   scale_fill_discrete(name = &quot;Metrics:&quot;,
                       labels = c(&quot;Accuracy&quot;, &quot;MCC&quot;, &quot;Sensitivity&quot;, &quot;Specificity&quot;))</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/summary-measure-1.png" width="672" /></p>
-<p>We can see from the above plot, the base model (decision tree) clearly has low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).</p>
+<p>We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).</p>
 <p>A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.</p>
 <p>References:</p>
 <ol style="list-style-type: decimal">

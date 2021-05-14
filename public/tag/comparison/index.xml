@@ -13,6 +13,86 @@
     </image>
     
     <item>
+      <title>Base R vs tidyverse</title>
+      <link>/post/2021-05-04-base-r-vs-tidyverse/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      <guid>/post/2021-05-04-base-r-vs-tidyverse/</guid>
+      <description>
+&lt;script src=&#34;/post/2021-05-04-base-r-vs-tidyverse/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;First of all, this write up is mean for a beginner in R.&lt;/p&gt;
+&lt;p&gt;Things can be done in many ways in R. In facts, R has been very flexible in this regard compared to other statistical softwares. Basic things such as selecting a column, slicing a row, filtering a data based on certain condition can be done using a base R function. However, all these things can also be done using a tidyverse approach.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;Tidyverse&lt;/a&gt; basically, a collection of packages that can be loaded in a line of function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tidyverse is developed by “RStudio people” pioneered by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt;, which means that these packages will be continuously maintained and updated.&lt;/p&gt;
+&lt;p&gt;So, without further ado, these are the comparisons between these two approaches for some very basic thingy:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Select or deselect a column and a row&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris[1:5, c(&amp;quot;Sepal.Length&amp;quot;, &amp;quot;Sepal.Width&amp;quot;)]
+iris[1:5,c(1,2)] # similar to above
+iris[1:5, -1]
+
+# Tidyverse
+iris %&amp;gt;% 
+  select(Sepal.Length, Sepal.Width) %&amp;gt;% 
+  slice(1:5)
+iris %&amp;gt;% 
+  select(-Sepal.Length) %&amp;gt;% 
+  slice(1:5)&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Filter based on condition&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris[iris$Species == &amp;quot;setosa&amp;quot;, ]
+
+# Tidyverse
+iris %&amp;gt;% 
+  filter(Species == &amp;quot;setosa&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;3&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Mutate (transmute replace the variable)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris$SL_minus10 &amp;lt;- iris$Sepal.Length - 10
+
+# Tidyverse
+iris %&amp;gt;% 
+  mutate(SL_minus10 = Sepal.Length - 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;4&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Sort variable&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+iris[order(-iris$Sepal.Width),]
+
+# Tidyverse
+iris %&amp;gt;% 
+  arrange(desc(Sepal.Length))&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;5&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Group by (and get mean for variable Sepal.Width)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Not really base R
+doBy::summaryBy(Sepal.Width~Species, iris, FUN = mean) 
+
+# Tidyverse
+iris %&amp;gt;% 
+  group_by(Species) %&amp;gt;% 
+  summarise(mean_SW = mean(Sepal.Width))&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;6&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Rename variable&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
+colnames(iris)[6] &amp;lt;- &amp;quot;hanis&amp;quot;
+
+# Tidyverse
+iris %&amp;gt;% 
+  rename(Species = hanis)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, that’s it. Overall, tidyverse give a clarity in understanding the code as it reads from left to right. On the contrary, the base R approach reads from inside to outside, especially for a more complicated code.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Loop vs apply in R</title>
       <link>/post/loop-vs-apply-in-r/</link>
       <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
@@ -28,13 +108,7 @@
 xlist &amp;lt;- list(col1 = rnorm(10000000), 
               col2 = rnorm(10000000),
               col3 = rnorm(100000000),
-              col4 = rnorm(1000000),
-              col5 = rnorm(10000000), 
-              col6 = rnorm(10000000),
-              col7 = rnorm(100000000),
-              col8 = rnorm(1000000),
-              col9 = rnorm(100000000),
-              col10 = rnorm(1000000)) # this will take a few seconds&lt;/code&gt;&lt;/pre&gt;
+              col4 = rnorm(1000000)) # this will take a few seconds&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Then, calculate the mean of each vector using &lt;code&gt;for loop()&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ptm &amp;lt;- proc.time() #-- start the clock
 
@@ -45,7 +119,7 @@ for (i in seq_along(xlist)) {
 
 proc.time() - ptm #-- stop the clock (time in seconds)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##    user  system elapsed 
-##    1.06    0.00    1.06&lt;/code&gt;&lt;/pre&gt;
+##    0.38    0.00    0.38&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now, using &lt;code&gt;lapply()&lt;/code&gt; function.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ptm &amp;lt;- proc.time() #-- start the clock
 
@@ -53,7 +127,7 @@ mean_apply &amp;lt;- lapply(xlist, mean)
 
 proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##    user  system elapsed 
-##    1.04    0.00    1.05&lt;/code&gt;&lt;/pre&gt;
+##    0.36    0.00    0.35&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So, &lt;code&gt;lapply()&lt;/code&gt; is a little bit faster. Obviously, with a very big dataset and a more complicated objective, &lt;code&gt;lapply()&lt;/code&gt; is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.&lt;/p&gt;
 </description>
     </item>

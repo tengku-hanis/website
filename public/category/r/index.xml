@@ -5,12 +5,781 @@
     <link>/category/r/</link>
       <atom:link href="/category/r/index.xml" rel="self" type="application/rss+xml" />
     <description>R</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 04 May 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 14 May 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>R</title>
       <link>/category/r/</link>
     </image>
+    
+    <item>
+      <title>Handling imbalanced data</title>
+      <link>/post/handling-imbalanced-data/</link>
+      <pubDate>Fri, 14 May 2021 00:00:00 +0000</pubDate>
+      <guid>/post/handling-imbalanced-data/</guid>
+      <description>
+&lt;script src=&#34;/post/handling-imbalanced-data/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;overview&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Imbalance data happens when there is unequal distribution of data within a categorical outcome variable. Imbalance data occurs due to several reasons such as biased sampling method and measurement errors. However, the imbalance may also be the inherent characteristic of the data. For example, a rare disease predictive model, in this case, the imbalance is expected.&lt;/p&gt;
+&lt;p&gt;Generally, there are two types of imbalanced problem:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Slight imbalance: the imbalance is small, like 4:6&lt;/li&gt;
+&lt;li&gt;Severe imbalance: the imbalance is large, like 1:100 or more&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In slight imbalanced cases, usually it is not a concern, while severe imbalanced cases require a more specialised method to to build a predictive model.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-problem&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The problem&lt;/h2&gt;
+&lt;p&gt;What’s the problem with the imbalanced data?&lt;br /&gt;
+Firstly, a predictive model of an imbalanced is bias towards the majority class. The minority class becomes harder to predict as there a few data from this class. So, the detection rate for a minority class will be very low.
+Secondly, accuracy is not a good measure in this case. We may get a good accuracy,but in reality the accuracy does not reflect the unequal distribution of the data. This is known as an &lt;a href=&#34;https://en.wikipedia.org/wiki/Accuracy_paradox&#34;&gt;accuracy paradox&lt;/a&gt;. Imagine we have 90% of data belong to the majority class, while the remaining 10% belong to the minority class. So, just by predicting all data as a majority class, the model can easily get 90% accuracy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;handling-approach&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Handling approach&lt;/h2&gt;
+&lt;p&gt;The easiest approach is to collect more data, though this may not be practical in all situation. Fortunately, there are a few machine learning techniques available to tackle this problem.&lt;/p&gt;
+&lt;p&gt;Here is a summary of resampling techniques available in &lt;code&gt;themis&lt;/code&gt; package.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;method-themis.png&#34; width=&#34;90%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced data, though some references/blogs say otherwise.&lt;/p&gt;
+&lt;p&gt;So, we are going to compare four of over-sampling techniques (upsample, SMOTE, ADASYN, and ROSE), and three of under-sampling techniques (downsample, nearmiss and tomek). The base model is a decision tree, which will be used for all the techniques. The decision trees are not going to be extensively hyperparameter tuned, for the sake of simplicity. Additionally, random forest is also going to be included in the comparison.&lt;/p&gt;
+&lt;p&gt;The dataset is from &lt;a href=&#34;https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv&#34;&gt;here&lt;/a&gt;. This is a summary of the dataset.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  admit        gre             gpa        rank   
+##  0:273   Min.   :220.0   Min.   :2.260   1: 61  
+##  1:127   1st Qu.:520.0   1st Qu.:3.130   2:151  
+##          Median :580.0   Median :3.395   3:121  
+##          Mean   :587.7   Mean   :3.390   4: 67  
+##          3rd Qu.:660.0   3rd Qu.:3.670          
+##          Max.   :800.0   Max.   :4.000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As we can see from the summary, variable admit has a moderate imbalanced data about 3:7 ratio.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df, aes(admit)) + 
+  geom_bar() +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/handling-imbalanced-data/index.en_files/figure-html/barplot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Below is the code for each model.&lt;/p&gt;
+&lt;details&gt;
+&lt;summary&gt;
+Show code
+&lt;/summary&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Packages
+library(tidyverse)
+library(magrittr)
+library(tidymodels)
+library(themis)
+
+# Data
+df &amp;lt;- read.csv(&amp;quot;https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv&amp;quot;)
+
+# Split data
+set.seed(1234)
+df_split &amp;lt;- initial_split(df)
+df_train &amp;lt;- training(df_split)
+df_test &amp;lt;- testing(df_split)
+
+# 1) Decision tree ----
+
+# Recipe
+dt_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank)
+
+df_train_rec &amp;lt;- 
+  dt_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+  
+df_test_rec &amp;lt;- 
+  dt_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv &amp;lt;- vfold_cv(df_train_rec)
+
+# Tune and finalize workflow
+## Specify model
+dt_mod &amp;lt;- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune(),
+    min_n = tune()
+  ) %&amp;gt;% 
+  set_engine(&amp;quot;rpart&amp;quot;) %&amp;gt;% 
+  set_mode(&amp;quot;classification&amp;quot;)
+
+## Specify workflow
+dt_wf &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune &amp;lt;- 
+  dt_wf %&amp;gt;% 
+  tune_grid(resamples = df_cv,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune &amp;lt;- dt_tune %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final &amp;lt;- 
+  dt_wf %&amp;gt;% 
+  finalize_workflow(best_tune)
+
+# Fit on train data
+dt_train &amp;lt;- 
+  dt_wf_final %&amp;gt;% 
+  fit(data = df_train_rec)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train, new_data = df_test_rec)) %&amp;gt;% 
+  rename(pred = .pred_class)
+
+# 2) Oversampling ----
+## step_upsample() ----
+
+# Recipe
+up_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_upsample(admit,
+                seed = 1234)
+
+df_train_up &amp;lt;- 
+  up_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_up &amp;lt;- 
+  up_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_up &amp;lt;- vfold_cv(df_train_up)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_up &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_up &amp;lt;- 
+  dt_wf_up %&amp;gt;% 
+  tune_grid(resamples = df_cv_up,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_up &amp;lt;- dt_tune_up %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_up &amp;lt;- 
+  dt_wf_up %&amp;gt;% 
+  finalize_workflow(best_tune_up)
+
+# Fit on train data
+dt_train_up &amp;lt;- 
+  dt_wf_final_up %&amp;gt;% 
+  fit(data = df_train_up)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_up, new_data = df_test_rec_up)) %&amp;gt;% 
+  rename(pred_up = .pred_class)
+
+## step_smote() ----
+
+# Recipe
+smote_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_smote(admit, 
+             seed = 1234)
+
+df_train_smote &amp;lt;- 
+  smote_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_smote &amp;lt;- 
+  smote_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_smote &amp;lt;- vfold_cv(df_train_smote)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_smote &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_smote &amp;lt;- 
+  dt_wf_smote %&amp;gt;% 
+  tune_grid(resamples = df_cv_smote,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_smote &amp;lt;- dt_tune_smote %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_smote &amp;lt;- 
+  dt_wf_smote %&amp;gt;% 
+  finalize_workflow(best_tune_smote)
+
+# Fit on train data
+dt_train_smote &amp;lt;- 
+  dt_wf_final_smote %&amp;gt;% 
+  fit(data = df_train_smote)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_smote, new_data = df_test_rec_smote)) %&amp;gt;% 
+  rename(pred_smote = .pred_class)
+
+## step_rose() ----
+
+# Recipe
+rose_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_rose(admit, 
+             seed = 1234)
+
+df_train_rose &amp;lt;- 
+  rose_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_rose &amp;lt;- 
+  rose_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_rose &amp;lt;- vfold_cv(df_train_rose)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_rose &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_rose &amp;lt;- 
+  dt_wf_rose %&amp;gt;% 
+  tune_grid(resamples = df_cv_rose,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_rose &amp;lt;- dt_tune_rose %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_rose &amp;lt;- 
+  dt_wf_rose %&amp;gt;% 
+  finalize_workflow(best_tune_rose)
+
+# Fit on train data
+dt_train_rose &amp;lt;- 
+  dt_wf_final_rose %&amp;gt;% 
+  fit(data = df_train_rose)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_rose, new_data = df_test_rec_rose)) %&amp;gt;% 
+  rename(pred_rose = .pred_class)
+
+## step_adasyn() ----
+
+# Recipe
+adasyn_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_adasyn(admit, 
+            seed = 1234)
+
+df_train_adasyn &amp;lt;- 
+  adasyn_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_adasyn &amp;lt;- 
+  adasyn_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_adasyn &amp;lt;- vfold_cv(df_train_adasyn)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_adasyn &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_adasyn &amp;lt;- 
+  dt_wf_adasyn %&amp;gt;% 
+  tune_grid(resamples = df_cv_adasyn,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_adasyn &amp;lt;- dt_tune_adasyn %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_adasyn &amp;lt;- 
+  dt_wf_adasyn %&amp;gt;% 
+  finalize_workflow(best_tune_adasyn)
+
+# Fit on train data
+dt_train_adasyn &amp;lt;- 
+  dt_wf_final_adasyn %&amp;gt;% 
+  fit(data = df_train_adasyn)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_adasyn, new_data = df_test_rec_adasyn)) %&amp;gt;% 
+  rename(pred_adasyn = .pred_class)
+
+# 3) Undersampling ----
+## step_downsample() ----
+
+# Recipe
+down_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_downsample(admit,
+                seed = 1234)
+
+df_train_down &amp;lt;- 
+  down_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_down &amp;lt;- 
+  down_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_down &amp;lt;- vfold_cv(df_train_down)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_down &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_down &amp;lt;- 
+  dt_wf_down %&amp;gt;% 
+  tune_grid(resamples = df_cv_down,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_down &amp;lt;- dt_tune_down %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_down &amp;lt;- 
+  dt_wf_down %&amp;gt;% 
+  finalize_workflow(best_tune_down)
+
+# Fit on train data
+dt_train_down &amp;lt;- 
+  dt_wf_final_down %&amp;gt;% 
+  fit(data = df_train_down)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_down, new_data = df_test_rec_down)) %&amp;gt;% 
+  rename(pred_down = .pred_class)
+
+## step_nearmiss() ----
+
+# Recipe
+nearmiss_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_nearmiss(admit,
+                  seed = 1234)
+
+df_train_nearmiss &amp;lt;- 
+  nearmiss_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_nearmiss &amp;lt;- 
+  nearmiss_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_nearmiss &amp;lt;- vfold_cv(df_train_nearmiss)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_nearmiss &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_nearmiss &amp;lt;- 
+  dt_wf_nearmiss %&amp;gt;% 
+  tune_grid(resamples = df_cv_nearmiss,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_nearmiss &amp;lt;- dt_tune_nearmiss %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_nearmiss &amp;lt;- 
+  dt_wf_nearmiss %&amp;gt;% 
+  finalize_workflow(best_tune_nearmiss)
+
+# Fit on train data
+dt_train_nearmiss &amp;lt;- 
+  dt_wf_final_nearmiss %&amp;gt;% 
+  fit(data = df_train_nearmiss)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_nearmiss, new_data = df_test_rec_nearmiss)) %&amp;gt;% 
+  rename(pred_nearmiss = .pred_class)
+
+## step_tomek() ----
+
+# Recipe
+tomek_rec &amp;lt;- 
+  recipe(admit ~., data = df_train) %&amp;gt;% 
+  step_mutate_at(c(&amp;quot;admit&amp;quot;, &amp;quot;rank&amp;quot;), fn = as_factor) %&amp;gt;% 
+  step_dummy(rank) %&amp;gt;% 
+  step_tomek(admit,
+                  seed = 1234)
+
+df_train_tomek &amp;lt;- 
+  tomek_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_tomek &amp;lt;- 
+  tomek_rec %&amp;gt;% 
+  prep() %&amp;gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_tomek &amp;lt;- vfold_cv(df_train_tomek)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_tomek &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(dt_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_tomek &amp;lt;- 
+  dt_wf_tomek %&amp;gt;% 
+  tune_grid(resamples = df_cv_tomek,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_tomek &amp;lt;- dt_tune_tomek %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+dt_wf_final_tomek &amp;lt;- 
+  dt_wf_tomek %&amp;gt;% 
+  finalize_workflow(best_tune_tomek)
+
+# Fit on train data
+dt_train_tomek &amp;lt;- 
+  dt_wf_final_tomek %&amp;gt;% 
+  fit(data = df_train_tomek)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(dt_train_tomek, new_data = df_test_rec_tomek)) %&amp;gt;% 
+  rename(pred_tomek = .pred_class)
+
+# 4) Ensemble approach: random forest ----
+
+## 10-folds CV
+set.seed(1234)
+df_cv &amp;lt;- vfold_cv(df_train_rec)
+
+# Tune and finalize workflow
+## Specify model
+rf_mod &amp;lt;- rand_forest(
+ mtry = tune(),
+ trees = tune(),
+ min_n = tune()
+ ) %&amp;gt;% 
+  set_engine(&amp;quot;ranger&amp;quot;) %&amp;gt;% 
+  set_mode(&amp;quot;classification&amp;quot;)
+
+## Specify workflow
+rf_wf &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_model(rf_mod) %&amp;gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+rf_tune &amp;lt;- 
+  rf_wf %&amp;gt;% 
+  tune_grid(resamples = df_cv,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune &amp;lt;- rf_tune %&amp;gt;% select_best(&amp;quot;accuracy&amp;quot;)
+
+## Finalize workflow
+rf_wf_final &amp;lt;- 
+  rf_wf %&amp;gt;% 
+  finalize_workflow(best_tune)
+
+# Fit on train data
+rf_train &amp;lt;- 
+  rf_wf_final %&amp;gt;% 
+  fit(data = df_train_rec)
+
+# Fit on test data and get accuracy
+df_test  %&amp;lt;&amp;gt;%  
+  bind_cols(predict(rf_train, new_data = df_test_rec)) %&amp;gt;% 
+  rename(pred_rf = .pred_class)&lt;/code&gt;&lt;/pre&gt;
+&lt;/details&gt;
+&lt;p&gt;Now, let’s get the accuracy, sensitivity, specificity, and &lt;a href=&#34;https://en.wikipedia.org/wiki/Matthews_correlation_coefficient#Advantages_of_MCC_over_accuracy_and_F1_score&#34;&gt;Mathews Correlation Coefficient (MCC)&lt;/a&gt; for each model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Get all measurements
+df_test$admit %&amp;lt;&amp;gt;% as_factor()
+pred_col &amp;lt;- colnames(df_test)[5:13]
+result &amp;lt;- vector(&amp;quot;list&amp;quot;, 0)
+sensi &amp;lt;- vector(&amp;quot;list&amp;quot;, 0)
+specif &amp;lt;- vector(&amp;quot;list&amp;quot;, 0)
+mathew &amp;lt;- vector(&amp;quot;list&amp;quot;, 0)
+
+for (i in seq_along(pred_col)) {
+  # accuracy
+  result[[i]] &amp;lt;-
+    df_test %&amp;gt;% 
+    accuracy(admit, df_test[,pred_col[i]])
+  
+  # sensitivity
+  sensi[[i]] &amp;lt;-
+    df_test %&amp;gt;% 
+    sensitivity(admit, df_test[,pred_col[i]])
+  
+  # specificity
+  specif[[i]] &amp;lt;-
+    df_test %&amp;gt;% 
+    specificity(admit, df_test[,pred_col[i]])
+  
+  # MCC
+  mathew[[i]] &amp;lt;-
+    df_test %&amp;gt;% 
+    mcc(admit, df_test[,pred_col[i]])
+}
+
+## Turn into dataframe
+result  %&amp;lt;&amp;gt;%  
+  enframe() %&amp;gt;% 
+  unnest(cols = c(&amp;quot;value&amp;quot;)) %&amp;gt;% 
+  rename(model = name, 
+         accuracy = .estimate) %&amp;gt;% 
+  select(model, accuracy) %&amp;gt;% 
+  mutate(model = factor(model,labels = 
+                          c(
+                            &amp;quot;1&amp;quot; = &amp;quot;base&amp;quot;,
+                            &amp;quot;2&amp;quot; = &amp;quot;upsample&amp;quot;,
+                            &amp;quot;3&amp;quot; = &amp;quot;smote&amp;quot;,
+                            &amp;quot;4&amp;quot; = &amp;quot;rose&amp;quot;,
+                            &amp;quot;5&amp;quot; = &amp;quot;adasyn&amp;quot;,
+                            &amp;quot;6&amp;quot; = &amp;quot;downsample&amp;quot;,
+                            &amp;quot;7&amp;quot; = &amp;quot;nearmiss&amp;quot;,
+                            &amp;quot;8&amp;quot; = &amp;quot;tomek&amp;quot;,
+                            &amp;quot;9&amp;quot; = &amp;quot;random_forest&amp;quot;
+                            )
+                        ))
+
+sensi  %&amp;lt;&amp;gt;%  
+  enframe() %&amp;gt;% 
+  unnest(cols = c(&amp;quot;value&amp;quot;))
+
+specif %&amp;lt;&amp;gt;% 
+  enframe() %&amp;gt;% 
+  unnest(cols = c(&amp;quot;value&amp;quot;))
+
+mathew %&amp;lt;&amp;gt;% 
+  enframe() %&amp;gt;% 
+  unnest(cols = c(&amp;quot;value&amp;quot;))
+
+result %&amp;lt;&amp;gt;% 
+  bind_cols(sensitive = sensi$.estimate, specific = specif$.estimate, mathew = mathew$.estimate)
+
+# Plot the result
+result %&amp;gt;% 
+  pivot_longer(cols = 2:5, names_to = &amp;quot;measure&amp;quot;) %&amp;gt;% 
+  ggplot(aes(x = model, y = value, fill = measure)) +
+  geom_bar(position = &amp;quot;dodge&amp;quot;, stat = &amp;quot;identity&amp;quot;) +
+  theme_bw() +
+  coord_flip() +
+  geom_text(aes(label = paste0(round(value*100, digits = 1), &amp;quot;%&amp;quot;)), 
+            position = position_dodge(0.9), vjust = 0.3, size = 3, hjust = -0.1) +
+  labs(title = &amp;quot;Comparison of unbalanced data techniques&amp;quot;, 
+       x = &amp;quot;Techniques&amp;quot;, 
+       y = &amp;quot;Performance&amp;quot;) +
+  scale_fill_discrete(name = &amp;quot;Metrics:&amp;quot;,
+                      labels = c(&amp;quot;Accuracy&amp;quot;, &amp;quot;MCC&amp;quot;, &amp;quot;Sensitivity&amp;quot;, &amp;quot;Specificity&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).&lt;/p&gt;
+&lt;p&gt;A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://themis.tidymodels.org/reference/index.html&#34; class=&#34;uri&#34;&gt;https://themis.tidymodels.org/reference/index.html&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/&#34; class=&#34;uri&#34;&gt;https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7&#34; class=&#34;uri&#34;&gt;https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exponentially Weighted Average in Deep Learning</title>
+      <link>/post/exponentially-weighted-average-in-deep-learning/</link>
+      <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
+      <guid>/post/exponentially-weighted-average-in-deep-learning/</guid>
+      <description>
+&lt;script src=&#34;/post/exponentially-weighted-average-in-deep-learning/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA.&lt;/p&gt;
+&lt;div id=&#34;overview-of-ewa&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Overview of EWA&lt;/h2&gt;
+&lt;p&gt;EWA basically is an important concept in deep learning and have been used in several optimisers to smoothen the noise of the data.&lt;/p&gt;
+&lt;p&gt;Let’s see the formula for EWA:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;formula.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;V&lt;sub&gt;t&lt;/sub&gt;&lt;/em&gt; is some smoothen value at point &lt;em&gt;t&lt;/em&gt;, while &lt;em&gt;S&lt;sub&gt;t&lt;/sub&gt;&lt;/em&gt; is a data point at point &lt;em&gt;t&lt;/em&gt;. &lt;em&gt;B&lt;/em&gt; here is a hyperparameter that we need to tune in our network. So, the choice of &lt;em&gt;B&lt;/em&gt; will determine how many data points that we average the value of &lt;em&gt;V&lt;sub&gt;t&lt;/sub&gt;&lt;/em&gt; as shown below:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;beta.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ewa-in-deep-learnings-optimiser&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;EWA in deep learnings’ optimiser&lt;/h2&gt;
+&lt;p&gt;So, some of the optimisers that adopt the approach of EWA are (red box indicates the EWA part in each formula):&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Stochastic gradient descent (SGD) with momentum&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The issue with SGD is the present of noise while searching for global minima. So, SGD with momentum integrated the EWA, which reduces these noises and helps the network converges faster.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;SGD-momentum2.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Adaptive delta (Adadelta) and Root Mean Square Propagation (RMSprop)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Adadelta and RMSprop are proposed in attempt to solve the issue of diminishing learning rate of adaptive gradient (Adagrad) optimiser. The use of EWA in both optimisers actually helps to achieve this. Both optimisers have quite a similar formula, but attached below is the formula for Adadelta.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;adadelta2.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Adaptive moment estimation (ADAM)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;ADAM basically combined the SGD with momentum with Adadelta. As shown earlier, both optimisers use EWA.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;more-details-on-ewa&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;More details on EWA&lt;/h2&gt;
+&lt;p&gt;Now, let’s go back to EWA. Here is the example of calculation of EWA:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;seq1.png&#34; width=&#34;90%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Keep in mind that &lt;em&gt;t&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt; is the latest time point, followed by &lt;em&gt;t&lt;sub&gt;2&lt;/sub&gt;&lt;/em&gt; and &lt;em&gt;t&lt;sub&gt;1&lt;/sub&gt;&lt;/em&gt;, respectively. So, if we want to calculate &lt;em&gt;V&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;seq2.png&#34; width=&#34;90%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;So, if we were to varies the value of &lt;em&gt;B&lt;/em&gt; across the equation (while the values of &lt;em&gt;a&lt;sub&gt;1&lt;/sub&gt;…a&lt;sub&gt;n&lt;/sub&gt;&lt;/em&gt; remain constant), we can do so in R.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse) 
+
+func &amp;lt;- function(b) (1 - b) * b^((20:1) - 1)
+beta &amp;lt;- seq(0.1, 0.9, by=0.2)
+
+dat &amp;lt;- t(sapply(beta, func)) %&amp;gt;% 
+  as.data.frame()
+colnames(dat)[1:20] &amp;lt;- 1:20
+
+dat %&amp;gt;%  
+  mutate(beta = as_factor(beta)) %&amp;gt;%
+  pivot_longer(cols = 1:20, names_to = &amp;quot;data_point&amp;quot;, values_to = &amp;quot;weight&amp;quot;) %&amp;gt;% 
+  ggplot(aes(x=as.numeric(data_point), y=weight, color=beta)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 1:20) +
+  labs(title = &amp;quot;Change of Exponentially Weighted Average function&amp;quot;, 
+       subtitle = &amp;quot;Time at t20 is the recent time, and t1 is the initial time&amp;quot;) +
+  scale_colour_discrete(&amp;quot;Beta:&amp;quot;) +
+  xlab(&amp;quot;Time(t)&amp;quot;) +
+  ylab(&amp;quot;Weights/Coefficients&amp;quot;) +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exponentially-weighted-average-in-deep-learning/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Note that time at t&lt;sub&gt;20&lt;/sub&gt; is the recent time, and t&lt;sub&gt;1&lt;/sub&gt; is the initial time. Thus, two main points from the above plot are:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The EWA function acts in a decaying manner.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;As beta, &lt;em&gt;B&lt;/em&gt; increases we actually put more emphasize on the recent data point.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;Side note: I have tried to do the plot in plotly, not sure why it did not work&lt;/em&gt; 😕&lt;/p&gt;
+&lt;p&gt;References:&lt;br /&gt;
+1) &lt;a href=&#34;https://towardsdatascience.com/deep-learning-optimizers-436171c9e23f&#34; class=&#34;uri&#34;&gt;https://towardsdatascience.com/deep-learning-optimizers-436171c9e23f&lt;/a&gt; (all the equations are from this reference)&lt;br /&gt;
+2) &lt;a href=&#34;https://youtu.be/NxTFlzBjS-4&#34; class=&#34;uri&#34;&gt;https://youtu.be/NxTFlzBjS-4&lt;/a&gt;&lt;br /&gt;
+3) &lt;a href=&#34;https://medium.com/@dhartidhami/exponentially-weighted-averages-5de212b5be46&#34; class=&#34;uri&#34;&gt;https://medium.com/@dhartidhami/exponentially-weighted-averages-5de212b5be46&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Base R vs tidyverse</title>
@@ -26,8 +795,10 @@
 &lt;p&gt;&lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;Tidyverse&lt;/a&gt; basically, a collection of packages that can be loaded in a line of function.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Tidyverse is developed by “RStudio people” pioneered by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt;, which means that these packages will be continuously maintained and updated.&lt;/p&gt;
-&lt;p&gt;So, without further ado, these are the comparisons between these two approaches for some very basic thingy:
-1. Select or deselect a column and a row&lt;/p&gt;
+&lt;p&gt;So, without further ado, these are the comparisons between these two approaches for some very basic thingy:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Select or deselect a column and a row&lt;/li&gt;
+&lt;/ol&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
 iris[1:5, c(&amp;quot;Sepal.Length&amp;quot;, &amp;quot;Sepal.Width&amp;quot;)]
 iris[1:5,c(1,2)] # similar to above
@@ -106,13 +877,7 @@ iris %&amp;gt;%
 xlist &amp;lt;- list(col1 = rnorm(10000000), 
               col2 = rnorm(10000000),
               col3 = rnorm(100000000),
-              col4 = rnorm(1000000),
-              col5 = rnorm(10000000), 
-              col6 = rnorm(10000000),
-              col7 = rnorm(100000000),
-              col8 = rnorm(1000000),
-              col9 = rnorm(100000000),
-              col10 = rnorm(1000000)) # this will take a few seconds&lt;/code&gt;&lt;/pre&gt;
+              col4 = rnorm(1000000)) # this will take a few seconds&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Then, calculate the mean of each vector using &lt;code&gt;for loop()&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ptm &amp;lt;- proc.time() #-- start the clock
 
@@ -123,7 +888,7 @@ for (i in seq_along(xlist)) {
 
 proc.time() - ptm #-- stop the clock (time in seconds)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##    user  system elapsed 
-##    1.06    0.00    1.06&lt;/code&gt;&lt;/pre&gt;
+##    0.38    0.00    0.38&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now, using &lt;code&gt;lapply()&lt;/code&gt; function.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ptm &amp;lt;- proc.time() #-- start the clock
 
@@ -131,7 +896,7 @@ mean_apply &amp;lt;- lapply(xlist, mean)
 
 proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##    user  system elapsed 
-##    1.04    0.00    1.05&lt;/code&gt;&lt;/pre&gt;
+##    0.36    0.00    0.35&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So, &lt;code&gt;lapply()&lt;/code&gt; is a little bit faster. Obviously, with a very big dataset and a more complicated objective, &lt;code&gt;lapply()&lt;/code&gt; is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.&lt;/p&gt;
 </description>
     </item>

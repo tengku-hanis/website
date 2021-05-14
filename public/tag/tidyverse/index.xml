@@ -26,8 +26,10 @@
 &lt;p&gt;&lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;Tidyverse&lt;/a&gt; basically, a collection of packages that can be loaded in a line of function.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Tidyverse is developed by “RStudio people” pioneered by &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham&lt;/a&gt;, which means that these packages will be continuously maintained and updated.&lt;/p&gt;
-&lt;p&gt;So, without further ado, these are the comparisons between these two approaches for some very basic thingy:
-1. Select or deselect a column and a row&lt;/p&gt;
+&lt;p&gt;So, without further ado, these are the comparisons between these two approaches for some very basic thingy:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Select or deselect a column and a row&lt;/li&gt;
+&lt;/ol&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Base R
 iris[1:5, c(&amp;quot;Sepal.Length&amp;quot;, &amp;quot;Sepal.Width&amp;quot;)]
 iris[1:5,c(1,2)] # similar to above

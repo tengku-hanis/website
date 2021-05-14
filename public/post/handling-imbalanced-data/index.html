@@ -1,0 +1,1907 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Tengku Muhammad Hanis">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="OverviewImbalance data happens when there is unequal distribution of data within a categorical outcome variable. Imbalance data occurs due to several reasons such as biased sampling method and measurement errors.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/handling-imbalanced-data/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="/post/handling-imbalanced-data/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Tengku Hanis">
+  <meta property="og:url" content="/post/handling-imbalanced-data/">
+  <meta property="og:title" content="Handling imbalanced data | Tengku Hanis">
+  <meta property="og:description" content="OverviewImbalance data happens when there is unequal distribution of data within a categorical outcome variable. Imbalance data occurs due to several reasons such as biased sampling method and measurement errors."><meta property="og:image" content="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2021-05-14T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2021-05-14T09:29:34&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/handling-imbalanced-data/"
+  },
+  "headline": "Handling imbalanced data",
+  
+  "datePublished": "2021-05-14T00:00:00Z",
+  "dateModified": "2021-05-14T09:29:34+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Tengku Muhammad Hanis"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tengku Hanis",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "Overview\rImbalance data happens when there is unequal distribution of data within a categorical outcome variable. Imbalance data occurs due to several reasons such as biased sampling method and measurement errors."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Handling imbalanced data | Tengku Hanis</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Ongoing</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Blog</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>Light</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>Dark</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>Automatic</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Handling imbalanced data</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    May 14, 2021
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    10 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a>, <a href="/category/machine-learning/">Machine Learning</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="/post/handling-imbalanced-data/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Imbalance data happens when there is unequal distribution of data within a categorical outcome variable. Imbalance data occurs due to several reasons such as biased sampling method and measurement errors. However, the imbalance may also be the inherent characteristic of the data. For example, a rare disease predictive model, in this case, the imbalance is expected.</p>
+<p>Generally, there are two types of imbalanced problem:</p>
+<ul>
+<li>Slight imbalance: the imbalance is small, like 4:6</li>
+<li>Severe imbalance: the imbalance is large, like 1:100 or more</li>
+</ul>
+<p>In slight imbalanced cases, usually it is not a concern, while severe imbalanced cases require a more specialised method to to build a predictive model.</p>
+</div>
+<div id="the-problem" class="section level2">
+<h2>The problem</h2>
+<p>What’s the problem with the imbalanced data?<br />
+Firstly, a predictive model of an imbalanced is bias towards the majority class. The minority class becomes harder to predict as there a few data from this class. So, the detection rate for a minority class will be very low.
+Secondly, accuracy is not a good measure in this case. We may get a good accuracy,but in reality the accuracy does not reflect the unequal distribution of the data. This is known as an <a href="https://en.wikipedia.org/wiki/Accuracy_paradox">accuracy paradox</a>. Imagine we have 90% of data belong to the majority class, while the remaining 10% belong to the minority class. So, just by predicting all data as a majority class, the model can easily get 90% accuracy.</p>
+</div>
+<div id="handling-approach" class="section level2">
+<h2>Handling approach</h2>
+<p>The easiest approach is to collect more data, though this may not be practical in all situation. Fortunately, there are a few machine learning techniques available to tackle this problem.</p>
+<p>Here is a summary of resampling techniques available in <code>themis</code> package.</p>
+<p><img src="method-themis.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced data, though some references/blogs say otherwise.</p>
+<p>So, we are going to compare four of over-sampling techniques (upsample, SMOTE, ADASYN, and ROSE), and three of under-sampling techniques (downsample, nearmiss and tomek). The base model is a decision tree, which will be used for all the techniques. The decision trees are not going to be extensively hyperparameter tuned, for the sake of simplicity. Additionally, random forest is also going to be included in the comparison.</p>
+<p>The dataset is from <a href="https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv">here</a>. This is a summary of the dataset.</p>
+<pre class="r"><code>summary(df)</code></pre>
+<pre><code>##  admit        gre             gpa        rank   
+##  0:273   Min.   :220.0   Min.   :2.260   1: 61  
+##  1:127   1st Qu.:520.0   1st Qu.:3.130   2:151  
+##          Median :580.0   Median :3.395   3:121  
+##          Mean   :587.7   Mean   :3.390   4: 67  
+##          3rd Qu.:660.0   3rd Qu.:3.670          
+##          Max.   :800.0   Max.   :4.000</code></pre>
+<p>As we can see from the summary, variable admit has a moderate imbalanced data about 3:7 ratio.</p>
+<pre class="r"><code>ggplot(df, aes(admit)) + 
+  geom_bar() +
+  theme_bw()</code></pre>
+<p><img src="/post/handling-imbalanced-data/index.en_files/figure-html/barplot-1.png" width="672" /></p>
+<p>Below is the code for each model.</p>
+<details>
+<summary>
+Show code
+</summary>
+<pre class="r"><code># Packages
+library(tidyverse)
+library(magrittr)
+library(tidymodels)
+library(themis)
+
+# Data
+df &lt;- read.csv(&quot;https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv&quot;)
+
+# Split data
+set.seed(1234)
+df_split &lt;- initial_split(df)
+df_train &lt;- training(df_split)
+df_test &lt;- testing(df_split)
+
+# 1) Decision tree ----
+
+# Recipe
+dt_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank)
+
+df_train_rec &lt;- 
+  dt_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+  
+df_test_rec &lt;- 
+  dt_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv &lt;- vfold_cv(df_train_rec)
+
+# Tune and finalize workflow
+## Specify model
+dt_mod &lt;- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune(),
+    min_n = tune()
+  ) %&gt;% 
+  set_engine(&quot;rpart&quot;) %&gt;% 
+  set_mode(&quot;classification&quot;)
+
+## Specify workflow
+dt_wf &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune &lt;- 
+  dt_wf %&gt;% 
+  tune_grid(resamples = df_cv,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune &lt;- dt_tune %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final &lt;- 
+  dt_wf %&gt;% 
+  finalize_workflow(best_tune)
+
+# Fit on train data
+dt_train &lt;- 
+  dt_wf_final %&gt;% 
+  fit(data = df_train_rec)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train, new_data = df_test_rec)) %&gt;% 
+  rename(pred = .pred_class)
+
+# 2) Oversampling ----
+## step_upsample() ----
+
+# Recipe
+up_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_upsample(admit,
+                seed = 1234)
+
+df_train_up &lt;- 
+  up_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_up &lt;- 
+  up_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_up &lt;- vfold_cv(df_train_up)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_up &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_up &lt;- 
+  dt_wf_up %&gt;% 
+  tune_grid(resamples = df_cv_up,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_up &lt;- dt_tune_up %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_up &lt;- 
+  dt_wf_up %&gt;% 
+  finalize_workflow(best_tune_up)
+
+# Fit on train data
+dt_train_up &lt;- 
+  dt_wf_final_up %&gt;% 
+  fit(data = df_train_up)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_up, new_data = df_test_rec_up)) %&gt;% 
+  rename(pred_up = .pred_class)
+
+## step_smote() ----
+
+# Recipe
+smote_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_smote(admit, 
+             seed = 1234)
+
+df_train_smote &lt;- 
+  smote_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_smote &lt;- 
+  smote_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_smote &lt;- vfold_cv(df_train_smote)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_smote &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_smote &lt;- 
+  dt_wf_smote %&gt;% 
+  tune_grid(resamples = df_cv_smote,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_smote &lt;- dt_tune_smote %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_smote &lt;- 
+  dt_wf_smote %&gt;% 
+  finalize_workflow(best_tune_smote)
+
+# Fit on train data
+dt_train_smote &lt;- 
+  dt_wf_final_smote %&gt;% 
+  fit(data = df_train_smote)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_smote, new_data = df_test_rec_smote)) %&gt;% 
+  rename(pred_smote = .pred_class)
+
+## step_rose() ----
+
+# Recipe
+rose_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_rose(admit, 
+             seed = 1234)
+
+df_train_rose &lt;- 
+  rose_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_rose &lt;- 
+  rose_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_rose &lt;- vfold_cv(df_train_rose)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_rose &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_rose &lt;- 
+  dt_wf_rose %&gt;% 
+  tune_grid(resamples = df_cv_rose,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_rose &lt;- dt_tune_rose %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_rose &lt;- 
+  dt_wf_rose %&gt;% 
+  finalize_workflow(best_tune_rose)
+
+# Fit on train data
+dt_train_rose &lt;- 
+  dt_wf_final_rose %&gt;% 
+  fit(data = df_train_rose)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_rose, new_data = df_test_rec_rose)) %&gt;% 
+  rename(pred_rose = .pred_class)
+
+## step_adasyn() ----
+
+# Recipe
+adasyn_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_adasyn(admit, 
+            seed = 1234)
+
+df_train_adasyn &lt;- 
+  adasyn_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_adasyn &lt;- 
+  adasyn_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_adasyn &lt;- vfold_cv(df_train_adasyn)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_adasyn &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_adasyn &lt;- 
+  dt_wf_adasyn %&gt;% 
+  tune_grid(resamples = df_cv_adasyn,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_adasyn &lt;- dt_tune_adasyn %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_adasyn &lt;- 
+  dt_wf_adasyn %&gt;% 
+  finalize_workflow(best_tune_adasyn)
+
+# Fit on train data
+dt_train_adasyn &lt;- 
+  dt_wf_final_adasyn %&gt;% 
+  fit(data = df_train_adasyn)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_adasyn, new_data = df_test_rec_adasyn)) %&gt;% 
+  rename(pred_adasyn = .pred_class)
+
+# 3) Undersampling ----
+## step_downsample() ----
+
+# Recipe
+down_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_downsample(admit,
+                seed = 1234)
+
+df_train_down &lt;- 
+  down_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_down &lt;- 
+  down_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_down &lt;- vfold_cv(df_train_down)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_down &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_down &lt;- 
+  dt_wf_down %&gt;% 
+  tune_grid(resamples = df_cv_down,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_down &lt;- dt_tune_down %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_down &lt;- 
+  dt_wf_down %&gt;% 
+  finalize_workflow(best_tune_down)
+
+# Fit on train data
+dt_train_down &lt;- 
+  dt_wf_final_down %&gt;% 
+  fit(data = df_train_down)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_down, new_data = df_test_rec_down)) %&gt;% 
+  rename(pred_down = .pred_class)
+
+## step_nearmiss() ----
+
+# Recipe
+nearmiss_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_nearmiss(admit,
+                  seed = 1234)
+
+df_train_nearmiss &lt;- 
+  nearmiss_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_nearmiss &lt;- 
+  nearmiss_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_nearmiss &lt;- vfold_cv(df_train_nearmiss)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_nearmiss &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_nearmiss &lt;- 
+  dt_wf_nearmiss %&gt;% 
+  tune_grid(resamples = df_cv_nearmiss,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_nearmiss &lt;- dt_tune_nearmiss %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_nearmiss &lt;- 
+  dt_wf_nearmiss %&gt;% 
+  finalize_workflow(best_tune_nearmiss)
+
+# Fit on train data
+dt_train_nearmiss &lt;- 
+  dt_wf_final_nearmiss %&gt;% 
+  fit(data = df_train_nearmiss)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_nearmiss, new_data = df_test_rec_nearmiss)) %&gt;% 
+  rename(pred_nearmiss = .pred_class)
+
+## step_tomek() ----
+
+# Recipe
+tomek_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_tomek(admit,
+                  seed = 1234)
+
+df_train_tomek &lt;- 
+  tomek_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_tomek &lt;- 
+  tomek_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_tomek &lt;- vfold_cv(df_train_tomek)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_tomek &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_tomek &lt;- 
+  dt_wf_tomek %&gt;% 
+  tune_grid(resamples = df_cv_tomek,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_tomek &lt;- dt_tune_tomek %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_tomek &lt;- 
+  dt_wf_tomek %&gt;% 
+  finalize_workflow(best_tune_tomek)
+
+# Fit on train data
+dt_train_tomek &lt;- 
+  dt_wf_final_tomek %&gt;% 
+  fit(data = df_train_tomek)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_tomek, new_data = df_test_rec_tomek)) %&gt;% 
+  rename(pred_tomek = .pred_class)
+
+# 4) Ensemble approach: random forest ----
+
+## 10-folds CV
+set.seed(1234)
+df_cv &lt;- vfold_cv(df_train_rec)
+
+# Tune and finalize workflow
+## Specify model
+rf_mod &lt;- rand_forest(
+ mtry = tune(),
+ trees = tune(),
+ min_n = tune()
+ ) %&gt;% 
+  set_engine(&quot;ranger&quot;) %&gt;% 
+  set_mode(&quot;classification&quot;)
+
+## Specify workflow
+rf_wf &lt;- 
+  workflow() %&gt;% 
+  add_model(rf_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+rf_tune &lt;- 
+  rf_wf %&gt;% 
+  tune_grid(resamples = df_cv,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune &lt;- rf_tune %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+rf_wf_final &lt;- 
+  rf_wf %&gt;% 
+  finalize_workflow(best_tune)
+
+# Fit on train data
+rf_train &lt;- 
+  rf_wf_final %&gt;% 
+  fit(data = df_train_rec)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(rf_train, new_data = df_test_rec)) %&gt;% 
+  rename(pred_rf = .pred_class)</code></pre>
+</details>
+<p>Now, let’s get the accuracy, sensitivity, specificity, and <a href="https://en.wikipedia.org/wiki/Matthews_correlation_coefficient#Advantages_of_MCC_over_accuracy_and_F1_score">Mathews Correlation Coefficient (MCC)</a> for each model.</p>
+<pre class="r"><code># Get all measurements
+df_test$admit %&lt;&gt;% as_factor()
+pred_col &lt;- colnames(df_test)[5:13]
+result &lt;- vector(&quot;list&quot;, 0)
+sensi &lt;- vector(&quot;list&quot;, 0)
+specif &lt;- vector(&quot;list&quot;, 0)
+mathew &lt;- vector(&quot;list&quot;, 0)
+
+for (i in seq_along(pred_col)) {
+  # accuracy
+  result[[i]] &lt;-
+    df_test %&gt;% 
+    accuracy(admit, df_test[,pred_col[i]])
+  
+  # sensitivity
+  sensi[[i]] &lt;-
+    df_test %&gt;% 
+    sensitivity(admit, df_test[,pred_col[i]])
+  
+  # specificity
+  specif[[i]] &lt;-
+    df_test %&gt;% 
+    specificity(admit, df_test[,pred_col[i]])
+  
+  # MCC
+  mathew[[i]] &lt;-
+    df_test %&gt;% 
+    mcc(admit, df_test[,pred_col[i]])
+}
+
+## Turn into dataframe
+result  %&lt;&gt;%  
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;)) %&gt;% 
+  rename(model = name, 
+         accuracy = .estimate) %&gt;% 
+  select(model, accuracy) %&gt;% 
+  mutate(model = factor(model,labels = 
+                          c(
+                            &quot;1&quot; = &quot;base&quot;,
+                            &quot;2&quot; = &quot;upsample&quot;,
+                            &quot;3&quot; = &quot;smote&quot;,
+                            &quot;4&quot; = &quot;rose&quot;,
+                            &quot;5&quot; = &quot;adasyn&quot;,
+                            &quot;6&quot; = &quot;downsample&quot;,
+                            &quot;7&quot; = &quot;nearmiss&quot;,
+                            &quot;8&quot; = &quot;tomek&quot;,
+                            &quot;9&quot; = &quot;random_forest&quot;
+                            )
+                        ))
+
+sensi  %&lt;&gt;%  
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;))
+
+specif %&lt;&gt;% 
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;))
+
+mathew %&lt;&gt;% 
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;))
+
+result %&lt;&gt;% 
+  bind_cols(sensitive = sensi$.estimate, specific = specif$.estimate, mathew = mathew$.estimate)
+
+# Plot the result
+result %&gt;% 
+  pivot_longer(cols = 2:5, names_to = &quot;measure&quot;) %&gt;% 
+  ggplot(aes(x = model, y = value, fill = measure)) +
+  geom_bar(position = &quot;dodge&quot;, stat = &quot;identity&quot;) +
+  theme_bw() +
+  coord_flip() +
+  geom_text(aes(label = paste0(round(value*100, digits = 1), &quot;%&quot;)), 
+            position = position_dodge(0.9), vjust = 0.3, size = 3, hjust = -0.1) +
+  labs(title = &quot;Comparison of unbalanced data techniques&quot;, 
+       x = &quot;Techniques&quot;, 
+       y = &quot;Performance&quot;) +
+  scale_fill_discrete(name = &quot;Metrics:&quot;,
+                      labels = c(&quot;Accuracy&quot;, &quot;MCC&quot;, &quot;Sensitivity&quot;, &quot;Specificity&quot;))</code></pre>
+<p><img src="/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure-1.png" width="672" /></p>
+<p>We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).</p>
+<p>A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.</p>
+<p>References:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://themis.tidymodels.org/reference/index.html" class="uri">https://themis.tidymodels.org/reference/index.html</a><br />
+</li>
+<li><a href="https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/" class="uri">https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/</a><br />
+</li>
+<li><a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7" class="uri">https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7</a></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/handling-imbalanced-data/&amp;text=Handling%20imbalanced%20data" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/handling-imbalanced-data/&amp;t=Handling%20imbalanced%20data" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Handling%20imbalanced%20data&amp;body=/post/handling-imbalanced-data/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/handling-imbalanced-data/&amp;title=Handling%20imbalanced%20data" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Handling%20imbalanced%20data%20/post/handling-imbalanced-data/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/handling-imbalanced-data/&amp;title=Handling%20imbalanced%20data" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="/"><img class="avatar mr-3 avatar-circle" src="/author/tengku-muhammad-hanis/avatar_hu2282885c81c6fc6803200ba05db8fa19_124392_270x270_fill_q90_lanczos_center.jpg" alt="Tengku Muhammad Hanis"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Tengku Muhammad Hanis</a></h5>
+      <h6 class="card-subtitle">PhD student (Public Health Epidemiology)</h6>
+      <p class="card-text">My research interests include medical statistics and machine learning application.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/tengkuhanismokhtar@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=VV2bHQcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/tengku-hanis" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/exponentially-weighted-average-in-deep-learning/">Exponentially Weighted Average in Deep Learning</a></li>
+      
+      <li><a href="/post/loop-vs-apply-in-r/">Loop vs apply in R</a></li>
+      
+      <li><a href="/post/2021-05-04-base-r-vs-tidyverse/">Base R vs tidyverse</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    ©Tengku Hanis 2020-2021 Made with <a href="https://github.com/rstudio/blogdown">blogdown</a>
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.a30e17c6197f21f7f966f9a6cd022a55.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

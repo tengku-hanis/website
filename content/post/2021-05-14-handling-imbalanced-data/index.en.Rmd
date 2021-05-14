@@ -45,6 +45,7 @@ Here is a summary of resampling techniques available in `themis` package.
 ```{r, echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics('method-themis.png')
 ```
+
 Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced data, though some references/blogs say otherwise.
 
 So, we are going to compare four of over-sampling techniques (upsample, SMOTE, ADASYN, and ROSE), and three of under-sampling techniques (downsample, nearmiss and tomek). The base model is a decision tree, which will be used for all the techniques. The decision trees are not going to be extensively hyperparameter tuned, for the sake of simplicity. Additionally, random forest is also going to be included in the comparison.
@@ -64,7 +65,7 @@ df %<>% mutate_at(c("admit", "rank"), as_factor)
 ```
 
 ```{r summary}
-skimr::skim(df)
+summary(df)
 ```
 
 As we can see from the summary, variable admit has a moderate imbalanced data about 3:7 ratio.
@@ -77,7 +78,7 @@ ggplot(df, aes(admit)) +
 Below is the code for each model.
 
 <details>
-  <summary>Toggle answer</summary>
+  <summary>Show code</summary>
 ```{r code_model, warning=FALSE, message=FALSE}
 # Packages
 library(tidyverse)
@@ -700,7 +701,7 @@ result %>%
   theme_bw() +
   coord_flip() +
   geom_text(aes(label = paste0(round(value*100, digits = 1), "%")), 
-            position = position_dodge(0.9), vjust = 0.3, size = 4, hjust = -0.1) +
+            position = position_dodge(0.9), vjust = 0.3, size = 3, hjust = -0.1) +
   labs(title = "Comparison of unbalanced data techniques", 
        x = "Techniques", 
        y = "Performance") +
@@ -709,7 +710,7 @@ result %>%
   
 ```
 
-We can see from the above plot, the base model (decision tree) clearly has low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).  
+We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).  
 
 A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.
 

@@ -20,28 +20,46 @@
     <loc>/</loc>
     <lastmod>2030-06-01T13:00:00+00:00</lastmod>
   </url><url>
+    <loc>/categories/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/post/handling-imbalanced-data/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/tag/machine-learning/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/category/machine-learning/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/category/r/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+  </url><url>
+    <loc>/tag/deep-learning/</loc>
+    <lastmod>2021-05-09T14:33:51+08:00</lastmod>
+  </url><url>
+    <loc>/category/deep-learning/</loc>
+    <lastmod>2021-05-09T14:33:51+08:00</lastmod>
+  </url><url>
+    <loc>/post/exponentially-weighted-average-in-deep-learning/</loc>
+    <lastmod>2021-05-09T14:33:51+08:00</lastmod>
+  </url><url>
     <loc>/tag/base-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
     <loc>/post/2021-05-04-base-r-vs-tidyverse/</loc>
     <lastmod>2021-05-04T16:48:49+08:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
-    <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
     <loc>/tag/comparison/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
     <loc>/post/loop-vs-apply-in-r/</loc>
-    <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
-    <loc>/category/r/</loc>
-    <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
     <loc>/tag/tidyverse/</loc>
@@ -89,16 +107,10 @@
     <loc>/slides/example/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/tag/deep-learning/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/tag/demo/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/project/external-project/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/project/internal-project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/project/</loc>
