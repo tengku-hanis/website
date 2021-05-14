@@ -36,7 +36,7 @@ projects: []
 <div id="the-problem" class="section level2">
 <h2>The problem</h2>
 <p>What’s the problem with the imbalanced data?<br />
-Firstly, a predictive model of an imbalanced is bias towards the majority class. The minority class becomes harder to predict as there a few data from this class. So, the detection rate for a minority class will be very low.
+Firstly, a predictive model of an imbalanced data is bias towards the majority class. The minority class becomes harder to predict as there are few data from this class. So, the detection rate for a minority class will be very low.
 Secondly, accuracy is not a good measure in this case. We may get a good accuracy,but in reality the accuracy does not reflect the unequal distribution of the data. This is known as an <a href="https://en.wikipedia.org/wiki/Accuracy_paradox">accuracy paradox</a>. Imagine we have 90% of data belong to the majority class, while the remaining 10% belong to the minority class. So, just by predicting all data as a majority class, the model can easily get 90% accuracy.</p>
 </div>
 <div id="handling-approach" class="section level2">
@@ -685,16 +685,17 @@ result %&gt;%
   theme_bw() +
   coord_flip() +
   geom_text(aes(label = paste0(round(value*100, digits = 1), &quot;%&quot;)), 
-            position = position_dodge(0.9), vjust = 0.3, size = 2, hjust = -0.1) +
+            position = position_dodge(0.9), vjust = 0.3, size = 2.7, hjust = -0.1) +
   labs(title = &quot;Comparison of unbalanced data techniques&quot;, 
        x = &quot;Techniques&quot;, 
        y = &quot;Performance&quot;) +
   scale_fill_discrete(name = &quot;Metrics:&quot;,
-                      labels = c(&quot;Accuracy&quot;, &quot;MCC&quot;, &quot;Sensitivity&quot;, &quot;Specificity&quot;))</code></pre>
+                      labels = c(&quot;Accuracy&quot;, &quot;MCC&quot;, &quot;Sensitivity&quot;, &quot;Specificity&quot;)) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
 </details>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/summary-measure2-1.png" width="672" /></p>
 <p>We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).</p>
-<p>A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.</p>
+<p>A more balanced model probably downsample approach based on MCC, specificity, and sensitivity. However, this does not mean that downsample technique is the best as I believes each technique behaves differently from one data to another.</p>
 <p>References:</p>
 <ol style="list-style-type: decimal">
 <li><a href="https://themis.tidymodels.org/reference/index.html" class="uri">https://themis.tidymodels.org/reference/index.html</a><br />
