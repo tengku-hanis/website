@@ -1,0 +1,798 @@
+---
+title: Handling imbalanced data
+author: tengku-hanis
+date: '2021-05-14'
+slug: handling-imbalanced-data
+categories:
+  - R
+  - Machine Learning
+tags:
+  - Machine Learning
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-05-14T09:29:34+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Imbalance dataset happens when there is unequal distribution of data within a categorical outcome variable. Imbalance dataset occurs due to several reasons such as biased sampling method and measurement errors. However, the imbalance may also be the inherent characteristic of the data. For example, a rare disease predictive model, in this case, the imbalance is expected.</p>
+<p>Generally, there are two types of imbalanced problem:</p>
+<ul>
+<li>Slight imblance: the imbalance is small, like 4:6</li>
+<li>Severe imbalance: the imbalance is large, like 1:100 or more</li>
+</ul>
+<p>In slight imbalanced cases, usually it is not a concern, while severe imbalanced cases require a more specialised method to to build a predictive model.</p>
+</div>
+<div id="the-problem" class="section level2">
+<h2>The problem</h2>
+<p>What’s the problem with the imbalanced dataset?<br />
+Firstly, a predictive model of an imbalanced is bias towards the majority class. The minority class becomes harder to predict as there a few data from this class. So, the detection rate for a minority class will be very low.
+Secondly, accuracy is not a good measure in this case. We may get a good accuracy,but in reality the accuracy does not reflect the unequal distribution of the data. This is known as an <a href="https://en.wikipedia.org/wiki/Accuracy_paradox">accuracy paradox</a>. Imagine we have 90% of data belong to the majority class, while the remaining 10% belong to the minority class. So, just by predicting all data as a majority class, the model can easily get 90% accuracy.</p>
+</div>
+<div id="handling-approach" class="section level2">
+<h2>Handling approach</h2>
+<p>The easiest approach is to collect more data, though this may not be practical in all situation. Fortunately, there are a few machine learning techniques available to tackle this problem.</p>
+<p>Here is a summary of resampling techniques available in <code>themis</code> package.</p>
+<p><img src="method-themis.png" width="70%" style="display: block; margin: auto;" />
+Over-sampling approach is preferred when the dataset is small. The under-sampling approach can be used when the dataset is large, though this approach may lead to loss of information. Additionally, ensemble technique such as random forest is said to be able to model the imbalanced dataset, though some references/blogs say otherwise.</p>
+<p>So, we are going to compare four of over-sampling techniques (upsample, SMOTE, ADASYN, and ROSE), and three of under-sampling techniques (downsample, nearmiss and tomek). The base model is a decision tree, which will be used for all the techniques. The decision trees are not going to be extensively hyperparameter tuned, for the sake of simplicity. Additionally, random forest is also going to be included in the comparison.</p>
+<p>The dataset is from <a href="https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv">here</a>. This a summary of the dataset.</p>
+<pre class="r fold-show"><code>skimr::skim(df)</code></pre>
+<table>
+<caption><span id="tab:summary">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">df</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">400</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">factor</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">2</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">ordered</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">admit</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">0: 273, 1: 127</td>
+</tr>
+<tr class="even">
+<td align="left">rank</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">4</td>
+<td align="left">2: 151, 3: 121, 4: 67, 1: 61</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">gre</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">587.70</td>
+<td align="right">115.52</td>
+<td align="right">220.00</td>
+<td align="right">520.00</td>
+<td align="right">580.0</td>
+<td align="right">660.00</td>
+<td align="right">800</td>
+<td align="left">▁▂▇▇▅</td>
+</tr>
+<tr class="even">
+<td align="left">gpa</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3.39</td>
+<td align="right">0.38</td>
+<td align="right">2.26</td>
+<td align="right">3.13</td>
+<td align="right">3.4</td>
+<td align="right">3.67</td>
+<td align="right">4</td>
+<td align="left">▁▃▆▇▆</td>
+</tr>
+</tbody>
+</table>
+<p>Below is the code for each model.</p>
+<pre class="r"><code># Packages
+library(tidyverse)
+library(magrittr)
+library(tidymodels)
+library(themis)
+
+# Data
+df &lt;- read.csv(&quot;https://raw.githubusercontent.com/finnstats/finnstats/main/binary.csv&quot;)
+
+# Split data
+set.seed(1234)
+df_split &lt;- initial_split(df)
+df_train &lt;- training(df_split)
+df_test &lt;- testing(df_split)
+
+# 1) Decision tree ----
+
+# Recipe
+dt_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank)
+
+df_train_rec &lt;- 
+  dt_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+  
+df_test_rec &lt;- 
+  dt_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv &lt;- vfold_cv(df_train_rec)
+
+# Tune and finalize workflow
+## Specify model
+dt_mod &lt;- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune(),
+    min_n = tune()
+  ) %&gt;% 
+  set_engine(&quot;rpart&quot;) %&gt;% 
+  set_mode(&quot;classification&quot;)
+
+## Specify workflow
+dt_wf &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune &lt;- 
+  dt_wf %&gt;% 
+  tune_grid(resamples = df_cv,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune &lt;- dt_tune %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final &lt;- 
+  dt_wf %&gt;% 
+  finalize_workflow(best_tune)
+
+# Fit on train data
+dt_train &lt;- 
+  dt_wf_final %&gt;% 
+  fit(data = df_train_rec)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train, new_data = df_test_rec)) %&gt;% 
+  rename(pred = .pred_class)
+
+# 2) Oversampling ----
+## step_upsample() ----
+
+# Recipe
+up_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_upsample(admit,
+                seed = 1234)
+
+df_train_up &lt;- 
+  up_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_up &lt;- 
+  up_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_up &lt;- vfold_cv(df_train_up)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_up &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_up &lt;- 
+  dt_wf_up %&gt;% 
+  tune_grid(resamples = df_cv_up,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_up &lt;- dt_tune_up %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_up &lt;- 
+  dt_wf_up %&gt;% 
+  finalize_workflow(best_tune_up)
+
+# Fit on train data
+dt_train_up &lt;- 
+  dt_wf_final_up %&gt;% 
+  fit(data = df_train_up)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_up, new_data = df_test_rec_up)) %&gt;% 
+  rename(pred_up = .pred_class)
+
+## step_smote() ----
+
+# Recipe
+smote_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_smote(admit, 
+             seed = 1234)
+
+df_train_smote &lt;- 
+  smote_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_smote &lt;- 
+  smote_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_smote &lt;- vfold_cv(df_train_smote)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_smote &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_smote &lt;- 
+  dt_wf_smote %&gt;% 
+  tune_grid(resamples = df_cv_smote,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_smote &lt;- dt_tune_smote %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_smote &lt;- 
+  dt_wf_smote %&gt;% 
+  finalize_workflow(best_tune_smote)
+
+# Fit on train data
+dt_train_smote &lt;- 
+  dt_wf_final_smote %&gt;% 
+  fit(data = df_train_smote)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_smote, new_data = df_test_rec_smote)) %&gt;% 
+  rename(pred_smote = .pred_class)
+
+## step_rose() ----
+
+# Recipe
+rose_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_rose(admit, 
+             seed = 1234)
+
+df_train_rose &lt;- 
+  rose_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_rose &lt;- 
+  rose_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_rose &lt;- vfold_cv(df_train_rose)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_rose &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_rose &lt;- 
+  dt_wf_rose %&gt;% 
+  tune_grid(resamples = df_cv_rose,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_rose &lt;- dt_tune_rose %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_rose &lt;- 
+  dt_wf_rose %&gt;% 
+  finalize_workflow(best_tune_rose)
+
+# Fit on train data
+dt_train_rose &lt;- 
+  dt_wf_final_rose %&gt;% 
+  fit(data = df_train_rose)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_rose, new_data = df_test_rec_rose)) %&gt;% 
+  rename(pred_rose = .pred_class)
+
+## step_adasyn() ----
+
+# Recipe
+adasyn_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_adasyn(admit, 
+            seed = 1234)
+
+df_train_adasyn &lt;- 
+  adasyn_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_adasyn &lt;- 
+  adasyn_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_adasyn &lt;- vfold_cv(df_train_adasyn)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_adasyn &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_adasyn &lt;- 
+  dt_wf_adasyn %&gt;% 
+  tune_grid(resamples = df_cv_adasyn,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_adasyn &lt;- dt_tune_adasyn %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_adasyn &lt;- 
+  dt_wf_adasyn %&gt;% 
+  finalize_workflow(best_tune_adasyn)
+
+# Fit on train data
+dt_train_adasyn &lt;- 
+  dt_wf_final_adasyn %&gt;% 
+  fit(data = df_train_adasyn)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_adasyn, new_data = df_test_rec_adasyn)) %&gt;% 
+  rename(pred_adasyn = .pred_class)
+
+# 3) Undersampling ----
+## step_downsample() ----
+
+# Recipe
+down_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_downsample(admit,
+                seed = 1234)
+
+df_train_down &lt;- 
+  down_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_down &lt;- 
+  down_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_down &lt;- vfold_cv(df_train_down)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_down &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_down &lt;- 
+  dt_wf_down %&gt;% 
+  tune_grid(resamples = df_cv_down,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_down &lt;- dt_tune_down %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_down &lt;- 
+  dt_wf_down %&gt;% 
+  finalize_workflow(best_tune_down)
+
+# Fit on train data
+dt_train_down &lt;- 
+  dt_wf_final_down %&gt;% 
+  fit(data = df_train_down)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_down, new_data = df_test_rec_down)) %&gt;% 
+  rename(pred_down = .pred_class)
+
+## step_nearmiss() ----
+
+# Recipe
+nearmiss_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_nearmiss(admit,
+                  seed = 1234)
+
+df_train_nearmiss &lt;- 
+  nearmiss_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_nearmiss &lt;- 
+  nearmiss_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_nearmiss &lt;- vfold_cv(df_train_nearmiss)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_nearmiss &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_nearmiss &lt;- 
+  dt_wf_nearmiss %&gt;% 
+  tune_grid(resamples = df_cv_nearmiss,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_nearmiss &lt;- dt_tune_nearmiss %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_nearmiss &lt;- 
+  dt_wf_nearmiss %&gt;% 
+  finalize_workflow(best_tune_nearmiss)
+
+# Fit on train data
+dt_train_nearmiss &lt;- 
+  dt_wf_final_nearmiss %&gt;% 
+  fit(data = df_train_nearmiss)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_nearmiss, new_data = df_test_rec_nearmiss)) %&gt;% 
+  rename(pred_nearmiss = .pred_class)
+
+## step_tomek() ----
+
+# Recipe
+tomek_rec &lt;- 
+  recipe(admit ~., data = df_train) %&gt;% 
+  step_mutate_at(c(&quot;admit&quot;, &quot;rank&quot;), fn = as_factor) %&gt;% 
+  step_dummy(rank) %&gt;% 
+  step_tomek(admit,
+                  seed = 1234)
+
+df_train_tomek &lt;- 
+  tomek_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = NULL)
+
+df_test_rec_tomek &lt;- 
+  tomek_rec %&gt;% 
+  prep() %&gt;% 
+  bake(new_data = df_test)
+
+## 10-folds CV
+set.seed(1234)
+df_cv_tomek &lt;- vfold_cv(df_train_tomek)
+
+# Tune and finalize workflow
+## Specify model
+# same as before
+
+## Specify workflow
+dt_wf_tomek &lt;- 
+  workflow() %&gt;% 
+  add_model(dt_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+dt_tune_tomek &lt;- 
+  dt_wf_tomek %&gt;% 
+  tune_grid(resamples = df_cv_tomek,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune_tomek &lt;- dt_tune_tomek %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+dt_wf_final_tomek &lt;- 
+  dt_wf_tomek %&gt;% 
+  finalize_workflow(best_tune_tomek)
+
+# Fit on train data
+dt_train_tomek &lt;- 
+  dt_wf_final_tomek %&gt;% 
+  fit(data = df_train_tomek)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(dt_train_tomek, new_data = df_test_rec_tomek)) %&gt;% 
+  rename(pred_tomek = .pred_class)
+
+# 4) Ensemble approach: random forest ----
+
+## 10-folds CV
+set.seed(1234)
+df_cv &lt;- vfold_cv(df_train_rec)
+
+# Tune and finalize workflow
+## Specify model
+rf_mod &lt;- rand_forest(
+ mtry = tune(),
+ trees = tune(),
+ min_n = tune()
+ ) %&gt;% 
+  set_engine(&quot;ranger&quot;) %&gt;% 
+  set_mode(&quot;classification&quot;)
+
+## Specify workflow
+rf_wf &lt;- 
+  workflow() %&gt;% 
+  add_model(rf_mod) %&gt;% 
+  add_formula(admit ~.)
+
+## Tune model
+set.seed(1234)
+rf_tune &lt;- 
+  rf_wf %&gt;% 
+  tune_grid(resamples = df_cv,
+            metrics = metric_set(accuracy))
+
+## Select best model
+best_tune &lt;- rf_tune %&gt;% select_best(&quot;accuracy&quot;)
+
+## Finalize workflow
+rf_wf_final &lt;- 
+  rf_wf %&gt;% 
+  finalize_workflow(best_tune)
+
+# Fit on train data
+rf_train &lt;- 
+  rf_wf_final %&gt;% 
+  fit(data = df_train_rec)
+
+# Fit on test data and get accuracy
+df_test  %&lt;&gt;%  
+  bind_cols(predict(rf_train, new_data = df_test_rec)) %&gt;% 
+  rename(pred_rf = .pred_class)</code></pre>
+<p>Now, let’s get the accuracy, sensitivity, specificity, and <a href="https://en.wikipedia.org/wiki/Matthews_correlation_coefficient#Advantages_of_MCC_over_accuracy_and_F1_score">Mathews Correlation Coefficient (MCC)</a> for each model.</p>
+<pre class="r fold-show"><code># Get all measurements
+df_test$admit %&lt;&gt;% as_factor()
+pred_col &lt;- colnames(df_test)[5:13]
+result &lt;- vector(&quot;list&quot;, 0)
+sensi &lt;- vector(&quot;list&quot;, 0)
+specif &lt;- vector(&quot;list&quot;, 0)
+mathew &lt;- vector(&quot;list&quot;, 0)
+
+for (i in seq_along(pred_col)) {
+  # accuracy
+  result[[i]] &lt;-
+    df_test %&gt;% 
+    accuracy(admit, df_test[,pred_col[i]])
+  
+  # sensitivity
+  sensi[[i]] &lt;-
+    df_test %&gt;% 
+    sensitivity(admit, df_test[,pred_col[i]])
+  
+  # specificity
+  specif[[i]] &lt;-
+    df_test %&gt;% 
+    specificity(admit, df_test[,pred_col[i]])
+  
+  # MCC
+  mathew[[i]] &lt;-
+    df_test %&gt;% 
+    mcc(admit, df_test[,pred_col[i]])
+}
+
+## Turn into dataframe
+result  %&lt;&gt;%  
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;)) %&gt;% 
+  rename(model = name, 
+         accuracy = .estimate) %&gt;% 
+  select(model, accuracy) %&gt;% 
+  mutate(model = factor(model,labels = 
+                          c(
+                            &quot;1&quot; = &quot;base&quot;,
+                            &quot;2&quot; = &quot;upsample&quot;,
+                            &quot;3&quot; = &quot;smote&quot;,
+                            &quot;4&quot; = &quot;rose&quot;,
+                            &quot;5&quot; = &quot;adasyn&quot;,
+                            &quot;6&quot; = &quot;downsample&quot;,
+                            &quot;7&quot; = &quot;nearmiss&quot;,
+                            &quot;8&quot; = &quot;tomek&quot;,
+                            &quot;9&quot; = &quot;random_forest&quot;
+                            )
+                        ))
+
+sensi  %&lt;&gt;%  
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;))
+
+specif %&lt;&gt;% 
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;))
+
+mathew %&lt;&gt;% 
+  enframe() %&gt;% 
+  unnest(cols = c(&quot;value&quot;))
+
+result %&lt;&gt;% 
+  bind_cols(sensitive = sensi$.estimate, specific = specif$.estimate, mathew = mathew$.estimate)
+
+# Plot the result
+result %&gt;% 
+  pivot_longer(cols = 2:5, names_to = &quot;measure&quot;) %&gt;% 
+  ggplot(aes(x = model, y = value, fill = measure)) +
+  geom_bar(position = &quot;dodge&quot;, stat = &quot;identity&quot;) +
+  theme_bw() +
+  coord_flip() +
+  geom_text(aes(label = paste0(round(value*100, digits = 1), &quot;%&quot;)), 
+            position = position_dodge(0.9), vjust = 0.3, size = 4, hjust = -0.1) +
+  labs(title = &quot;Comparison of unbalanced data techniques&quot;, 
+       x = &quot;Techniques&quot;, 
+       y = &quot;Performance&quot;) +
+  scale_fill_discrete(name = &quot;Metrics:&quot;,
+                      labels = c(&quot;Accuracy&quot;, &quot;MCC&quot;, &quot;Sensitivity&quot;, &quot;Specificity&quot;))</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/summary-measure-1.png" width="672" /></p>
+<p>We can see from the above plot, the base model (decision tree) clearly has low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).</p>
+<p>A more balanced model probably ADASYN or tomek approaches based on MCC, specificity, and sensitivity.</p>
+<p>References:<br />
+1. <a href="https://themis.tidymodels.org/reference/index.html#section-datasets" class="uri">https://themis.tidymodels.org/reference/index.html#section-datasets</a>
+2. <a href="https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/" class="uri">https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/</a>
+3. <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7" class="uri">https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6413-7</a></p>
+</div>
