@@ -1,0 +1,217 @@
+---
+title: A summary of forcats package
+author: tengku-hanis
+date: '2021-05-18'
+slug: a-summary-of-forcats-package
+categories:
+  - R
+tags:
+  - tidyverse
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-05-18T20:15:26+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p><img src="forcats_logo.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>I just watched a <a href="https://youtu.be/qWYgNjnHNWI">youtube video by Andrew Couch</a> about his commonly used function in readr, stringr, and forcats packages. Although, I have used forcats package before, I realised that I have not fully utilised all of its function.</p>
+<p>So, in this post, I have summarised main function of forcats that I find useful in my day-to-day R coding. Basically, more like a note to myself.</p>
+<div id="main-functions" class="section level2">
+<h2>Main functions</h2>
+<p>We will use <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars">mtcars data</a> to demonstrate each function. forcats is part of tiyverse packages. So, it will loaded, once we loaaded tidyverse packages.</p>
+<pre class="r"><code>library(tidyverse)
+glimpse(mtcars)</code></pre>
+<pre><code>## Rows: 32
+## Columns: 11
+## $ mpg  &lt;dbl&gt; 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8,~
+## $ cyl  &lt;dbl&gt; 6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8,~
+## $ disp &lt;dbl&gt; 160.0, 160.0, 108.0, 258.0, 360.0, 225.0, 360.0, 146.7, 140.8, 16~
+## $ hp   &lt;dbl&gt; 110, 110, 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180~
+## $ drat &lt;dbl&gt; 3.90, 3.90, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92,~
+## $ wt   &lt;dbl&gt; 2.620, 2.875, 2.320, 3.215, 3.440, 3.460, 3.570, 3.190, 3.150, 3.~
+## $ qsec &lt;dbl&gt; 16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 20.00, 22.90, 18~
+## $ vs   &lt;dbl&gt; 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,~
+## $ am   &lt;dbl&gt; 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0,~
+## $ gear &lt;dbl&gt; 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3,~
+## $ carb &lt;dbl&gt; 4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2,~</code></pre>
+<p>There are 9 forcats functions that I think very useful.</p>
+<ol style="list-style-type: decimal">
+<li><code>factor()</code></li>
+</ol>
+<p><code>factor()</code> changes variable type into a factor or categorical type</p>
+<pre class="r"><code>mtcars$carb &lt;- factor(mtcars$carb)
+glimpse(mtcars)</code></pre>
+<pre><code>## Rows: 32
+## Columns: 11
+## $ mpg  &lt;dbl&gt; 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8,~
+## $ cyl  &lt;dbl&gt; 6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8,~
+## $ disp &lt;dbl&gt; 160.0, 160.0, 108.0, 258.0, 360.0, 225.0, 360.0, 146.7, 140.8, 16~
+## $ hp   &lt;dbl&gt; 110, 110, 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180~
+## $ drat &lt;dbl&gt; 3.90, 3.90, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92,~
+## $ wt   &lt;dbl&gt; 2.620, 2.875, 2.320, 3.215, 3.440, 3.460, 3.570, 3.190, 3.150, 3.~
+## $ qsec &lt;dbl&gt; 16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 20.00, 22.90, 18~
+## $ vs   &lt;dbl&gt; 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0,~
+## $ am   &lt;dbl&gt; 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0,~
+## $ gear &lt;dbl&gt; 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3,~
+## $ carb &lt;fct&gt; 4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2,~</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><code>fct_inorder()</code></li>
+</ol>
+<p>This function sorts factor levels based on the order of appearance in the dataset.</p>
+<pre class="r"><code>levels(mtcars$carb) # original levels</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
+<pre class="r"><code>fct_inorder(mtcars$carb) # levels based on the order of appearance</code></pre>
+<pre><code>##  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
+## Levels: 4 1 2 3 6 8</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><code>fct_infreq()</code></li>
+</ol>
+<p>This function sorts factor levels based on the frequency of values.</p>
+<pre class="r"><code>fct_count(mtcars$carb) # this is forcats function as well, count factor level</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   f         n
+##   &lt;fct&gt; &lt;int&gt;
+## 1 1         7
+## 2 2        10
+## 3 3         3
+## 4 4        10
+## 5 6         1
+## 6 8         1</code></pre>
+<pre class="r"><code>levels(mtcars$carb) # original levels</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
+<pre class="r"><code>fct_infreq(mtcars$carb) # levels based on the frequency values</code></pre>
+<pre><code>##  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
+## Levels: 2 4 1 3 6 8</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><code>fct_relevel()</code></li>
+</ol>
+<p>This function can be used to change the order manually.</p>
+<pre class="r"><code>levels(mtcars$carb) # original levels</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
+<pre class="r"><code>fct_relevel(mtcars$carb, c(&quot;8&quot;, &quot;6&quot;, &quot;4&quot;, &quot;3&quot;, &quot;2&quot;, &quot;1&quot;)) # manually changed new levels</code></pre>
+<pre><code>##  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
+## Levels: 8 6 4 3 2 1</code></pre>
+<p><code>fct_relevel()</code> can also be used to change one factor level only.</p>
+<pre class="r"><code>levels(mtcars$carb) # original levels</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
+<pre class="r"><code>fct_relevel(mtcars$carb, &quot;8&quot;, after = 2) # change level 8 to the third place</code></pre>
+<pre><code>##  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
+## Levels: 1 2 8 3 4 6</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><code>fct_reorder()</code></li>
+</ol>
+<p>This function changes the order based on another variable. Let’s change variable carb’s levels based on value of variable disp.</p>
+<pre class="r"><code>levels(mtcars$carb) # original levels</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
+<pre class="r"><code>fct_reorder(mtcars$carb, mtcars$disp, .fun = sum, .desc = TRUE) # new level based on disp value</code></pre>
+<pre><code>##  [1] 4 4 1 1 2 1 4 2 2 4 4 3 3 3 4 4 4 1 2 1 1 2 2 4 2 1 2 2 4 6 8 2
+## Levels: 4 2 1 3 8 6</code></pre>
+<pre class="r"><code>mtcars %&gt;% 
+  group_by(carb) %&gt;% 
+  summarise(sum_disp = sum(disp)) %&gt;% 
+  arrange(desc(sum_disp)) # this is basically what we do with fct_reorder() above</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   carb  sum_disp
+##   &lt;fct&gt;    &lt;dbl&gt;
+## 1 4        3088.
+## 2 2        2082.
+## 3 1         940.
+## 4 3         827.
+## 5 8         301 
+## 6 6         145</code></pre>
+<p>Additionally, <code>fct_reorder()</code> can be used with plotting as well.</p>
+<pre class="r"><code># Original plot
+ggplot(mtcars, aes(x = carb, y = disp)) +
+  geom_col()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code># Plot with changed levels
+mtcars %&gt;% 
+  mutate(carb = fct_reorder(carb, disp, .fun = sum, .desc = TRUE)) %&gt;% 
+  ggplot(aes(x = carb, y = disp)) +
+  geom_col()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li><code>fct_lump()</code></li>
+</ol>
+<p>This function lumps factor levels into other factors. There are 5 variants of this function:</p>
+<ul>
+<li><code>fct_lump()</code></li>
+<li><code>fct_lump_min()</code></li>
+<li><code>fct_lump_n()</code></li>
+<li><code>fct_lump_lowfreq()</code></li>
+</ul>
+<p>The remaining one variant is <code>fct_lump_prop()</code>. It is not in the example below as I do not find it useful at least for my current R coding routine.</p>
+<p><code>fct_lump()</code> automatically lump small frequency factor group into one group.</p>
+<pre class="r"><code>fct_count(mtcars$carb) # this is forcats function as well, count factor level</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   f         n
+##   &lt;fct&gt; &lt;int&gt;
+## 1 1         7
+## 2 2        10
+## 3 3         3
+## 4 4        10
+## 5 6         1
+## 6 8         1</code></pre>
+<pre class="r"><code>fct_lump(mtcars$carb) %&gt;% fct_count() </code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   f         n
+##   &lt;fct&gt; &lt;int&gt;
+## 1 1         7
+## 2 2        10
+## 3 4        10
+## 4 Other     5</code></pre>
+<p><code>fct_lump_min()</code> lump factor group into one group based on the given value.</p>
+<pre class="r"><code>table(fct_lump_min(mtcars$carb, min = 2)) # group 6 and 8 lump into one group</code></pre>
+<pre><code>## 
+##     1     2     3     4 Other 
+##     7    10     3    10     2</code></pre>
+<p><code>fct_lump_n()</code> lump all level except for the <em>n</em> most frequent factor groups.</p>
+<pre class="r"><code>table(fct_lump_n(mtcars$carb, n = 2)) # 2 frequent group only, others in one group</code></pre>
+<pre><code>## 
+##     2     4 Other 
+##    10    10    12</code></pre>
+<p><code>fct_lump_lowfreq()</code> lump small frequent groups into one group, while making sure that particular one group is still the smallest.</p>
+<pre class="r"><code>table(fct_lump_lowfreq(mtcars$carb, other_level = &quot;low&quot;)) # group low is still the smallest</code></pre>
+<pre><code>## 
+##   1   2   4 low 
+##   7  10  10   5</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li><code>fct_other()</code></li>
+</ol>
+<p><code>fct_other()</code> is much like <code>fct_lump()</code>, except we manually choose which factor groups to be combined.</p>
+<pre class="r"><code>table(fct_other(mtcars$carb, keep = c(&quot;8&quot;, &quot;6&quot;))) </code></pre>
+<pre><code>## 
+##     6     8 Other 
+##     1     1    30</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li><code>fct_recode()</code></li>
+</ol>
+<p>This function is used to rename or relabel the factor group.</p>
+<pre class="r"><code>table(fct_recode(mtcars$carb, hanis = &quot;8&quot;)) </code></pre>
+<pre><code>## 
+##     1     2     3     4     6 hanis 
+##     7    10     3    10     1     1</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li><code>fct_relabel()</code></li>
+</ol>
+<p><code>fct_relabel()</code> is extremely useful if we want to rename quite a number of factor groups.</p>
+<pre class="r"><code>table(mtcars$carb) # original groups</code></pre>
+<pre><code>## 
+##  1  2  3  4  6  8 
+##  7 10  3 10  1  1</code></pre>
+<pre class="r"><code>table(fct_relabel(mtcars$carb, ~ c(&quot;abu&quot;, &quot;ali&quot;, &quot;chong&quot;, &quot;siti&quot;, &quot;krish&quot;, &quot;lee&quot;))) # new named groups</code></pre>
+<pre><code>## 
+##   abu   ali chong  siti krish   lee 
+##     7    10     3    10     1     1</code></pre>
+<p>Reference:<br />
+<a href="https://forcats.tidyverse.org/index.html" class="uri">https://forcats.tidyverse.org/index.html</a></p>
+</div>

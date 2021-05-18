@@ -1,0 +1,181 @@
+---
+title: A summary of forcats package
+author: tengku-hanis
+date: '2021-05-18'
+slug: a-summary-of-forcats-package
+categories:
+  - R
+tags:
+  - tidyverse
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-05-18T20:15:26+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, out.width='30%', fig.align='center'}
+knitr::include_graphics('forcats_logo.png')
+```
+
+I just watched a [youtube video by Andrew Couch](https://youtu.be/qWYgNjnHNWI) about his commonly used function in readr, stringr, and forcats packages. Although, I have used forcats package before, I realised that I have not fully utilised all of its function.
+
+So, in this post, I have summarised main function of forcats that I find useful in my day-to-day R coding. Basically, more like a note to myself.
+
+## Main functions
+
+We will use [mtcars data](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars) to demonstrate each function. forcats is part of tiyverse packages. So, it will loaded, once we loaaded tidyverse packages.
+
+```{r load library, warning=FALSE, message=FALSE}
+library(tidyverse)
+glimpse(mtcars)
+```
+
+There are 9 forcats functions that I think very useful.
+
+1.  `factor()`
+
+`factor()` changes variable type into a factor or categorical type
+
+```{r}
+mtcars$carb <- factor(mtcars$carb)
+glimpse(mtcars)
+```
+
+2.  `fct_inorder()`
+
+This function sorts factor levels based on the order of appearance in the dataset.
+
+```{r}
+levels(mtcars$carb) # original levels
+fct_inorder(mtcars$carb) # levels based on the order of appearance
+```
+
+3.  `fct_infreq()`
+
+This function sorts factor levels based on the frequency of values.
+
+```{r}
+fct_count(mtcars$carb) # this is forcats function as well, count factor level
+levels(mtcars$carb) # original levels
+fct_infreq(mtcars$carb) # levels based on the frequency values
+```
+
+4.  `fct_relevel()`
+
+This function can be used to change the order manually.
+
+```{r}
+levels(mtcars$carb) # original levels
+fct_relevel(mtcars$carb, c("8", "6", "4", "3", "2", "1")) # manually changed new levels
+```
+
+`fct_relevel()` can also be used to change one factor level only.
+
+```{r}
+levels(mtcars$carb) # original levels
+fct_relevel(mtcars$carb, "8", after = 2) # change level 8 to the third place
+```
+
+5.  `fct_reorder()`
+
+This function changes the order based on another variable. Let's change variable carb's levels based on value of variable disp.
+
+```{r}
+levels(mtcars$carb) # original levels
+fct_reorder(mtcars$carb, mtcars$disp, .fun = sum, .desc = TRUE) # new level based on disp value
+mtcars %>% 
+  group_by(carb) %>% 
+  summarise(sum_disp = sum(disp)) %>% 
+  arrange(desc(sum_disp)) # this is basically what we do with fct_reorder() above
+```
+
+Additionally, `fct_reorder()` can be used with plotting as well.
+
+```{r}
+# Original plot
+ggplot(mtcars, aes(x = carb, y = disp)) +
+  geom_col()
+```
+
+```{r}
+# Plot with changed levels
+mtcars %>% 
+  mutate(carb = fct_reorder(carb, disp, .fun = sum, .desc = TRUE)) %>% 
+  ggplot(aes(x = carb, y = disp)) +
+  geom_col()
+```
+
+6.  `fct_lump()`
+
+This function lumps factor levels into other factors. There are 5 variants of this function:
+
+- `fct_lump()`
+- `fct_lump_min()`
+- `fct_lump_n()`
+- `fct_lump_lowfreq()`
+
+The remaining one variant is `fct_lump_prop()`. It is not in the example below as I do not find it useful at least for my current R coding routine.
+
+`fct_lump()` automatically lump small frequency factor group into one group.
+
+```{r}
+fct_count(mtcars$carb) # this is forcats function as well, count factor level
+fct_lump(mtcars$carb) %>% fct_count() 
+```
+
+`fct_lump_min()` lump factor group into one group based on the given value.
+
+```{r}
+table(fct_lump_min(mtcars$carb, min = 2)) # group 6 and 8 lump into one group
+```
+
+`fct_lump_n()` lump all level except for the *n* most frequent factor groups.
+
+```{r}
+table(fct_lump_n(mtcars$carb, n = 2)) # 2 frequent group only, others in one group
+```
+
+`fct_lump_lowfreq()` lump small frequent groups into one group, while making sure that particular one group is still the smallest.
+
+```{r}
+table(fct_lump_lowfreq(mtcars$carb, other_level = "low")) # group low is still the smallest
+```
+
+7.  `fct_other()`
+
+`fct_other()` is much like `fct_lump()`, except we manually choose which factor groups to be combined.
+
+```{r}
+table(fct_other(mtcars$carb, keep = c("8", "6"))) 
+```
+
+8.  `fct_recode()`
+
+This function is used to rename or relabel the factor group.
+
+```{r}
+table(fct_recode(mtcars$carb, hanis = "8")) 
+```
+
+9.  `fct_relabel()`
+
+`fct_relabel()` is extremely useful if we want to rename quite a number of factor groups.
+
+```{r}
+table(mtcars$carb) # original groups
+table(fct_relabel(mtcars$carb, ~ c("abu", "ali", "chong", "siti", "krish", "lee"))) # new named groups
+
+```
+ 
+
+Reference:  
+https://forcats.tidyverse.org/index.html
