@@ -34,4 +34,12 @@ item:
   title: Modelling excess mortality among breast cancer patients in the North East Region of Peninsular Malaysia, 2007-2011; a population-based study
   url: ""
 
+- certificate_url: ""
+  date_end: ""
+  date_start: "2021-05-18"
+  description: Read the [paper](https://bmjopen.bmj.com/content/11/5/e043642)
+  organization: BMJ Open
+  organization_url: ""
+  title: Net survival differences of breast cancer between stages at diagnosis and age groups in the east coast region of West Malaysia; a retrospective cohort study
+  url: ""
 ---
