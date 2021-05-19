@@ -33,22 +33,7 @@ item:
   organization_url: ""
   title: Situation analysis and modelling of COVID-19 cases in Malaysia
   url: ""
-- certificate_url: ""
-  date_end: ""
-  date_start: "2020-03-30"
-  description: ""
-  organization: Draft
-  organization_url: ""
-  title: The relative survival rates of female breast cancer patients in the north-east region of Peninsular Malaysia
-  url: ""
-- certificate_url: ""
-  date_end: ""
-  date_start: "2020-05-30"
-  description: ""
-  organization: Draft
-  organization_url: ""
-  title: Net survival differences between cancer stages and age groups in the east coast region of West Malaysia
-  url: ""
+  
 - certificate_url: ""
   date_end: ""
   date_start: "2020-09-30"
@@ -57,5 +42,23 @@ item:
   organization_url: ""
   title: Mapping breast cancer researches in Malaysia
   url: ""
+  
+- certificate_url: ""
+  date_end: ""
+  date_start: "2021-01-01"
+  description: ""
+  organization: Research project
+  organization_url: ""
+  title: Breast cancer predictive model
+  url: ""
 
+- certificate_url: ""
+  date_end: ""
+  date_start: "2021-01-01"
+  description: ""
+  organization: Research project
+  organization_url: ""
+  title: Diagnostic accuracy of breast cancer predictive models
+  url: ""
+  
 ---
