@@ -49,6 +49,6 @@ item:
   description: Read the [paper](https://www.mdpi.com/1660-4601/18/6/3273/htm)
   organization: International Journal of Environmental Research and Public Health (IJERPH)
   organization_url: ""
-  title: Measuring Time-Varying Effective Reproduction Numbers for COVID-19 and Their Relationship with Movement Control Order in Malaysia
+  title: Measuring time-varying effective reproduction numbers for COVID-19 and their relationship with movement control order in Malaysia
   url: ""
 ---
