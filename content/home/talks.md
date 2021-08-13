@@ -27,6 +27,17 @@ date_format: January 2, 2006
 item:
 - certificate_url: ""
   date_end: ""
+  date_start: "2021-08-18"
+  description: |- 
+    Download [material](https://github.com/tengku-hanis/basic-MA-biostat)  
+    See [slide](https://github.com/tengku-hanis/basic-MA-biostat/blob/main/Slide-basic-MA.pdf)
+  organization: Unit of biostatistics and research methodology, USM
+  organization_url: ""
+  title: Webinar - Basic of meta-analysis using R
+  url: ""
+  
+- certificate_url: ""
+  date_end: ""
   date_start: "2021-08-05"
   description: |- 
     Download [material](https://github.com/tengku-hanis/webinar-basic-MA)  
