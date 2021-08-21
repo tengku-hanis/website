@@ -50,7 +50,7 @@ heartfailure[sample(seq(nrow(heartfailure)), 10), &quot;sex&quot;] &lt;- NA</cod
 <pre class="r"><code>library(dataMaid)</code></pre>
 <p>One of the very useful function in dataMaid is makeDataReport which give report on the data. By default it will give a pdf output, but other output option such as word and html can be set.</p>
 <pre class="r"><code>makeDataReport(heartfailure, replace = T)</code></pre>
-<p>This is the output exampple in <a href="dataMaid_heartfailure.pdf">pdf</a>.</p>
+<p>This is the output exampple in <a href="https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf">pdf</a>.</p>
 <p><strong>2) DataExplorer</strong></p>
 <pre class="r"><code>library(DataExplorer)</code></pre>
 <p>General visualization:</p>
@@ -103,7 +103,7 @@ heartfailure %&gt;%
 <pre class="r"><code>heartfailure %&gt;% 
   plot_correlate()</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a <a href="EDA_Paged_Report.pdf">look</a>.</p>
+<p>Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a <a href="https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf">look</a>.</p>
 <pre class="r"><code>heartfailure %&gt;% 
   eda_paged_report(target = &quot;death_event&quot;)</code></pre>
 <p><strong>4) outliertree</strong></p>

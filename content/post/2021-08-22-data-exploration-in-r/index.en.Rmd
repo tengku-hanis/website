@@ -18,21 +18,18 @@ image:
   preview_only: no
 projects: []
 ---
-```{r setup, eval=TRUE, echo=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-```
 
 These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions. Further, base R and tidyverse packages will not be included specifically in this list.
 
 Load supporting packages
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 ```
 
 The data we are going to use is from dlookr package:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(dlookr)
 ```
 
@@ -48,7 +45,7 @@ heartfailure[sample(seq(nrow(heartfailure)), 10), "sex"] <- NA
 
 **1)  dataMaid**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(dataMaid)
 ```
 
@@ -62,7 +59,7 @@ This is the output exampple in [pdf](https://tengkuhanis.netlify.app/files/dataM
 
 **2)  DataExplorer**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(DataExplorer)
 ```
 
@@ -91,7 +88,7 @@ heartfailure %>%
 
 However, I do think correlation plot from corrplot packages gives a better and clean plot. Here is a plot from corrplot.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(corrplot)
 
 heartfailure %>% 
@@ -105,7 +102,7 @@ Finally, we can get an overall html report from DataExplorer package using the f
 
 **3) dlookr**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(dlookr)
 ```
 
@@ -135,7 +132,7 @@ heartfailure %>%
 **4) outliertree**
 
 This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read [further](https://arxiv.org/abs/2001.00636).  
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(outliertree)
 outlier.tree(heartfailure)
 ```
