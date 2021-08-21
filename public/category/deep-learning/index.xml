@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Deep Learning | Tengku Hanis</title>
-    <link>/category/deep-learning/</link>
-      <atom:link href="/category/deep-learning/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://tengkuhanis.netlify.app/category/deep-learning/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/category/deep-learning/index.xml" rel="self" type="application/rss+xml" />
     <description>Deep Learning</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 09 May 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>Deep Learning</title>
-      <link>/category/deep-learning/</link>
+      <link>https://tengkuhanis.netlify.app/category/deep-learning/</link>
     </image>
     
     <item>
       <title>Exponentially Weighted Average in Deep Learning</title>
-      <link>/post/exponentially-weighted-average-in-deep-learning/</link>
+      <link>https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/</link>
       <pubDate>Sun, 09 May 2021 00:00:00 +0000</pubDate>
-      <guid>/post/exponentially-weighted-average-in-deep-learning/</guid>
+      <guid>https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/</guid>
       <description>
-&lt;script src=&#34;/post/exponentially-weighted-average-in-deep-learning/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA.&lt;/p&gt;
@@ -77,7 +77,7 @@ dat %&amp;gt;%
   xlab(&amp;quot;Time(t)&amp;quot;) +
   ylab(&amp;quot;Weights/Coefficients&amp;quot;) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exponentially-weighted-average-in-deep-learning/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Note that time at t&lt;sub&gt;20&lt;/sub&gt; is the recent time, and t&lt;sub&gt;1&lt;/sub&gt; is the initial time. Thus, two main points from the above plot are:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;The EWA function acts in a decaying manner.&lt;br /&gt;

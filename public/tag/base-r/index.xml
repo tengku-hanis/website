@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>base R | Tengku Hanis</title>
-    <link>/tag/base-r/</link>
-      <atom:link href="/tag/base-r/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://tengkuhanis.netlify.app/tag/base-r/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/tag/base-r/index.xml" rel="self" type="application/rss+xml" />
     <description>base R</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 04 May 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>base R</title>
-      <link>/tag/base-r/</link>
+      <link>https://tengkuhanis.netlify.app/tag/base-r/</link>
     </image>
     
     <item>
       <title>Base R vs tidyverse</title>
-      <link>/post/2021-05-04-base-r-vs-tidyverse/</link>
+      <link>https://tengkuhanis.netlify.app/post/2021-05-04-base-r-vs-tidyverse/</link>
       <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
-      <guid>/post/2021-05-04-base-r-vs-tidyverse/</guid>
+      <guid>https://tengkuhanis.netlify.app/post/2021-05-04-base-r-vs-tidyverse/</guid>
       <description>
-&lt;script src=&#34;/post/2021-05-04-base-r-vs-tidyverse/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/2021-05-04-base-r-vs-tidyverse/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;First of all, this write up is mean for a beginner in R.&lt;/p&gt;
@@ -94,11 +94,11 @@ iris %&amp;gt;%
     
     <item>
       <title>Loop vs apply in R</title>
-      <link>/post/loop-vs-apply-in-r/</link>
+      <link>https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/</link>
       <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
-      <guid>/post/loop-vs-apply-in-r/</guid>
+      <guid>https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/</guid>
       <description>
-&lt;script src=&#34;/post/loop-vs-apply-in-r/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;I have heard quite a several times that apply function is faster than loop function in R. Loop function is said to be inefficient, though in certain situation loop is the only way.&lt;/p&gt;

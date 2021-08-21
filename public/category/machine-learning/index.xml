@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine Learning | Tengku Hanis</title>
-    <link>/category/machine-learning/</link>
-      <atom:link href="/category/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://tengkuhanis.netlify.app/category/machine-learning/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/category/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <description>Machine Learning</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 14 May 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>Machine Learning</title>
-      <link>/category/machine-learning/</link>
+      <link>https://tengkuhanis.netlify.app/category/machine-learning/</link>
     </image>
     
     <item>
       <title>Handling imbalanced data</title>
-      <link>/post/handling-imbalanced-data/</link>
+      <link>https://tengkuhanis.netlify.app/post/handling-imbalanced-data/</link>
       <pubDate>Fri, 14 May 2021 00:00:00 +0000</pubDate>
-      <guid>/post/handling-imbalanced-data/</guid>
+      <guid>https://tengkuhanis.netlify.app/post/handling-imbalanced-data/</guid>
       <description>
-&lt;script src=&#34;/post/handling-imbalanced-data/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/handling-imbalanced-data/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;overview&#34; class=&#34;section level2&#34;&gt;
@@ -57,7 +57,7 @@ Secondly, accuracy is not a good measure in this case. We may get a good accurac
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df, aes(admit)) + 
   geom_bar() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/handling-imbalanced-data/index.en_files/figure-html/barplot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/handling-imbalanced-data/index.en_files/figure-html/barplot-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Below is the code for each model.&lt;/p&gt;
 &lt;details&gt;
 &lt;summary&gt;
@@ -691,7 +691,7 @@ result %&amp;gt;%
                       labels = c(&amp;quot;Accuracy&amp;quot;, &amp;quot;MCC&amp;quot;, &amp;quot;Sensitivity&amp;quot;, &amp;quot;Specificity&amp;quot;)) +
   theme(legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;/details&gt;
-&lt;p&gt;&lt;img src=&#34;/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/handling-imbalanced-data/index.en_files/figure-html/summary-measure2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can see from the above plot, the base model (decision tree) clearly has a low detection rate for a minority class (specificity). All methods able to increase the specificity, while sacrificing the accuracy and sensitivity. As mentioned earlier, accuracy is not a good metrics for this kind of model (ie; accuracy paradox). MCC on the other hand, takes into account all values of confusion matrix; true positive, false positive, true negative, and false negative. Hence, MCC is more informative compared to accuracy (and F score, which has not been included in the plot, for the sake of simplicity).&lt;/p&gt;
 &lt;p&gt;A more balanced model probably downsample approach based on MCC, specificity, and sensitivity. However, this does not mean that downsample technique is the best as I believes each technique behaves differently from one data to another.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;

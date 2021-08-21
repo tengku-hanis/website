@@ -2,132 +2,144 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/courses/example/example1/</loc>
+    <loc>https://tengkuhanis.netlify.app/courses/example/example1/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>/courses/example/</loc>
+    <loc>https://tengkuhanis.netlify.app/courses/example/</loc>
     <lastmod>2018-09-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/courses/example/example2/</loc>
+    <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>/talk/example/</loc>
+    <loc>https://tengkuhanis.netlify.app/talk/example/</loc>
     <lastmod>2030-06-01T13:00:00+00:00</lastmod>
   </url><url>
-    <loc>/talk/</loc>
+    <loc>https://tengkuhanis.netlify.app/talk/</loc>
     <lastmod>2030-06-01T13:00:00+00:00</lastmod>
   </url><url>
-    <loc>/</loc>
+    <loc>https://tengkuhanis.netlify.app/</loc>
     <lastmod>2030-06-01T13:00:00+00:00</lastmod>
   </url><url>
-    <loc>/post/a-summary-of-forcats-package/</loc>
+    <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/data-exploration/</loc>
+    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/data-exploration-in-r/</loc>
+    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
+    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/a-summary-of-forcats-package/</loc>
     <lastmod>2021-05-18T20:15:26+08:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/tidyverse/</loc>
     <lastmod>2021-05-18T20:15:26+08:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
-    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
-  </url><url>
-    <loc>/category/r/</loc>
-    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
-    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
-  </url><url>
-    <loc>/tag/tidyverse/</loc>
-    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
-  </url><url>
-    <loc>/post/handling-imbalanced-data/</loc>
+    <loc>https://tengkuhanis.netlify.app/post/handling-imbalanced-data/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
   </url><url>
-    <loc>/tag/machine-learning/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/machine-learning/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
   </url><url>
-    <loc>/category/machine-learning/</loc>
+    <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
   </url><url>
-    <loc>/tag/deep-learning/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
   </url><url>
-    <loc>/category/deep-learning/</loc>
+    <loc>https://tengkuhanis.netlify.app/category/deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
   </url><url>
-    <loc>/post/exponentially-weighted-average-in-deep-learning/</loc>
+    <loc>https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
   </url><url>
-    <loc>/tag/base-r/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/base-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
-    <loc>/post/2021-05-04-base-r-vs-tidyverse/</loc>
+    <loc>https://tengkuhanis.netlify.app/post/2021-05-04-base-r-vs-tidyverse/</loc>
     <lastmod>2021-05-04T16:48:49+08:00</lastmod>
   </url><url>
-    <loc>/tag/comparison/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/comparison/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
-    <loc>/post/loop-vs-apply-in-r/</loc>
+    <loc>https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
-    <loc>/tag/covid-19/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/covid-19/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
   </url><url>
-    <loc>/category/epidemiology/</loc>
+    <loc>https://tengkuhanis.netlify.app/category/epidemiology/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
   </url><url>
-    <loc>/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</loc>
+    <loc>https://tengkuhanis.netlify.app/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
   </url><url>
-    <loc>/tag/vaccine/</loc>
+    <loc>https://tengkuhanis.netlify.app/tag/vaccine/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
   </url><url>
-    <loc>/courses/</loc>
+    <loc>https://tengkuhanis.netlify.app/courses/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>/publication-type/3/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication-type/3/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication/preprint/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication/preprint/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/authors/</loc>
+    <loc>https://tengkuhanis.netlify.app/authors/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication_types/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication_types/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/author/tengku-muhammad-hanis/</loc>
+    <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/slides/</loc>
+    <loc>https://tengkuhanis.netlify.app/slides/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/slides/example/</loc>
+    <loc>https://tengkuhanis.netlify.app/slides/example/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/project/external-project/</loc>
+    <loc>https://tengkuhanis.netlify.app/privacy/</loc>
+    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/terms/</loc>
+    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/project/external-project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/project/</loc>
+    <loc>https://tengkuhanis.netlify.app/project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication-type/2/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication-type/2/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication/journal-article/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication/journal-article/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/author/robert-ford/</loc>
+    <loc>https://tengkuhanis.netlify.app/author/robert-ford/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication-type/1/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication-type/1/</loc>
     <lastmod>2013-07-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication/conference-paper/</loc>
+    <loc>https://tengkuhanis.netlify.app/publication/conference-paper/</loc>
     <lastmod>2013-07-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc>
+    <loc>https://tengkuhanis.netlify.app/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc>
   </url>
 </urlset>

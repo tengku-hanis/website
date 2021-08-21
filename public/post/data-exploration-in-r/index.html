@@ -1,0 +1,1370 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Tengku Muhammad Hanis">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/data-exploration-in-r/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/data-exploration-in-r/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Tengku Hanis">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/data-exploration-in-r/">
+  <meta property="og:title" content="Data exploration in R | Tengku Hanis">
+  <meta property="og:description" content="These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2021-08-22T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2021-08-22T05:10:54&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tengkuhanis.netlify.app/post/data-exploration-in-r/"
+  },
+  "headline": "Data exploration in R",
+  
+  "datePublished": "2021-08-22T00:00:00Z",
+  "dateModified": "2021-08-22T05:10:54+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Tengku Muhammad Hanis"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tengku Hanis",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_2.png"
+    }
+  },
+  "description": "These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Data exploration in R | Tengku Hanis</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Ongoing</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Blog</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>Light</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>Dark</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>Automatic</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Data exploration in R</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Aug 22, 2021
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions. Further, base R and tidyverse packages will not be included specifically in this list.</p>
+<p>Load supporting packages</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>The data we are going to use is from dlookr package:</p>
+<pre class="r"><code>glimpse(heartfailure)</code></pre>
+<pre><code>## Rows: 299
+## Columns: 13
+## $ age               &lt;int&gt; 75, 55, 65, 50, 65, 90, 75, 60, 65, 80, 75, 62, 45, ~
+## $ anaemia           &lt;fct&gt; No, No, No, Yes, Yes, Yes, Yes, Yes, No, Yes, Yes, N~
+## $ cpk_enzyme        &lt;dbl&gt; 582, 7861, 146, 111, 160, 47, 246, 315, 157, 123, 81~
+## $ diabetes          &lt;fct&gt; No, No, No, No, Yes, No, No, Yes, No, No, No, No, No~
+## $ ejection_fraction &lt;dbl&gt; 20, 38, 20, 20, 20, 40, 15, 60, 65, 35, 38, 25, 30, ~
+## $ hblood_pressure   &lt;fct&gt; Yes, No, No, No, No, Yes, No, No, No, Yes, Yes, Yes,~
+## $ platelets         &lt;dbl&gt; 265000, 263358, 162000, 210000, 327000, 204000, 1270~
+## $ creatinine        &lt;dbl&gt; 1.90, 1.10, 1.30, 1.90, 2.70, 2.10, 1.20, 1.10, 1.50~
+## $ sodium            &lt;dbl&gt; 130, 136, 129, 137, 116, 132, 137, 131, 138, 133, 13~
+## $ sex               &lt;fct&gt; Male, Male, Male, Male, Female, Male, Male, Male, Fe~
+## $ smoking           &lt;fct&gt; No, No, Yes, No, No, Yes, No, Yes, No, Yes, Yes, Yes~
+## $ time              &lt;int&gt; 4, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 11, 11, 12~
+## $ death_event       &lt;fct&gt; Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Ye~</code></pre>
+<p>We will create a few NAs in our data.</p>
+<pre class="r"><code>set.seed(2021)
+heartfailure[sample(seq(nrow(heartfailure)), 20), &quot;age&quot;] &lt;- NA
+heartfailure[sample(seq(nrow(heartfailure)), 10), &quot;sex&quot;] &lt;- NA</code></pre>
+<p><strong>1) dataMaid</strong></p>
+<pre class="r"><code>library(dataMaid)</code></pre>
+<p>One of the very useful function in dataMaid is makeDataReport which give report on the data. By default it will give a pdf output, but other output option such as word and html can be set.</p>
+<pre class="r"><code>makeDataReport(heartfailure, replace = T)</code></pre>
+<p>This is the output exampple in <a href="https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf">pdf</a>.</p>
+<p><strong>2) DataExplorer</strong></p>
+<pre class="r"><code>library(DataExplorer)</code></pre>
+<p>General visualization:</p>
+<pre class="r"><code>heartfailure %&gt;% plot_intro()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Since we have missing data, we can further visualize it:</p>
+<pre class="r"><code>heartfailure %&gt;% plot_missing()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>heartfailure %&gt;% profile_missing()</code></pre>
+<pre><code>##              feature num_missing pct_missing
+## 1                age          20  0.06688963
+## 2            anaemia           0  0.00000000
+## 3         cpk_enzyme           0  0.00000000
+## 4           diabetes           0  0.00000000
+## 5  ejection_fraction           0  0.00000000
+## 6    hblood_pressure           0  0.00000000
+## 7          platelets           0  0.00000000
+## 8         creatinine           0  0.00000000
+## 9             sodium           0  0.00000000
+## 10               sex          10  0.03344482
+## 11           smoking           0  0.00000000
+## 12              time           0  0.00000000
+## 13       death_event           0  0.00000000</code></pre>
+<p>We can also do a correlation plot</p>
+<pre class="r"><code>heartfailure %&gt;% 
+  select_if(is.numeric) %&gt;% 
+  drop_na() %&gt;% 
+  plot_correlation()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>However, I do think correlation plot from corrplot packages gives a better and clean plot. Here is a plot from corrplot.</p>
+<pre class="r"><code>library(corrplot)
+
+heartfailure %&gt;% 
+  select_if(is.numeric) %&gt;% 
+  drop_na() %&gt;% 
+  cor() %&gt;% 
+  corrplot(type = &quot;upper&quot;)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Finally, we can get an overall html report from DataExplorer package using the function <code>create_report()</code>.</p>
+<p><strong>3) dlookr</strong></p>
+<pre class="r"><code>library(dlookr)</code></pre>
+<p>We can assess normality of the data using this package. The code below will plot normality for all numeric variable.</p>
+<pre class="r"><code>heartfailure %&gt;% 
+  plot_normality()</code></pre>
+<p>However, for the sake of the simplicity in this post, we will run only for one variable.</p>
+<pre class="r"><code>heartfailure %&gt;% 
+  plot_normality(age)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>We can also get a correlation matrix plot from this package, and no need to remove the NAs and filter the numeric variable before running the function.</p>
+<pre class="r"><code>heartfailure %&gt;% 
+  plot_correlate()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a <a href="https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf">look</a>.</p>
+<pre class="r"><code>heartfailure %&gt;% 
+  eda_paged_report(target = &quot;death_event&quot;)</code></pre>
+<p><strong>4) outliertree</strong></p>
+<p>This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read <a href="https://arxiv.org/abs/2001.00636">further</a>.</p>
+<pre class="r"><code>library(outliertree)
+outlier.tree(heartfailure)</code></pre>
+<pre><code>## Reporting top 2 outliers [out of 2 found]
+## 
+## row [251] - suspicious column: [creatinine] - suspicious value: [0.50]
+##  distribution: 96.000% &gt;= 0.70 - [mean: 1.35] - [sd: 1.22] - [norm. obs: 24]
+##  given:
+##      [cpk_enzyme] &gt; [1610.00] (value: 2522.00)
+## 
+## 
+## row [32] - suspicious column: [cpk_enzyme] - suspicious value: [23.00]
+##  distribution: 98.958% &gt;= 47.00 - [mean: 677.01] - [sd: 1321.86] - [norm. obs: 95]
+##  given:
+##      [death_event] = [Yes]</code></pre>
+<pre><code>## Outlier Tree model
+##  Numeric variables: 7
+##  Categorical variables: 6
+## 
+## Consists of 369 clusters, spread across 48 tree branches</code></pre>
+<p>We can further explore the detected outliers using histogram and boxplot. Let’s do for variable creatinine.</p>
+<pre class="r"><code># histogram
+hist(heartfailure$creatinine, breaks = 50, col = &quot;navy&quot;,
+     xlab = &quot;Creatinine&quot;, 
+     main = &quot;Creatinine level&quot;)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code># boxplot
+boxplot(heartfailure$creatinine)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p>Probably in the future I will delve into more detail about outlier detection and any awesome packages in R related to it. If I ever written any post about it, I will link it here.</p>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>These are some useful package that I find. I may edit this post in the future to add more additional data exploration package. Furthermore, there are shiny apps for data exploration as well, though I think it’s better to sticks with coded approach in data analysis/exploration. Thus, I did not explore those apps in this post. Another thing to remember is to set the variable type accordingly prior to the data exploration.</p>
+<p>Hope this is useful!</p>
+<p>References:<br />
+<a href="https://github.com/ekstroem/dataMaid" class="uri">https://github.com/ekstroem/dataMaid</a><br />
+<a href="https://finnstats.com/index.php/2021/05/04/exploratory-data-analysis/" class="uri">https://finnstats.com/index.php/2021/05/04/exploratory-data-analysis/</a><br />
+<a href="https://cran.r-project.org/web/packages/dlookr/vignettes/EDA.html" class="uri">https://cran.r-project.org/web/packages/dlookr/vignettes/EDA.html</a><br />
+<a href="https://cran.r-project.org/web/packages/outliertree/vignettes/Introducing_OutlierTree.html" class="uri">https://cran.r-project.org/web/packages/outliertree/vignettes/Introducing_OutlierTree.html</a></p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/data-exploration/">Data exploration</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://tengkuhanis.netlify.app/post/data-exploration-in-r/&amp;text=Data%20exploration%20in%20R" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://tengkuhanis.netlify.app/post/data-exploration-in-r/&amp;t=Data%20exploration%20in%20R" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Data%20exploration%20in%20R&amp;body=https://tengkuhanis.netlify.app/post/data-exploration-in-r/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://tengkuhanis.netlify.app/post/data-exploration-in-r/&amp;title=Data%20exploration%20in%20R" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Data%20exploration%20in%20R%20https://tengkuhanis.netlify.app/post/data-exploration-in-r/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://tengkuhanis.netlify.app/post/data-exploration-in-r/&amp;title=Data%20exploration%20in%20R" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://tengkuhanis.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/tengku-muhammad-hanis/avatar_hu2282885c81c6fc6803200ba05db8fa19_124392_270x270_fill_q90_lanczos_center.jpg" alt="Tengku Muhammad Hanis"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://tengkuhanis.netlify.app/">Tengku Muhammad Hanis</a></h5>
+      <h6 class="card-subtitle">PhD student (Public Health Epidemiology)</h6>
+      <p class="card-text">My research interests include medical statistics and machine learning application.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/tengkuhanismokhtar@gmail.com" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=VV2bHQcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/tengku-hanis" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/a-summary-of-forcats-package/">A summary of forcats package</a></li>
+      
+      <li><a href="/post/handling-imbalanced-data/">Handling imbalanced data</a></li>
+      
+      <li><a href="/post/exponentially-weighted-average-in-deep-learning/">Exponentially Weighted Average in Deep Learning</a></li>
+      
+      <li><a href="/post/loop-vs-apply-in-r/">Loop vs apply in R</a></li>
+      
+      <li><a href="/post/2021-05-04-base-r-vs-tidyverse/">Base R vs tidyverse</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    ©Tengku Hanis 2020-2021 Made with <a href="https://github.com/rstudio/blogdown">blogdown</a>
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.a30e17c6197f21f7f966f9a6cd022a55.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>
