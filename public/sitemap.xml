@@ -20,8 +20,23 @@
     <loc>/</loc>
     <lastmod>2030-06-01T13:00:00+00:00</lastmod>
   </url><url>
+    <loc>/post/a-summary-of-forcats-package/</loc>
+    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
+  </url><url>
     <loc>/categories/</loc>
-    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
+    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
+  </url><url>
+    <loc>/category/r/</loc>
+    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
+  </url><url>
+    <loc>/tag/tidyverse/</loc>
+    <lastmod>2021-05-18T20:15:26+08:00</lastmod>
   </url><url>
     <loc>/post/handling-imbalanced-data/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
@@ -30,15 +45,6 @@
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
   </url><url>
     <loc>/category/machine-learning/</loc>
-    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
-  </url><url>
-    <loc>/category/r/</loc>
-    <lastmod>2021-05-14T09:29:34+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
   </url><url>
     <loc>/tag/deep-learning/</loc>
@@ -61,9 +67,6 @@
   </url><url>
     <loc>/post/loop-vs-apply-in-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
-    <loc>/tag/tidyverse/</loc>
-    <lastmod>2021-05-04T16:48:49+08:00</lastmod>
   </url><url>
     <loc>/tag/covid-19/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
@@ -95,9 +98,6 @@
     <loc>/publication/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/tag/source-themes/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/author/tengku-muhammad-hanis/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
@@ -106,9 +106,6 @@
   </url><url>
     <loc>/slides/example/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tag/demo/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/project/external-project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
