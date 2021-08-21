@@ -127,7 +127,7 @@ mean_apply &amp;lt;- lapply(xlist, mean)
 
 proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##    user  system elapsed 
-##    0.36    0.00    0.35&lt;/code&gt;&lt;/pre&gt;
+##    0.38    0.00    0.37&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So, &lt;code&gt;lapply()&lt;/code&gt; is a little bit faster. Obviously, with a very big dataset and a more complicated objective, &lt;code&gt;lapply()&lt;/code&gt; is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.&lt;/p&gt;
 </description>
     </item>

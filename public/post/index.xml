@@ -1244,7 +1244,7 @@ mean_apply &amp;lt;- lapply(xlist, mean)
 
 proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##    user  system elapsed 
-##    0.36    0.00    0.35&lt;/code&gt;&lt;/pre&gt;
+##    0.38    0.00    0.37&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So, &lt;code&gt;lapply()&lt;/code&gt; is a little bit faster. Obviously, with a very big dataset and a more complicated objective, &lt;code&gt;lapply()&lt;/code&gt; is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.&lt;/p&gt;
 </description>
     </item>
@@ -1255,13 +1255,14 @@ proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
       <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
       <guid>https://tengkuhanis.netlify.app/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</guid>
       <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Recently I have read an &lt;a href=&#34;https://codeblue.galencentre.org/2020/11/27/malaysia-buying-pfizers-ultra-cold-covid-19-vaccine-posing-major-distribution-issues/#:~:text=According%20to%20BioSpace%2C%20the%20Covid,price%20sold%20to%20the%20US&#34;&gt;article&lt;/a&gt; that the Malaysian government have made a deal with Pfizer for 6.4 million Malaysian to be vaccinated. So, I am wondering what is the minimal number of people should be vaccinated.&lt;/p&gt;
 &lt;p&gt;I have also come across this interesting &lt;a href=&#34;https://www.cebm.net/covid-19/when-will-it-be-over-an-introduction-to-viral-reproduction-numbers-r0-and-re/&#34;&gt;article&lt;/a&gt;, which explains how we can calculate a minimal number of people to be vaccinated to achieves herd immunity based on R naught (R&lt;sub&gt;0&lt;/sub&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;R naught (R&lt;sub&gt;0&lt;/sub&gt;)&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The basic idea of R&lt;sub&gt;0&lt;/sub&gt; or basic reproduction number is quite simple. It describes how many secondary infections will derive from the first case. I think Figure 1 below describes this idea very well.&lt;/p&gt;
-&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
 &lt;img src=&#34;r0.png&#34; alt=&#34;Basic idea of R~0~(image from https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught)&#34; width=&#34;60%&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: Basic idea of R&lt;sub&gt;0&lt;/sub&gt;(image from &lt;a href=&#34;https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught&#34; class=&#34;uri&#34;&gt;https://www.atrainceu.com/content/3-basic-reproduction-number-r-naught&lt;/a&gt;)
