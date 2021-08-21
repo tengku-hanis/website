@@ -58,7 +58,7 @@ One of the very useful function in dataMaid is makeDataReport which give report 
 makeDataReport(heartfailure, replace = T)
 ```
 
-This is the output exampple in [pdf](dataMaid_heartfailure.pdf).
+This is the output exampple in [pdf](https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf).
 
 **2)  DataExplorer**
 
@@ -126,7 +126,7 @@ heartfailure %>%
   plot_correlate()
 ```
 
-Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a [look](EDA_Paged_Report.pdf). 
+Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a [look](https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf). 
 ```{r, eval=FALSE}
 heartfailure %>% 
   eda_paged_report(target = "death_event")
