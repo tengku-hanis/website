@@ -22,13 +22,13 @@ These are some of the packages that I find useful for data exploration. Basicall
 
 Load supporting packages
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
 library(tidyverse)
 ```
 
 The data we are going to use is from dlookr package:
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE}
 library(dlookr)
 ```
 
