@@ -103,7 +103,13 @@ heartfailure %&gt;%
 <p>Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a <a href="https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf">look</a>.</p>
 <pre class="r"><code>heartfailure %&gt;% 
   eda_paged_report(target = &quot;death_event&quot;)</code></pre>
-<p><strong>4) outliertree</strong></p>
+<p><strong>4) skimr</strong></p>
+<p>skimr package, especially <code>skim()</code> function did not display correctly when using the blogdown. Hence, I included the screenshot of the result that we will typically see in the R console.</p>
+<pre class="r"><code>library(skimr)
+skim(heartfailure) </code></pre>
+<p><img src="images/black.png" style="width:100.0%;height:100.0%" /></p>
+<p>So, from skimr we can get an overview that includes the histogram for numerical data as well.</p>
+<p><strong>5) outliertree</strong></p>
 <p>This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read <a href="https://arxiv.org/abs/2001.00636">further</a>.</p>
 <pre class="r"><code>library(outliertree)
 outlier.tree(heartfailure)</code></pre>
@@ -129,10 +135,10 @@ outlier.tree(heartfailure)</code></pre>
 hist(heartfailure$creatinine, breaks = 50, col = &quot;navy&quot;,
      xlab = &quot;Creatinine&quot;, 
      main = &quot;Creatinine level&quot;)</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <pre class="r"><code># boxplot
 boxplot(heartfailure$creatinine)</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <p>Probably in the future I will delve into more detail about outlier detection and any awesome packages in R related to it. If I ever written any post about it, I will link it here.</p>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>

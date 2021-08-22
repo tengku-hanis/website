@@ -129,7 +129,19 @@ heartfailure %>%
   eda_paged_report(target = "death_event")
 ```
 
-**4) outliertree**
+**4) skimr**
+
+skimr package, especially `skim()` function did not display correctly when using the blogdown. Hence, I included the screenshot of the result that we will typically see in the R console.
+```{r, eval=FALSE}
+library(skimr)
+skim(heartfailure) 
+```
+
+![](images/black.png){width=100% height=100%}
+
+So, from skimr we can get an overview that includes the histogram for numerical data as well.
+
+**5) outliertree**
 
 This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read [further](https://arxiv.org/abs/2001.00636).  
 ```{r}
