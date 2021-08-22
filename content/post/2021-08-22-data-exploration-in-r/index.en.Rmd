@@ -49,13 +49,13 @@ heartfailure[sample(seq(nrow(heartfailure)), 10), "sex"] <- NA
 library(dataMaid)
 ```
 
-One of the very useful function in dataMaid is makeDataReport which give report on the data. By default it will give a pdf output, but other output option such as word and html can be set.
+One of the very useful function in dataMaid is `makeDataReport()` which give report on the data. By default it will give a pdf output, but other output options such as word and html are also available.
 
 ```{r, eval=FALSE}
 makeDataReport(heartfailure, replace = T)
 ```
 
-This is the output exampple in [pdf](https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf).
+This is the output example in [pdf](https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf).
 
 **2)  DataExplorer**
 
