@@ -42,7 +42,7 @@ item:
   description: |- 
     Download [material](https://github.com/tengku-hanis/webinar-basic-MA)  
     See [slide](https://github.com/tengku-hanis/webinar-basic-MA/blob/main/MA-webinar-05-08-2021.pdf)
-  organization: Epidemiology and statistical modelling team, USM
+  organization: USM Epidemiological group
   organization_url: ""
   title: Webinar - An introduction to meta-analysis using R
   url: ""
