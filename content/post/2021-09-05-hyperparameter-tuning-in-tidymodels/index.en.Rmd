@@ -129,6 +129,7 @@ table(income2$INCOME)
 # Missing data
 DataExplorer::plot_missing(income)
 ```
+
 Split the data and create a 10-fold cross validation.
 ```{r}
 set.seed(2021)
@@ -237,7 +238,7 @@ autoplot(tune_random)
 show_best(tune_random)
 ```
 
-Random grid search has slightly a better result. Let's if we use this search as a base for iterative search. Firstly, we limit the parameters based on the plot from a random grid search.
+Random grid search has slightly a better result. Let's use this random search result as a base for iterative search. Firstly, we limit the parameters based on the plot from a random grid search.
 ```{r}
 rf_param <- 
   rf_wf %>% 
