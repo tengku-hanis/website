@@ -70,16 +70,16 @@ Generally, there are two approaches to hyperparameter tuning in tidymodels.</p>
 <pre><code>## # A tibble: 100 x 3
 ##     mtry trees min_n
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
-##  1     6  1736    35
-##  2     4  1773    22
-##  3    12  1948    20
-##  4    10  1234     3
-##  5     7    24    29
-##  6     2  1340    34
-##  7     8   569    40
-##  8     9   646     4
-##  9     9   675    10
-## 10    11  1993    37
+##  1     5  1216    40
+##  2     8  1374    13
+##  3     9   859    39
+##  4     6   282    12
+##  5     2  1210     9
+##  6     8  1828    39
+##  7    11   550    14
+##  8    13  1157    32
+##  9     5   282     6
+## 10    10  1018    28
 ## # ... with 90 more rows</code></pre>
 <p>By default, tidymodels uses space-filling-design to make sure the combination of parameters are on “equidistance” to each other.</p>
 </div>
@@ -439,7 +439,7 @@ test_fit %&gt;%
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
 <p>The result is not that good. Our AUC is quite lower. However, we did use only about 8% from the overall data. Nonetheless, the aim of this post is to cover an overview of hyperparameter tuning in tidymodels.</p>
-<p>Additionally, there are another two function to construct parameter grids that I did cover in this post; <code>grid_max_entropy()</code> and <code>grid_latin_hypercube()</code>. Both of these functions do not have much resources explaining them (or at least I did not found it), however, for those interested, a good start will be the tidymodels <a href="https://dials.tidymodels.org/reference/grid_max_entropy.html">website</a>.</p>
+<p>Additionally, there are another two function to construct parameter grids that I did not cover in this post; <code>grid_max_entropy()</code> and <code>grid_latin_hypercube()</code>. Both of these functions do not have much resources explaining them (or at least I did not found it), however, for those interested, a good start will be the tidymodels <a href="https://dials.tidymodels.org/reference/grid_max_entropy.html">website</a>.</p>
 <p>References:<br />
 <a href="https://www.tmwr.org/grid-search.html" class="uri">https://www.tmwr.org/grid-search.html</a><br />
 <a href="https://www.tmwr.org/iterative-search.html" class="uri">https://www.tmwr.org/iterative-search.html</a><br />

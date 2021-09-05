@@ -458,7 +458,7 @@ test_fit %>%
 
 The result is not that good. Our AUC is quite lower. However, we did use only about 8% from the overall data. Nonetheless, the aim of this post is to cover an overview of hyperparameter tuning in tidymodels.
 
-Additionally, there are another two function to construct parameter grids that I did cover in this post; `grid_max_entropy()` and `grid_latin_hypercube()`. Both of these functions do not have much resources explaining them (or at least I did not found it), however, for those interested, a good start will be the tidymodels [website](https://dials.tidymodels.org/reference/grid_max_entropy.html).
+Additionally, there are another two function to construct parameter grids that I did not cover in this post; `grid_max_entropy()` and `grid_latin_hypercube()`. Both of these functions do not have much resources explaining them (or at least I did not found it), however, for those interested, a good start will be the tidymodels [website](https://dials.tidymodels.org/reference/grid_max_entropy.html).
 
 
 References:   
