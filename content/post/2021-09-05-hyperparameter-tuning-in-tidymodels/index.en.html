@@ -1,0 +1,448 @@
+---
+title: Hyperparameter tuning in tidymodels
+author: tengku-hanis
+date: '2021-09-05'
+slug: hyperparameter-tuning-in-tidymodels
+categories:
+  - R
+  - Machine Learning
+tags:
+  - tidymodels
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-09-05T14:45:32+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>This post will not go very detail in each of the approach of hyperparameter tuning. This post mainly aims to summarize a few things that I studied for the last couple of days.
+Generally, there are two approaches to hyperparameter tuning in tidymodels.</p>
+<ol style="list-style-type: decimal">
+<li>Grid search:<br />
+– Regular grid search<br />
+– Random grid search<br />
+</li>
+<li>Iterative search:<br />
+– Bayesian optimization<br />
+– Simulated annealing</li>
+</ol>
+<div id="grid-search" class="section level2">
+<h2>Grid search</h2>
+<p>So, in grid search, we provide the combination of parameters and the algorithm will go through each combination of parameters. There are two types of grid search:</p>
+<ul>
+<li>Regular grid search<br />
+– The algorithm will go through each combinations of parameters.</li>
+</ul>
+<pre class="r"><code>grid_regular(mtry(c(1, 13)), 
+             trees(), 
+             min_n(),
+             levels = 3) # how many from each parameter</code></pre>
+<pre><code>## # A tibble: 27 x 3
+##     mtry trees min_n
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     1     1     2
+##  2     7     1     2
+##  3    13     1     2
+##  4     1  1000     2
+##  5     7  1000     2
+##  6    13  1000     2
+##  7     1  2000     2
+##  8     7  2000     2
+##  9    13  2000     2
+## 10     1     1    21
+## # ... with 17 more rows</code></pre>
+<ul>
+<li>Random grid search<br />
+– The algorithm will randomly select a number of combination of parameters instead of go through each of them.</li>
+</ul>
+<pre class="r"><code>grid_random(mtry(c(1, 13)),
+            trees(), 
+            min_n(), 
+            size = 100) # size of parameters combination</code></pre>
+<pre><code>## # A tibble: 100 x 3
+##     mtry trees min_n
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     8   525    24
+##  2     2   757    27
+##  3    13  1955    39
+##  4     4  1435    27
+##  5     2   250    24
+##  6    11   972    33
+##  7     6  1829     6
+##  8     7  1468    39
+##  9    12   164    23
+## 10    11  1364     5
+## # ... with 90 more rows</code></pre>
+<p>By default, tidymodels uses space-filling-design to make sure the combination of parameters are on “equidistance” to each other.</p>
+</div>
+<div id="iterative-search" class="section level2">
+<h2>Iterative search</h2>
+<p>In iterative search, we need to specify some initial parameters/values to start the search.</p>
+<ul>
+<li>Bayesian optimization<br />
+– This algorithm/function will search the next best combination of parameters based on the previous combination of parameters (priori).</li>
+<li>Simulated annealing<br />
+– Generally, this algorithm works relatively similar to bayesian optimization.<br />
+– However, as the figure below illustrates this algorithm is able to explore in the worst combination of parameters for a short term (barrier of local search), in order to find the best combination of parameters (global minima).
+<img src="images/sim-anneal.png" alt="Simulated annealing" /></li>
+</ul>
+<p>Futher details on iterative search or both methods above can be found <a href="https://www.tmwr.org/iterative-search.html#iterative-search">here</a>. So, as both iterative methods need a starting parameters, we can actually combine with any of the grid search methods.</p>
+</div>
+<div id="other-methods" class="section level2">
+<h2>Other methods</h2>
+<p>By default, if we do not supply any combination of parameters, tidymodels will randomly pick 10 combinations of parameters from the default range of values from the model. Additionally, we can set this values to other values as shown below:</p>
+<pre class="r"><code>tune_grid(
+  resamples = dat_cv, # cross validation data set
+  grid = 20,  # 20 combinations of parameters
+  control = control, # some control parameters
+  metrics = metrics # some metrics parameters (roc_auc, etc)
+  )</code></pre>
+<p>There are another special cases of grid search; <code>tune_race_anova()</code> and <code>tune_race_win_loss()</code>. Both of these methods supposed to be more efficient way of grid search. In general, both methods evaluate the tuning parameters on a small initial set. The combination of parameters with a worst performance will be eliminated. Thus, makes them more efficient in grid search. The main difference between these two methods is how the worst combination of parameters are evaluated and eliminated.</p>
+</div>
+<div id="r-codes" class="section level2">
+<h2>R codes</h2>
+<p>Load the packages.</p>
+<pre class="r"><code># Packages
+library(tidyverse)
+library(tidymodels)
+library(finetune)</code></pre>
+<p>We will only use a small chunk of the data for ease of computation.</p>
+<pre class="r"><code># Data
+data(income, package = &quot;kernlab&quot;)
+
+# Make data smaller for computation
+set.seed(2021)
+income2 &lt;- 
+  income %&gt;% 
+  filter(INCOME == &quot;[75.000-&quot; | INCOME == &quot;[50.000-75.000)&quot;) %&gt;% 
+  slice_sample(n = 600) %&gt;% 
+  mutate(INCOME = fct_drop(INCOME), 
+         INCOME = fct_recode(INCOME, 
+                             rich = &quot;[75.000-&quot;,
+                             less_rich = &quot;[50.000-75.000)&quot;), 
+         INCOME = factor(INCOME, ordered = F)) %&gt;% 
+  mutate(across(-INCOME, fct_drop))
+
+# Summary of data
+glimpse(income2)</code></pre>
+<pre><code>## Rows: 600
+## Columns: 14
+## $ INCOME         &lt;fct&gt; less_rich, rich, rich, rich, less_rich, rich, rich, les~
+## $ SEX            &lt;fct&gt; F, M, F, M, F, F, F, M, F, M, M, M, F, F, F, F, M, M, M~
+## $ MARITAL.STATUS &lt;fct&gt; Married, Married, Married, Single, Single, NA, Married,~
+## $ AGE            &lt;ord&gt; 35-44, 25-34, 45-54, 18-24, 18-24, 14-17, 25-34, 25-34,~
+## $ EDUCATION      &lt;ord&gt; 1 to 3 years of college, Grad Study, College graduate, ~
+## $ OCCUPATION     &lt;fct&gt; &quot;Professional/Managerial&quot;, &quot;Professional/Managerial&quot;, &quot;~
+## $ AREA           &lt;ord&gt; 10+ years, 7-10 years, 10+ years, -1 year, 4-6 years, 7~
+## $ DUAL.INCOMES   &lt;fct&gt; Yes, Yes, Yes, Not Married, Not Married, Not Married, N~
+## $ HOUSEHOLD.SIZE &lt;ord&gt; Five, Two, Four, Two, Four, Two, Three, Two, Five, One,~
+## $ UNDER18        &lt;ord&gt; Three, None, None, None, None, None, One, None, Three, ~
+## $ HOUSEHOLDER    &lt;fct&gt; Own, Own, Own, Rent, Family, Own, Own, Rent, Own, Own, ~
+## $ HOME.TYPE      &lt;fct&gt; House, House, House, House, House, Apartment, House, Ho~
+## $ ETHNIC.CLASS   &lt;fct&gt; White, White, White, White, White, White, White, White,~
+## $ LANGUAGE       &lt;fct&gt; English, English, English, English, English, NA, Englis~</code></pre>
+<pre class="r"><code># Outcome variable
+table(income2$INCOME)</code></pre>
+<pre><code>## 
+## less_rich      rich 
+##       362       238</code></pre>
+<pre class="r"><code># Missing data
+DataExplorer::plot_missing(income)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+Split the data and create a 10-fold cross validation.</p>
+<pre class="r"><code>set.seed(2021)
+dat_index &lt;- initial_split(income2, strata = INCOME)
+dat_train &lt;- training(dat_index)
+dat_test &lt;- testing(dat_index)
+
+## CV
+set.seed(2021)
+dat_cv &lt;- vfold_cv(dat_train, v = 10, repeats = 1, strata = INCOME)</code></pre>
+<p>We going to impute the NAs with mode value since all the variable are categorical.</p>
+<pre class="r"><code># Recipe
+dat_rec &lt;- 
+  recipe(INCOME ~ ., data = dat_train) %&gt;% 
+  step_impute_mode(all_predictors()) %&gt;% 
+  step_ordinalscore(AGE, EDUCATION, AREA, HOUSEHOLD.SIZE, UNDER18)
+
+# Model
+rf_mod &lt;- 
+  rand_forest(mtry = tune(),
+              trees = tune(),
+              min_n = tune()) %&gt;% 
+  set_mode(&quot;classification&quot;) %&gt;% 
+  set_engine(&quot;ranger&quot;)
+
+# Workflow
+rf_wf &lt;- 
+  workflow() %&gt;% 
+  add_recipe(dat_rec) %&gt;% 
+  add_model(rf_mod)</code></pre>
+<p>Parameters for grid search</p>
+<pre class="r"><code># Regular grid
+reg_grid &lt;- grid_regular(mtry(c(1, 13)), 
+                         trees(), 
+                         min_n(), 
+                         levels = 3)
+
+# Random grid
+rand_grid &lt;- grid_random(mtry(c(1, 13)), 
+                         trees(), 
+                         min_n(), 
+                         size = 100)</code></pre>
+<p>Tune models using regular grid search. We going to use <code>doParallel</code> library to do parallel processing.</p>
+<pre class="r"><code>ctrl &lt;- control_grid(save_pred = T,
+                        extract = extract_model)
+measure &lt;- metric_set(roc_auc)  
+
+# Parallel for regular grid
+library(doParallel)
+
+# Create a cluster object and then register: 
+cl &lt;- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+tune_regular &lt;- 
+  rf_wf %&gt;% 
+  tune_grid(
+    resamples = dat_cv, 
+    grid = reg_grid,         
+    control = ctrl, 
+    metrics = measure)
+
+stopCluster(cl)</code></pre>
+<p>Result for regular grid search:</p>
+<pre class="r"><code>autoplot(tune_regular)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>show_best(tune_regular)</code></pre>
+<pre><code>## # A tibble: 5 x 9
+##    mtry trees min_n .metric .estimator  mean     n std_err .config              
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1     7  1000    21 roc_auc binary     0.690    10  0.0148 Preprocessor1_Model14
+## 2     7  1000    40 roc_auc binary     0.689    10  0.0179 Preprocessor1_Model23
+## 3     7  2000    40 roc_auc binary     0.689    10  0.0178 Preprocessor1_Model26
+## 4     7  1000     2 roc_auc binary     0.688    10  0.0173 Preprocessor1_Model05
+## 5     7  2000    21 roc_auc binary     0.688    10  0.0159 Preprocessor1_Model17</code></pre>
+<p>Tune models using random grid search.</p>
+<pre class="r"><code># Parallel for random grid
+# Create a cluster object and then register: 
+cl &lt;- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+tune_random &lt;- 
+  rf_wf %&gt;% 
+  tune_grid(
+    resamples = dat_cv, 
+    grid = rand_grid,         
+    control = ctrl, 
+    metrics = measure)
+
+stopCluster(cl)</code></pre>
+<p>Result for random grid search:</p>
+<pre class="r"><code>autoplot(tune_random)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>show_best(tune_random)</code></pre>
+<pre><code>## # A tibble: 5 x 9
+##    mtry trees min_n .metric .estimator  mean     n std_err .config              
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1     4  1016     4 roc_auc binary     0.694    10  0.0164 Preprocessor1_Model0~
+## 2     5  1360     3 roc_auc binary     0.693    10  0.0168 Preprocessor1_Model0~
+## 3     6   129    14 roc_auc binary     0.693    10  0.0164 Preprocessor1_Model0~
+## 4     5  1235     3 roc_auc binary     0.692    10  0.0168 Preprocessor1_Model0~
+## 5     6   160    31 roc_auc binary     0.692    10  0.0172 Preprocessor1_Model0~</code></pre>
+<p>Random grid search has slightly a better result. Let’s if we use this search as a base for iterative search. Firstly, we limit the parameters based on the plot from a random grid search.</p>
+<pre class="r"><code>rf_param &lt;- 
+  rf_wf %&gt;% 
+  parameters() %&gt;% 
+  update(mtry = mtry(c(5, 13)), 
+         trees = trees(c(1, 500)), 
+         min_n = min_n(c(5, 30)))</code></pre>
+<p>Now we do a bayesian optimization.</p>
+<pre class="r"><code># Parallel for bayesian optimization
+# Create a cluster object and then register: 
+cl &lt;- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+bayes_tune &lt;-  
+  rf_wf %&gt;% 
+  tune_bayes(    
+    resamples = dat_cv,
+    param_info = rf_param,
+    iter = 60,
+    initial = tune_random, # result from random grid search        
+    control = control_bayes(no_improve = 30, verbose = T, save_pred = T), 
+    metrics = measure)
+
+stopCluster(cl)</code></pre>
+<p>Result for bayesian optimization.</p>
+<pre class="r"><code>autoplot(bayes_tune, &quot;performance&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>show_best(bayes_tune)</code></pre>
+<pre><code>## # A tibble: 5 x 10
+##    mtry trees min_n .metric .estimator  mean     n std_err .config         .iter
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;
+## 1     4  1016     4 roc_auc binary     0.694    10  0.0164 Preprocessor1_~     0
+## 2     5  1360     3 roc_auc binary     0.693    10  0.0168 Preprocessor1_~     0
+## 3     6   129    14 roc_auc binary     0.693    10  0.0164 Preprocessor1_~     0
+## 4     6   189    15 roc_auc binary     0.693    10  0.0153 Iter1               1
+## 5     5  1235     3 roc_auc binary     0.692    10  0.0168 Preprocessor1_~     0</code></pre>
+<p>We get a slightly better result from bayesian optimization. I will not do a simulated annealing approach since I get an error, though I am not sure why.</p>
+<p>Lastly, we do a race anova.</p>
+<pre class="r"><code># Parallel for race anova
+# Create a cluster object and then register: 
+cl &lt;- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+tune_efficient &lt;- 
+  rf_wf %&gt;% 
+  tune_race_anova(
+    resamples = dat_cv, 
+    grid = rand_grid,         
+    control = control_race(verbose_elim = T, save_pred = T), 
+    metrics = measure)
+
+stopCluster(cl)</code></pre>
+<p>We get a relatively similar result to random grid search but with faster computation.</p>
+<pre class="r"><code>autoplot(tune_efficient)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>show_best(tune_efficient)</code></pre>
+<pre><code>## # A tibble: 5 x 9
+##    mtry trees min_n .metric .estimator  mean     n std_err .config              
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1     5  1425     5 roc_auc binary     0.695    10  0.0161 Preprocessor1_Model0~
+## 2    11   406     2 roc_auc binary     0.694    10  0.0183 Preprocessor1_Model0~
+## 3     6   631     3 roc_auc binary     0.692    10  0.0171 Preprocessor1_Model0~
+## 4     7  1264     4 roc_auc binary     0.692    10  0.0159 Preprocessor1_Model0~
+## 5     9  1264     3 roc_auc binary     0.692    10  0.0188 Preprocessor1_Model0~</code></pre>
+We can also compare ROCs of all approaches. All approaches looks more or less similar.
+<details>
+<summary>
+Show code
+</summary>
+<pre class="r"><code># regular grid
+rf_reg &lt;- 
+  tune_regular %&gt;% 
+  select_best(metric = &quot;roc_auc&quot;)
+
+reg_auc &lt;- 
+  tune_regular %&gt;% 
+  collect_predictions(parameters = rf_reg) %&gt;% 
+  roc_curve(INCOME, .pred_less_rich) %&gt;% 
+  mutate(model = &quot;regular_grid&quot;)
+
+# random grid
+rf_rand &lt;- 
+  tune_random %&gt;% 
+  select_best(metric = &quot;roc_auc&quot;)
+
+rand_auc &lt;- 
+  tune_random %&gt;% 
+  collect_predictions(parameters = rf_rand) %&gt;% 
+  roc_curve(INCOME, .pred_less_rich) %&gt;% 
+  mutate(model = &quot;random_grid&quot;)
+
+# bayes
+rf_bayes &lt;- 
+  bayes_tune %&gt;% 
+  select_best(metric = &quot;roc_auc&quot;)
+
+bayes_auc &lt;- 
+  bayes_tune %&gt;% 
+  collect_predictions(parameters = rf_bayes) %&gt;% 
+  roc_curve(INCOME, .pred_less_rich) %&gt;% 
+  mutate(model = &quot;bayes&quot;)
+
+# race_anova
+rf_eff &lt;- 
+  tune_efficient %&gt;% 
+  select_best(metric = &quot;roc_auc&quot;)
+
+eff_auc &lt;- 
+  tune_efficient %&gt;% 
+  collect_predictions(parameters = rf_eff) %&gt;%
+  roc_curve(INCOME, .pred_less_rich) %&gt;% 
+  mutate(model = &quot;race_anova&quot;)
+
+# Compare ROC between all tuning approach
+bind_rows(reg_auc, rand_auc, bayes_auc, eff_auc) %&gt;% 
+  ggplot(aes(x = 1 - specificity, y = sensitivity, col = model)) + 
+  geom_path(lwd = 1.5, alpha = 0.8) +
+  geom_abline(lty = 3) + 
+  coord_equal() + 
+  scale_color_viridis_d(option = &quot;plasma&quot;, end = .6) +
+  theme_bw()</code></pre>
+</details>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Finally, we fit our best model (bayesian optimization) to the testing data.</p>
+<pre class="r"><code># Finalize workflow
+best_rf &lt;-
+  select_best(bayes_tune, &quot;roc_auc&quot;)
+
+final_wf &lt;- 
+  rf_wf %&gt;% 
+  finalize_workflow(best_rf)
+final_wf</code></pre>
+<pre><code>## == Workflow ====================================================================
+## Preprocessor: Recipe
+## Model: rand_forest()
+## 
+## -- Preprocessor ----------------------------------------------------------------
+## 2 Recipe Steps
+## 
+## * step_impute_mode()
+## * step_ordinalscore()
+## 
+## -- Model -----------------------------------------------------------------------
+## Random Forest Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 4
+##   trees = 1016
+##   min_n = 4
+## 
+## Computational engine: ranger</code></pre>
+<pre class="r"><code># Last fit
+test_fit &lt;- 
+  final_wf %&gt;%
+  last_fit(dat_index) 
+
+# Evaluation metrics 
+test_fit %&gt;%
+  collect_metrics()</code></pre>
+<pre><code>## # A tibble: 2 x 4
+##   .metric  .estimator .estimate .config             
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+## 1 accuracy binary         0.583 Preprocessor1_Model1
+## 2 roc_auc  binary         0.611 Preprocessor1_Model1</code></pre>
+<pre class="r"><code>test_fit %&gt;%
+  collect_predictions() %&gt;% 
+  roc_curve(INCOME, .pred_less_rich) %&gt;% 
+  autoplot()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The result is not that good. Our AUC is quite lower. However, we did use only about 8% from the overall data. Nonetheless, the aim of this post is to cover an overview of hyperparameter tuning in tidymodels.</p>
+<p>Additionally, there are another two function to construct parameter grids that I did cover in this post; <code>grid_max_entropy()</code> and <code>grid_latin_hypercube()</code>. Both of these functions do not have much resources explaining them (or at least I did not found it), however, for those interested, a good start will be the tidymodels <a href="https://dials.tidymodels.org/reference/grid_max_entropy.html">website</a>.</p>
+<p>References:<br />
+<a href="https://www.tmwr.org/grid-search.html" class="uri">https://www.tmwr.org/grid-search.html</a><br />
+<a href="https://www.tmwr.org/iterative-search.html" class="uri">https://www.tmwr.org/iterative-search.html</a><br />
+<a href="https://oliviergimenez.github.io/learning-machine-learning/#" class="uri">https://oliviergimenez.github.io/learning-machine-learning/#</a><br />
+<a href="https://towardsdatascience.com/optimization-techniques-simulated-annealing-d6a4785a1de7" class="uri">https://towardsdatascience.com/optimization-techniques-simulated-annealing-d6a4785a1de7</a></p>
+</div>

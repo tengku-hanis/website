@@ -1,0 +1,467 @@
+---
+title: Hyperparameter tuning in tidymodels
+author: tengku-hanis
+date: '2021-09-05'
+slug: hyperparameter-tuning-in-tidymodels
+categories:
+  - R
+  - Machine Learning
+tags:
+  - tidymodels
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-09-05T14:45:32+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+```{r setup, eval=TRUE, echo=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r, eval=TRUE, echo=FALSE}
+library(tidymodels)
+```
+
+This post will not go very detail in each of the approach of hyperparameter tuning. This post mainly aims to summarize a few things that I studied for the last couple of days.
+Generally, there are two approaches to hyperparameter tuning in tidymodels. 
+
+1) Grid search:   
+-- Regular grid search   
+-- Random grid search   
+2) Iterative search:   
+-- Bayesian optimization  
+-- Simulated annealing  
+
+## Grid search
+
+So, in grid search, we provide the combination of parameters and the algorithm will go through each combination of parameters. There are two types of grid search:
+
+- Regular grid search  
+-- The algorithm will go through each combinations of parameters.
+
+```{r}
+grid_regular(mtry(c(1, 13)), 
+             trees(), 
+             min_n(),
+             levels = 3) # how many from each parameter
+```
+
+
+- Random grid search   
+-- The algorithm will randomly select a number of combination of parameters instead of go through each of them.
+
+```{r}
+grid_random(mtry(c(1, 13)),
+            trees(), 
+            min_n(), 
+            size = 100) # size of parameters combination
+```
+
+By default, tidymodels uses space-filling-design to make sure the combination of parameters are on "equidistance" to each other.
+
+## Iterative search
+
+In iterative search, we need to specify some initial parameters/values to start the search.
+
+- Bayesian optimization   
+-- This algorithm/function will search the next best combination of parameters based on the previous combination of parameters (priori).
+- Simulated annealing    
+-- Generally, this algorithm works relatively similar to bayesian optimization.   
+-- However, as the figure below illustrates this algorithm is able to explore in the worst combination of parameters for a short term (barrier of local search), in order to find the best combination of parameters (global minima). 
+![Simulated annealing](images/sim-anneal.png)
+
+Futher details on iterative search or both methods above can be found  [here](https://www.tmwr.org/iterative-search.html#iterative-search). So, as both iterative methods need a starting parameters, we can actually combine with any of the grid search methods.
+
+## Other methods
+
+By default, if we do not supply any combination of parameters, tidymodels will randomly pick 10 combinations of parameters from the default range of values from the model. Additionally, we can set this values to other values as shown below:
+
+```{r, eval=FALSE, echo=TRUE}
+tune_grid(
+  resamples = dat_cv, # cross validation data set
+  grid = 20,  # 20 combinations of parameters
+  control = control, # some control parameters
+  metrics = metrics # some metrics parameters (roc_auc, etc)
+  )
+```
+
+There are another special cases of grid search; `tune_race_anova()` and `tune_race_win_loss()`. Both of these methods supposed to be more efficient way of grid search. In general, both methods evaluate the tuning parameters on a small initial set. The combination of parameters with a worst performance will be eliminated. Thus, makes them more efficient in grid search. The main difference between these two methods is how the worst combination of parameters are evaluated and eliminated.
+
+## R codes
+
+Load the packages.
+```{r}
+# Packages
+library(tidyverse)
+library(tidymodels)
+library(finetune)
+```
+ 
+We will only use a small chunk of the data for ease of computation.
+```{r}
+# Data
+data(income, package = "kernlab")
+
+# Make data smaller for computation
+set.seed(2021)
+income2 <- 
+  income %>% 
+  filter(INCOME == "[75.000-" | INCOME == "[50.000-75.000)") %>% 
+  slice_sample(n = 600) %>% 
+  mutate(INCOME = fct_drop(INCOME), 
+         INCOME = fct_recode(INCOME, 
+                             rich = "[75.000-",
+                             less_rich = "[50.000-75.000)"), 
+         INCOME = factor(INCOME, ordered = F)) %>% 
+  mutate(across(-INCOME, fct_drop))
+
+# Summary of data
+glimpse(income2)
+
+# Outcome variable
+table(income2$INCOME)
+
+# Missing data
+DataExplorer::plot_missing(income)
+```
+Split the data and create a 10-fold cross validation.
+```{r}
+set.seed(2021)
+dat_index <- initial_split(income2, strata = INCOME)
+dat_train <- training(dat_index)
+dat_test <- testing(dat_index)
+
+## CV
+set.seed(2021)
+dat_cv <- vfold_cv(dat_train, v = 10, repeats = 1, strata = INCOME)
+```
+
+We going to impute the NAs with mode value since all the variable are categorical.
+```{r}
+# Recipe
+dat_rec <- 
+  recipe(INCOME ~ ., data = dat_train) %>% 
+  step_impute_mode(all_predictors()) %>% 
+  step_ordinalscore(AGE, EDUCATION, AREA, HOUSEHOLD.SIZE, UNDER18)
+
+# Model
+rf_mod <- 
+  rand_forest(mtry = tune(),
+              trees = tune(),
+              min_n = tune()) %>% 
+  set_mode("classification") %>% 
+  set_engine("ranger")
+
+# Workflow
+rf_wf <- 
+  workflow() %>% 
+  add_recipe(dat_rec) %>% 
+  add_model(rf_mod)
+```
+
+Parameters for grid search
+```{r}
+# Regular grid
+reg_grid <- grid_regular(mtry(c(1, 13)), 
+                         trees(), 
+                         min_n(), 
+                         levels = 3)
+
+# Random grid
+rand_grid <- grid_random(mtry(c(1, 13)), 
+                         trees(), 
+                         min_n(), 
+                         size = 100)
+```
+
+Tune models using regular grid search. We going to use `doParallel` library to do parallel processing.
+```{r, warning=FALSE, message=FALSE}
+ctrl <- control_grid(save_pred = T,
+                        extract = extract_model)
+measure <- metric_set(roc_auc)  
+
+# Parallel for regular grid
+library(doParallel)
+
+# Create a cluster object and then register: 
+cl <- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+tune_regular <- 
+  rf_wf %>% 
+  tune_grid(
+    resamples = dat_cv, 
+    grid = reg_grid,         
+    control = ctrl, 
+    metrics = measure)
+
+stopCluster(cl)
+```
+
+Result for regular grid search:
+```{r}
+autoplot(tune_regular)
+show_best(tune_regular)
+```
+
+Tune models using random grid search.
+```{r, warning=FALSE, message=FALSE}
+# Parallel for random grid
+# Create a cluster object and then register: 
+cl <- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+tune_random <- 
+  rf_wf %>% 
+  tune_grid(
+    resamples = dat_cv, 
+    grid = rand_grid,         
+    control = ctrl, 
+    metrics = measure)
+
+stopCluster(cl)
+```
+
+Result for random grid search:
+```{r}
+autoplot(tune_random)
+show_best(tune_random)
+```
+
+Random grid search has slightly a better result. Let's if we use this search as a base for iterative search. Firstly, we limit the parameters based on the plot from a random grid search.
+```{r}
+rf_param <- 
+  rf_wf %>% 
+  parameters() %>% 
+  update(mtry = mtry(c(5, 13)), 
+         trees = trees(c(1, 500)), 
+         min_n = min_n(c(5, 30)))
+```
+
+Now we do a bayesian optimization.
+```{r, warning=FALSE, message=FALSE}
+# Parallel for bayesian optimization
+# Create a cluster object and then register: 
+cl <- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+bayes_tune <-  
+  rf_wf %>% 
+  tune_bayes(    
+    resamples = dat_cv,
+    param_info = rf_param,
+    iter = 60,
+    initial = tune_random, # result from random grid search        
+    control = control_bayes(no_improve = 30, verbose = T, save_pred = T), 
+    metrics = measure)
+
+stopCluster(cl)
+```
+
+Result for bayesian optimization.
+```{r}
+autoplot(bayes_tune, "performance")
+show_best(bayes_tune)
+```
+
+We get a slightly better result from bayesian optimization. I will not do a simulated annealing approach since I get an error, though I am not sure why.
+
+Lastly, we do a race anova.
+```{r, warning=FALSE, message=FALSE}
+# Parallel for race anova
+# Create a cluster object and then register: 
+cl <- makePSOCKcluster(4)
+registerDoParallel(cl)
+
+# Run tune
+set.seed(2021)
+tune_efficient <- 
+  rf_wf %>% 
+  tune_race_anova(
+    resamples = dat_cv, 
+    grid = rand_grid,         
+    control = control_race(verbose_elim = T, save_pred = T), 
+    metrics = measure)
+
+stopCluster(cl)
+```
+
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+detach("package:doParallel", character.only = T)
+unregister_dopar <- function() {
+  env <- foreach:::.foreachGlobals
+  rm(list=ls(name=env), pos=env)
+}
+unregister_dopar()
+```
+
+We get a relatively similar result to random grid search but with faster computation. 
+```{r}
+autoplot(tune_efficient)
+show_best(tune_efficient)
+```
+
+We can also compare ROCs of all approaches. All approaches looks more or less similar.
+<details>
+  <summary>Show code</summary>
+```{r, eval=FALSE, echo=TRUE}
+# regular grid
+rf_reg <- 
+  tune_regular %>% 
+  select_best(metric = "roc_auc")
+
+reg_auc <- 
+  tune_regular %>% 
+  collect_predictions(parameters = rf_reg) %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "regular_grid")
+
+# random grid
+rf_rand <- 
+  tune_random %>% 
+  select_best(metric = "roc_auc")
+
+rand_auc <- 
+  tune_random %>% 
+  collect_predictions(parameters = rf_rand) %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "random_grid")
+
+# bayes
+rf_bayes <- 
+  bayes_tune %>% 
+  select_best(metric = "roc_auc")
+
+bayes_auc <- 
+  bayes_tune %>% 
+  collect_predictions(parameters = rf_bayes) %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "bayes")
+
+# race_anova
+rf_eff <- 
+  tune_efficient %>% 
+  select_best(metric = "roc_auc")
+
+eff_auc <- 
+  tune_efficient %>% 
+  collect_predictions(parameters = rf_eff) %>%
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "race_anova")
+
+# Compare ROC between all tuning approach
+bind_rows(reg_auc, rand_auc, bayes_auc, eff_auc) %>% 
+  ggplot(aes(x = 1 - specificity, y = sensitivity, col = model)) + 
+  geom_path(lwd = 1.5, alpha = 0.8) +
+  geom_abline(lty = 3) + 
+  coord_equal() + 
+  scale_color_viridis_d(option = "plasma", end = .6) +
+  theme_bw()
+```
+</details>
+
+```{r, eval=TRUE, echo=FALSE}
+# regular grid
+rf_reg <- 
+  tune_regular %>% 
+  select_best(metric = "roc_auc")
+
+reg_auc <- 
+  tune_regular %>% 
+  collect_predictions(parameters = rf_reg) %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "regular_grid")
+
+# random grid
+rf_rand <- 
+  tune_random %>% 
+  select_best(metric = "roc_auc")
+
+rand_auc <- 
+  tune_random %>% 
+  collect_predictions(parameters = rf_rand) %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "random_grid")
+
+# bayes
+rf_bayes <- 
+  bayes_tune %>% 
+  select_best(metric = "roc_auc")
+
+bayes_auc <- 
+  bayes_tune %>% 
+  collect_predictions(parameters = rf_bayes) %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "bayes")
+
+# race_anova
+rf_eff <- 
+  tune_efficient %>% 
+  select_best(metric = "roc_auc")
+
+eff_auc <- 
+  tune_efficient %>% 
+  collect_predictions(parameters = rf_eff) %>%
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  mutate(model = "race_anova")
+
+# Compare ROC between all tuning approach
+bind_rows(reg_auc, rand_auc, bayes_auc, eff_auc) %>% 
+  ggplot(aes(x = 1 - specificity, y = sensitivity, col = model)) + 
+  geom_path(lwd = 1.5, alpha = 0.8) +
+  geom_abline(lty = 3) + 
+  coord_equal() + 
+  scale_color_viridis_d(option = "plasma", end = .6) +
+  theme_bw()
+```
+
+Finally, we fit our best model (bayesian optimization) to the testing data.
+```{r}
+# Finalize workflow
+best_rf <-
+  select_best(bayes_tune, "roc_auc")
+
+final_wf <- 
+  rf_wf %>% 
+  finalize_workflow(best_rf)
+final_wf
+
+# Last fit
+test_fit <- 
+  final_wf %>%
+  last_fit(dat_index) 
+
+# Evaluation metrics 
+test_fit %>%
+  collect_metrics()
+
+test_fit %>%
+  collect_predictions() %>% 
+  roc_curve(INCOME, .pred_less_rich) %>% 
+  autoplot()
+```
+
+## Conclusion
+
+The result is not that good. Our AUC is quite lower. However, we did use only about 8% from the overall data. Nonetheless, the aim of this post is to cover an overview of hyperparameter tuning in tidymodels.
+
+Additionally, there are another two function to construct parameter grids that I did cover in this post; `grid_max_entropy()` and `grid_latin_hypercube()`. Both of these functions do not have much resources explaining them (or at least I did not found it), however, for those interested, a good start will be the tidymodels [website](https://dials.tidymodels.org/reference/grid_max_entropy.html).
+
+
+References:   
+https://www.tmwr.org/grid-search.html   
+https://www.tmwr.org/iterative-search.html   
+https://oliviergimenez.github.io/learning-machine-learning/#    
+https://towardsdatascience.com/optimization-techniques-simulated-annealing-d6a4785a1de7
