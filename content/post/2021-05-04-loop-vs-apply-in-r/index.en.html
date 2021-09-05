@@ -41,7 +41,7 @@ for (i in seq_along(xlist)) {
 
 proc.time() - ptm #-- stop the clock (time in seconds)</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.38    0.00    0.38</code></pre>
+##    0.38    0.00    0.37</code></pre>
 <p>Now, using <code>lapply()</code> function.</p>
 <pre class="r"><code>ptm &lt;- proc.time() #-- start the clock
 
@@ -49,5 +49,5 @@ mean_apply &lt;- lapply(xlist, mean)
 
 proc.time() - ptm #-- stop the clock</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.38    0.00    0.37</code></pre>
+##    0.34    0.00    0.35</code></pre>
 <p>So, <code>lapply()</code> is a little bit faster. Obviously, with a very big dataset and a more complicated objective, <code>lapply()</code> is the right choice, but for a “normal” size dataset, the use of any of the two functions probably do not make much different.</p>

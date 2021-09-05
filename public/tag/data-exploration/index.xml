@@ -47,9 +47,9 @@ heartfailure[sample(seq(nrow(heartfailure)), 20), &amp;quot;age&amp;quot;] &amp;
 heartfailure[sample(seq(nrow(heartfailure)), 10), &amp;quot;sex&amp;quot;] &amp;lt;- NA&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;1) dataMaid&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dataMaid)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;One of the very useful function in dataMaid is makeDataReport which give report on the data. By default it will give a pdf output, but other output option such as word and html can be set.&lt;/p&gt;
+&lt;p&gt;One of the very useful function in dataMaid is &lt;code&gt;makeDataReport()&lt;/code&gt; which give report on the data. By default it will give a pdf output, but other output options such as word and html are also available.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;makeDataReport(heartfailure, replace = T)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This is the output exampple in &lt;a href=&#34;https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf&#34;&gt;pdf&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is the output example in &lt;a href=&#34;https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf&#34;&gt;pdf&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;2) DataExplorer&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(DataExplorer)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;General visualization:&lt;/p&gt;
@@ -105,7 +105,13 @@ heartfailure %&amp;gt;%
 &lt;p&gt;Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a &lt;a href=&#34;https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf&#34;&gt;look&lt;/a&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;heartfailure %&amp;gt;% 
   eda_paged_report(target = &amp;quot;death_event&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;4) outliertree&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4) skimr&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;skimr package, especially &lt;code&gt;skim()&lt;/code&gt; function did not display correctly when using the blogdown. Hence, I included the screenshot of the result that we will typically see in the R console.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(skimr)
+skim(heartfailure) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;images/black.png&#34; style=&#34;width:100.0%;height:100.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;So, from skimr we can get an overview that includes the histogram for numerical data as well.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5) outliertree&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read &lt;a href=&#34;https://arxiv.org/abs/2001.00636&#34;&gt;further&lt;/a&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(outliertree)
 outlier.tree(heartfailure)&lt;/code&gt;&lt;/pre&gt;
@@ -131,10 +137,10 @@ outlier.tree(heartfailure)&lt;/code&gt;&lt;/pre&gt;
 hist(heartfailure$creatinine, breaks = 50, col = &amp;quot;navy&amp;quot;,
      xlab = &amp;quot;Creatinine&amp;quot;, 
      main = &amp;quot;Creatinine level&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# boxplot
 boxplot(heartfailure$creatinine)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-18-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-19-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Probably in the future I will delve into more detail about outlier detection and any awesome packages in R related to it. If I ever written any post about it, I will link it here.&lt;/p&gt;
 &lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;

@@ -825,9 +825,9 @@ heartfailure[sample(seq(nrow(heartfailure)), 20), &quot;age&quot;] &lt;- NA
 heartfailure[sample(seq(nrow(heartfailure)), 10), &quot;sex&quot;] &lt;- NA</code></pre>
 <p><strong>1) dataMaid</strong></p>
 <pre class="r"><code>library(dataMaid)</code></pre>
-<p>One of the very useful function in dataMaid is makeDataReport which give report on the data. By default it will give a pdf output, but other output option such as word and html can be set.</p>
+<p>One of the very useful function in dataMaid is <code>makeDataReport()</code> which give report on the data. By default it will give a pdf output, but other output options such as word and html are also available.</p>
 <pre class="r"><code>makeDataReport(heartfailure, replace = T)</code></pre>
-<p>This is the output exampple in <a href="https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf">pdf</a>.</p>
+<p>This is the output example in <a href="https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf">pdf</a>.</p>
 <p><strong>2) DataExplorer</strong></p>
 <pre class="r"><code>library(DataExplorer)</code></pre>
 <p>General visualization:</p>
@@ -883,7 +883,13 @@ heartfailure %&gt;%
 <p>Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a <a href="https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf">look</a>.</p>
 <pre class="r"><code>heartfailure %&gt;% 
   eda_paged_report(target = &quot;death_event&quot;)</code></pre>
-<p><strong>4) outliertree</strong></p>
+<p><strong>4) skimr</strong></p>
+<p>skimr package, especially <code>skim()</code> function did not display correctly when using the blogdown. Hence, I included the screenshot of the result that we will typically see in the R console.</p>
+<pre class="r"><code>library(skimr)
+skim(heartfailure) </code></pre>
+<p><img src="images/black.png" style="width:100.0%;height:100.0%" /></p>
+<p>So, from skimr we can get an overview that includes the histogram for numerical data as well.</p>
+<p><strong>5) outliertree</strong></p>
 <p>This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read <a href="https://arxiv.org/abs/2001.00636">further</a>.</p>
 <pre class="r"><code>library(outliertree)
 outlier.tree(heartfailure)</code></pre>
@@ -909,10 +915,10 @@ outlier.tree(heartfailure)</code></pre>
 hist(heartfailure$creatinine, breaks = 50, col = &quot;navy&quot;,
      xlab = &quot;Creatinine&quot;, 
      main = &quot;Creatinine level&quot;)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <pre class="r"><code># boxplot
 boxplot(heartfailure$creatinine)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <p>Probably in the future I will delve into more detail about outlier detection and any awesome packages in R related to it. If I ever written any post about it, I will link it here.</p>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
@@ -1160,9 +1166,9 @@ boxplot(heartfailure$creatinine)</code></pre>
       
       <li><a href="/post/exponentially-weighted-average-in-deep-learning/">Exponentially Weighted Average in Deep Learning</a></li>
       
-      <li><a href="/post/loop-vs-apply-in-r/">Loop vs apply in R</a></li>
-      
       <li><a href="/post/2021-05-04-base-r-vs-tidyverse/">Base R vs tidyverse</a></li>
+      
+      <li><a href="/post/loop-vs-apply-in-r/">Loop vs apply in R</a></li>
       
     </ul>
   </div>
@@ -1181,16 +1187,6 @@ boxplot(heartfailure$creatinine)</code></pre>
     
     <div class="container">
       <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">
