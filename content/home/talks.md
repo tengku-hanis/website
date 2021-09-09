@@ -66,6 +66,6 @@ item:
     See [slide](talks/rconf2020/confeRence2020.html)
   organization: Malaysian R User Group (MyRUG)
   organization_url: https://www.facebook.com/rusergroupmalaysia/
-  title: Talks - An introduction to relative analysis using R
+  title: Talks - An introduction to relative survival analysis using R
   url: ""
 ---
