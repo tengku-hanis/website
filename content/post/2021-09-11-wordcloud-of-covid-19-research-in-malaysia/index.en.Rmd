@@ -179,6 +179,7 @@ wordcloud2(covid_wc$index_keywords%>%
              mutate(frequency = round(frequency)))
 ```
 
+There are some weird symbols in the plot and the wordcloud, it's better remove to it. However, I am to lazy to remove it, so I will leave it `r emo::ji("haha")`.
 
 ## Conclusion
 
