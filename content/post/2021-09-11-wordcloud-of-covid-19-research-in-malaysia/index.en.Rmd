@@ -1,0 +1,185 @@
+---
+title: Wordcloud of COVID-19 research in Malaysia
+author: tengku-hanis
+date: '2021-09-11'
+slug: wordcloud-of-covid-19-research-in-malaysia
+categories:
+  - R
+  - text analysis
+tags:
+  - text analysis
+  - wordcloud
+  - COVID-19
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-09-11T11:08:50+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+```{r setup, eval=TRUE, echo=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+Let's see how much research has been done in term of COVID-19 in Malaysia. In this analysis, we are going to use Scopus database to access the relevant research or papers. In this analysis we are going to use 4 specific parts of the scientific paper:
+
+1) Title
+2) Abstract
+3) Author's keywords
+4) Scopus's keywords
+
+So, the analysis will be applied separately on these 4 parts of the papers. Also, we are going to use map (equivalent to loop) since the flow of the analysis is similar.
+
+Load the related packages. The main package is `quanteda`.
+```{r}
+library(tidyverse)
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(patchwork)
+library(wordcloud2)
+```
+
+I have uploaded the data that I downloaded from Scopus database into my GitHub. 
+```{r}
+# Read data from GitHub repo
+df <- read.csv("https://raw.githubusercontent.com/tengku-hanis/scopus-data/main/covid-malaysia.csv") %>% 
+  janitor::clean_names() %>% 
+  rename(title =i_title)
+```
+
+First, we need to tokenize the sentence. In other words, we break down the sentences into words.
+```{r}
+# Tokenize
+tok_list <- 
+  df %>% 
+  select(title, abstract, author_keywords, index_keywords) %>% 
+  map(tokens, 
+      remove_punct = T, 
+      remove_numbers = T,               
+      remove_symbols = T)
+```
+
+Next, we remove words that are not meaningful such a, the, etc. These words are known as stop words.
+```{r}
+# Remove stop words
+nostop_toks <- 
+  tok_list %>% 
+  map(tokens_select, 
+      c(tidytext::stop_words$word, stopwords("en")), 
+      selection = "remove")
+```
+
+Then, we create a document feature matrix (DFM). Basically DFM is a matrix that represent the frequency of each word (feature) in each document (in our case, paper or manuscript). Another name for DFM is document term matrix (DTM). `quanteda` uses the term DFM, some other packages uses the term DTM.
+
+Additionally, we also apply term frequency-inverse document frequency (TF-IDF) metrics. In scientific papers, the words such as determine, conclusion, introduction, etc are very frequent, and these words are not meaningful as well. Instead of removing one by one manually, we use TF-IDF. So, TF-IDF basically remove the words that are too common, thus we get only the relevant or important words.
+```{r}
+# Create DFM and apply tf_idf
+covid_dfm_list <- 
+  nostop_toks %>% 
+  map(dfm) %>% 
+  map(dfm_tfidf)
+```
+
+Once, we have our words (tokens), we can create a plot of most relevant terms based on TF-IDF.
+<details>
+  <summary>Show code</summary>
+```{r}
+# Plot top features
+A <- 
+  covid_dfm_list$title %>% 
+  textstat_frequency(n = 15, force = T) %>% 
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) +
+  geom_point(size = 4, colour = "blueviolet") +
+  coord_flip() +
+  labs(x = NULL, y = "Frequency (tf-idf)") +
+  theme_minimal() +
+  labs(title = "Top relevant terms for covid research based on the title")
+
+B <- 
+  covid_dfm_list$abstract %>% 
+  textstat_frequency(n = 15, force = T) %>% 
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) +
+  geom_point(size = 4, colour = "darkolivegreen3") +
+  coord_flip() +
+  labs(x = NULL, y = "Frequency (tf-idf)") +
+  theme_minimal() +
+  labs(title = "Top relevant terms for covid research based on the abstract")
+
+C <- 
+  covid_dfm_list$author_keywords %>% 
+  textstat_frequency(n = 15, force = T) %>% 
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) +
+  geom_point(size = 4, colour = "deepskyblue2") +
+  coord_flip() +
+  labs(x = NULL, y = "Frequency (tf-idf)") +
+  theme_minimal() +
+  labs(title = "Top relevant terms for covid research based on the author's keywords")
+
+D <- 
+  covid_dfm_list$index_keywords %>% 
+  textstat_frequency(n = 15, force = T) %>% 
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) +
+  geom_point(size = 4, colour = "aquamarine2") +
+  coord_flip() +
+  labs(x = NULL, y = "Frequency (tf-idf)") +
+  theme_minimal() +
+  labs(title = "Top relevant terms for covid research based on the Scopus's keywords")
+```
+</details>
+
+These are the plots of the most relevant terms in COVID-19 research in Malaysia.
+```{r, eval=TRUE, echo=FALSE}
+A
+B
+C
+D
+```
+
+## Wordcloud
+
+Finally, we can make our wordcloud, but we need to convert our DFM to data frame. Also, we are going to round the value of TF-IDF and limit to top 1000 terms only.
+
+```{r}
+covid_wc <- 
+  covid_dfm_list %>% 
+  map(textstat_frequency, force = T)
+```
+
+Actually, `quanteda` itself is able to produce a wordcloud. However, the wordcloud from `wordcloud2` is more interactive and we can see the value of TF-IDF if we click the words.
+
+```{r, fig.cap="Top 1000 terms extracted from the title", fig.align='center'}
+wordcloud2(covid_wc$title%>% 
+             slice(1:1000) %>% 
+             mutate(frequency = round(frequency)))
+```
+
+
+```{r, fig.cap="Top 1000 terms extracted from the abstract", fig.align='center'}
+wordcloud2(covid_wc$abstract %>% 
+             slice(1:1000) %>% 
+             mutate(frequency = round(frequency)))
+```
+
+
+```{r, fig.cap="Top 1000 terms extracted from the author's keywords", fig.align='center'}
+wordcloud2(covid_wc$author_keywords%>% 
+             slice(1:1000) %>% 
+             mutate(frequency = round(frequency)))
+```
+
+
+```{r, fig.cap="Top 1000 terms extracted from the Scopus's keywords", fig.align='center'}
+wordcloud2(covid_wc$index_keywords%>% 
+             slice(1:1000) %>% 
+             mutate(frequency = round(frequency)))
+```
+
+
+## Conclusion
+
+These are some of the explorative text analysis that can be done. These relevant terms may provide some insight to our current research of COVID-19 in Malaysia. However, by no means its fully reflect our current research.
