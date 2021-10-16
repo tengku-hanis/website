@@ -35,6 +35,9 @@ social:
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/
+- icon: twitter
+  icon_pack: fab
+  link: https://twitter.com/tmhanis
 superuser: true
 title: Tengku Muhammad Hanis
 user_groups:
