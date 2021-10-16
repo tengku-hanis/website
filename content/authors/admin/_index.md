@@ -23,9 +23,9 @@ organizations:
   url: https://www.usm.my/
 role: PhD student (Public Health Epidemiology)
 social:
-- icon: envelope
-  icon_pack: fas
-  link: tengkuhanismokhtar@gmail.com
+- icon: researchgate
+  icon_pack: fab
+  link: https://www.researchgate.net/profile/Tengku-Muhammad-Hanis
 - icon: graduation-cap
   icon_pack: fas
   link: https://scholar.google.com/citations?user=VV2bHQcAAAAJ&hl=en
