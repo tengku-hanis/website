@@ -15,7 +15,7 @@ baseurl = "https://tengkuhanis.netlify.app/"
 
 # Enter a copyright notice to display in the site footer.
 # To display a copyright symbol, type `&copy;`. For current year, type `{year}`.
-copyright = "&copy;Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)"
+copyright = "&copy;Tengku Hanis 2020-{year} Made with [blogdown](https://github.com/rstudio/blogdown)"
 
 ############################
 ## Advanced options below ##

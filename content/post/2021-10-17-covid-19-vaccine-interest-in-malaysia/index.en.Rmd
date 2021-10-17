@@ -1,0 +1,84 @@
+---
+title: COVID-19 vaccine interest in Malaysia
+author: tengku-hanis
+date: '2021-10-17'
+slug: covid-19-vaccine-interest-in-malaysia
+categories:
+  - R
+  - text analysis
+tags:
+  - Vaccine
+  - text analysis
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-10-17T12:36:00+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+We are going to do a basic google trends search using `gtrendsR` package and do some plotting with `ggplot2`.
+
+These are the required packages.
+```{r}
+library(gtrendsR)
+library(tidyverse)
+```
+
+Run `gtrends()` function to search our keywords of interest (i.e; type of vaccine). So far, we only used [4 type of vaccines](https://covidnow.moh.gov.my/vaccinations/) in Malaysia.
+```{r}
+vaccine <- gtrends(c("pfizer", "astrazeneca", "sinovac", "cansino"), geo = "MY")
+```
+
+Then, plot our keywords.
+```{r}
+plot(vaccine)
+```
+Probably, it's better if we filter our date to when the COVID-19 pandemic started, which is around March 2020.
+```{r}
+vaccine$interest_over_time %>% 
+  group_by(keyword) %>% 
+  filter(hits != "<1" & date > as.Date("2020-03-01")) %>% 
+  mutate(hits = as.numeric(hits), 
+         date = as.Date(date)) %>% 
+  ggplot() + 
+  geom_line(aes(x = date, y = hits, color = keyword), size = 0.8) +
+  theme_minimal() +
+  labs(title = "COVID-19 vaccine interest in Malaysia", y = "Search hits", x = "Date") +
+  scale_x_date(date_breaks = "4 month")
+```
+
+So, AstraZeneca vaccine is of high interest, probably due to infamous blood clotting issue. Next, we can also get the search keywords based on the states.
+```{r}
+vaccine$interest_by_region %>% 
+  group_by(location) %>% 
+  ggplot(aes(location, hits, fill = keyword)) +
+  geom_col(alpha = 0.8) +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_viridis_d() +
+  labs(title = "COVID-19 vaccine interest in Malaysia by states", y = "Search hits", x = "")
+```
+
+Lastly, we can plot the search keywords based on the city.
+```{r}
+vaccine$interest_by_city %>% 
+  group_by(location) %>% 
+  drop_na() %>% 
+  ggplot(aes(location, hits, fill = keyword)) +
+  geom_col(alpha = 0.8) +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_viridis_d() +
+  labs(title = "COVID-19 vaccine interest in Malaysia by cities", y = "Search hits", x = "")
+```
+
+`gtrendsR` with just a bit of plots certainly very useful if we want to gauge certain issues in the community. 
