@@ -27,11 +27,22 @@ date_format: January 2, 2006
 item:
 - certificate_url: ""
   date_end: ""
+  date_start: "2021-10-18"
+  description: |- 
+    Download [material](https://github.com/tengku-hanis/MA-PPSP-USM)  
+    See [slide](https://github.com/tengku-hanis/MA-PPSP-USM/blob/main/Meta-analysis%20(Hands-on).pdf)
+  organization: Department of medical microbiology and parasitology, School of medical sciences, USM
+  organization_url: ""
+  title: Workshop - Sytematic review and meta-analysis using RStudio
+  url: ""
+  
+- certificate_url: ""
+  date_end: ""
   date_start: "2021-08-18"
   description: |- 
     Download [material](https://github.com/tengku-hanis/basic-MA-biostat)  
     See [slide](https://github.com/tengku-hanis/basic-MA-biostat/blob/main/Slide-basic-MA.pdf)
-  organization: Unit of biostatistics and research methodology, USM
+  organization: Unit of biostatistics and research methodology, School of medical sciences, USM
   organization_url: ""
   title: Webinar - Basic of meta-analysis using R
   url: ""
