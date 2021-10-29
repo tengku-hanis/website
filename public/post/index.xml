@@ -5,12 +5,730 @@
     <link>https://tengkuhanis.netlify.app/post/</link>
       <atom:link href="https://tengkuhanis.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 17 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 29 Oct 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Posts</title>
       <link>https://tengkuhanis.netlify.app/post/</link>
     </image>
+    
+    <item>
+      <title>A short note on multiple imputation</title>
+      <link>https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/</link>
+      <pubDate>Fri, 29 Oct 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;background&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Background&lt;/h2&gt;
+&lt;p&gt;Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;MCAR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Missing Completely At Random&lt;/li&gt;
+&lt;li&gt;Example; some of the observations are missing due to lost of records during the flood&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;MAR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Missing At Random&lt;/li&gt;
+&lt;li&gt;Example; variable income are missing as some participant refuse to give their salary information which they deems as very personal information&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;MNAR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Missing Not At Random&lt;/li&gt;
+&lt;li&gt;Example; weight variable is missing for morbidly obese participants since the scale is unable to weight them&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Out of the 3 types above, the most problematic is MNAR, though there exist methods to deal with this type. For example, the &lt;a href=&#34;https://cran.r-project.org/web/packages/miceMNAR/miceMNAR.pdf&#34;&gt;miceMNAR&lt;/a&gt; package in R.&lt;/p&gt;
+&lt;p&gt;There are several approaches in handling missing data:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;Listwise-deletion&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Best approach if the amount of missingness is very small&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Simple imputation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Using mean/median/mode imputation&lt;/li&gt;
+&lt;li&gt;This approach is not advisable as it leads to bias due to reduce variance, though the mean is not affected&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Single imputation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simple imputation above is considered as single imputation as well&lt;/li&gt;
+&lt;li&gt;This approach ignores uncertainty of the imputation and almost always underestimate the variance&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Multiple imputation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A bit advanced and it cover the limitation of single imputation approach&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;However, the main assumption for any imputation methods is the missingness should be MCAR or MAR.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;multiple-imputation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Multiple imputation&lt;/h2&gt;
+&lt;p&gt;In short, there are 2 approaches of multiple imputation implemented by packages in R:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;Joint multivariate normal distribution multiple imputation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The main assumption for this method is that the observed data follows a multivariate normal distribution&lt;/li&gt;
+&lt;li&gt;A violation of the assumption produces incorrect values&lt;/li&gt;
+&lt;li&gt;Some packages that implemented this method: &lt;code&gt;Amelia&lt;/code&gt; and &lt;code&gt;norm&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Conditional multiple imputation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Some package that implemented this method: &lt;code&gt;mice&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;example&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example&lt;/h2&gt;
+&lt;p&gt;In &lt;code&gt;mice&lt;/code&gt; package, the general steps are:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;mice()&lt;/code&gt; - impute the NAs&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;with()&lt;/code&gt; - run the analysis (lm, glm, etc)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pool()&lt;/code&gt; - pool the results&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These are the required packages.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(mice)
+library(VIM)
+#library(missForest) we want to use prodNA() function from this package
+library(naniar)
+library(niceFunction) #install from github (https://github.com/tengku-hanis/niceFunction)
+library(dplyr)
+library(gtsummary)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We going to produce some NAs randomly.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(123)
+dat &amp;lt;- iris %&amp;gt;% 
+  select(-Sepal.Length)%&amp;gt;% 
+  missForest::prodNA(0.2) %&amp;gt;%  # randomly insert 20% NAs
+  mutate(Sepal.Length = iris$Sepal.Length)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Explore the NAs and the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;naniar::miss_var_summary(dat)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 3
+##   variable     n_miss pct_miss
+##   &amp;lt;chr&amp;gt;         &amp;lt;int&amp;gt;    &amp;lt;dbl&amp;gt;
+## 1 Petal.Length     38     25.3
+## 2 Sepal.Width      33     22  
+## 3 Species          28     18.7
+## 4 Petal.Width      21     14  
+## 5 Sepal.Length      0      0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Some references recommend to remove variables with more than 50% NAs. However, we purposely introduce 20% NAs into our data.&lt;/p&gt;
+&lt;p&gt;As a guideline, we can check for MCAR for our NAs.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;naniar::mcar_test(dat) #p &amp;gt; 0.05, MCAR is indicated&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 4
+##   statistic    df p.value missing.patterns
+##       &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;            &amp;lt;int&amp;gt;
+## 1      38.8    40   0.522               14&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next step is to evaluate the pattern of missingness in our data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;md.pattern(dat, rotate.names = T, plot = T) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;##    Sepal.Length Petal.Width Species Sepal.Width Petal.Length    
+## 64            1           1       1           1            1   0
+## 21            1           1       1           1            0   1
+## 15            1           1       1           0            1   1
+## 3             1           1       1           0            0   2
+## 14            1           1       0           1            1   1
+## 4             1           1       0           1            0   2
+## 6             1           1       0           0            1   2
+## 2             1           1       0           0            0   3
+## 7             1           0       1           1            1   1
+## 6             1           0       1           1            0   2
+## 4             1           0       1           0            1   2
+## 2             1           0       1           0            0   3
+## 1             1           0       0           1            1   2
+## 1             1           0       0           0            1   3
+##               0          21      28          33           38 120&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;aggr(dat, prop = F, numbers = T) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We have 13 patterns (numbers on the right) of NAs in our data. These 2 functions work well with small dataset, but with a larger dataset (and with lot more pattern of NAs), it’s probably quite difficult to assess the pattern.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;matrixplot()&lt;/code&gt; probably more appropriate for a larger dataset.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;matrixplot(dat)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In terms of the missingness pattern, we can also assess the distribution of NAs of Sepal.Width is dependent on the variable Sepal.Length.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;niceFunction::histNA_byVar(dat, Sepal.Width, Sepal.Length)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we can see the distribution and range of the histograms of the NAs (True) and non-NAs (False) is quite similar. Thus, this may indicated that Sepal.Width is at least MAR. However, by right we should do this for each pair of numerical variable before jumping into any conclusion.&lt;/p&gt;
+&lt;p&gt;Another good thing to assess is the correlation.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Data with 1 = NAs, 0 = non-NAs
+x &amp;lt;- as.data.frame(abs(is.na(dat))) %&amp;gt;% 
+  dplyr::select(-Sepal.Length) #pick variable with NAs only&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Firstly, the correlation between the variables with missing data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cor(x) %&amp;gt;% 
+  corrplot::corrplot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;No high correlation among variable with NAs. Secondly, let’s see correlation between NAs in a variable and the observed values of other variables.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cor(dat %&amp;gt;% mutate(Species = as.numeric(Species)), x, use = &amp;quot;pairwise.complete.obs&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##               Sepal.Width Petal.Length  Petal.Width     Species
+## Sepal.Width            NA  0.049158733 -0.065917718  0.09948263
+## Petal.Length  0.042075695           NA -0.004572405 -0.17265919
+## Petal.Width   0.096195805 -0.003320601           NA -0.11024288
+## Species       0.045849046 -0.104143925 -0.081055707          NA
+## Sepal.Length -0.006435044 -0.052871701 -0.091024799 -0.08527514&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, there is no high correlation. But, if we were to interpret this correlation matrix; the rows are the observed variables and the columns represent the missingness. For example, missing values of Sepal.Width is more likely to be missing for observations with a high value of Petal.Width (r = 0.05 indicates it’s highly unlikely though).&lt;/p&gt;
+&lt;p&gt;Now, we can do multiple imputation. These are the methods in the &lt;code&gt;mice&lt;/code&gt; package:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;methods(mice)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] mice.impute.2l.bin       mice.impute.2l.lmer      mice.impute.2l.norm     
+##  [4] mice.impute.2l.pan       mice.impute.2lonly.mean  mice.impute.2lonly.norm 
+##  [7] mice.impute.2lonly.pmm   mice.impute.cart         mice.impute.jomoImpute  
+## [10] mice.impute.lda          mice.impute.logreg       mice.impute.logreg.boot 
+## [13] mice.impute.mean         mice.impute.midastouch   mice.impute.mnar.logreg 
+## [16] mice.impute.mnar.norm    mice.impute.norm         mice.impute.norm.boot   
+## [19] mice.impute.norm.nob     mice.impute.norm.predict mice.impute.panImpute   
+## [22] mice.impute.passive      mice.impute.pmm          mice.impute.polr        
+## [25] mice.impute.polyreg      mice.impute.quadratic    mice.impute.rf          
+## [28] mice.impute.ri           mice.impute.sample       mice.mids               
+## [31] mice.theme              
+## see &amp;#39;?methods&amp;#39; for accessing help and source code&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By default, mice uses:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;pmm (predictive mean matching) for numeric data&lt;/li&gt;
+&lt;li&gt;logreg (logistic regression imputation) for binary data, factor with 2 levels&lt;/li&gt;
+&lt;li&gt;polyreg (polytomous regression imputation) for unordered categorical data (factor &amp;gt; 2 levels)&lt;/li&gt;
+&lt;li&gt;polr (proportional odds model) for ordered, &amp;gt; 2 levels&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;let’s run the mice function to our data:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp &amp;lt;- mice(dat, m = 5, seed=1234, maxit = 5, printFlag = F) 
+imp&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Class: mids
+## Number of multiple imputations:  5 
+## Imputation methods:
+##  Sepal.Width Petal.Length  Petal.Width      Species Sepal.Length 
+##        &amp;quot;pmm&amp;quot;        &amp;quot;pmm&amp;quot;        &amp;quot;pmm&amp;quot;    &amp;quot;polyreg&amp;quot;           &amp;quot;&amp;quot; 
+## PredictorMatrix:
+##              Sepal.Width Petal.Length Petal.Width Species Sepal.Length
+## Sepal.Width            0            1           1       1            1
+## Petal.Length           1            0           1       1            1
+## Petal.Width            1            1           0       1            1
+## Species                1            1           1       0            1
+## Sepal.Length           1            1           1       1            0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we can do some diagnostic assessment on the imputed data. This is our imputed data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp$imp$Sepal.Width %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      1   2   3   4   5
+## 5  3.4 3.4 4.1 3.1 3.5
+## 13 3.2 3.1 3.2 3.6 3.1
+## 14 3.1 3.2 2.9 3.4 3.0
+## 23 3.6 3.2 3.0 3.8 3.1
+## 26 4.1 3.0 3.1 3.5 3.0
+## 34 3.4 3.7 3.7 3.4 4.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;One important thing to check is the convergence. We are going increase the number of iteration for this.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp_conv &amp;lt;- mice.mids(imp, maxit = 30, printFlag = F)
+plot(imp_conv)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The line in the plot should be intermingled and no obvious trend should be observed. Our plot above indicates a convergence.&lt;/p&gt;
+&lt;p&gt;We can also assess density plot of imputed data and the observed data. Blue color is the observed data and red color is the imputed data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;densityplot(imp)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can further assess variable Sepal.Width.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;densityplot(imp, ~ Sepal.Width | .imp)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, we can assess the strip plot. The imputed observations (red color) should not distributed too far from the observed data (blue color).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stripplot(imp)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;So, once we finish the diagnostic checking, we can actually go back and change the imputation method for Sepal.Width, since the its distribution changes quite differently at each iteration. But, we are not going to do that, instead we are going to do the analysis.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# run regression
+fit &amp;lt;- with(imp, lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species))
+# pool all imputed set
+pooled &amp;lt;- pool(fit) 
+summary(pooled)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                term   estimate  std.error statistic       df      p.value
+## 1       (Intercept)  2.2008307 0.34577321  6.364954 29.02484 5.859560e-07
+## 2       Sepal.Width  0.5233500 0.09717217  5.385801 50.89918 1.854832e-06
+## 3      Petal.Length  0.7409159 0.09020153  8.214006 12.73722 1.921415e-06
+## 4       Petal.Width -0.3623895 0.18562168 -1.952301 22.34517 6.354332e-02
+## 5 Speciesversicolor -0.3891112 0.28166528 -1.381467 15.07547 1.872683e-01
+## 6  Speciesvirginica -0.5237106 0.42629920 -1.228505 10.82804 2.452897e-01&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Since we have the original dataset without the NAs, we going to compare them.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mimpute &amp;lt;- 
+  fit %&amp;gt;% 
+  tbl_regression() #with mice
+
+noimpute &amp;lt;- 
+  dat %&amp;gt;% 
+  lm(Sepal.Length ~ ., data = .) %&amp;gt;% 
+  tbl_regression() #w/o mice
+
+original &amp;lt;- 
+  iris %&amp;gt;% 
+  lm(Sepal.Length ~ ., data = .) %&amp;gt;% 
+  tbl_regression() #original data
+
+tbl_merge(
+  tbls = list(mimpute, noimpute, original), 
+  tab_spanner = c(&amp;quot;With MICE&amp;quot;, &amp;quot;Without MICE&amp;quot;, &amp;quot;Original data&amp;quot;)
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;kofvwjwgme&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#kofvwjwgme .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kofvwjwgme .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kofvwjwgme .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kofvwjwgme .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kofvwjwgme .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kofvwjwgme .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kofvwjwgme .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kofvwjwgme .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kofvwjwgme .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kofvwjwgme .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#kofvwjwgme .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#kofvwjwgme .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kofvwjwgme .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#kofvwjwgme .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kofvwjwgme .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kofvwjwgme .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kofvwjwgme .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kofvwjwgme .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kofvwjwgme .gt_left {
+  text-align: left;
+}
+
+#kofvwjwgme .gt_center {
+  text-align: center;
+}
+
+#kofvwjwgme .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kofvwjwgme .gt_font_normal {
+  font-weight: normal;
+}
+
+#kofvwjwgme .gt_font_bold {
+  font-weight: bold;
+}
+
+#kofvwjwgme .gt_font_italic {
+  font-style: italic;
+}
+
+#kofvwjwgme .gt_super {
+  font-size: 65%;
+}
+
+#kofvwjwgme .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;2&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;Characteristic&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_center gt_columns_top_border gt_column_spanner_outer&#34; rowspan=&#34;1&#34; colspan=&#34;3&#34;&gt;
+        &lt;span class=&#34;gt_column_spanner&#34;&gt;With MICE&lt;/span&gt;
+      &lt;/th&gt;
+      &lt;th class=&#34;gt_center gt_columns_top_border gt_column_spanner_outer&#34; rowspan=&#34;1&#34; colspan=&#34;3&#34;&gt;
+        &lt;span class=&#34;gt_column_spanner&#34;&gt;Without MICE&lt;/span&gt;
+      &lt;/th&gt;
+      &lt;th class=&#34;gt_center gt_columns_top_border gt_column_spanner_outer&#34; rowspan=&#34;1&#34; colspan=&#34;3&#34;&gt;
+        &lt;span class=&#34;gt_column_spanner&#34;&gt;Original data&lt;/span&gt;
+      &lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;Beta&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;sup class=&#34;gt_footnote_marks&#34;&gt;1&lt;/sup&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;Beta&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;sup class=&#34;gt_footnote_marks&#34;&gt;1&lt;/sup&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;Beta&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;sup class=&#34;gt_footnote_marks&#34;&gt;1&lt;/sup&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Sepal.Width&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.52&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.33, 0.72&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;0.001&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.48&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.17, 0.79&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.003&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.50&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.33, 0.67&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Petal.Length&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.74&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.55, 0.94&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;0.001&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.71&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.51, 0.90&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;0.001&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.83&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.69, 1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Petal.Width&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.36&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.75, 0.02&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.064&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.35&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.85, 0.14&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.32&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.61, -0.02&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.039&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;Species&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34; style=&#34;text-align: left; text-indent: 10px;&#34;&gt;setosa&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;—&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;—&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;—&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;—&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;—&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;—&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34; style=&#34;text-align: left; text-indent: 10px;&#34;&gt;versicolor&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.39&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.0, 0.21&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.42&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.1, 0.30&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.3&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.72&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.2, -0.25&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.003&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34; style=&#34;text-align: left; text-indent: 10px;&#34;&gt;virginica&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.52&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.5, 0.42&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.2&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.42&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.5, 0.63&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.0&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-1.7, -0.36&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.003&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  &lt;tfoot&gt;
+    &lt;tr class=&#34;gt_footnotes&#34;&gt;
+      &lt;td colspan=&#34;10&#34;&gt;
+        &lt;p class=&#34;gt_footnote&#34;&gt;
+          &lt;sup class=&#34;gt_footnote_marks&#34;&gt;
+            &lt;em&gt;1&lt;/em&gt;
+          &lt;/sup&gt;
+           
+          CI = Confidence Interval
+          &lt;br /&gt;
+        &lt;/p&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;There is a different in the result between the original dataset (no NAs) and with mice imputation.&lt;/p&gt;
+&lt;p&gt;There are a lot more that are not cover in this post. For example &lt;a href=&#34;https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html&#34;&gt;passive imputation and post-processing&lt;/a&gt;. In fact, there are a series of &lt;a href=&#34;https://github.com/amices/mice#vignettes&#34;&gt;vignettes&lt;/a&gt; written by Gerko Vink and Stef van Buuren (both are the suthors of &lt;code&gt;mice&lt;/code&gt;) which provides a good tutorial on using &lt;code&gt;mice&lt;/code&gt; though quite advanced.&lt;/p&gt;
+&lt;p&gt;Suggested online books (though, I have not really studied both of the books yet):&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://stefvanbuuren.name/fimd/&#34;&gt;Flexible imputation of missing data&lt;/a&gt; by Stef van Buuren&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://bookdown.org/mwheymans/bookmi/&#34;&gt;Applied missing data analysis with SPSS and (R)Studio&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;References for this post:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;R in Action, Data analysis and graphics with R&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&#34; class=&#34;uri&#34;&gt;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&#34; class=&#34;uri&#34;&gt;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>COVID-19 vaccine interest in Malaysia</title>

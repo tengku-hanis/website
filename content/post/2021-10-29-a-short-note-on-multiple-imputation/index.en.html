@@ -1,0 +1,731 @@
+---
+title: A short note on multiple imputation
+author: tengku-hanis
+date: '2021-10-29'
+slug: a-short-note-on-multiple-imputation
+categories:
+  - R
+  - applied statistics
+tags:
+  - missing data
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-10-29T20:35:04+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:</p>
+<ol style="list-style-type: decimal">
+<li><p>MCAR</p>
+<ul>
+<li>Missing Completely At Random</li>
+<li>Example; some of the observations are missing due to lost of records during the flood</li>
+</ul></li>
+<li><p>MAR</p>
+<ul>
+<li>Missing At Random</li>
+<li>Example; variable income are missing as some participant refuse to give their salary information which they deems as very personal information</li>
+</ul></li>
+<li><p>MNAR</p>
+<ul>
+<li>Missing Not At Random</li>
+<li>Example; weight variable is missing for morbidly obese participants since the scale is unable to weight them</li>
+</ul></li>
+</ol>
+<p>Out of the 3 types above, the most problematic is MNAR, though there exist methods to deal with this type. For example, the <a href="https://cran.r-project.org/web/packages/miceMNAR/miceMNAR.pdf">miceMNAR</a> package in R.</p>
+<p>There are several approaches in handling missing data:</p>
+<ol style="list-style-type: decimal">
+<li><p>Listwise-deletion</p>
+<ul>
+<li>Best approach if the amount of missingness is very small</li>
+</ul></li>
+<li><p>Simple imputation</p>
+<ul>
+<li>Using mean/median/mode imputation</li>
+<li>This approach is not advisable as it leads to bias due to reduce variance, though the mean is not affected</li>
+</ul></li>
+<li><p>Single imputation</p>
+<ul>
+<li>Simple imputation above is considered as single imputation as well</li>
+<li>This approach ignores uncertainty of the imputation and almost always underestimate the variance</li>
+</ul></li>
+<li><p>Multiple imputation</p>
+<ul>
+<li>A bit advanced and it cover the limitation of single imputation approach</li>
+</ul></li>
+</ol>
+<p>However, the main assumption for any imputation methods is the missingness should be MCAR or MAR.</p>
+</div>
+<div id="multiple-imputation" class="section level2">
+<h2>Multiple imputation</h2>
+<p>In short, there are 2 approaches of multiple imputation implemented by packages in R:</p>
+<ol style="list-style-type: decimal">
+<li><p>Joint multivariate normal distribution multiple imputation</p>
+<ul>
+<li>The main assumption for this method is that the observed data follows a multivariate normal distribution</li>
+<li>A violation of the assumption produces incorrect values</li>
+<li>Some packages that implemented this method: <code>Amelia</code> and <code>norm</code></li>
+</ul></li>
+<li><p>Conditional multiple imputation</p>
+<ul>
+<li><p>This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset</p></li>
+<li><p>Some package that implemented this method: <code>mice</code></p></li>
+</ul></li>
+</ol>
+</div>
+<div id="example" class="section level2">
+<h2>Example</h2>
+<p>In <code>mice</code> package, the general steps are:</p>
+<ol style="list-style-type: decimal">
+<li><code>mice()</code> - impute the NAs</li>
+<li><code>with()</code> - run the analysis (lm, glm, etc)</li>
+<li><code>pool()</code> - pool the results</li>
+</ol>
+<p>These are the required packages.</p>
+<pre class="r"><code>library(tidyverse)
+library(mice)
+library(VIM)
+#library(missForest) we want to use prodNA() function from this package
+library(naniar)
+library(niceFunction) #install from github (https://github.com/tengku-hanis/niceFunction)
+library(dplyr)
+library(gtsummary)</code></pre>
+<p>We going to produce some NAs randomly.</p>
+<pre class="r"><code>set.seed(123)
+dat &lt;- iris %&gt;% 
+  select(-Sepal.Length)%&gt;% 
+  missForest::prodNA(0.2) %&gt;%  # randomly insert 20% NAs
+  mutate(Sepal.Length = iris$Sepal.Length)</code></pre>
+<p>Explore the NAs and the data.</p>
+<pre class="r"><code>naniar::miss_var_summary(dat)</code></pre>
+<pre><code>## # A tibble: 5 x 3
+##   variable     n_miss pct_miss
+##   &lt;chr&gt;         &lt;int&gt;    &lt;dbl&gt;
+## 1 Petal.Length     38     25.3
+## 2 Sepal.Width      33     22  
+## 3 Species          28     18.7
+## 4 Petal.Width      21     14  
+## 5 Sepal.Length      0      0</code></pre>
+<p>Some references recommend to remove variables with more than 50% NAs. However, we purposely introduce 20% NAs into our data.</p>
+<p>As a guideline, we can check for MCAR for our NAs.</p>
+<pre class="r"><code>naniar::mcar_test(dat) #p &gt; 0.05, MCAR is indicated</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##   statistic    df p.value missing.patterns
+##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;            &lt;int&gt;
+## 1      38.8    40   0.522               14</code></pre>
+<p>Next step is to evaluate the pattern of missingness in our data.</p>
+<pre class="r"><code>md.pattern(dat, rotate.names = T, plot = T) </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre><code>##    Sepal.Length Petal.Width Species Sepal.Width Petal.Length    
+## 64            1           1       1           1            1   0
+## 21            1           1       1           1            0   1
+## 15            1           1       1           0            1   1
+## 3             1           1       1           0            0   2
+## 14            1           1       0           1            1   1
+## 4             1           1       0           1            0   2
+## 6             1           1       0           0            1   2
+## 2             1           1       0           0            0   3
+## 7             1           0       1           1            1   1
+## 6             1           0       1           1            0   2
+## 4             1           0       1           0            1   2
+## 2             1           0       1           0            0   3
+## 1             1           0       0           1            1   2
+## 1             1           0       0           0            1   3
+##               0          21      28          33           38 120</code></pre>
+<pre class="r"><code>aggr(dat, prop = F, numbers = T) </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We have 13 patterns (numbers on the right) of NAs in our data. These 2 functions work well with small dataset, but with a larger dataset (and with lot more pattern of NAs), it’s probably quite difficult to assess the pattern.</p>
+<p><code>matrixplot()</code> probably more appropriate for a larger dataset.</p>
+<pre class="r"><code>matrixplot(dat)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>In terms of the missingness pattern, we can also assess the distribution of NAs of Sepal.Width is dependent on the variable Sepal.Length.</p>
+<pre class="r"><code>niceFunction::histNA_byVar(dat, Sepal.Width, Sepal.Length)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>As we can see the distribution and range of the histograms of the NAs (True) and non-NAs (False) is quite similar. Thus, this may indicated that Sepal.Width is at least MAR. However, by right we should do this for each pair of numerical variable before jumping into any conclusion.</p>
+<p>Another good thing to assess is the correlation.</p>
+<pre class="r"><code># Data with 1 = NAs, 0 = non-NAs
+x &lt;- as.data.frame(abs(is.na(dat))) %&gt;% 
+  dplyr::select(-Sepal.Length) #pick variable with NAs only</code></pre>
+<p>Firstly, the correlation between the variables with missing data.</p>
+<pre class="r"><code>cor(x) %&gt;% 
+  corrplot::corrplot()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>No high correlation among variable with NAs. Secondly, let’s see correlation between NAs in a variable and the observed values of other variables.</p>
+<pre class="r"><code>cor(dat %&gt;% mutate(Species = as.numeric(Species)), x, use = &quot;pairwise.complete.obs&quot;)</code></pre>
+<pre><code>##               Sepal.Width Petal.Length  Petal.Width     Species
+## Sepal.Width            NA  0.049158733 -0.065917718  0.09948263
+## Petal.Length  0.042075695           NA -0.004572405 -0.17265919
+## Petal.Width   0.096195805 -0.003320601           NA -0.11024288
+## Species       0.045849046 -0.104143925 -0.081055707          NA
+## Sepal.Length -0.006435044 -0.052871701 -0.091024799 -0.08527514</code></pre>
+<p>Again, there is no high correlation. But, if we were to interpret this correlation matrix; the rows are the observed variables and the columns represent the missingness. For example, missing values of Sepal.Width is more likely to be missing for observations with a high value of Petal.Width (r = 0.05 indicates it’s highly unlikely though).</p>
+<p>Now, we can do multiple imputation. These are the methods in the <code>mice</code> package:</p>
+<pre class="r"><code>methods(mice)</code></pre>
+<pre><code>##  [1] mice.impute.2l.bin       mice.impute.2l.lmer      mice.impute.2l.norm     
+##  [4] mice.impute.2l.pan       mice.impute.2lonly.mean  mice.impute.2lonly.norm 
+##  [7] mice.impute.2lonly.pmm   mice.impute.cart         mice.impute.jomoImpute  
+## [10] mice.impute.lda          mice.impute.logreg       mice.impute.logreg.boot 
+## [13] mice.impute.mean         mice.impute.midastouch   mice.impute.mnar.logreg 
+## [16] mice.impute.mnar.norm    mice.impute.norm         mice.impute.norm.boot   
+## [19] mice.impute.norm.nob     mice.impute.norm.predict mice.impute.panImpute   
+## [22] mice.impute.passive      mice.impute.pmm          mice.impute.polr        
+## [25] mice.impute.polyreg      mice.impute.quadratic    mice.impute.rf          
+## [28] mice.impute.ri           mice.impute.sample       mice.mids               
+## [31] mice.theme              
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<p>By default, mice uses:</p>
+<ul>
+<li>pmm (predictive mean matching) for numeric data</li>
+<li>logreg (logistic regression imputation) for binary data, factor with 2 levels</li>
+<li>polyreg (polytomous regression imputation) for unordered categorical data (factor &gt; 2 levels)</li>
+<li>polr (proportional odds model) for ordered, &gt; 2 levels</li>
+</ul>
+<p>let’s run the mice function to our data:</p>
+<pre class="r"><code>imp &lt;- mice(dat, m = 5, seed=1234, maxit = 5, printFlag = F) 
+imp</code></pre>
+<pre><code>## Class: mids
+## Number of multiple imputations:  5 
+## Imputation methods:
+##  Sepal.Width Petal.Length  Petal.Width      Species Sepal.Length 
+##        &quot;pmm&quot;        &quot;pmm&quot;        &quot;pmm&quot;    &quot;polyreg&quot;           &quot;&quot; 
+## PredictorMatrix:
+##              Sepal.Width Petal.Length Petal.Width Species Sepal.Length
+## Sepal.Width            0            1           1       1            1
+## Petal.Length           1            0           1       1            1
+## Petal.Width            1            1           0       1            1
+## Species                1            1           1       0            1
+## Sepal.Length           1            1           1       1            0</code></pre>
+<p>Next, we can do some diagnostic assessment on the imputed data. This is our imputed data.</p>
+<pre class="r"><code>imp$imp$Sepal.Width %&gt;% head()</code></pre>
+<pre><code>##      1   2   3   4   5
+## 5  3.4 3.4 4.1 3.1 3.5
+## 13 3.2 3.1 3.2 3.6 3.1
+## 14 3.1 3.2 2.9 3.4 3.0
+## 23 3.6 3.2 3.0 3.8 3.1
+## 26 4.1 3.0 3.1 3.5 3.0
+## 34 3.4 3.7 3.7 3.4 4.4</code></pre>
+<p>One important thing to check is the convergence. We are going increase the number of iteration for this.</p>
+<pre class="r"><code>imp_conv &lt;- mice.mids(imp, maxit = 30, printFlag = F)
+plot(imp_conv)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p>The line in the plot should be intermingled and no obvious trend should be observed. Our plot above indicates a convergence.</p>
+<p>We can also assess density plot of imputed data and the observed data. Blue color is the observed data and red color is the imputed data.</p>
+<pre class="r"><code>densityplot(imp)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>We can further assess variable Sepal.Width.</p>
+<pre class="r"><code>densityplot(imp, ~ Sepal.Width | .imp)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Lastly, we can assess the strip plot. The imputed observations (red color) should not distributed too far from the observed data (blue color).</p>
+<pre class="r"><code>stripplot(imp)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>So, once we finish the diagnostic checking, we can actually go back and change the imputation method for Sepal.Width, since the its distribution changes quite differently at each iteration. But, we are not going to do that, instead we are going to do the analysis.</p>
+<pre class="r"><code># run regression
+fit &lt;- with(imp, lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species))
+# pool all imputed set
+pooled &lt;- pool(fit) 
+summary(pooled)</code></pre>
+<pre><code>##                term   estimate  std.error statistic       df      p.value
+## 1       (Intercept)  2.2008307 0.34577321  6.364954 29.02484 5.859560e-07
+## 2       Sepal.Width  0.5233500 0.09717217  5.385801 50.89918 1.854832e-06
+## 3      Petal.Length  0.7409159 0.09020153  8.214006 12.73722 1.921415e-06
+## 4       Petal.Width -0.3623895 0.18562168 -1.952301 22.34517 6.354332e-02
+## 5 Speciesversicolor -0.3891112 0.28166528 -1.381467 15.07547 1.872683e-01
+## 6  Speciesvirginica -0.5237106 0.42629920 -1.228505 10.82804 2.452897e-01</code></pre>
+<p>Since we have the original dataset without the NAs, we going to compare them.</p>
+<pre class="r"><code>mimpute &lt;- 
+  fit %&gt;% 
+  tbl_regression() #with mice
+
+noimpute &lt;- 
+  dat %&gt;% 
+  lm(Sepal.Length ~ ., data = .) %&gt;% 
+  tbl_regression() #w/o mice
+
+original &lt;- 
+  iris %&gt;% 
+  lm(Sepal.Length ~ ., data = .) %&gt;% 
+  tbl_regression() #original data
+
+tbl_merge(
+  tbls = list(mimpute, noimpute, original), 
+  tab_spanner = c(&quot;With MICE&quot;, &quot;Without MICE&quot;, &quot;Original data&quot;)
+)</code></pre>
+<div id="kofvwjwgme" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#kofvwjwgme .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kofvwjwgme .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kofvwjwgme .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kofvwjwgme .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kofvwjwgme .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kofvwjwgme .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kofvwjwgme .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kofvwjwgme .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kofvwjwgme .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kofvwjwgme .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kofvwjwgme .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kofvwjwgme .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kofvwjwgme .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#kofvwjwgme .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kofvwjwgme .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kofvwjwgme .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kofvwjwgme .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kofvwjwgme .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kofvwjwgme .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kofvwjwgme .gt_left {
+  text-align: left;
+}
+
+#kofvwjwgme .gt_center {
+  text-align: center;
+}
+
+#kofvwjwgme .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kofvwjwgme .gt_font_normal {
+  font-weight: normal;
+}
+
+#kofvwjwgme .gt_font_bold {
+  font-weight: bold;
+}
+
+#kofvwjwgme .gt_font_italic {
+  font-style: italic;
+}
+
+#kofvwjwgme .gt_super {
+  font-size: 65%;
+}
+
+#kofvwjwgme .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">With MICE</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">Without MICE</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">Original data</span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Beta</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>95% CI</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>p-value</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Beta</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>95% CI</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>p-value</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Beta</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>95% CI</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Sepal.Width</td>
+<td class="gt_row gt_center">0.52</td>
+<td class="gt_row gt_center">0.33, 0.72</td>
+<td class="gt_row gt_center"><0.001</td>
+<td class="gt_row gt_center">0.48</td>
+<td class="gt_row gt_center">0.17, 0.79</td>
+<td class="gt_row gt_center">0.003</td>
+<td class="gt_row gt_center">0.50</td>
+<td class="gt_row gt_center">0.33, 0.67</td>
+<td class="gt_row gt_center"><0.001</td></tr>
+    <tr><td class="gt_row gt_left">Petal.Length</td>
+<td class="gt_row gt_center">0.74</td>
+<td class="gt_row gt_center">0.55, 0.94</td>
+<td class="gt_row gt_center"><0.001</td>
+<td class="gt_row gt_center">0.71</td>
+<td class="gt_row gt_center">0.51, 0.90</td>
+<td class="gt_row gt_center"><0.001</td>
+<td class="gt_row gt_center">0.83</td>
+<td class="gt_row gt_center">0.69, 1.0</td>
+<td class="gt_row gt_center"><0.001</td></tr>
+    <tr><td class="gt_row gt_left">Petal.Width</td>
+<td class="gt_row gt_center">-0.36</td>
+<td class="gt_row gt_center">-0.75, 0.02</td>
+<td class="gt_row gt_center">0.064</td>
+<td class="gt_row gt_center">-0.35</td>
+<td class="gt_row gt_center">-0.85, 0.14</td>
+<td class="gt_row gt_center">0.2</td>
+<td class="gt_row gt_center">-0.32</td>
+<td class="gt_row gt_center">-0.61, -0.02</td>
+<td class="gt_row gt_center">0.039</td></tr>
+    <tr><td class="gt_row gt_left">Species</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">setosa</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">versicolor</td>
+<td class="gt_row gt_center">-0.39</td>
+<td class="gt_row gt_center">-1.0, 0.21</td>
+<td class="gt_row gt_center">0.2</td>
+<td class="gt_row gt_center">-0.42</td>
+<td class="gt_row gt_center">-1.1, 0.30</td>
+<td class="gt_row gt_center">0.3</td>
+<td class="gt_row gt_center">-0.72</td>
+<td class="gt_row gt_center">-1.2, -0.25</td>
+<td class="gt_row gt_center">0.003</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">virginica</td>
+<td class="gt_row gt_center">-0.52</td>
+<td class="gt_row gt_center">-1.5, 0.42</td>
+<td class="gt_row gt_center">0.2</td>
+<td class="gt_row gt_center">-0.42</td>
+<td class="gt_row gt_center">-1.5, 0.63</td>
+<td class="gt_row gt_center">0.4</td>
+<td class="gt_row gt_center">-1.0</td>
+<td class="gt_row gt_center">-1.7, -0.36</td>
+<td class="gt_row gt_center">0.003</td></tr>
+  </tbody>
+  
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td colspan="10">
+        <p class="gt_footnote">
+          <sup class="gt_footnote_marks">
+            <em>1</em>
+          </sup>
+           
+          CI = Confidence Interval
+          <br />
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p>There is a different in the result between the original dataset (no NAs) and with mice imputation.</p>
+<p>There are a lot more that are not cover in this post. For example <a href="https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html">passive imputation and post-processing</a>. In fact, there are a series of <a href="https://github.com/amices/mice#vignettes">vignettes</a> written by Gerko Vink and Stef van Buuren (both are the suthors of <code>mice</code>) which provides a good tutorial on using <code>mice</code> though quite advanced.</p>
+<p>Suggested online books (though, I have not really studied both of the books yet):</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://stefvanbuuren.name/fimd/">Flexible imputation of missing data</a> by Stef van Buuren</li>
+<li><a href="https://bookdown.org/mwheymans/bookmi/">Applied missing data analysis with SPSS and (R)Studio</a></li>
+</ol>
+<p>References for this post:</p>
+<ol style="list-style-type: decimal">
+<li>R in Action, Data analysis and graphics with R</li>
+<li><a href="https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/" class="uri">https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/</a></li>
+<li><a href="https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/" class="uri">https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/</a></li>
+</ol>
+</div>
