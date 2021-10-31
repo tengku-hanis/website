@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
 
 ## Background
 
-Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:
+Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types ([Rubin, 1976](https://www.jstor.org/stable/2335739)):
 
 1)  MCAR
 
@@ -273,6 +273,6 @@ Suggested online books (though, I have not really studied both of the books yet)
 
 References for this post:
 
-1.  R in Action, Data analysis and graphics with R
+1.  [R in Action, Data analysis and graphics with R](http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf) (Chapter 15)
 2.  <https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/>
 3.  <https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/>
