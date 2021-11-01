@@ -27,12 +27,23 @@ date_format: January 2, 2006
 item:
 - certificate_url: ""
   date_end: ""
+  date_start: "2021-11-06"
+  description: |- 
+    Download [material](https://github.com/tengku-hanis/Rconference2021)  
+    See [slide](https://github.com/tengku-hanis/Rconference2021/blob/main/Rconf2021-meta-analysis.pdf)
+  organization: Malaysian R User Group (MyRUG)
+  organization_url: "https://www.facebook.com/rusergroupmalaysia/"
+  title: Pre-conference Workshop - An introduction to meta-analysis in R
+  url: "https://www.r-conference.com/home"
+  
+- certificate_url: ""
+  date_end: ""
   date_start: "2021-10-18"
   description: |- 
     Download [material](https://github.com/tengku-hanis/MA-PPSP-USM)  
     See [slide](https://github.com/tengku-hanis/MA-PPSP-USM/blob/main/Meta-analysis%20(Hands-on).pdf)
   organization: Department of medical microbiology and parasitology, School of medical sciences, USM
-  organization_url: ""
+  organization_url: "https://medic.usm.my/microbiology/en/"
   title: Workshop - Sytematic review and meta-analysis using RStudio
   url: ""
   
@@ -43,7 +54,7 @@ item:
     Download [material](https://github.com/tengku-hanis/basic-MA-biostat)  
     See [slide](https://github.com/tengku-hanis/basic-MA-biostat/blob/main/Slide-basic-MA.pdf)
   organization: Unit of biostatistics and research methodology, School of medical sciences, USM
-  organization_url: ""
+  organization_url: "https://medic.usm.my/biostat/en/aboutus/about"
   title: Webinar - Basic of meta-analysis using R
   url: ""
   
@@ -78,5 +89,5 @@ item:
   organization: Malaysian R User Group (MyRUG)
   organization_url: https://www.facebook.com/rusergroupmalaysia/
   title: Talks - An introduction to relative survival analysis using R
-  url: ""
+  url: "https://www.r-conference2020.com/home"
 ---
