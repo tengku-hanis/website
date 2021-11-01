@@ -86,20 +86,28 @@ library(stringr)</code></pre>
   select(-id_del)</code></pre>
 <p>Finally, our data is ready.</p>
 <pre class="r"><code>irt_rob</code></pre>
-<pre><code>## # A tibble: 24 x 9
-##    Study  Random.sequence.~ Allocation.conce~ Selective.repor~ Blinding.of.part~
-##    &lt;chr&gt;  &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;            &lt;chr&gt;            
-##  1 Ahmed~ Unclear           Unclear           Unclear          High             
-##  2 Badro~ Unclear           High              High             High             
-##  3 Baros~ Unclear           Unclear           High             High             
-##  4 Baros~ Unclear           Unclear           High             High             
-##  5 Carls~ Low               High              High             Low              
-##  6 Corre~ Low               Low               Low              High             
-##  7 Farah~ Low               Low               Low              High             
-##  8 Forja~ Unclear           Unclear           Unclear          High             
-##  9 Goess~ Low               Unclear           High             High             
-## 10 Gordo~ Unclear           Unclear           High             High             
-## # ... with 14 more rows, and 4 more variables:
-## #   Blinding.of.outcome.assessment &lt;chr&gt;, Incomplete.outcome.data &lt;chr&gt;,
-## #   Other.sources.of.bias. &lt;chr&gt;, Overall &lt;chr&gt;</code></pre>
+<pre><code>##          Study Random.sequence.generation. Allocation.concealment.
+## 1   Ahmed,2019                     Unclear                 Unclear
+## 2  Badrov,2013                     Unclear                    High
+## 3  Baross,2012                     Unclear                 Unclear
+## 4  Baross,2013                     Unclear                 Unclear
+## 5 Carlson,2016                         Low                    High
+##   Selective.reporting. Blinding.of.participants.and.personnel.
+## 1              Unclear                                    High
+## 2                 High                                    High
+## 3                 High                                    High
+## 4                 High                                    High
+## 5                 High                                     Low
+##   Blinding.of.outcome.assessment Incomplete.outcome.data Other.sources.of.bias.
+## 1                        Unclear                     Low                Unclear
+## 2                        Unclear                     Low                Unclear
+## 3                        Unclear                     Low                Unclear
+## 4                        Unclear                     Low                Unclear
+## 5                        Unclear                     Low                    Low
+##   Overall
+## 1    High
+## 2    High
+## 3    High
+## 4    High
+## 5    High</code></pre>
 </div>

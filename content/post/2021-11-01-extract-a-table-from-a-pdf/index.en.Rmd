@@ -83,7 +83,10 @@ irt_rob <-
 
 Finally, our data is ready.
 
-```{r}
+```{r, eval=FALSE}
 irt_rob
+```
+```{r, echo=FALSE}
+irt_rob %>% as.data.frame() %>% head(5)
 ```
 
