@@ -1,0 +1,105 @@
+---
+title: Extract a table from a pdf
+author: tengku-hanis
+date: '2021-11-01'
+slug: extract-a-table-from-a-pdf
+categories:
+  - R
+tags:
+  - Data exploration
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-11-01T13:13:11+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>In a couple of days, I am going to conduct a pre-conference workshop for Malaysian <a href="https://www.r-conference.com/">R conference 2021</a>. So, some of the data that I am going to use for this workshop is available in a table in pdf form. Hence, this post is about how I get that particular table from the pdf into R for further analysis.</p>
+<p>So, this is a table we going to extract.</p>
+<p><img src="images/table.png" /></p>
+<div id="extracting-a-table-from-pdf" class="section level2">
+<h2>Extracting a table from pdf</h2>
+<p>We going to use <code>tabulizer</code> package for this. However, not every pdf works with this package. In our case, it works but need further preprocessing.</p>
+<p>Load the required packages.</p>
+<pre class="r"><code>library(tabulizer)
+library(dplyr)
+library(stringr)</code></pre>
+<p>Read a table from a pdf.</p>
+<pre class="r"><code>raw_table &lt;- extract_tables(&quot;https://static-content.springer.com/esm/art%3A10.1038%2Fs41440-021-00720-3/MediaObjects/41440_2021_720_MOESM1_ESM.pdf&quot;, 
+                          pages = 17, 
+                          output = &quot;data.frame&quot;)</code></pre>
+<p>So, this is the extracted table.</p>
+<pre class="r"><code>raw_table[[1]] %&gt;% head(10)</code></pre>
+<pre><code>##                X     X.1     X.2     X.3  X.4     X.5 X.6     X.7  X.8
+## 1                                                                     
+## 2                                                                     
+## 3    Ahmed, 2019 Unclear Unclear Unclear High Unclear Low Unclear High
+## 4                                                                     
+## 5   Badrov, 2013 Unclear    High    High High Unclear Low Unclear High
+## 6   Baross, 2012 Unclear Unclear    High High Unclear Low Unclear High
+## 7   Baross, 2013 Unclear Unclear    High High Unclear Low Unclear High
+## 8  Carlson, 2016     Low    High    High  Low Unclear Low     Low High
+## 9  Correia, 2020     Low     Low     Low High Unclear Low     Low High
+## 10                                                                    
+##                              X.9
+## 1      1- selection bias: random
+## 2            sequence generation
+## 3  2- selection bias: allocation
+## 4                    concealment
+## 5                               
+## 6   3- reporting bias: selective
+## 7                      reporting
+## 8                               
+## 9  4- Performance bias: blinding
+## 10  (participants and personnel)</code></pre>
+<p>So, a few preprocessing steps needed:</p>
+<ol style="list-style-type: decimal">
+<li>Remove column X.9 - this column supposed to be a header</li>
+<li>Rename a header based on column X.9</li>
+<li>Remove a space between the author name - “Ahmed,2019” instead of “Ahmed, 2019”</li>
+<li>Remove empty rows</li>
+</ol>
+<pre class="r"><code>irt_rob &lt;- 
+  raw_table[[1]] %&gt;% 
+  select(-X.9) %&gt;%  
+  rename(Study = X, 
+         Random.sequence.generation. = X.1, 
+         Allocation.concealment. = X.2,
+         Selective.reporting. = X.3,
+         Blinding.of.participants.and.personnel. = X.4, 
+         Blinding.of.outcome.assessment = X.5, 
+         Incomplete.outcome.data = X.6, 
+         Other.sources.of.bias. = X.7, 
+         Overall = X.8) %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(Study = str_replace_all(Study, &quot; &quot;, &quot;&quot;)) %&gt;% 
+  mutate(id_del = str_match(Study, &quot;.&quot;)) %&gt;% 
+  filter(!is.na(id_del)) %&gt;% 
+  select(-id_del)</code></pre>
+<p>Finally, our data is ready.</p>
+<pre class="r"><code>irt_rob</code></pre>
+<pre><code>## # A tibble: 24 x 9
+##    Study  Random.sequence.~ Allocation.conce~ Selective.repor~ Blinding.of.part~
+##    &lt;chr&gt;  &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;            &lt;chr&gt;            
+##  1 Ahmed~ Unclear           Unclear           Unclear          High             
+##  2 Badro~ Unclear           High              High             High             
+##  3 Baros~ Unclear           Unclear           High             High             
+##  4 Baros~ Unclear           Unclear           High             High             
+##  5 Carls~ Low               High              High             Low              
+##  6 Corre~ Low               Low               Low              High             
+##  7 Farah~ Low               Low               Low              High             
+##  8 Forja~ Unclear           Unclear           Unclear          High             
+##  9 Goess~ Low               Unclear           High             High             
+## 10 Gordo~ Unclear           Unclear           High             High             
+## # ... with 14 more rows, and 4 more variables:
+## #   Blinding.of.outcome.assessment &lt;chr&gt;, Incomplete.outcome.data &lt;chr&gt;,
+## #   Other.sources.of.bias. &lt;chr&gt;, Overall &lt;chr&gt;</code></pre>
+</div>
