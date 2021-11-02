@@ -1,5 +1,5 @@
 +++
-title = "Measuring time-varying Effective reproduction numbers for COVID-19 and their relationship with movement control order in Malaysia"
+title = "Measuring time-varying effective reproduction numbers for COVID-19 and their relationship with movement control order in Malaysia"
 date = "2021-03-22"
 authors = ["Kamarul Imran Musa", "Wan Nor Arifin", "Mohd Hafiz Mohd", "Mohammad Subhi Jamiluddin", "Noor Atinah Ahmad", "Xin Wee Chen", "Tengku Muhammad Hanis", "Awang Bulgiba"]
 publication_types = ["2"]

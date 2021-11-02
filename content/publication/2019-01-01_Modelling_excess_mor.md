@@ -1,5 +1,5 @@
 +++
-title = "Modelling excess mortality among breast cancer patients in the North East Region of Peninsular Malaysia, 2007-2011: a population-based study"
+title = "Modelling excess mortality among breast cancer patients in the north east region of peninsular Malaysia, 2007-2011: a population-based study"
 date = "2019-12-30"
 authors = ["Tengku Muhammad Hanis", "Najib Majdi Yaacob", "Suhaily Mohd Hairon", "Sarimah Abdullah", "Noorfariza Nordin", "Noor Hashimah Abdullah", "Mohd Faiz Md Ariffin"]
 publication_types = ["2"]
