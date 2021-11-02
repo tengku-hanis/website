@@ -1,54 +1,72 @@
----
-# An instance of the Accomplishments widget.
-# Documentation: https://sourcethemes.com/academic/docs/page-builder/
-widget: accomplishments
++++
+# A Recent Publications section created with the Pages widget.
+# This section displays recent blog posts from `content/publication/`.
 
-# Activate this widget? true/false
-active: true
+widget = "pages"  # See https://sourcethemes.com/academic/docs/page-builder/
+headless = true  # This file represents a page section.
+active = true  # Activate this widget? true/false
+weight = 50  # Order that this section will appear.
 
-# This file represents a page section.
-headless: true
+title = "Recent Publications"
+subtitle = ""
 
-# Order that this section appears on the page.
-weight: 50
-
-title: Publications
-subtitle:
-
-# Date format
-#   Refer to https://sourcethemes.com/academic/docs/customization/#date-format
-date_format: January 2006
-
-# Accomplishments.
-#   Add/remove as many `item` blocks below as you like.
-#   `title`, `organization` and `date_start` are the required parameters.
-#   Leave other parameters empty if not required.
-#   You can begin a multiline `description` using YAML's `|-`.
-item:
-- certificate_url: ""
-  date_end: ""
-  date_start: "2019-12-30"
-  description: Read the [paper](https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-019-8113-2)
-  organization: BMC Public Health
-  organization_url: ""
-  title: Modelling excess mortality among breast cancer patients in the North East Region of Peninsular Malaysia, 2007-2011; a population-based study
-  url: ""
-
-- certificate_url: ""
-  date_end: ""
-  date_start: "2021-05-18"
-  description: Read the [paper](https://bmjopen.bmj.com/content/11/5/e043642)
-  organization: BMJ Open
-  organization_url: ""
-  title: Net survival differences of breast cancer between stages at diagnosis and age groups in the east coast region of West Malaysia; a retrospective cohort study
-  url: ""
+[content]
+  # Page type to display. E.g. post, talk, or publication.
+  page_type = "publication"
   
-- certificate_url: ""
-  date_end: ""
-  date_start: "2021-03-22"
-  description: Read the [paper](https://www.mdpi.com/1660-4601/18/6/3273/htm)
-  organization: International Journal of Environmental Research and Public Health (IJERPH)
-  organization_url: ""
-  title: Measuring time-varying effective reproduction numbers for COVID-19 and their relationship with movement control order in Malaysia
-  url: ""
----
+  # Choose how much pages you would like to display (0 = all pages)
+  count = 5
+  
+  # Choose how many pages you would like to offset by
+  offset = 0
+
+  # Page order. Descending (desc) or ascending (asc) date.
+  order = "desc"
+
+  # Filter posts by a taxonomy term.
+  [content.filters]
+    tag = ""
+    category = ""
+    publication_type = ""
+    author = ""
+    exclude_featured = false
+  
+[design]
+  # Toggle between the various page layout types.
+  #   1 = List
+  #   2 = Compact
+  #   3 = Card
+  #   4 = Citation (publication only)
+  view = 1
+  
+[design.background]
+  # Apply a background color, gradient, or image.
+  #   Uncomment (by removing `#`) an option to apply it.
+  #   Choose a light or dark text color by setting `text_color_light`.
+  #   Any HTML color name or Hex value is valid.
+    
+  # Background color.
+  # color = "navy"
+  
+  # Background gradient.
+  # gradient_start = "DeepSkyBlue"
+  # gradient_end = "SkyBlue"
+  
+  # Background image.
+  # image = "background.jpg"  # Name of image in `static/media/`.
+  # image_darken = 0.6  # Darken the image? Range 0-1 where 0 is transparent and 1 is opaque.
+
+  # Text color (true=light or false=dark).
+  # text_color_light = true  
+  
+[advanced]
+ # Custom CSS. 
+ css_style = ""
+ 
+ # CSS class.
+ css_class = ""
++++
+
+{{% callout note %}}
+Filter relevant publications - [click here](./publication/).
+{{% /callout %}}
