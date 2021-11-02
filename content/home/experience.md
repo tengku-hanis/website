@@ -38,7 +38,7 @@ experience:
   title: Graduate Research Assistant
 - company: Lionbridge
   company_url: ""
-  date_end: ""
+  date_end: "2021-10-31"
   date_start: "2017-07-01"
   description: |-
     Analyze data mainly from online maps and search results:
