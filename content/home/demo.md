@@ -18,7 +18,7 @@ subtitle: The world is one big data problem - Andrew McAfee
 design:
   columns: "1"
   background:
-    image: headers/matrix.jpg
+    image: headers/data.jpg
     image_darken: 0.6
     image_parallax: true
     image_position: center
