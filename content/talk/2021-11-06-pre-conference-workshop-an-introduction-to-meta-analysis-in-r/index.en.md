@@ -1,8 +1,8 @@
 ---
 title: Pre-conference Workshop - An introduction to meta-analysis in R
 author: tengku-hanis
-date: '2021-11-06T14:00:00Z'
-date_end: '2021-11-06T16:00:00Z'
+date: '2021-11-03T14:00:00Z'
+date_end: '2021-11-03T16:00:00Z'
 location: Virtual
 event: confeRence 2021
 event_url: https://www.r-conference.com/home
