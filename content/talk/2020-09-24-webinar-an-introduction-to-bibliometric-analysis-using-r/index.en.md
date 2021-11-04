@@ -4,8 +4,12 @@ author: tengku-hanis
 date: '2020-09-24T21:30:00Z'
 date_end: '2020-09-24T22:30:00Z'
 location: Virtual
-url_code: https://github.com/tengku-hanis/webinar_biblio24-09-2020
 url_slides: https://github.com/tengku-hanis/webinar_biblio24-09-2020/blob/master/Bibliometrics%20webinar.pdf
+links:
+- icon: ""
+  icon_pack: fab
+  name: Materials
+  url: https://github.com/tengku-hanis/webinar_biblio24-09-2020
 slug: webinar-an-introduction-to-bibliometric-analysis-using-r
 categories: []
 tags: []

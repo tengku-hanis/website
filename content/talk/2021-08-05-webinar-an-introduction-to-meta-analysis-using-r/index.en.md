@@ -4,8 +4,12 @@ author: tengku-hanis
 date: '2021-08-05T14:30:00Z'
 date_end: '2021-08-05T14:30:00Z'
 location: Virtual
-url_code: https://github.com/tengku-hanis/webinar-basic-MA
 url_slides: https://github.com/tengku-hanis/webinar-basic-MA/blob/main/MA-webinar-05-08-2021.pdf
+links:
+- icon: ""
+  icon_pack: fab
+  name: Materials
+  url: https://github.com/tengku-hanis/webinar-basic-MA
 slug: webinar-an-introduction-to-meta-analysis-using-r
 categories: []
 tags: []

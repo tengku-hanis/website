@@ -6,8 +6,12 @@ date_end: '2021-11-06T16:00:00Z'
 location: Virtual
 event: confeRence 2021
 event_url: https://www.r-conference.com/home
-url_code: https://github.com/tengku-hanis/Rconference2021
 url_slides: https://github.com/tengku-hanis/Rconference2021/blob/main/Rconf2021-meta-analysis.pdf
+links:
+- icon: ""
+  icon_pack: fab
+  name: Materials
+  url: https://github.com/tengku-hanis/Rconference2021
 slug: pre-conference-workshop-an-introduction-to-meta-analysis-in-r
 categories: []
 tags: []

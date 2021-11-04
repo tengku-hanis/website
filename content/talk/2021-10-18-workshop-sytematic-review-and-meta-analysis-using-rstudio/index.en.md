@@ -4,8 +4,12 @@ author: tengku-hanis
 date: '2021-10-18T14:00:00Z'
 date_end: '2021-10-18T16:00:00Z'
 location: Virtual
-url_code: https://github.com/tengku-hanis/MA-PPSP-USM
 url_slides: https://github.com/tengku-hanis/MA-PPSP-USM/blob/main/Meta-analysis%20(Hands-on).pdf
+links:
+- icon: ""
+  icon_pack: fab
+  name: Materials
+  url: https://github.com/tengku-hanis/MA-PPSP-USM
 slug: workshop-sytematic-review-and-meta-analysis-using-rstudio
 categories: []
 tags: []

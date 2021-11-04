@@ -4,8 +4,12 @@ author: tengku-hanis
 date: '2021-08-18T09:00:00Z'
 date_end: '2021-08-18T10:30:00Z'
 location: Virtual
-url_code: https://github.com/tengku-hanis/basic-MA-biostat
 url_slides: https://github.com/tengku-hanis/basic-MA-biostat/blob/main/Slide-basic-MA.pdf
+links:
+- icon: ""
+  icon_pack: fab
+  name: Materials
+  url: https://github.com/tengku-hanis/basic-MA-biostat
 slug: webinar-basic-of-meta-analysis-using-r
 categories: []
 tags: []

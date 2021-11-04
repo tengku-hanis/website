@@ -6,9 +6,14 @@ date_end: '2020-11-22T13:30:00Z'
 event: confeRence 2020
 event_url: https://www.r-conference2020.com/home
 location: Virtual
-url_code: https://github.com/tengku-hanis/relative-survival-nov2020
+url_code: ""
 url_pdf: ""
 url_slides: talks/rconf2020/confeRence2020.html
+links:
+- icon: ""
+  icon_pack: fab
+  name: Materials
+  url: https://github.com/tengku-hanis/relative-survival-nov2020
 url_video: ""
 slug: talks-an-introduction-to-relative-survival-analysis-using-r
 categories: []
