@@ -8,6 +8,7 @@ event: confeRence 2021
 event_url: https://www.r-conference.com/home
 url_code: https://github.com/tengku-hanis/Rconference2021
 url_slides: https://github.com/tengku-hanis/Rconference2021/blob/main/Rconf2021-meta-analysis.pdf
+draft: false
 slug: pre-conference-workshop-an-introduction-to-meta-analysis-in-r
 categories: []
 tags: []
