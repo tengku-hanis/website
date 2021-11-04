@@ -26,4 +26,7 @@ image:
   focal_point: ''
   preview_only: no
 projects: []
+
+# Schedule page publish date (NOT talk date).
+publishDate: "2021-11-04T00:00:00Z"
 ---
