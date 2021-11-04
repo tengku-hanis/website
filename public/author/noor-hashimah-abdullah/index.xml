@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Noor Hashimah Abdullah | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/author/noor-hashimah-abdullah/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/author/noor-hashimah-abdullah/index.xml" rel="self" type="application/rss+xml" />
+    <description>Noor Hashimah Abdullah</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 30 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>Noor Hashimah Abdullah</title>
+      <link>https://tengkuhanis.netlify.app/author/noor-hashimah-abdullah/</link>
+    </image>
+    
+    <item>
+      <title>Modelling excess mortality among breast cancer patients in the north east region of peninsular Malaysia, 2007-2011: a population-based study</title>
+      <link>https://tengkuhanis.netlify.app/publication/2019-01-01_modelling_excess_mor/</link>
+      <pubDate>Mon, 30 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2019-01-01_modelling_excess_mor/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,9 @@
+Change publication types in md file:
+
+-Example:
+	publication_types = ["3"]
+
+Types: 
+- 1 = Conference paper
+- 2 = Journal article
+- 3 = Preprint

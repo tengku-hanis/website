@@ -23,7 +23,7 @@
 
 &lt;div id=&#34;background&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Background&lt;/h2&gt;
-&lt;p&gt;Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:&lt;/p&gt;
+&lt;p&gt;Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types (&lt;a href=&#34;https://www.jstor.org/stable/2335739&#34;&gt;Rubin, 1976&lt;/a&gt;):&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;&lt;p&gt;MCAR&lt;/p&gt;
 &lt;ul&gt;
@@ -713,8 +713,8 @@ tbl_merge(
   &lt;/tfoot&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;p&gt;There is a different in the result between the original dataset (no NAs) and with mice imputation.&lt;/p&gt;
-&lt;p&gt;There are a lot more that are not cover in this post. For example &lt;a href=&#34;https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html&#34;&gt;passive imputation and post-processing&lt;/a&gt;. In fact, there are a series of &lt;a href=&#34;https://github.com/amices/mice#vignettes&#34;&gt;vignettes&lt;/a&gt; written by Gerko Vink and Stef van Buuren (both are the suthors of &lt;code&gt;mice&lt;/code&gt;) which provides a good tutorial on using &lt;code&gt;mice&lt;/code&gt; though quite advanced.&lt;/p&gt;
+&lt;p&gt;There is a different in the result between the original dataset (no NAs) and with mice imputation. Probably, exploring other imputation methods will produce a better result.&lt;/p&gt;
+&lt;p&gt;There are a lot more that are not cover in this post. For example &lt;a href=&#34;https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html&#34;&gt;passive imputation and post-processing&lt;/a&gt;. In fact, there are a series of &lt;a href=&#34;https://github.com/amices/mice#vignettes&#34;&gt;vignettes&lt;/a&gt; written by Gerko Vink and Stef van Buuren (both are the authors of &lt;code&gt;mice&lt;/code&gt;) which provides a good tutorial on using &lt;code&gt;mice&lt;/code&gt; though quite advanced.&lt;/p&gt;
 &lt;p&gt;Suggested online books (though, I have not really studied both of the books yet):&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;&lt;a href=&#34;https://stefvanbuuren.name/fimd/&#34;&gt;Flexible imputation of missing data&lt;/a&gt; by Stef van Buuren&lt;/li&gt;
@@ -722,7 +722,7 @@ tbl_merge(
 &lt;/ol&gt;
 &lt;p&gt;References for this post:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;R in Action, Data analysis and graphics with R&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf&#34;&gt;R in Action, Data analysis and graphics with R&lt;/a&gt; (Chapter 15)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&#34; class=&#34;uri&#34;&gt;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&#34; class=&#34;uri&#34;&gt;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;

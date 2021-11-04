@@ -34,7 +34,7 @@
   
     
   
-  <meta name="description" content="BackgroundMissing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:">
+  <meta name="description" content="BackgroundMissing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types (Rubin, 1976):">
 
   
   <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/">
@@ -280,7 +280,7 @@
   <meta property="og:site_name" content="Tengku Hanis">
   <meta property="og:url" content="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/">
   <meta property="og:title" content="A short note on multiple imputation | Tengku Hanis">
-  <meta property="og:description" content="BackgroundMissing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:"><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="og:description" content="BackgroundMissing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types (Rubin, 1976):"><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
   <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
   
     
@@ -330,7 +330,7 @@
       "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "Background\rMissing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:"
+  "description": "Background\rMissing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types (Rubin, 1976):"
 }
 </script>
 
@@ -801,7 +801,7 @@
 
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:</p>
+<p>Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types (<a href="https://www.jstor.org/stable/2335739">Rubin, 1976</a>):</p>
 <ol style="list-style-type: decimal">
 <li><p>MCAR</p>
 <ul>
@@ -1491,8 +1491,8 @@ tbl_merge(
   </tfoot>
 </table>
 </div>
-<p>There is a different in the result between the original dataset (no NAs) and with mice imputation.</p>
-<p>There are a lot more that are not cover in this post. For example <a href="https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html">passive imputation and post-processing</a>. In fact, there are a series of <a href="https://github.com/amices/mice#vignettes">vignettes</a> written by Gerko Vink and Stef van Buuren (both are the suthors of <code>mice</code>) which provides a good tutorial on using <code>mice</code> though quite advanced.</p>
+<p>There is a different in the result between the original dataset (no NAs) and with mice imputation. Probably, exploring other imputation methods will produce a better result.</p>
+<p>There are a lot more that are not cover in this post. For example <a href="https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html">passive imputation and post-processing</a>. In fact, there are a series of <a href="https://github.com/amices/mice#vignettes">vignettes</a> written by Gerko Vink and Stef van Buuren (both are the authors of <code>mice</code>) which provides a good tutorial on using <code>mice</code> though quite advanced.</p>
 <p>Suggested online books (though, I have not really studied both of the books yet):</p>
 <ol style="list-style-type: decimal">
 <li><a href="https://stefvanbuuren.name/fimd/">Flexible imputation of missing data</a> by Stef van Buuren</li>
@@ -1500,7 +1500,7 @@ tbl_merge(
 </ol>
 <p>References for this post:</p>
 <ol style="list-style-type: decimal">
-<li>R in Action, Data analysis and graphics with R</li>
+<li><a href="http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf">R in Action, Data analysis and graphics with R</a> (Chapter 15)</li>
 <li><a href="https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/" class="uri">https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/</a></li>
 <li><a href="https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/" class="uri">https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/</a></li>
 </ol>
@@ -1668,6 +1668,8 @@ tbl_merge(
     <h3>Related</h3>
     <ul>
       
+      <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
+      
       <li><a href="/post/covid-19-vaccine-interest-in-malaysia/">COVID-19 vaccine interest in Malaysia</a></li>
       
       <li><a href="/post/wordcloud-of-covid-19-research-in-malaysia/">Wordcloud of COVID-19 research in Malaysia</a></li>
@@ -1675,8 +1677,6 @@ tbl_merge(
       <li><a href="/post/hyperparameter-tuning-in-tidymodels/">Hyperparameter tuning in tidymodels</a></li>
       
       <li><a href="/post/a-summary-of-forcats-package/">A summary of forcats package</a></li>
-      
-      <li><a href="/post/handling-imbalanced-data/">Handling imbalanced data</a></li>
       
     </ul>
   </div>
@@ -1767,6 +1767,8 @@ tbl_merge(
       <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
 
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
       
 
       

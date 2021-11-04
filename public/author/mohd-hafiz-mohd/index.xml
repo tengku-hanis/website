@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mohd Hafiz Mohd | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/author/mohd-hafiz-mohd/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/author/mohd-hafiz-mohd/index.xml" rel="self" type="application/rss+xml" />
+    <description>Mohd Hafiz Mohd</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 22 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>Mohd Hafiz Mohd</title>
+      <link>https://tengkuhanis.netlify.app/author/mohd-hafiz-mohd/</link>
+    </image>
+    
+    <item>
+      <title>Measuring time-varying effective reproduction numbers for COVID-19 and their relationship with movement control order in Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-01-01_measuring_time-varyi/</link>
+      <pubDate>Mon, 22 Mar 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-01-01_measuring_time-varyi/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -11,14 +11,26 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/talk/example/</loc>
-    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2021-11-01T13:13:11+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/talk/</loc>
-    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/tag/data-exploration/</loc>
+    <lastmod>2021-11-01T13:13:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/extract-a-table-from-a-pdf/</loc>
+    <lastmod>2021-11-01T13:13:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2021-11-01T13:13:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
+    <lastmod>2021-11-01T13:13:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2021-11-01T13:13:11+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/</loc>
-    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+    <lastmod>2021-11-04T23:13:36+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/</loc>
     <lastmod>2021-10-29T20:35:04+08:00</lastmod>
@@ -26,20 +38,14 @@
     <loc>https://tengkuhanis.netlify.app/category/applied-statistics/</loc>
     <lastmod>2021-10-29T20:35:04+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/categories/</loc>
-    <lastmod>2021-10-29T20:35:04+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/missing-data/</loc>
     <lastmod>2021-10-29T20:35:04+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2021-10-29T20:35:04+08:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/talk/</loc>
+    <lastmod>2021-11-04T23:13:36+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
-    <lastmod>2021-10-29T20:35:04+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
-    <lastmod>2021-10-29T20:35:04+08:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/talk/workshop-sytematic-review-and-meta-analysis-using-rstudio/</loc>
+    <lastmod>2021-11-04T23:13:36+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/covid-19-vaccine-interest-in-malaysia/</loc>
     <lastmod>2021-10-17T12:36:00+08:00</lastmod>
@@ -52,6 +58,48 @@
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/vaccine/</loc>
     <lastmod>2021-10-17T12:36:00+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication-type/3/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_a_brief_analysis_of_/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/authors/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/che-muhammad-nur-hidayat-che-nawi/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/erwan-ershad-ahmad-khan/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/kamarul-imran-musa/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/mohd-azmi-suliman/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication_types/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/sahrol-azmi-termizi/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/wan-nor-arifin/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/wan-shakira-rodzlan-hasani/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/wira-alfatah-ab-aziz/</loc>
+    <lastmod>2021-09-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/covid-19/</loc>
     <lastmod>2021-09-11T11:08:50+08:00</lastmod>
@@ -71,14 +119,32 @@
     <loc>https://tengkuhanis.netlify.app/tag/tidymodels/</loc>
     <lastmod>2021-09-05T14:45:32+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/data-exploration/</loc>
-    <lastmod>2021-08-22T05:10:54+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/post/data-exploration-in-r/</loc>
     <lastmod>2021-08-22T05:10:54+08:00</lastmod>
   </url><url>
+    <loc>https://tengkuhanis.netlify.app/talk/webinar-basic-of-meta-analysis-using-r/</loc>
+    <lastmod>2021-11-04T23:06:33+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-meta-analysis-using-r/</loc>
+    <lastmod>2021-11-04T22:52:48+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication-type/2/</loc>
+    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://tengkuhanis.netlify.app/post/a-summary-of-forcats-package/</loc>
     <lastmod>2021-05-18T20:15:26+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/najib-majdi-yaacob/</loc>
+    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_net_survival_differe/</loc>
+    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/sarimah-abdullah/</loc>
+    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/suhaily-mohd-hairon/</loc>
+    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/tidyverse/</loc>
     <lastmod>2021-05-18T20:15:26+08:00</lastmod>
@@ -110,32 +176,50 @@
     <loc>https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/awang-bulgiba/</loc>
+    <lastmod>2021-03-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_measuring_time-varyi/</loc>
+    <lastmod>2021-03-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/mohammad-subhi-jamiluddin/</loc>
+    <lastmod>2021-03-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/mohd-hafiz-mohd/</loc>
+    <lastmod>2021-03-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/noor-atinah-ahmad/</loc>
+    <lastmod>2021-03-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/xin-wee-chen/</loc>
+    <lastmod>2021-03-22T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://tengkuhanis.netlify.app/category/epidemiology/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
   </url><url>
+    <loc>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</loc>
+    <lastmod>2021-11-04T20:27:05+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-bibliometric-analysis-using-r/</loc>
+    <lastmod>2021-11-04T22:36:22+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/publication/2019-01-01_modelling_excess_mor/</loc>
+    <lastmod>2019-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/mohd-faiz-md-ariffin/</loc>
+    <lastmod>2019-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/noor-hashimah-abdullah/</loc>
+    <lastmod>2019-12-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/author/noorfariza-nordin/</loc>
+    <lastmod>2019-12-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://tengkuhanis.netlify.app/courses/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication-type/3/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication/preprint/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/authors/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication_types/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/slides/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
@@ -149,21 +233,6 @@
     <loc>https://tengkuhanis.netlify.app/project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication-type/2/</loc>
-    <lastmod>2015-09-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication/journal-article/</loc>
-    <lastmod>2015-09-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/author/robert-ford/</loc>
-    <lastmod>2015-09-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication-type/1/</loc>
-    <lastmod>2013-07-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/publication/conference-paper/</loc>
-    <lastmod>2013-07-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc>
+    <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
   </url>
 </urlset>

@@ -5,7 +5,7 @@
     <link>https://tengkuhanis.netlify.app/</link>
       <atom:link href="https://tengkuhanis.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     <description>Tengku Hanis</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sat, 01 Jun 2030 13:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 01 Nov 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Tengku Hanis</title>
@@ -55,22 +55,103 @@
     </item>
     
     <item>
-      <title>Example Talk</title>
-      <link>https://tengkuhanis.netlify.app/talk/example/</link>
-      <pubDate>Sat, 01 Jun 2030 13:00:00 +0000</pubDate>
-      <guid>https://tengkuhanis.netlify.app/talk/example/</guid>
-      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click on the &lt;strong&gt;Slides&lt;/strong&gt; button above to view the built-in slides feature.
-  &lt;/div&gt;
+      <title>Extract a table from a pdf</title>
+      <link>https://tengkuhanis.netlify.app/post/extract-a-table-from-a-pdf/</link>
+      <pubDate>Mon, 01 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/extract-a-table-from-a-pdf/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/extract-a-table-from-a-pdf/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In a couple of days, I am going to conduct a pre-conference workshop for Malaysian &lt;a href=&#34;https://www.r-conference.com/&#34;&gt;R conference 2021&lt;/a&gt;. So, some of the data that I am going to use for this workshop is available in a table in pdf form. Hence, this post is about how I get that particular table from the pdf into R for further analysis.&lt;/p&gt;
+&lt;p&gt;So, this is a table we going to extract.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/table.png&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;extracting-a-table-from-pdf&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Extracting a table from pdf&lt;/h2&gt;
+&lt;p&gt;We going to use &lt;code&gt;tabulizer&lt;/code&gt; package for this. However, not every pdf works with this package. In our case, it works but need further preprocessing.&lt;/p&gt;
+&lt;p&gt;Load the required packages.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tabulizer)
+library(dplyr)
+library(stringr)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Read a table from a pdf.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;raw_table &amp;lt;- extract_tables(&amp;quot;https://static-content.springer.com/esm/art%3A10.1038%2Fs41440-021-00720-3/MediaObjects/41440_2021_720_MOESM1_ESM.pdf&amp;quot;, 
+                          pages = 17, 
+                          output = &amp;quot;data.frame&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, this is the extracted table.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;raw_table[[1]] %&amp;gt;% head(10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                X     X.1     X.2     X.3  X.4     X.5 X.6     X.7  X.8
+## 1                                                                     
+## 2                                                                     
+## 3    Ahmed, 2019 Unclear Unclear Unclear High Unclear Low Unclear High
+## 4                                                                     
+## 5   Badrov, 2013 Unclear    High    High High Unclear Low Unclear High
+## 6   Baross, 2012 Unclear Unclear    High High Unclear Low Unclear High
+## 7   Baross, 2013 Unclear Unclear    High High Unclear Low Unclear High
+## 8  Carlson, 2016     Low    High    High  Low Unclear Low     Low High
+## 9  Correia, 2020     Low     Low     Low High Unclear Low     Low High
+## 10                                                                    
+##                              X.9
+## 1      1- selection bias: random
+## 2            sequence generation
+## 3  2- selection bias: allocation
+## 4                    concealment
+## 5                               
+## 6   3- reporting bias: selective
+## 7                      reporting
+## 8                               
+## 9  4- Performance bias: blinding
+## 10  (participants and personnel)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, a few preprocessing steps needed:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Remove column X.9 - this column supposed to be a header&lt;/li&gt;
+&lt;li&gt;Rename a header based on column X.9&lt;/li&gt;
+&lt;li&gt;Remove a space between the author name - “Ahmed,2019” instead of “Ahmed, 2019”&lt;/li&gt;
+&lt;li&gt;Remove empty rows&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;irt_rob &amp;lt;- 
+  raw_table[[1]] %&amp;gt;% 
+  select(-X.9) %&amp;gt;%  
+  rename(Study = X, 
+         Random.sequence.generation. = X.1, 
+         Allocation.concealment. = X.2,
+         Selective.reporting. = X.3,
+         Blinding.of.participants.and.personnel. = X.4, 
+         Blinding.of.outcome.assessment = X.5, 
+         Incomplete.outcome.data = X.6, 
+         Other.sources.of.bias. = X.7, 
+         Overall = X.8) %&amp;gt;% 
+  as_tibble() %&amp;gt;% 
+  mutate(Study = str_replace_all(Study, &amp;quot; &amp;quot;, &amp;quot;&amp;quot;)) %&amp;gt;% 
+  mutate(id_del = str_match(Study, &amp;quot;.&amp;quot;)) %&amp;gt;% 
+  filter(!is.na(id_del)) %&amp;gt;% 
+  select(-id_del)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, our data is ready.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;irt_rob&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          Study Random.sequence.generation. Allocation.concealment.
+## 1   Ahmed,2019                     Unclear                 Unclear
+## 2  Badrov,2013                     Unclear                    High
+## 3  Baross,2012                     Unclear                 Unclear
+## 4  Baross,2013                     Unclear                 Unclear
+## 5 Carlson,2016                         Low                    High
+##   Selective.reporting. Blinding.of.participants.and.personnel.
+## 1              Unclear                                    High
+## 2                 High                                    High
+## 3                 High                                    High
+## 4                 High                                    High
+## 5                 High                                     Low
+##   Blinding.of.outcome.assessment Incomplete.outcome.data Other.sources.of.bias.
+## 1                        Unclear                     Low                Unclear
+## 2                        Unclear                     Low                Unclear
+## 3                        Unclear                     Low                Unclear
+## 4                        Unclear                     Low                Unclear
+## 5                        Unclear                     Low                    Low
+##   Overall
+## 1    High
+## 2    High
+## 3    High
+## 4    High
+## 5    High&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;Slides can be added in a few ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Create&lt;/strong&gt; slides using Academic&amp;rsquo;s &lt;a href=&#34;https://sourcethemes.com/academic/docs/managing-content/#create-slides&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;em&gt;Slides&lt;/em&gt;&lt;/a&gt; feature and link using &lt;code&gt;slides&lt;/code&gt; parameter in the front matter of the talk file&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Upload&lt;/strong&gt; an existing slide deck to &lt;code&gt;static/&lt;/code&gt; and link using &lt;code&gt;url_slides&lt;/code&gt; parameter in the front matter of the talk file&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Embed&lt;/strong&gt; your slides (e.g. Google Slides) or presentation video on this page using &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;shortcodes&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Further talk details can easily be added to this page using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
 </description>
     </item>
     
@@ -85,7 +166,7 @@
 
 &lt;div id=&#34;background&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Background&lt;/h2&gt;
-&lt;p&gt;Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types:&lt;/p&gt;
+&lt;p&gt;Missing data is quite challenging to deal with. Deleting it may be the easiest solution, but may not be the best solution. Missing data can be categorised into 3 types (&lt;a href=&#34;https://www.jstor.org/stable/2335739&#34;&gt;Rubin, 1976&lt;/a&gt;):&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;&lt;p&gt;MCAR&lt;/p&gt;
 &lt;ul&gt;
@@ -775,8 +856,8 @@ tbl_merge(
   &lt;/tfoot&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;p&gt;There is a different in the result between the original dataset (no NAs) and with mice imputation.&lt;/p&gt;
-&lt;p&gt;There are a lot more that are not cover in this post. For example &lt;a href=&#34;https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html&#34;&gt;passive imputation and post-processing&lt;/a&gt;. In fact, there are a series of &lt;a href=&#34;https://github.com/amices/mice#vignettes&#34;&gt;vignettes&lt;/a&gt; written by Gerko Vink and Stef van Buuren (both are the suthors of &lt;code&gt;mice&lt;/code&gt;) which provides a good tutorial on using &lt;code&gt;mice&lt;/code&gt; though quite advanced.&lt;/p&gt;
+&lt;p&gt;There is a different in the result between the original dataset (no NAs) and with mice imputation. Probably, exploring other imputation methods will produce a better result.&lt;/p&gt;
+&lt;p&gt;There are a lot more that are not cover in this post. For example &lt;a href=&#34;https://www.gerkovink.com/miceVignettes/Passive_Post_processing/Passive_imputation_post_processing.html&#34;&gt;passive imputation and post-processing&lt;/a&gt;. In fact, there are a series of &lt;a href=&#34;https://github.com/amices/mice#vignettes&#34;&gt;vignettes&lt;/a&gt; written by Gerko Vink and Stef van Buuren (both are the authors of &lt;code&gt;mice&lt;/code&gt;) which provides a good tutorial on using &lt;code&gt;mice&lt;/code&gt; though quite advanced.&lt;/p&gt;
 &lt;p&gt;Suggested online books (though, I have not really studied both of the books yet):&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;&lt;a href=&#34;https://stefvanbuuren.name/fimd/&#34;&gt;Flexible imputation of missing data&lt;/a&gt; by Stef van Buuren&lt;/li&gt;
@@ -784,12 +865,20 @@ tbl_merge(
 &lt;/ol&gt;
 &lt;p&gt;References for this post:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;R in Action, Data analysis and graphics with R&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf&#34;&gt;R in Action, Data analysis and graphics with R&lt;/a&gt; (Chapter 15)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&#34; class=&#34;uri&#34;&gt;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&#34; class=&#34;uri&#34;&gt;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>Workshop - Sytematic review and meta-analysis using RStudio</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-sytematic-review-and-meta-analysis-using-rstudio/</link>
+      <pubDate>Mon, 18 Oct 2021 14:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-sytematic-review-and-meta-analysis-using-rstudio/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -845,6 +934,14 @@ Probably, it’s better if we filter our date to when the COVID-19 pandemic star
 &lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/covid-19-vaccine-interest-in-malaysia/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;gtrendsR&lt;/code&gt; with just a bit of plots certainly very useful if we want to gauge certain issues in the community.&lt;/p&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>A brief analysis of the COVID-19 death data in Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-01-01_a_brief_analysis_of_/</link>
+      <pubDate>Wed, 29 Sep 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-01-01_a_brief_analysis_of_/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -1589,6 +1686,22 @@ boxplot(heartfailure$creatinine)&lt;/code&gt;&lt;/pre&gt;
     </item>
     
     <item>
+      <title>Webinar - Basic of meta-analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-basic-of-meta-analysis-using-r/</link>
+      <pubDate>Wed, 18 Aug 2021 09:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-basic-of-meta-analysis-using-r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - An introduction to meta-analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-meta-analysis-using-r/</link>
+      <pubDate>Thu, 05 Aug 2021 14:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-meta-analysis-using-r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>A summary of forcats package</title>
       <link>https://tengkuhanis.netlify.app/post/a-summary-of-forcats-package/</link>
       <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
@@ -1791,6 +1904,14 @@ mtcars %&amp;gt;%
 &lt;a href=&#34;https://forcats.tidyverse.org/index.html&#34; class=&#34;uri&#34;&gt;https://forcats.tidyverse.org/index.html&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>Net survival differences of breast cancer between stages at diagnosis and age groups in the east coast region of West Malaysia: a retrospective cohort study</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-01-01_net_survival_differe/</link>
+      <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-01-01_net_survival_differe/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -2689,6 +2810,14 @@ proc.time() - ptm #-- stop the clock&lt;/code&gt;&lt;/pre&gt;
     </item>
     
     <item>
+      <title>Measuring time-varying effective reproduction numbers for COVID-19 and their relationship with movement control order in Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-01-01_measuring_time-varyi/</link>
+      <pubDate>Mon, 22 Mar 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-01-01_measuring_time-varyi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>How many Malaysian should be vaccinated to get herd immunity from COVID-19?</title>
       <link>https://tengkuhanis.netlify.app/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</link>
       <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
@@ -2730,17 +2859,27 @@ Figure 1: Basic idea of R&lt;sub&gt;0&lt;/sub&gt;(image from &lt;a href=&#34;htt
     </item>
     
     <item>
-      <title>An example preprint / working paper</title>
-      <link>https://tengkuhanis.netlify.app/publication/preprint/</link>
-      <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
-      <guid>https://tengkuhanis.netlify.app/publication/preprint/</guid>
-      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Slides&lt;/em&gt; button above to demo Academic&amp;rsquo;s Markdown slides feature.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Supplementary notes can be added here, including &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;code and math&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <title>Talks - An introduction to relative survival analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</link>
+      <pubDate>Sun, 22 Nov 2020 12:45:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - An introduction to bibliometric analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-bibliometric-analysis-using-r/</link>
+      <pubDate>Thu, 24 Sep 2020 21:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-bibliometric-analysis-using-r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Modelling excess mortality among breast cancer patients in the north east region of peninsular Malaysia, 2007-2011: a population-based study</title>
+      <link>https://tengkuhanis.netlify.app/publication/2019-01-01_modelling_excess_mor/</link>
+      <pubDate>Mon, 30 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2019-01-01_modelling_excess_mor/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -2878,44 +3017,6 @@ Three
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       <guid>https://tengkuhanis.netlify.app/project/external-project/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>An example journal article</title>
-      <link>https://tengkuhanis.netlify.app/publication/journal-article/</link>
-      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
-      <guid>https://tengkuhanis.netlify.app/publication/journal-article/</guid>
-      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Cite&lt;/em&gt; button above to demo the feature to enable visitors to import publication metadata into their reference management software.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Slides&lt;/em&gt; button above to demo Academic&amp;rsquo;s Markdown slides feature.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Supplementary notes can be added here, including &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;code and math&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>An example conference paper</title>
-      <link>https://tengkuhanis.netlify.app/publication/conference-paper/</link>
-      <pubDate>Mon, 01 Jul 2013 00:00:00 +0000</pubDate>
-      <guid>https://tengkuhanis.netlify.app/publication/conference-paper/</guid>
-      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Cite&lt;/em&gt; button above to demo the feature to enable visitors to import publication metadata into their reference management software.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Slides&lt;/em&gt; button above to demo Academic&amp;rsquo;s Markdown slides feature.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Supplementary notes can be added here, including &lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;code and math&lt;/a&gt;.&lt;/p&gt;
-</description>
     </item>
     
   </channel>
