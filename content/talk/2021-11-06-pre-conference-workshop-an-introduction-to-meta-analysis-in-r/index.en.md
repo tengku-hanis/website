@@ -15,7 +15,7 @@ links:
 slug: pre-conference-workshop-an-introduction-to-meta-analysis-in-r
 categories: []
 tags: []
-subtitle: Organised by [Malaysian R User Group (MyRUG)](https://www.facebook.com/rusergroupmalaysia/)
+subtitle: Organised by [Malaysia R User Group (MyRUG)](https://www.facebook.com/rusergroupmalaysia/)
 summary: This workshop was part of confeRence 2021 organised by [Malaysian R User Group (MyRUG)](https://www.facebook.com/rusergroupmalaysia/)
 abstract: Meta-analysis provides a set of quantitative approaches to summarise previous scientific studies, and draw a meaningful conclusion in regards to the area of study. This talk covered an introduction to a meta-analysis in R, mainly using meta, robvis and dmetar packages. Additionally, this talk included an explanation of a basic framework and jargon in meta-analysis.
 authors: []
