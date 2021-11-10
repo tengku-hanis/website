@@ -1,0 +1,115 @@
+---
+title: Some COVID-19 plots for Southeast Asian countries
+author: tengku-hanis
+date: '2021-11-10'
+slug: some-covid-19-plots-for-southeast-asian-countries
+categories:
+  - R
+  - Epidemiology
+tags:
+  - COVID-19
+  - Vaccine
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-11-10T22:33:31+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>Recently, I found a GitHub <a href="https://github.com/owid/covid-19-data/tree/master/public/data">repo</a> containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam). I have uploaded this restricted data to my GitHub <a href="https://github.com/tengku-hanis/data-owid-covid">repo</a>.</p>
+<p>We are not going to do anything fancy, just some visualisations.</p>
+<p>Let’s begin by reading the data.</p>
+<pre class="r"><code>library(tidyverse)
+covid_sea &lt;- read_csv(&quot;https://raw.githubusercontent.com/tengku-hanis/data-owid-covid/main/covid_sea.csv&quot;)</code></pre>
+<p>We are going to compare between each Southeast Asian countries in terms of:</p>
+<ol style="list-style-type: decimal">
+<li>Daily cases</li>
+<li>Daily deaths</li>
+<li>Daily tests</li>
+<li>Daily vaccinations</li>
+</ol>
+<p>Before that, we need to make a function, as all the above items have a generic things to plot with the exception on y axis.</p>
+<pre class="r"><code>easy_plot &lt;- function(var1, lab_title, yaxis_lab, span = 0.14){
+  covid_sea %&gt;% 
+    select(date, location, {{var1}}) %&gt;% 
+    drop_na() %&gt;% 
+    group_by(location) %&gt;% 
+    mutate(label = 
+             case_when(
+               date == max(date) ~ paste(location), 
+               TRUE ~ NA_character_
+             )) %&gt;% 
+    ungroup() %&gt;% 
+    ggplot(aes(date, {{var1}}, color = location)) +
+    geom_smooth(se = F, span = 0.14) +
+    geom_point(aes(color = location), alpha = 0.2) +
+    geom_line(aes(color = location), alpha = 0.2, linetype = &quot;dashed&quot;) +
+    labs(title = {{lab_title}}) +
+    ylab({{yaxis_lab}}) +
+    xlab(&quot;Date&quot;) +
+    theme_minimal() 
+}</code></pre>
+<p>var1 is going to be the item/variable that we want to compare, lab_title is the plot title, yaxis_lab is the label on the y axis, and span is just how smooth our smoothen line should be.</p>
+<div id="daily-cases" class="section level2">
+<h2>Daily cases</h2>
+<pre class="r"><code>easy_plot(new_cases, &quot;Daily cases for southeast Asian countries&quot;, &quot;Daily cases&quot;, span = 0.8)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We cannot compare in terms of the frequency as big countries like Indonesia is expected to had a higher number of daily cases. A smoothen line though very basic, may indicate a simple trend. Thailand, Malaysia and Philippines seems to had a decreasing trend of cases. On the other hand, the daily cases in Vietnam and Indonesia seems to start to increase. The latest trend of daily cases in Singapore seems to stabilise though the cases are higher lately. Lastly, Brunei had too little cases, for us to see any sort of trend at the scale of the between countries comparison.</p>
+</div>
+<div id="daily-deaths" class="section level2">
+<h2>Daily deaths</h2>
+<pre class="r"><code>easy_plot(new_deaths, &quot;Daily deaths for southeast Asian countries&quot;, &quot;Daily deaths&quot;, span = 0.8)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Philippines and Indonesia seems started to had a bit of increasing trend. Other countries look okay.</p>
+</div>
+<div id="daily-tests" class="section level2">
+<h2>Daily tests</h2>
+<pre class="r"><code>easy_plot(new_tests, &quot;Daily tests for southeast Asian countries&quot;, &quot;Daily tests&quot;, span = 0.2)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The daily tests plot looks a bit weird for Vietnam. Actually, the daily tests below zero are not avaliable (not sure if there is no test done in the period or the values is just missing). Hence, the weird looking plot for Vietnam. Data for Brunei and Thailand are not available. Malaysia seems to be quite aggresive in COVID-19 testing, even on par with Indonesia. Also, Vietnam seems to be very aggressive in the latest period, probably to cover the lack of testing previously.</p>
+</div>
+<div id="daily-vaccinations" class="section level2">
+<h2>Daily vaccinations</h2>
+<pre class="r"><code>easy_plot(new_vaccinations, &quot;Daily vaccinations for southeast Asian countries&quot;, &quot;Daily vaccinations&quot;, span = 0.9)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Malaysia and Singapore had quite a similar distribution. Vietnam, Philippines, Thailand and Indonesia quite similar in which they had a series of wave in the rate of vaccinations, though the trend of wave for Thailand is less obvious. Again, the number in Brunei was too little for us to see any trend or distribution at this scale.</p>
+</div>
+<div id="malaysia-situation" class="section level2">
+<h2>Malaysia situation</h2>
+<p>Let’s do a plot, specific to Malaysia. We going to scale the numbers, so that we able to see a comparison in term of trend or distribution.</p>
+<pre class="r"><code>covid_sea %&gt;% 
+  filter(location == &quot;Malaysia&quot;) %&gt;% 
+  mutate(new_cases = scale(new_cases), 
+         new_deaths = scale(new_deaths), 
+         new_tests = scale(new_tests), 
+         new_vaccinations = scale(new_vaccinations)) %&gt;% 
+  ggplot(aes(date)) +
+  geom_line(aes(y = new_cases, color = &quot;new_cases&quot;), alpha = 0.2) +
+  geom_line(aes(y = new_deaths, color = &quot;new_deaths&quot;), alpha = 0.2) +
+  geom_line(aes(y = new_tests, color = &quot;new_tests&quot;), alpha = 0.2) +
+  geom_line(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), alpha = 0.2) +
+  geom_point(aes(y = new_cases, color = &quot;new_cases&quot;), alpha = 0.2) +
+  geom_point(aes(y = new_deaths, color = &quot;new_deaths&quot;), alpha = 0.2) +
+  geom_point(aes(y = new_tests, color = &quot;new_tests&quot;), alpha = 0.2) +
+  geom_point(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), alpha = 0.2) +
+  geom_smooth(aes(y = new_cases, color = &quot;new_cases&quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_deaths, color = &quot;new_deaths&quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_tests, color = &quot;new_tests&quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), se = F, span = 0.6) +
+  labs(title = &quot;Situation in Malaysia&quot;, fill = &quot;Metrics/items&quot;) +
+  scale_fill_discrete(labels = c(&quot;Daily cases&quot;, &quot;Daily deaths&quot;, &quot;Daily tests&quot;, &quot;Daily vaccinations&quot;)) +
+  ylab(&quot;Scaled Frequency&quot;) +
+  xlab(&quot;Date&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Interestingly, as the vaccination increased up to a certain threshold, number of daily cases and daily deaths started decresed as well. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases instead of mass testing.</p>
+<p>Disclaimer: Please take anything written here with a massive grain of salt.</p>
+</div>
