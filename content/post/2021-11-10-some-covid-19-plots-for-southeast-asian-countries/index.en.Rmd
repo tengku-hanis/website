@@ -124,7 +124,7 @@ covid_sea %>%
   theme_minimal()
 ```
 
-Interestingly, as the number of vaccination increased up to a certain threshold, number of  daily cases and daily deaths started decreased. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases and their persons of contact instead of mass testing.
+Interestingly, as the number of vaccination increased up to a certain threshold, the number of  daily cases and daily deaths started to decreased. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases and their persons of contact instead of mass testing.
 
 *Disclaimer: Please take anything written here with a massive grain of salt.*
 
