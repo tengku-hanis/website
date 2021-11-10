@@ -48,13 +48,6 @@ easy_plot <- function(var1, lab_title, yaxis_lab, span = 0.14){
   covid_sea %>% 
     select(date, location, {{var1}}) %>% 
     drop_na() %>% 
-    group_by(location) %>% 
-    mutate(label = 
-             case_when(
-               date == max(date) ~ paste(location), 
-               TRUE ~ NA_character_
-             )) %>% 
-    ungroup() %>% 
     ggplot(aes(date, {{var1}}, color = location)) +
     geom_smooth(se = F, span = 0.14) +
     geom_point(aes(color = location), alpha = 0.2) +
@@ -74,7 +67,7 @@ var1 is going to be the item/variable that we want to compare, lab_title is the 
 easy_plot(new_cases, "Daily cases for southeast Asian countries", "Daily cases", span = 0.8)
 ```
 
-We cannot compare in terms of the frequency as big countries like Indonesia is expected to had a higher number of daily cases. A smoothen line though very basic, may indicate a simple trend. Thailand, Malaysia and Philippines seems to had a decreasing trend of cases. On the other hand, the daily cases in Vietnam and Indonesia seems to start to increase. The latest trend of daily cases in Singapore seems to stabilise though the cases are higher lately. Lastly, Brunei had too little cases, for us to see any sort of trend at the scale of the between countries comparison.
+We cannot compare in terms of the frequency as big countries like Indonesia is expected to had a higher number of daily cases. A smoothen line though very basic, may indicate a simple trend. Thailand, Malaysia, Philippines and Indonesia seems to had a decreasing trend of cases. On the other hand, the daily cases in Vietnam seems to start to increase. Singapore had a more stabilised trend of cases, though a higher number of cases was observed in the latest period. Lastly, Brunei had too little cases, for us to see any sort of trend at the scale of the between countries comparison.
 
 ## Daily deaths
 
@@ -90,7 +83,7 @@ Philippines and Indonesia seems started to had a bit of increasing trend. Other 
 easy_plot(new_tests, "Daily tests for southeast Asian countries", "Daily tests", span = 0.2)
 ```
 
-The daily tests plot looks a bit weird for Vietnam. Actually, the daily tests below zero are not avaliable (not sure if there is no test done in the period or the values is just missing). Hence, the weird looking plot for Vietnam. Data for Brunei and Thailand are not available. Malaysia seems to be quite aggresive in COVID-19 testing, even on par with Indonesia. Also, Vietnam seems to be very aggressive in the latest period, probably to cover the lack of testing previously.
+The daily tests plot looks a bit weird for Vietnam. Actually, the daily tests below zero are not avaliable (not sure if there is no test done in the period or the values is just missing). Hence, the weird looking plot for Vietnam. Data for Brunei and Thailand are not available. Malaysia seems to be quite aggressive in COVID-19 testing, even on par with Indonesia. Also, Vietnam seems to be very aggressive in the latest period, probably to cover the lack of COVID-19 testing previously.
 
 ## Daily vaccinations
 
@@ -111,14 +104,14 @@ covid_sea %>%
          new_tests = scale(new_tests), 
          new_vaccinations = scale(new_vaccinations)) %>% 
   ggplot(aes(date)) +
-  geom_line(aes(y = new_cases, color = "new_cases"), alpha = 0.2) +
-  geom_line(aes(y = new_deaths, color = "new_deaths"), alpha = 0.2) +
-  geom_line(aes(y = new_tests, color = "new_tests"), alpha = 0.2) +
-  geom_line(aes(y = new_vaccinations, color = "new_vaccinations"), alpha = 0.2) +
-  geom_point(aes(y = new_cases, color = "new_cases"), alpha = 0.2) +
-  geom_point(aes(y = new_deaths, color = "new_deaths"), alpha = 0.2) +
-  geom_point(aes(y = new_tests, color = "new_tests"), alpha = 0.2) +
-  geom_point(aes(y = new_vaccinations, color = "new_vaccinations"), alpha = 0.2) +
+  geom_line(aes(y = new_cases, color = "new_cases"), alpha = 0.3) +
+  geom_line(aes(y = new_deaths, color = "new_deaths"), alpha = 0.3) +
+  geom_line(aes(y = new_tests, color = "new_tests"), alpha = 0.3) +
+  geom_line(aes(y = new_vaccinations, color = "new_vaccinations"), alpha = 0.3) +
+  geom_point(aes(y = new_cases, color = "new_cases"), alpha = 0.3) +
+  geom_point(aes(y = new_deaths, color = "new_deaths"), alpha = 0.3) +
+  geom_point(aes(y = new_tests, color = "new_tests"), alpha = 0.3) +
+  geom_point(aes(y = new_vaccinations, color = "new_vaccinations"), alpha = 0.3) +
   geom_smooth(aes(y = new_cases, color = "new_cases"), se = F, span = 0.3) +
   geom_smooth(aes(y = new_deaths, color = "new_deaths"), se = F, span = 0.3) +
   geom_smooth(aes(y = new_tests, color = "new_tests"), se = F, span = 0.3) +
@@ -131,7 +124,7 @@ covid_sea %>%
   theme_minimal()
 ```
 
-Interestingly, as the vaccination increased up to a certain threshold, number of  daily cases and daily deaths started decresed as well. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases instead of mass testing.
+Interestingly, as the number of vaccination increased up to a certain threshold, number of  daily cases and daily deaths started decreased. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases and their persons of contact instead of mass testing.
 
 *Disclaimer: Please take anything written here with a massive grain of salt.*
 
