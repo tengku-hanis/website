@@ -123,13 +123,17 @@ covid_sea %>%
   geom_smooth(aes(y = new_deaths, color = "new_deaths"), se = F, span = 0.3) +
   geom_smooth(aes(y = new_tests, color = "new_tests"), se = F, span = 0.3) +
   geom_smooth(aes(y = new_vaccinations, color = "new_vaccinations"), se = F, span = 0.6) +
-  labs(title = "Situation in Malaysia", fill = "Metrics/items") +
-  scale_fill_discrete(labels = c("Daily cases", "Daily deaths", "Daily tests", "Daily vaccinations")) +
+  labs(title = "Situation in Malaysia") +
   ylab("Scaled Frequency") +
   xlab("Date") +
+  guides(color = guide_legend("Items")) +
+  scale_color_discrete(labels = c("Daily cases", "Daily deaths", "Daily tests", "Daily vaccinations")) +
   theme_minimal()
 ```
 
 Interestingly, as the vaccination increased up to a certain threshold, number of  daily cases and daily deaths started decresed as well. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases instead of mass testing.
 
-Disclaimer: Please take anything written here with a massive grain of salt.
+*Disclaimer: Please take anything written here with a massive grain of salt.*
+
+Data source:
+https://github.com/owid/covid-19-data/tree/master/public/data

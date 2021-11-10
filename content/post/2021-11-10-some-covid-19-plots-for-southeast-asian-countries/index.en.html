@@ -104,12 +104,15 @@ covid_sea &lt;- read_csv(&quot;https://raw.githubusercontent.com/tengku-hanis/da
   geom_smooth(aes(y = new_deaths, color = &quot;new_deaths&quot;), se = F, span = 0.3) +
   geom_smooth(aes(y = new_tests, color = &quot;new_tests&quot;), se = F, span = 0.3) +
   geom_smooth(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), se = F, span = 0.6) +
-  labs(title = &quot;Situation in Malaysia&quot;, fill = &quot;Metrics/items&quot;) +
-  scale_fill_discrete(labels = c(&quot;Daily cases&quot;, &quot;Daily deaths&quot;, &quot;Daily tests&quot;, &quot;Daily vaccinations&quot;)) +
+  labs(title = &quot;Situation in Malaysia&quot;) +
   ylab(&quot;Scaled Frequency&quot;) +
   xlab(&quot;Date&quot;) +
+  guides(color = guide_legend(&quot;Items&quot;)) +
+  scale_color_discrete(labels = c(&quot;Daily cases&quot;, &quot;Daily deaths&quot;, &quot;Daily tests&quot;, &quot;Daily vaccinations&quot;)) +
   theme_minimal()</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Interestingly, as the vaccination increased up to a certain threshold, number of daily cases and daily deaths started decresed as well. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases instead of mass testing.</p>
-<p>Disclaimer: Please take anything written here with a massive grain of salt.</p>
+<p><em>Disclaimer: Please take anything written here with a massive grain of salt.</em></p>
+<p>Data source:
+<a href="https://github.com/owid/covid-19-data/tree/master/public/data" class="uri">https://github.com/owid/covid-19-data/tree/master/public/data</a></p>
 </div>
