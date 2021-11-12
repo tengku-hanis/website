@@ -1,0 +1,145 @@
+---
+title: Making maps with R (my first attempt ever!)
+author: tengku-hanis
+date: '2021-11-12'
+slug: making-maps-with-r-my-first-attempt-ever
+categories:
+  - R
+  - Epidemiology
+  - Map
+tags:
+  - map
+  - spatial
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-11-12T09:58:02+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distributions of the clinic in Malaysia. The two types of clinic that we have here:</p>
+<ol style="list-style-type: decimal">
+<li>Klinik 1Malaysia (1Malaysia clinic)</li>
+<li>Klinik Desa (Desa clinic)</li>
+</ol>
+<p>Originally, these two data are a separated data. Both of the data can be downloaded from <a href="https://www.data.gov.my/data/ms_MY/group/pemetaan">here</a>. Also, I have uploaded the data into my <a href="https://github.com/tengku-hanis/clinic-data">GitHub repo</a> for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia does not.</p>
+<p>These are the required packages.</p>
+<pre class="r"><code>library(rworldmap) #to get a Malaysia map
+library(tidyverse)
+library(tidygeocoder) #to get latitude and logitude</code></pre>
+<p>Read the data.</p>
+<pre class="r"><code>clinic1m &lt;- read.csv(&quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinic1m.csv&quot;)
+clinicDesa &lt;- read.csv(&quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv&quot;)</code></pre>
+<p>First, we need to get a latitude and longitude information for Klinik 1Malaysia data. So, we going to retrieve the coordinates based on the postal code, though this is not very accurate. We can use <code>tidygeocoder</code> for this.</p>
+<pre class="r"><code>clinic1m2 &lt;- 
+  clinic1m %&gt;%
+  mutate(country = &quot;malaysia&quot;) %&gt;% 
+  select(name, postcode, country) %&gt;% 
+  mutate(postcode = ifelse(nchar(postcode) == 4, paste0(0, postcode), postcode)) %&gt;%
+  geocode(postalcode = postcode, country = country, method = &quot;osm&quot;)</code></pre>
+<p>Further checking on the data, we notice that 5 clinics have no coordinate info.</p>
+<pre class="r"><code>clinic1m2 %&gt;% filter(is.na(lat) | is.na(long))</code></pre>
+<pre><code>## # A tibble: 5 x 5
+##   name                                     postcode country    lat  long
+##   &lt;chr&gt;                                    &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1 Klinik 1 Malaysia Bandar Lela            90700    malaysia    NA    NA
+## 2 Klinik 1 Malaysia Batu Melintang         17250    malaysia    NA    NA
+## 3 Klinik 1 Malaysia Cakerapurnama          45010    malaysia    NA    NA
+## 4 Klinik 1 Malaysia Jelawat                16070    malaysia    NA    NA
+## 5 Klinik 1 Malaysia Taman Kempadang Makmur 26060    malaysia    NA    NA</code></pre>
+<div id="some-data-pre-processing" class="section level2">
+<h2>Some data pre-processing</h2>
+<p>So, I found this <a href="https://www.listendata.com/2020/11/zip-code-to-latitude-and-longitude.html">data</a> after some googling time, which give coordinate based on the postal code. So, we going to add in the missing coordinate based on this online data.</p>
+<pre class="r"><code>add_coord &lt;- 
+  read.table(header = T, text = &quot;
+postal_code    latitude   longitude
+16070            6.0334    102.3499
+26060            3.6228    102.3926
+90700            5.8456    118.0571
+26060            3.6228    102.3926&quot;)
+
+clinic1m2 &lt;- 
+  clinic1m2 %&gt;% 
+  mutate(lat = ifelse(postcode %in% add_coord$postal_code, add_coord$latitude, lat), 
+         long = ifelse(postcode %in% add_coord$postal_code, add_coord$longitude, long)) %&gt;% 
+  drop_na() #drop 2 clinic1m</code></pre>
+<p>Even after add in the missing coordinate, we still missing 2 coordinates. So, we going to drop those 2 clinics. Next, we combine both data.</p>
+<pre class="r"><code>all_clinic &lt;- 
+  clinic1m2 %&gt;% 
+  mutate(Type = &quot;1Malaysia&quot;) %&gt;% 
+  select(Type, lat, long) %&gt;% 
+  bind_rows(clinicDesa %&gt;% 
+              mutate(Type = &quot;Desa&quot;, 
+                     lat = latitude, 
+                     long = longitude) %&gt;% 
+              select(Type, lat, long))</code></pre>
+<p>Let’s try plotting the data first.</p>
+<pre class="r"><code>ggplot(all_clinic, aes(long, lat, color = Type)) +
+  geom_point() +
+  theme_minimal() #should remove the isolated two data</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>We have 2 isolated points from Klinik Desa data. We will drop these 2 points as well.</p>
+<pre class="r"><code>all_clinic2 &lt;- all_clinic %&gt;% filter(long &gt; 25)</code></pre>
+</div>
+<div id="plotting-the-map" class="section level2">
+<h2>Plotting the map</h2>
+<p>There are 2 ways to plot our data to Malaysia map, that we going to cover in this post.</p>
+<div id="map-from-ggplot2" class="section level3">
+<h3>1) map from <code>ggplot2</code></h3>
+<p>First, we need to get the map.</p>
+<pre class="r"><code>global &lt;- map_data(&quot;world&quot;) #get map</code></pre>
+<p>Once, we retrieved the map, we need to filter the region to Malaysia. The rest of the codes are <code>ggplot2</code> function as we know it.</p>
+<pre class="r"><code>ggplot() + 
+  geom_polygon(data = global %&gt;% filter(region == &quot;Malaysia&quot;), aes(x=long, y = lat, group = group), 
+               fill = &quot;gray85&quot;) + 
+  coord_fixed(1.3) +
+  geom_point(data = all_clinic2, aes(x = long, y = lat, group = Type, color = Type, shape = Type)) +
+  theme_void() + 
+  xlab(&quot;Longitude&quot;) +
+  ylab(&quot;Latitude&quot;) +
+  labs(title = &quot;Klinik 1Malaysia dan klinik desa di Malaysia&quot;, 
+       subtitle = &quot;(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klnik desa - 9 Mac 2021)&quot;,
+       caption = expression(paste(italic(&quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&quot;))), 
+       color = &quot;Jenis klinik:&quot;, 
+       shape = &quot;Jenis klinik:&quot;) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5), 
+        legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="map-from-rworldmap" class="section level3">
+<h3>2) map from <code>rworldmap</code></h3>
+<p>The flow is similar, we need to get the map first. Then, restrict the map to Malaysia region.</p>
+<pre class="r"><code>world &lt;- getMap(resolution = &quot;low&quot;) #get map
+msia &lt;- world[world@data$ADMIN == &quot;Malaysia&quot;, ]</code></pre>
+<p>The rest of the codes are similar to the first approach. But, we going to change the theme a bit.</p>
+<pre class="r"><code>ggplot() +
+  geom_polygon(data = msia, aes(x = long, y = lat, group = group), fill = NA, colour = &quot;black&quot;) +
+  geom_point(data = all_clinic2, aes(x = long, y = lat, group = Type, color = Type, shape = Type)) +
+  coord_quickmap() + 
+  theme_minimal() + 
+  xlab(&quot;Longitude&quot;) +
+  ylab(&quot;Latitude&quot;) +
+  labs(title = &quot;Klinik 1Malaysia dan klinik desa di Malaysia&quot;, 
+       subtitle = &quot;(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klnik desa - 9 Mac 2021)&quot;,
+       caption = expression(paste(italic(&quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&quot;))), 
+       color = &quot;Jenis klinik:&quot;, 
+       shape = &quot;Jenis klinik:&quot;) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5), 
+        legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The coordinates that we have are not as accurate as it should, or maybe there is something wrong that I miss along the way. As we can see, we have clinics on the ocean. As far as I know, we Malaysian are not that advanced yet. Also, noticed that we severely lacking clinics in Sarawak, given that our data is correct.</p>
+</div>
