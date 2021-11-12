@@ -127,7 +127,7 @@ ggplot() +
   xlab("Longitude") +
   ylab("Latitude") +
   labs(title = "Klinik 1Malaysia dan Klinik Desa di Malaysia", 
-       subtitle = "(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)",
+       subtitle = "(Data dikemaskini: Klinik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)",
        caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan"))), 
        color = "Jenis klinik:", 
        shape = "Jenis klinik:") +
@@ -154,7 +154,7 @@ ggplot() +
   xlab("Longitude") +
   ylab("Latitude") +
   labs(title = "Klinik 1Malaysia dan Klinik Desa di Malaysia", 
-       subtitle = "(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)",
+       subtitle = "(Data dikemaskini: Klinik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)",
        caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan"))), 
        color = "Jenis klinik:", 
        shape = "Jenis klinik:") +
