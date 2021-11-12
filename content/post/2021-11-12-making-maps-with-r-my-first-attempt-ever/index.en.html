@@ -25,7 +25,7 @@ projects: []
 <script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
 
 
-<p>As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distributions of the clinic in Malaysia. The two types of clinic that we have here:</p>
+<p>As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distribution of the clinics in Malaysia. The two types of clinic that we have here:</p>
 <ol style="list-style-type: decimal">
 <li>Klinik 1Malaysia (1Malaysia clinic)</li>
 <li>Klinik Desa (Desa clinic)</li>
@@ -105,8 +105,8 @@ clinic1m2 &lt;-
   theme_void() + 
   xlab(&quot;Longitude&quot;) +
   ylab(&quot;Latitude&quot;) +
-  labs(title = &quot;Klinik 1Malaysia dan klinik desa di Malaysia&quot;, 
-       subtitle = &quot;(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klnik desa - 9 Mac 2021)&quot;,
+  labs(title = &quot;Klinik 1Malaysia dan Klinik Desa di Malaysia&quot;, 
+       subtitle = &quot;(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)&quot;,
        caption = expression(paste(italic(&quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&quot;))), 
        color = &quot;Jenis klinik:&quot;, 
        shape = &quot;Jenis klinik:&quot;) +
@@ -128,8 +128,8 @@ msia &lt;- world[world@data$ADMIN == &quot;Malaysia&quot;, ]</code></pre>
   theme_minimal() + 
   xlab(&quot;Longitude&quot;) +
   ylab(&quot;Latitude&quot;) +
-  labs(title = &quot;Klinik 1Malaysia dan klinik desa di Malaysia&quot;, 
-       subtitle = &quot;(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klnik desa - 9 Mac 2021)&quot;,
+  labs(title = &quot;Klinik 1Malaysia dan Klinik Desa di Malaysia&quot;, 
+       subtitle = &quot;(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)&quot;,
        caption = expression(paste(italic(&quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&quot;))), 
        color = &quot;Jenis klinik:&quot;, 
        shape = &quot;Jenis klinik:&quot;) +

@@ -26,7 +26,7 @@ projects: []
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distributions of the clinic in Malaysia. The two types of clinic that we have here:
+As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distribution of the clinics in Malaysia. The two types of clinic that we have here:
 
 1) Klinik 1Malaysia (1Malaysia clinic)
 2) Klinik Desa (Desa clinic)
@@ -126,8 +126,8 @@ ggplot() +
   theme_void() + 
   xlab("Longitude") +
   ylab("Latitude") +
-  labs(title = "Klinik 1Malaysia dan klinik desa di Malaysia", 
-       subtitle = "(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klnik desa - 9 Mac 2021)",
+  labs(title = "Klinik 1Malaysia dan Klinik Desa di Malaysia", 
+       subtitle = "(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)",
        caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan"))), 
        color = "Jenis klinik:", 
        shape = "Jenis klinik:") +
@@ -153,8 +153,8 @@ ggplot() +
   theme_minimal() + 
   xlab("Longitude") +
   ylab("Latitude") +
-  labs(title = "Klinik 1Malaysia dan klinik desa di Malaysia", 
-       subtitle = "(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klnik desa - 9 Mac 2021)",
+  labs(title = "Klinik 1Malaysia dan Klinik Desa di Malaysia", 
+       subtitle = "(Data dikemaskini: Klnik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)",
        caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan"))), 
        color = "Jenis klinik:", 
        shape = "Jenis klinik:") +
