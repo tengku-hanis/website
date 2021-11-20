@@ -71,16 +71,17 @@ projects: []
 <h2>Multiple imputation</h2>
 <p>In short, there are 2 approaches of multiple imputation implemented by packages in R:</p>
 <ol style="list-style-type: decimal">
-<li><p>Joint multivariate normal distribution multiple imputation</p>
+<li><p>Joint modeling (JM) or joint multivariate normal distribution multiple imputation</p>
 <ul>
 <li>The main assumption for this method is that the observed data follows a multivariate normal distribution</li>
-<li>A violation of the assumption produces incorrect values</li>
+<li>A violation of this assumption produces incorrect values, though a slight violation is still okay</li>
 <li>Some packages that implemented this method: <code>Amelia</code> and <code>norm</code></li>
 </ul></li>
-<li><p>Conditional multiple imputation</p>
+<li><p>Fully conditional specification (FCS) or conditional multiple imputation</p>
 <ul>
-<li><p>This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset</p></li>
-<li><p>Some package that implemented this method: <code>mice</code></p></li>
+<li>Also known as multivariate imputation by chained equation (MICE)</li>
+<li>This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset</li>
+<li>Some package that implemented this method: <code>mice</code></li>
 </ul></li>
 </ol>
 </div>

@@ -70,16 +70,16 @@ However, the main assumption for any imputation methods is the missingness shoul
 
 In short, there are 2 approaches of multiple imputation implemented by packages in R:
 
-1.  Joint multivariate normal distribution multiple imputation
+1.  Joint modeling (JM) or joint multivariate normal distribution multiple imputation
 
     -   The main assumption for this method is that the observed data follows a multivariate normal distribution
-    -   A violation of the assumption produces incorrect values
+    -   A violation of this assumption produces incorrect values, though a slight violation is still okay
     -   Some packages that implemented this method: `Amelia` and `norm`
 
-2.  Conditional multiple imputation
+2.  Fully conditional specification (FCS) or conditional multiple imputation
 
+    -   Also known as multivariate imputation by chained equation (MICE)
     -   This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset
-
     -   Some package that implemented this method: `mice`
 
 ## Example
