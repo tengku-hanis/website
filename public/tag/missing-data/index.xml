@@ -69,16 +69,17 @@
 &lt;h2&gt;Multiple imputation&lt;/h2&gt;
 &lt;p&gt;In short, there are 2 approaches of multiple imputation implemented by packages in R:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;p&gt;Joint multivariate normal distribution multiple imputation&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Joint modeling (JM) or joint multivariate normal distribution multiple imputation&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The main assumption for this method is that the observed data follows a multivariate normal distribution&lt;/li&gt;
-&lt;li&gt;A violation of the assumption produces incorrect values&lt;/li&gt;
+&lt;li&gt;A violation of this assumption produces incorrect values, though a slight violation is still okay&lt;/li&gt;
 &lt;li&gt;Some packages that implemented this method: &lt;code&gt;Amelia&lt;/code&gt; and &lt;code&gt;norm&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Conditional multiple imputation&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Fully conditional specification (FCS) or conditional multiple imputation&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Some package that implemented this method: &lt;code&gt;mice&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Also known as multivariate imputation by chained equation (MICE)&lt;/li&gt;
+&lt;li&gt;This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset&lt;/li&gt;
+&lt;li&gt;Some package that implemented this method: &lt;code&gt;mice&lt;/code&gt; and &lt;code&gt;mi&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
@@ -86,10 +87,16 @@
 &lt;h2&gt;Example&lt;/h2&gt;
 &lt;p&gt;In &lt;code&gt;mice&lt;/code&gt; package, the general steps are:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;code&gt;mice()&lt;/code&gt; - impute the NAs&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;with()&lt;/code&gt; - run the analysis (lm, glm, etc)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;pool()&lt;/code&gt; - pool the results&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mice()&lt;/code&gt; - impute the NAs.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;with()&lt;/code&gt; - run the analysis (lm, glm, etc).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pool()&lt;/code&gt; - pool the results.&lt;/li&gt;
 &lt;/ol&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;Screenshot%202021-11-20%20145517.png&#34; alt=&#34;Main steps in mice package.&#34; width=&#34;90%&#34; height=&#34;90%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Main steps in mice package.
+&lt;/p&gt;
+&lt;/div&gt;
 &lt;p&gt;These are the required packages.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
 library(mice)
@@ -124,7 +131,7 @@ dat &amp;lt;- iris %&amp;gt;%
 ## 1      38.8    40   0.522               14&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Next step is to evaluate the pattern of missingness in our data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;md.pattern(dat, rotate.names = T, plot = T) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##    Sepal.Length Petal.Width Species Sepal.Width Petal.Length    
 ## 64            1           1       1           1            1   0
 ## 21            1           1       1           1            0   1
@@ -142,14 +149,14 @@ dat &amp;lt;- iris %&amp;gt;%
 ## 1             1           0       0           0            1   3
 ##               0          21      28          33           38 120&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;aggr(dat, prop = F, numbers = T) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We have 13 patterns (numbers on the right) of NAs in our data. These 2 functions work well with small dataset, but with a larger dataset (and with lot more pattern of NAs), it’s probably quite difficult to assess the pattern.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;matrixplot()&lt;/code&gt; probably more appropriate for a larger dataset.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;matrixplot(dat)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In terms of the missingness pattern, we can also assess the distribution of NAs of Sepal.Width is dependent on the variable Sepal.Length.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;niceFunction::histNA_byVar(dat, Sepal.Width, Sepal.Length)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we can see the distribution and range of the histograms of the NAs (True) and non-NAs (False) is quite similar. Thus, this may indicated that Sepal.Width is at least MAR. However, by right we should do this for each pair of numerical variable before jumping into any conclusion.&lt;/p&gt;
 &lt;p&gt;Another good thing to assess is the correlation.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Data with 1 = NAs, 0 = non-NAs
@@ -158,7 +165,7 @@ x &amp;lt;- as.data.frame(abs(is.na(dat))) %&amp;gt;%
 &lt;p&gt;Firstly, the correlation between the variables with missing data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cor(x) %&amp;gt;% 
   corrplot::corrplot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;No high correlation among variable with NAs. Secondly, let’s see correlation between NAs in a variable and the observed values of other variables.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cor(dat %&amp;gt;% mutate(Species = as.numeric(Species)), x, use = &amp;quot;pairwise.complete.obs&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##               Sepal.Width Petal.Length  Petal.Width     Species
@@ -216,17 +223,17 @@ imp&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;One important thing to check is the convergence. We are going increase the number of iteration for this.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp_conv &amp;lt;- mice.mids(imp, maxit = 30, printFlag = F)
 plot(imp_conv)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The line in the plot should be intermingled and no obvious trend should be observed. Our plot above indicates a convergence.&lt;/p&gt;
 &lt;p&gt;We can also assess density plot of imputed data and the observed data. Blue color is the observed data and red color is the imputed data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;densityplot(imp)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can further assess variable Sepal.Width.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;densityplot(imp, ~ Sepal.Width | .imp)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Lastly, we can assess the strip plot. The imputed observations (red color) should not distributed too far from the observed data (blue color).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stripplot(imp)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So, once we finish the diagnostic checking, we can actually go back and change the imputation method for Sepal.Width, since the its distribution changes quite differently at each iteration. But, we are not going to do that, instead we are going to do the analysis.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# run regression
 fit &amp;lt;- with(imp, lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species))
@@ -725,6 +732,7 @@ tbl_merge(
 &lt;li&gt;&lt;a href=&#34;http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf&#34;&gt;R in Action, Data analysis and graphics with R&lt;/a&gt; (Chapter 15)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&#34; class=&#34;uri&#34;&gt;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&#34; class=&#34;uri&#34;&gt;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jstatsoft.org/article/view/v045i03&#34;&gt;mice: Multivariate Imputation by Chained Equations in R&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>

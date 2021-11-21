@@ -5,12 +5,20 @@
     <link>https://tengkuhanis.netlify.app/publication-type/3/</link>
       <atom:link href="https://tengkuhanis.netlify.app/publication-type/3/index.xml" rel="self" type="application/rss+xml" />
     <description>3</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 29 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 05 Nov 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>3</title>
       <link>https://tengkuhanis.netlify.app/publication-type/3/</link>
     </image>
+    
+    <item>
+      <title>A meta-analysis of diagnostic accuracy of machine learning models on mammography in breast cancer classification</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</link>
+      <pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>A brief analysis of the COVID-19 death data in Malaysia</title>

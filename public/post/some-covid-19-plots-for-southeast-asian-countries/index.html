@@ -1,0 +1,1257 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Tengku Muhammad Hanis">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Recently, I found a GitHub repo containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam).">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
+
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Tengku Hanis">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/">
+  <meta property="og:title" content="Some COVID-19 plots for Southeast Asian countries | Tengku Hanis">
+  <meta property="og:description" content="Recently, I found a GitHub repo containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam)."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2021-11-10T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2021-11-10T22:33:31&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/"
+  },
+  "headline": "Some COVID-19 plots for Southeast Asian countries",
+  
+  "datePublished": "2021-11-10T00:00:00Z",
+  "dateModified": "2021-11-10T22:33:31+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Tengku Muhammad Hanis"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tengku Hanis",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "Recently, I found a GitHub repo containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam)."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Some COVID-19 plots for Southeast Asian countries | Tengku Hanis</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Ongoing</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Blog</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>Light</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>Dark</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>Automatic</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Some COVID-19 plots for Southeast Asian countries</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Nov 10, 2021
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a>, <a href="/category/epidemiology/">Epidemiology</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>Recently, I found a GitHub <a href="https://github.com/owid/covid-19-data/tree/master/public/data">repo</a> containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam). I have uploaded this restricted data to my GitHub <a href="https://github.com/tengku-hanis/data-owid-covid">repo</a>.</p>
+<p>We are not going to do anything fancy, just some visualisations.</p>
+<p>Let’s begin by reading the data.</p>
+<pre class="r"><code>library(tidyverse)
+covid_sea &lt;- read_csv(&quot;https://raw.githubusercontent.com/tengku-hanis/data-owid-covid/main/covid_sea.csv&quot;)</code></pre>
+<p>We are going to compare between each Southeast Asian countries in terms of:</p>
+<ol style="list-style-type: decimal">
+<li>Daily cases</li>
+<li>Daily deaths</li>
+<li>Daily tests</li>
+<li>Daily vaccinations</li>
+</ol>
+<p>Before that, we need to make a function, as all the above items have a generic things to plot with the exception on y axis.</p>
+<pre class="r"><code>easy_plot &lt;- function(var1, lab_title, yaxis_lab, span = 0.14){
+  covid_sea %&gt;% 
+    select(date, location, {{var1}}) %&gt;% 
+    drop_na() %&gt;% 
+    ggplot(aes(date, {{var1}}, color = location)) +
+    geom_smooth(se = F, span = 0.14) +
+    geom_point(aes(color = location), alpha = 0.2) +
+    geom_line(aes(color = location), alpha = 0.2, linetype = &quot;dashed&quot;) +
+    labs(title = {{lab_title}}) +
+    ylab({{yaxis_lab}}) +
+    xlab(&quot;Date&quot;) +
+    theme_minimal() 
+}</code></pre>
+<p>var1 is going to be the item/variable that we want to compare, lab_title is the plot title, yaxis_lab is the label on the y axis, and span is just how smooth our smoothen line should be.</p>
+<div id="daily-cases" class="section level2">
+<h2>Daily cases</h2>
+<pre class="r"><code>easy_plot(new_cases, &quot;Daily cases for southeast Asian countries&quot;, &quot;Daily cases&quot;, span = 0.8)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We cannot compare in terms of the frequency as big countries like Indonesia is expected to had a higher number of daily cases. A smoothen line though very basic, may indicate a simple trend. Thailand, Malaysia, Philippines and Indonesia seems to had a decreasing trend of cases. On the other hand, the daily cases in Vietnam seems to start to increase. Singapore had a more stabilised trend of cases, though a higher number of cases was observed in the latest period. Lastly, Brunei had too little cases, for us to see any sort of trend at the scale of the between countries comparison.</p>
+</div>
+<div id="daily-deaths" class="section level2">
+<h2>Daily deaths</h2>
+<pre class="r"><code>easy_plot(new_deaths, &quot;Daily deaths for southeast Asian countries&quot;, &quot;Daily deaths&quot;, span = 0.8)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Philippines and Indonesia seems started to had a bit of increasing trend. Other countries look okay.</p>
+</div>
+<div id="daily-tests" class="section level2">
+<h2>Daily tests</h2>
+<pre class="r"><code>easy_plot(new_tests, &quot;Daily tests for southeast Asian countries&quot;, &quot;Daily tests&quot;, span = 0.2)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The daily tests plot looks a bit weird for Vietnam. Actually, the daily tests below zero are not avaliable (not sure if there is no test done in the period or the values is just missing). Hence, the weird looking plot for Vietnam. Data for Brunei and Thailand are not available. Malaysia seems to be quite aggressive in COVID-19 testing, even on par with Indonesia. Also, Vietnam seems to be very aggressive in the latest period, probably to cover the lack of COVID-19 testing previously.</p>
+</div>
+<div id="daily-vaccinations" class="section level2">
+<h2>Daily vaccinations</h2>
+<pre class="r"><code>easy_plot(new_vaccinations, &quot;Daily vaccinations for southeast Asian countries&quot;, &quot;Daily vaccinations&quot;, span = 0.9)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Malaysia and Singapore had quite a similar distribution. Vietnam, Philippines, Thailand and Indonesia quite similar in which they had a series of wave in the rate of vaccinations, though the trend of wave for Thailand is less obvious. Again, the number in Brunei was too little for us to see any trend or distribution at this scale.</p>
+</div>
+<div id="malaysia-situation" class="section level2">
+<h2>Malaysia situation</h2>
+<p>Let’s do a plot, specific to Malaysia. We going to scale the numbers, so that we able to see a comparison in term of trend or distribution.</p>
+<pre class="r"><code>covid_sea %&gt;% 
+  filter(location == &quot;Malaysia&quot;) %&gt;% 
+  mutate(new_cases = scale(new_cases), 
+         new_deaths = scale(new_deaths), 
+         new_tests = scale(new_tests), 
+         new_vaccinations = scale(new_vaccinations)) %&gt;% 
+  ggplot(aes(date)) +
+  geom_line(aes(y = new_cases, color = &quot;new_cases&quot;), alpha = 0.3) +
+  geom_line(aes(y = new_deaths, color = &quot;new_deaths&quot;), alpha = 0.3) +
+  geom_line(aes(y = new_tests, color = &quot;new_tests&quot;), alpha = 0.3) +
+  geom_line(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), alpha = 0.3) +
+  geom_point(aes(y = new_cases, color = &quot;new_cases&quot;), alpha = 0.3) +
+  geom_point(aes(y = new_deaths, color = &quot;new_deaths&quot;), alpha = 0.3) +
+  geom_point(aes(y = new_tests, color = &quot;new_tests&quot;), alpha = 0.3) +
+  geom_point(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), alpha = 0.3) +
+  geom_smooth(aes(y = new_cases, color = &quot;new_cases&quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_deaths, color = &quot;new_deaths&quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_tests, color = &quot;new_tests&quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_vaccinations, color = &quot;new_vaccinations&quot;), se = F, span = 0.6) +
+  labs(title = &quot;Situation in Malaysia&quot;) +
+  ylab(&quot;Scaled Frequency&quot;) +
+  xlab(&quot;Date&quot;) +
+  guides(color = guide_legend(&quot;Items&quot;)) +
+  scale_color_discrete(labels = c(&quot;Daily cases&quot;, &quot;Daily deaths&quot;, &quot;Daily tests&quot;, &quot;Daily vaccinations&quot;)) +
+  theme_minimal()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Interestingly, as the number of vaccination increased up to a certain threshold, the number of daily cases and daily deaths started to decreased. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases and their persons of contact instead of mass testing.</p>
+<p><em>Disclaimer: Please take anything written here with a massive grain of salt.</em></p>
+<p>Data source:
+<a href="https://github.com/owid/covid-19-data/tree/master/public/data" class="uri">https://github.com/owid/covid-19-data/tree/master/public/data</a></p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/covid-19/">COVID-19</a>
+  
+  <a class="badge badge-light" href="/tag/vaccine/">Vaccine</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://tengkuhanis.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/tengku-muhammad-hanis/avatar_hu2282885c81c6fc6803200ba05db8fa19_124392_270x270_fill_q90_lanczos_center.jpg" alt="Tengku Muhammad Hanis"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://tengkuhanis.netlify.app/">Tengku Muhammad Hanis</a></h5>
+      <h6 class="card-subtitle">PhD student (Public Health Epidemiology)</h6>
+      <p class="card-text">My research interests include medical statistics and machine learning application.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.researchgate.net/profile/Tengku-Muhammad-Hanis" target="_blank" rel="noopener">
+        <i class="fab fa-researchgate"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=VV2bHQcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/tengku-hanis" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/tmhanis" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/">How many Malaysian should be vaccinated to get herd immunity from COVID-19?</a></li>
+      
+      <li><a href="/post/covid-19-vaccine-interest-in-malaysia/">COVID-19 vaccine interest in Malaysia</a></li>
+      
+      <li><a href="/post/wordcloud-of-covid-19-research-in-malaysia/">Wordcloud of COVID-19 research in Malaysia</a></li>
+      
+      <li><a href="/post/making-maps-with-r-my-first-attempt-ever/">Making maps with R (my first attempt ever!)</a></li>
+      
+      <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    ©Tengku Hanis 2020-2021 Made with <a href="https://github.com/rstudio/blogdown">blogdown</a>
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.a30e17c6197f21f7f966f9a6cd022a55.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

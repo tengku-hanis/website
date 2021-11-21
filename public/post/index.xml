@@ -5,12 +5,239 @@
     <link>https://tengkuhanis.netlify.app/post/</link>
       <atom:link href="https://tengkuhanis.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 01 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 12 Nov 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Posts</title>
       <link>https://tengkuhanis.netlify.app/post/</link>
     </image>
+    
+    <item>
+      <title>Making maps with R (my first attempt ever!)</title>
+      <link>https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/</link>
+      <pubDate>Fri, 12 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distribution of the clinics in Malaysia. The two types of clinic that we have here:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Klinik 1Malaysia (1Malaysia clinic)&lt;/li&gt;
+&lt;li&gt;Klinik Desa (Desa clinic)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Originally, these two data are a separated data. Both of the data can be downloaded from &lt;a href=&#34;https://www.data.gov.my/data/ms_MY/group/pemetaan&#34;&gt;here&lt;/a&gt;. Also, I have uploaded the data into my &lt;a href=&#34;https://github.com/tengku-hanis/clinic-data&#34;&gt;GitHub repo&lt;/a&gt; for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia does not.&lt;/p&gt;
+&lt;p&gt;These are the required packages.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rworldmap) #to get a Malaysia map
+library(tidyverse)
+library(tidygeocoder) #to get latitude and logitude&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Read the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic1m &amp;lt;- read.csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinic1m.csv&amp;quot;)
+clinicDesa &amp;lt;- read.csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First, we need to get a latitude and longitude information for Klinik 1Malaysia data. So, we going to retrieve the coordinates based on the postal code, though this is not very accurate. We can use &lt;code&gt;tidygeocoder&lt;/code&gt; for this.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic1m2 &amp;lt;- 
+  clinic1m %&amp;gt;%
+  mutate(country = &amp;quot;malaysia&amp;quot;) %&amp;gt;% 
+  select(name, postcode, country) %&amp;gt;% 
+  mutate(postcode = ifelse(nchar(postcode) == 4, paste0(0, postcode), postcode)) %&amp;gt;%
+  geocode(postalcode = postcode, country = country, method = &amp;quot;osm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Further checking on the data, we notice that 5 clinics have no coordinate info.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic1m2 %&amp;gt;% filter(is.na(lat) | is.na(long))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 5
+##   name                                     postcode country    lat  long
+##   &amp;lt;chr&amp;gt;                                    &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 Klinik 1 Malaysia Bandar Lela            90700    malaysia    NA    NA
+## 2 Klinik 1 Malaysia Batu Melintang         17250    malaysia    NA    NA
+## 3 Klinik 1 Malaysia Cakerapurnama          45010    malaysia    NA    NA
+## 4 Klinik 1 Malaysia Jelawat                16070    malaysia    NA    NA
+## 5 Klinik 1 Malaysia Taman Kempadang Makmur 26060    malaysia    NA    NA&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;some-data-pre-processing&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Some data pre-processing&lt;/h2&gt;
+&lt;p&gt;So, I found this &lt;a href=&#34;https://www.listendata.com/2020/11/zip-code-to-latitude-and-longitude.html&#34;&gt;data&lt;/a&gt; after some googling time, which give coordinate based on the postal code. So, we going to add in the missing coordinate based on this online data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;add_coord &amp;lt;- 
+  read.table(header = T, text = &amp;quot;
+postal_code    latitude   longitude
+16070            6.0334    102.3499
+26060            3.6228    102.3926
+90700            5.8456    118.0571
+26060            3.6228    102.3926&amp;quot;)
+
+clinic1m2 &amp;lt;- 
+  clinic1m2 %&amp;gt;% 
+  mutate(lat = ifelse(postcode %in% add_coord$postal_code, add_coord$latitude, lat), 
+         long = ifelse(postcode %in% add_coord$postal_code, add_coord$longitude, long)) %&amp;gt;% 
+  drop_na() #drop 2 clinic1m&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Even after add in the missing coordinate, we still missing 2 coordinates. So, we going to drop those 2 clinics. Next, we combine both data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;all_clinic &amp;lt;- 
+  clinic1m2 %&amp;gt;% 
+  mutate(Type = &amp;quot;1Malaysia&amp;quot;) %&amp;gt;% 
+  select(Type, lat, long) %&amp;gt;% 
+  bind_rows(clinicDesa %&amp;gt;% 
+              mutate(Type = &amp;quot;Desa&amp;quot;, 
+                     lat = latitude, 
+                     long = longitude) %&amp;gt;% 
+              select(Type, lat, long))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s try plotting the data first.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(all_clinic, aes(long, lat, color = Type)) +
+  geom_point() +
+  theme_minimal() #should remove the isolated two data&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We have 2 isolated points from Klinik Desa data. We will drop these 2 points as well.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;all_clinic2 &amp;lt;- all_clinic %&amp;gt;% filter(long &amp;gt; 25)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-the-map&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plotting the map&lt;/h2&gt;
+&lt;p&gt;There are 2 ways to plot our data to Malaysia map, that we going to cover in this post.&lt;/p&gt;
+&lt;div id=&#34;map-from-ggplot2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1) map from &lt;code&gt;ggplot2&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;First, we need to get the map.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;global &amp;lt;- map_data(&amp;quot;world&amp;quot;) #get map&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once, we retrieved the map, we need to filter the region to Malaysia. The rest of the codes are &lt;code&gt;ggplot2&lt;/code&gt; function as we know it.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + 
+  geom_polygon(data = global %&amp;gt;% filter(region == &amp;quot;Malaysia&amp;quot;), aes(x=long, y = lat, group = group), 
+               fill = &amp;quot;gray85&amp;quot;) + 
+  coord_fixed(1.3) +
+  geom_point(data = all_clinic2, aes(x = long, y = lat, group = Type, color = Type, shape = Type)) +
+  theme_void() + 
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Klinik 1Malaysia dan Klinik Desa di Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data dikemaskini: Klinik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;))), 
+       color = &amp;quot;Jenis klinik:&amp;quot;, 
+       shape = &amp;quot;Jenis klinik:&amp;quot;) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5), 
+        legend.position = &amp;quot;bottom&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;map-from-rworldmap&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2) map from &lt;code&gt;rworldmap&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;The flow is similar, we need to get the map first. Then, restrict the map to Malaysia region.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world &amp;lt;- getMap(resolution = &amp;quot;low&amp;quot;) #get map
+msia &amp;lt;- world[world@data$ADMIN == &amp;quot;Malaysia&amp;quot;, ]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The rest of the codes are similar to the first approach. But, we going to change the theme a bit.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() +
+  geom_polygon(data = msia, aes(x = long, y = lat, group = group), fill = NA, colour = &amp;quot;black&amp;quot;) +
+  geom_point(data = all_clinic2, aes(x = long, y = lat, group = Type, color = Type, shape = Type)) +
+  coord_quickmap() + 
+  theme_minimal() + 
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Klinik 1Malaysia dan Klinik Desa di Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data dikemaskini: Klinik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;))), 
+       color = &amp;quot;Jenis klinik:&amp;quot;, 
+       shape = &amp;quot;Jenis klinik:&amp;quot;) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5), 
+        legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;The coordinates that we have are not as accurate as it should, or maybe there is something wrong that I miss along the way. As we can see, we have clinics on the ocean. As far as I know, we Malaysian are not that advanced yet. Also, noticed that we severely lacking clinics in Sarawak, given that our data is correct.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Some COVID-19 plots for Southeast Asian countries</title>
+      <link>https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/</link>
+      <pubDate>Wed, 10 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Recently, I found a GitHub &lt;a href=&#34;https://github.com/owid/covid-19-data/tree/master/public/data&#34;&gt;repo&lt;/a&gt; containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam). I have uploaded this restricted data to my GitHub &lt;a href=&#34;https://github.com/tengku-hanis/data-owid-covid&#34;&gt;repo&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We are not going to do anything fancy, just some visualisations.&lt;/p&gt;
+&lt;p&gt;Let’s begin by reading the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+covid_sea &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/data-owid-covid/main/covid_sea.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We are going to compare between each Southeast Asian countries in terms of:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Daily cases&lt;/li&gt;
+&lt;li&gt;Daily deaths&lt;/li&gt;
+&lt;li&gt;Daily tests&lt;/li&gt;
+&lt;li&gt;Daily vaccinations&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Before that, we need to make a function, as all the above items have a generic things to plot with the exception on y axis.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot &amp;lt;- function(var1, lab_title, yaxis_lab, span = 0.14){
+  covid_sea %&amp;gt;% 
+    select(date, location, {{var1}}) %&amp;gt;% 
+    drop_na() %&amp;gt;% 
+    ggplot(aes(date, {{var1}}, color = location)) +
+    geom_smooth(se = F, span = 0.14) +
+    geom_point(aes(color = location), alpha = 0.2) +
+    geom_line(aes(color = location), alpha = 0.2, linetype = &amp;quot;dashed&amp;quot;) +
+    labs(title = {{lab_title}}) +
+    ylab({{yaxis_lab}}) +
+    xlab(&amp;quot;Date&amp;quot;) +
+    theme_minimal() 
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;var1 is going to be the item/variable that we want to compare, lab_title is the plot title, yaxis_lab is the label on the y axis, and span is just how smooth our smoothen line should be.&lt;/p&gt;
+&lt;div id=&#34;daily-cases&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily cases&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_cases, &amp;quot;Daily cases for southeast Asian countries&amp;quot;, &amp;quot;Daily cases&amp;quot;, span = 0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We cannot compare in terms of the frequency as big countries like Indonesia is expected to had a higher number of daily cases. A smoothen line though very basic, may indicate a simple trend. Thailand, Malaysia, Philippines and Indonesia seems to had a decreasing trend of cases. On the other hand, the daily cases in Vietnam seems to start to increase. Singapore had a more stabilised trend of cases, though a higher number of cases was observed in the latest period. Lastly, Brunei had too little cases, for us to see any sort of trend at the scale of the between countries comparison.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;daily-deaths&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily deaths&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_deaths, &amp;quot;Daily deaths for southeast Asian countries&amp;quot;, &amp;quot;Daily deaths&amp;quot;, span = 0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Philippines and Indonesia seems started to had a bit of increasing trend. Other countries look okay.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;daily-tests&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily tests&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_tests, &amp;quot;Daily tests for southeast Asian countries&amp;quot;, &amp;quot;Daily tests&amp;quot;, span = 0.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The daily tests plot looks a bit weird for Vietnam. Actually, the daily tests below zero are not avaliable (not sure if there is no test done in the period or the values is just missing). Hence, the weird looking plot for Vietnam. Data for Brunei and Thailand are not available. Malaysia seems to be quite aggressive in COVID-19 testing, even on par with Indonesia. Also, Vietnam seems to be very aggressive in the latest period, probably to cover the lack of COVID-19 testing previously.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;daily-vaccinations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily vaccinations&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_vaccinations, &amp;quot;Daily vaccinations for southeast Asian countries&amp;quot;, &amp;quot;Daily vaccinations&amp;quot;, span = 0.9)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Malaysia and Singapore had quite a similar distribution. Vietnam, Philippines, Thailand and Indonesia quite similar in which they had a series of wave in the rate of vaccinations, though the trend of wave for Thailand is less obvious. Again, the number in Brunei was too little for us to see any trend or distribution at this scale.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;malaysia-situation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Malaysia situation&lt;/h2&gt;
+&lt;p&gt;Let’s do a plot, specific to Malaysia. We going to scale the numbers, so that we able to see a comparison in term of trend or distribution.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;covid_sea %&amp;gt;% 
+  filter(location == &amp;quot;Malaysia&amp;quot;) %&amp;gt;% 
+  mutate(new_cases = scale(new_cases), 
+         new_deaths = scale(new_deaths), 
+         new_tests = scale(new_tests), 
+         new_vaccinations = scale(new_vaccinations)) %&amp;gt;% 
+  ggplot(aes(date)) +
+  geom_line(aes(y = new_cases, color = &amp;quot;new_cases&amp;quot;), alpha = 0.3) +
+  geom_line(aes(y = new_deaths, color = &amp;quot;new_deaths&amp;quot;), alpha = 0.3) +
+  geom_line(aes(y = new_tests, color = &amp;quot;new_tests&amp;quot;), alpha = 0.3) +
+  geom_line(aes(y = new_vaccinations, color = &amp;quot;new_vaccinations&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_cases, color = &amp;quot;new_cases&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_deaths, color = &amp;quot;new_deaths&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_tests, color = &amp;quot;new_tests&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_vaccinations, color = &amp;quot;new_vaccinations&amp;quot;), alpha = 0.3) +
+  geom_smooth(aes(y = new_cases, color = &amp;quot;new_cases&amp;quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_deaths, color = &amp;quot;new_deaths&amp;quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_tests, color = &amp;quot;new_tests&amp;quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_vaccinations, color = &amp;quot;new_vaccinations&amp;quot;), se = F, span = 0.6) +
+  labs(title = &amp;quot;Situation in Malaysia&amp;quot;) +
+  ylab(&amp;quot;Scaled Frequency&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  guides(color = guide_legend(&amp;quot;Items&amp;quot;)) +
+  scale_color_discrete(labels = c(&amp;quot;Daily cases&amp;quot;, &amp;quot;Daily deaths&amp;quot;, &amp;quot;Daily tests&amp;quot;, &amp;quot;Daily vaccinations&amp;quot;)) +
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, as the number of vaccination increased up to a certain threshold, the number of daily cases and daily deaths started to decreased. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases and their persons of contact instead of mass testing.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Disclaimer: Please take anything written here with a massive grain of salt.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Data source:
+&lt;a href=&#34;https://github.com/owid/covid-19-data/tree/master/public/data&#34; class=&#34;uri&#34;&gt;https://github.com/owid/covid-19-data/tree/master/public/data&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Extract a table from a pdf</title>
@@ -170,16 +397,17 @@ library(stringr)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Multiple imputation&lt;/h2&gt;
 &lt;p&gt;In short, there are 2 approaches of multiple imputation implemented by packages in R:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;p&gt;Joint multivariate normal distribution multiple imputation&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Joint modeling (JM) or joint multivariate normal distribution multiple imputation&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The main assumption for this method is that the observed data follows a multivariate normal distribution&lt;/li&gt;
-&lt;li&gt;A violation of the assumption produces incorrect values&lt;/li&gt;
+&lt;li&gt;A violation of this assumption produces incorrect values, though a slight violation is still okay&lt;/li&gt;
 &lt;li&gt;Some packages that implemented this method: &lt;code&gt;Amelia&lt;/code&gt; and &lt;code&gt;norm&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Conditional multiple imputation&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Fully conditional specification (FCS) or conditional multiple imputation&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Some package that implemented this method: &lt;code&gt;mice&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Also known as multivariate imputation by chained equation (MICE)&lt;/li&gt;
+&lt;li&gt;This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset&lt;/li&gt;
+&lt;li&gt;Some package that implemented this method: &lt;code&gt;mice&lt;/code&gt; and &lt;code&gt;mi&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
@@ -187,10 +415,16 @@ library(stringr)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Example&lt;/h2&gt;
 &lt;p&gt;In &lt;code&gt;mice&lt;/code&gt; package, the general steps are:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;code&gt;mice()&lt;/code&gt; - impute the NAs&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;with()&lt;/code&gt; - run the analysis (lm, glm, etc)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;pool()&lt;/code&gt; - pool the results&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mice()&lt;/code&gt; - impute the NAs.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;with()&lt;/code&gt; - run the analysis (lm, glm, etc).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pool()&lt;/code&gt; - pool the results.&lt;/li&gt;
 &lt;/ol&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;Screenshot%202021-11-20%20145517.png&#34; alt=&#34;Main steps in mice package.&#34; width=&#34;90%&#34; height=&#34;90%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Main steps in mice package.
+&lt;/p&gt;
+&lt;/div&gt;
 &lt;p&gt;These are the required packages.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
 library(mice)
@@ -225,7 +459,7 @@ dat &amp;lt;- iris %&amp;gt;%
 ## 1      38.8    40   0.522               14&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Next step is to evaluate the pattern of missingness in our data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;md.pattern(dat, rotate.names = T, plot = T) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##    Sepal.Length Petal.Width Species Sepal.Width Petal.Length    
 ## 64            1           1       1           1            1   0
 ## 21            1           1       1           1            0   1
@@ -243,14 +477,14 @@ dat &amp;lt;- iris %&amp;gt;%
 ## 1             1           0       0           0            1   3
 ##               0          21      28          33           38 120&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;aggr(dat, prop = F, numbers = T) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We have 13 patterns (numbers on the right) of NAs in our data. These 2 functions work well with small dataset, but with a larger dataset (and with lot more pattern of NAs), it’s probably quite difficult to assess the pattern.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;matrixplot()&lt;/code&gt; probably more appropriate for a larger dataset.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;matrixplot(dat)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In terms of the missingness pattern, we can also assess the distribution of NAs of Sepal.Width is dependent on the variable Sepal.Length.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;niceFunction::histNA_byVar(dat, Sepal.Width, Sepal.Length)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we can see the distribution and range of the histograms of the NAs (True) and non-NAs (False) is quite similar. Thus, this may indicated that Sepal.Width is at least MAR. However, by right we should do this for each pair of numerical variable before jumping into any conclusion.&lt;/p&gt;
 &lt;p&gt;Another good thing to assess is the correlation.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Data with 1 = NAs, 0 = non-NAs
@@ -259,7 +493,7 @@ x &amp;lt;- as.data.frame(abs(is.na(dat))) %&amp;gt;%
 &lt;p&gt;Firstly, the correlation between the variables with missing data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cor(x) %&amp;gt;% 
   corrplot::corrplot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;No high correlation among variable with NAs. Secondly, let’s see correlation between NAs in a variable and the observed values of other variables.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cor(dat %&amp;gt;% mutate(Species = as.numeric(Species)), x, use = &amp;quot;pairwise.complete.obs&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##               Sepal.Width Petal.Length  Petal.Width     Species
@@ -317,17 +551,17 @@ imp&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;One important thing to check is the convergence. We are going increase the number of iteration for this.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp_conv &amp;lt;- mice.mids(imp, maxit = 30, printFlag = F)
 plot(imp_conv)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The line in the plot should be intermingled and no obvious trend should be observed. Our plot above indicates a convergence.&lt;/p&gt;
 &lt;p&gt;We can also assess density plot of imputed data and the observed data. Blue color is the observed data and red color is the imputed data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;densityplot(imp)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can further assess variable Sepal.Width.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;densityplot(imp, ~ Sepal.Width | .imp)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Lastly, we can assess the strip plot. The imputed observations (red color) should not distributed too far from the observed data (blue color).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stripplot(imp)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So, once we finish the diagnostic checking, we can actually go back and change the imputation method for Sepal.Width, since the its distribution changes quite differently at each iteration. But, we are not going to do that, instead we are going to do the analysis.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# run regression
 fit &amp;lt;- with(imp, lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species))
@@ -826,6 +1060,7 @@ tbl_merge(
 &lt;li&gt;&lt;a href=&#34;http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf&#34;&gt;R in Action, Data analysis and graphics with R&lt;/a&gt; (Chapter 15)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&#34; class=&#34;uri&#34;&gt;https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&#34; class=&#34;uri&#34;&gt;https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jstatsoft.org/article/view/v045i03&#34;&gt;mice: Multivariate Imputation by Chained Equations in R&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>

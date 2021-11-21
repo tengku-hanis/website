@@ -753,7 +753,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    11 min read
+    12 min read
   </span>
   
 
@@ -847,16 +847,17 @@
 <h2>Multiple imputation</h2>
 <p>In short, there are 2 approaches of multiple imputation implemented by packages in R:</p>
 <ol style="list-style-type: decimal">
-<li><p>Joint multivariate normal distribution multiple imputation</p>
+<li><p>Joint modeling (JM) or joint multivariate normal distribution multiple imputation</p>
 <ul>
 <li>The main assumption for this method is that the observed data follows a multivariate normal distribution</li>
-<li>A violation of the assumption produces incorrect values</li>
+<li>A violation of this assumption produces incorrect values, though a slight violation is still okay</li>
 <li>Some packages that implemented this method: <code>Amelia</code> and <code>norm</code></li>
 </ul></li>
-<li><p>Conditional multiple imputation</p>
+<li><p>Fully conditional specification (FCS) or conditional multiple imputation</p>
 <ul>
-<li><p>This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset</p></li>
-<li><p>Some package that implemented this method: <code>mice</code></p></li>
+<li>Also known as multivariate imputation by chained equation (MICE)</li>
+<li>This approach is a bit flexible as distribution is assumed for each variable rather than the whole dataset</li>
+<li>Some package that implemented this method: <code>mice</code> and <code>mi</code></li>
 </ul></li>
 </ol>
 </div>
@@ -864,10 +865,16 @@
 <h2>Example</h2>
 <p>In <code>mice</code> package, the general steps are:</p>
 <ol style="list-style-type: decimal">
-<li><code>mice()</code> - impute the NAs</li>
-<li><code>with()</code> - run the analysis (lm, glm, etc)</li>
-<li><code>pool()</code> - pool the results</li>
+<li><code>mice()</code> - impute the NAs.</li>
+<li><code>with()</code> - run the analysis (lm, glm, etc).</li>
+<li><code>pool()</code> - pool the results.</li>
 </ol>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="Screenshot%202021-11-20%20145517.png" alt="Main steps in mice package." width="90%" height="90%" />
+<p class="caption">
+Figure 1: Main steps in mice package.
+</p>
+</div>
 <p>These are the required packages.</p>
 <pre class="r"><code>library(tidyverse)
 library(mice)
@@ -902,7 +909,7 @@ dat &lt;- iris %&gt;%
 ## 1      38.8    40   0.522               14</code></pre>
 <p>Next step is to evaluate the pattern of missingness in our data.</p>
 <pre class="r"><code>md.pattern(dat, rotate.names = T, plot = T) </code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre><code>##    Sepal.Length Petal.Width Species Sepal.Width Petal.Length    
 ## 64            1           1       1           1            1   0
 ## 21            1           1       1           1            0   1
@@ -920,14 +927,14 @@ dat &lt;- iris %&gt;%
 ## 1             1           0       0           0            1   3
 ##               0          21      28          33           38 120</code></pre>
 <pre class="r"><code>aggr(dat, prop = F, numbers = T) </code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>We have 13 patterns (numbers on the right) of NAs in our data. These 2 functions work well with small dataset, but with a larger dataset (and with lot more pattern of NAs), it’s probably quite difficult to assess the pattern.</p>
 <p><code>matrixplot()</code> probably more appropriate for a larger dataset.</p>
 <pre class="r"><code>matrixplot(dat)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>In terms of the missingness pattern, we can also assess the distribution of NAs of Sepal.Width is dependent on the variable Sepal.Length.</p>
 <pre class="r"><code>niceFunction::histNA_byVar(dat, Sepal.Width, Sepal.Length)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>As we can see the distribution and range of the histograms of the NAs (True) and non-NAs (False) is quite similar. Thus, this may indicated that Sepal.Width is at least MAR. However, by right we should do this for each pair of numerical variable before jumping into any conclusion.</p>
 <p>Another good thing to assess is the correlation.</p>
 <pre class="r"><code># Data with 1 = NAs, 0 = non-NAs
@@ -936,7 +943,7 @@ x &lt;- as.data.frame(abs(is.na(dat))) %&gt;%
 <p>Firstly, the correlation between the variables with missing data.</p>
 <pre class="r"><code>cor(x) %&gt;% 
   corrplot::corrplot()</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>No high correlation among variable with NAs. Secondly, let’s see correlation between NAs in a variable and the observed values of other variables.</p>
 <pre class="r"><code>cor(dat %&gt;% mutate(Species = as.numeric(Species)), x, use = &quot;pairwise.complete.obs&quot;)</code></pre>
 <pre><code>##               Sepal.Width Petal.Length  Petal.Width     Species
@@ -994,17 +1001,17 @@ imp</code></pre>
 <p>One important thing to check is the convergence. We are going increase the number of iteration for this.</p>
 <pre class="r"><code>imp_conv &lt;- mice.mids(imp, maxit = 30, printFlag = F)
 plot(imp_conv)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
 <p>The line in the plot should be intermingled and no obvious trend should be observed. Our plot above indicates a convergence.</p>
 <p>We can also assess density plot of imputed data and the observed data. Blue color is the observed data and red color is the imputed data.</p>
 <pre class="r"><code>densityplot(imp)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>We can further assess variable Sepal.Width.</p>
 <pre class="r"><code>densityplot(imp, ~ Sepal.Width | .imp)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Lastly, we can assess the strip plot. The imputed observations (red color) should not distributed too far from the observed data (blue color).</p>
 <pre class="r"><code>stripplot(imp)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>So, once we finish the diagnostic checking, we can actually go back and change the imputation method for Sepal.Width, since the its distribution changes quite differently at each iteration. But, we are not going to do that, instead we are going to do the analysis.</p>
 <pre class="r"><code># run regression
 fit &lt;- with(imp, lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species))
@@ -1503,6 +1510,7 @@ tbl_merge(
 <li><a href="http://www.cs.uni.edu/~jacobson/4772/week11/R_in_Action.pdf">R in Action, Data analysis and graphics with R</a> (Chapter 15)</li>
 <li><a href="https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/" class="uri">https://data.library.virginia.edu/getting-started-with-multiple-imputation-in-r/</a></li>
 <li><a href="https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/" class="uri">https://stats.idre.ucla.edu/r/faq/how-do-i-perform-multiple-imputation-using-predictive-mean-matching-in-r/</a></li>
+<li><a href="https://www.jstatsoft.org/article/view/v045i03">mice: Multivariate Imputation by Chained Equations in R</a></li>
 </ol>
 </div>
 
@@ -1668,15 +1676,15 @@ tbl_merge(
     <h3>Related</h3>
     <ul>
       
+      <li><a href="/post/making-maps-with-r-my-first-attempt-ever/">Making maps with R (my first attempt ever!)</a></li>
+      
+      <li><a href="/post/some-covid-19-plots-for-southeast-asian-countries/">Some COVID-19 plots for Southeast Asian countries</a></li>
+      
       <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
       
       <li><a href="/post/covid-19-vaccine-interest-in-malaysia/">COVID-19 vaccine interest in Malaysia</a></li>
       
       <li><a href="/post/wordcloud-of-covid-19-research-in-malaysia/">Wordcloud of COVID-19 research in Malaysia</a></li>
-      
-      <li><a href="/post/hyperparameter-tuning-in-tidymodels/">Hyperparameter tuning in tidymodels</a></li>
-      
-      <li><a href="/post/a-summary-of-forcats-package/">A summary of forcats package</a></li>
       
     </ul>
   </div>
@@ -1695,16 +1703,6 @@ tbl_merge(
     
     <div class="container">
       <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">

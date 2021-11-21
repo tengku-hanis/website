@@ -5,12 +5,109 @@
     <link>https://tengkuhanis.netlify.app/tag/covid-19/</link>
       <atom:link href="https://tengkuhanis.netlify.app/tag/covid-19/index.xml" rel="self" type="application/rss+xml" />
     <description>COVID-19</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sat, 11 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 10 Nov 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>COVID-19</title>
       <link>https://tengkuhanis.netlify.app/tag/covid-19/</link>
     </image>
+    
+    <item>
+      <title>Some COVID-19 plots for Southeast Asian countries</title>
+      <link>https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/</link>
+      <pubDate>Wed, 10 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Recently, I found a GitHub &lt;a href=&#34;https://github.com/owid/covid-19-data/tree/master/public/data&#34;&gt;repo&lt;/a&gt; containing a global COVID-19 dataset. I thought, why not try to do some plotting for Southeast Asian countries. So, I downloaded the data and limited the data to Southeast Asian countries only (Brunei, Indonesia, Malaysia, Philippines, Singapore, Thailand and Vietnam). I have uploaded this restricted data to my GitHub &lt;a href=&#34;https://github.com/tengku-hanis/data-owid-covid&#34;&gt;repo&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We are not going to do anything fancy, just some visualisations.&lt;/p&gt;
+&lt;p&gt;Let’s begin by reading the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+covid_sea &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/data-owid-covid/main/covid_sea.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We are going to compare between each Southeast Asian countries in terms of:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Daily cases&lt;/li&gt;
+&lt;li&gt;Daily deaths&lt;/li&gt;
+&lt;li&gt;Daily tests&lt;/li&gt;
+&lt;li&gt;Daily vaccinations&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Before that, we need to make a function, as all the above items have a generic things to plot with the exception on y axis.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot &amp;lt;- function(var1, lab_title, yaxis_lab, span = 0.14){
+  covid_sea %&amp;gt;% 
+    select(date, location, {{var1}}) %&amp;gt;% 
+    drop_na() %&amp;gt;% 
+    ggplot(aes(date, {{var1}}, color = location)) +
+    geom_smooth(se = F, span = 0.14) +
+    geom_point(aes(color = location), alpha = 0.2) +
+    geom_line(aes(color = location), alpha = 0.2, linetype = &amp;quot;dashed&amp;quot;) +
+    labs(title = {{lab_title}}) +
+    ylab({{yaxis_lab}}) +
+    xlab(&amp;quot;Date&amp;quot;) +
+    theme_minimal() 
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;var1 is going to be the item/variable that we want to compare, lab_title is the plot title, yaxis_lab is the label on the y axis, and span is just how smooth our smoothen line should be.&lt;/p&gt;
+&lt;div id=&#34;daily-cases&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily cases&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_cases, &amp;quot;Daily cases for southeast Asian countries&amp;quot;, &amp;quot;Daily cases&amp;quot;, span = 0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We cannot compare in terms of the frequency as big countries like Indonesia is expected to had a higher number of daily cases. A smoothen line though very basic, may indicate a simple trend. Thailand, Malaysia, Philippines and Indonesia seems to had a decreasing trend of cases. On the other hand, the daily cases in Vietnam seems to start to increase. Singapore had a more stabilised trend of cases, though a higher number of cases was observed in the latest period. Lastly, Brunei had too little cases, for us to see any sort of trend at the scale of the between countries comparison.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;daily-deaths&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily deaths&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_deaths, &amp;quot;Daily deaths for southeast Asian countries&amp;quot;, &amp;quot;Daily deaths&amp;quot;, span = 0.8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Philippines and Indonesia seems started to had a bit of increasing trend. Other countries look okay.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;daily-tests&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily tests&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_tests, &amp;quot;Daily tests for southeast Asian countries&amp;quot;, &amp;quot;Daily tests&amp;quot;, span = 0.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The daily tests plot looks a bit weird for Vietnam. Actually, the daily tests below zero are not avaliable (not sure if there is no test done in the period or the values is just missing). Hence, the weird looking plot for Vietnam. Data for Brunei and Thailand are not available. Malaysia seems to be quite aggressive in COVID-19 testing, even on par with Indonesia. Also, Vietnam seems to be very aggressive in the latest period, probably to cover the lack of COVID-19 testing previously.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;daily-vaccinations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Daily vaccinations&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;easy_plot(new_vaccinations, &amp;quot;Daily vaccinations for southeast Asian countries&amp;quot;, &amp;quot;Daily vaccinations&amp;quot;, span = 0.9)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Malaysia and Singapore had quite a similar distribution. Vietnam, Philippines, Thailand and Indonesia quite similar in which they had a series of wave in the rate of vaccinations, though the trend of wave for Thailand is less obvious. Again, the number in Brunei was too little for us to see any trend or distribution at this scale.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;malaysia-situation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Malaysia situation&lt;/h2&gt;
+&lt;p&gt;Let’s do a plot, specific to Malaysia. We going to scale the numbers, so that we able to see a comparison in term of trend or distribution.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;covid_sea %&amp;gt;% 
+  filter(location == &amp;quot;Malaysia&amp;quot;) %&amp;gt;% 
+  mutate(new_cases = scale(new_cases), 
+         new_deaths = scale(new_deaths), 
+         new_tests = scale(new_tests), 
+         new_vaccinations = scale(new_vaccinations)) %&amp;gt;% 
+  ggplot(aes(date)) +
+  geom_line(aes(y = new_cases, color = &amp;quot;new_cases&amp;quot;), alpha = 0.3) +
+  geom_line(aes(y = new_deaths, color = &amp;quot;new_deaths&amp;quot;), alpha = 0.3) +
+  geom_line(aes(y = new_tests, color = &amp;quot;new_tests&amp;quot;), alpha = 0.3) +
+  geom_line(aes(y = new_vaccinations, color = &amp;quot;new_vaccinations&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_cases, color = &amp;quot;new_cases&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_deaths, color = &amp;quot;new_deaths&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_tests, color = &amp;quot;new_tests&amp;quot;), alpha = 0.3) +
+  geom_point(aes(y = new_vaccinations, color = &amp;quot;new_vaccinations&amp;quot;), alpha = 0.3) +
+  geom_smooth(aes(y = new_cases, color = &amp;quot;new_cases&amp;quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_deaths, color = &amp;quot;new_deaths&amp;quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_tests, color = &amp;quot;new_tests&amp;quot;), se = F, span = 0.3) +
+  geom_smooth(aes(y = new_vaccinations, color = &amp;quot;new_vaccinations&amp;quot;), se = F, span = 0.6) +
+  labs(title = &amp;quot;Situation in Malaysia&amp;quot;) +
+  ylab(&amp;quot;Scaled Frequency&amp;quot;) +
+  xlab(&amp;quot;Date&amp;quot;) +
+  guides(color = guide_legend(&amp;quot;Items&amp;quot;)) +
+  scale_color_discrete(labels = c(&amp;quot;Daily cases&amp;quot;, &amp;quot;Daily deaths&amp;quot;, &amp;quot;Daily tests&amp;quot;, &amp;quot;Daily vaccinations&amp;quot;)) +
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, as the number of vaccination increased up to a certain threshold, the number of daily cases and daily deaths started to decreased. Obviously, the daily testing also decreased as in Malaysia, COVID-19 testing is done based on suspected cases and their persons of contact instead of mass testing.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Disclaimer: Please take anything written here with a massive grain of salt.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Data source:
+&lt;a href=&#34;https://github.com/owid/covid-19-data/tree/master/public/data&#34; class=&#34;uri&#34;&gt;https://github.com/owid/covid-19-data/tree/master/public/data&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Wordcloud of COVID-19 research in Malaysia</title>
