@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Md Asiful Islam | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/author/md-asiful-islam/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/author/md-asiful-islam/index.xml" rel="self" type="application/rss+xml" />
+    <description>Md Asiful Islam</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 07 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>Md Asiful Islam</title>
+      <link>https://tengkuhanis.netlify.app/author/md-asiful-islam/</link>
+    </image>
+    
+    <item>
+      <title>Top 100 most-cited publications on breast cancer and machine learning research: a bibliometric analysis</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-01-01_top_100_most-cited_p/</link>
+      <pubDate>Sun, 07 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-01-01_top_100_most-cited_p/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A meta-analysis of diagnostic accuracy of machine learning models on mammography in breast cancer classification</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</link>
+      <pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
