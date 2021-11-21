@@ -31,7 +31,7 @@ As written in the title of the post, this is my first try ever in making a map w
 1) Klinik 1Malaysia (1Malaysia clinic)
 2) Klinik Desa (Desa clinic)
 
-Originally, these two data are a separated data. Both of the data can be downloaded from [here](https://www.data.gov.my/data/ms_MY/group/pemetaan). Also, I have uploaded the data into my [GitHub repo](https://github.com/tengku-hanis/clinic-data) for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia does not.
+Originally, these two data are a separated data. Both of the data can be downloaded from [here](https://www.data.gov.my/data/ms_MY/group/pemetaan). Also, I have uploaded the data into my [GitHub repo](https://github.com/tengku-hanis/clinic-data) for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia data does not.
 
 These are the required packages.
 ```{r}
