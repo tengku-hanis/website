@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spatial | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/tag/spatial/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/tag/spatial/index.xml" rel="self" type="application/rss+xml" />
+    <description>spatial</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2021 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 12 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>spatial</title>
+      <link>https://tengkuhanis.netlify.app/tag/spatial/</link>
+    </image>
+    
+    <item>
+      <title>Making maps with R (my first attempt ever!)</title>
+      <link>https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/</link>
+      <pubDate>Fri, 12 Nov 2021 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;As written in the title of the post, this is my first try ever in making a map with R. I found a great data on the distribution of the clinics in Malaysia. The two types of clinic that we have here:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Klinik 1Malaysia (1Malaysia clinic)&lt;/li&gt;
+&lt;li&gt;Klinik Desa (Desa clinic)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Originally, these two data are a separated data. Both of the data can be downloaded from &lt;a href=&#34;https://www.data.gov.my/data/ms_MY/group/pemetaan&#34;&gt;here&lt;/a&gt;. Also, I have uploaded the data into my &lt;a href=&#34;https://github.com/tengku-hanis/clinic-data&#34;&gt;GitHub repo&lt;/a&gt; for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia does not.&lt;/p&gt;
+&lt;p&gt;These are the required packages.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rworldmap) #to get a Malaysia map
+library(tidyverse)
+library(tidygeocoder) #to get latitude and logitude&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Read the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic1m &amp;lt;- read.csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinic1m.csv&amp;quot;)
+clinicDesa &amp;lt;- read.csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First, we need to get a latitude and longitude information for Klinik 1Malaysia data. So, we going to retrieve the coordinates based on the postal code, though this is not very accurate. We can use &lt;code&gt;tidygeocoder&lt;/code&gt; for this.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic1m2 &amp;lt;- 
+  clinic1m %&amp;gt;%
+  mutate(country = &amp;quot;malaysia&amp;quot;) %&amp;gt;% 
+  select(name, postcode, country) %&amp;gt;% 
+  mutate(postcode = ifelse(nchar(postcode) == 4, paste0(0, postcode), postcode)) %&amp;gt;%
+  geocode(postalcode = postcode, country = country, method = &amp;quot;osm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Further checking on the data, we notice that 5 clinics have no coordinate info.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic1m2 %&amp;gt;% filter(is.na(lat) | is.na(long))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 5
+##   name                                     postcode country    lat  long
+##   &amp;lt;chr&amp;gt;                                    &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 Klinik 1 Malaysia Bandar Lela            90700    malaysia    NA    NA
+## 2 Klinik 1 Malaysia Batu Melintang         17250    malaysia    NA    NA
+## 3 Klinik 1 Malaysia Cakerapurnama          45010    malaysia    NA    NA
+## 4 Klinik 1 Malaysia Jelawat                16070    malaysia    NA    NA
+## 5 Klinik 1 Malaysia Taman Kempadang Makmur 26060    malaysia    NA    NA&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;some-data-pre-processing&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Some data pre-processing&lt;/h2&gt;
+&lt;p&gt;So, I found this &lt;a href=&#34;https://www.listendata.com/2020/11/zip-code-to-latitude-and-longitude.html&#34;&gt;data&lt;/a&gt; after some googling time, which give coordinate based on the postal code. So, we going to add in the missing coordinate based on this online data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;add_coord &amp;lt;- 
+  read.table(header = T, text = &amp;quot;
+postal_code    latitude   longitude
+16070            6.0334    102.3499
+26060            3.6228    102.3926
+90700            5.8456    118.0571
+26060            3.6228    102.3926&amp;quot;)
+
+clinic1m2 &amp;lt;- 
+  clinic1m2 %&amp;gt;% 
+  mutate(lat = ifelse(postcode %in% add_coord$postal_code, add_coord$latitude, lat), 
+         long = ifelse(postcode %in% add_coord$postal_code, add_coord$longitude, long)) %&amp;gt;% 
+  drop_na() #drop 2 clinic1m&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Even after add in the missing coordinate, we still missing 2 coordinates. So, we going to drop those 2 clinics. Next, we combine both data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;all_clinic &amp;lt;- 
+  clinic1m2 %&amp;gt;% 
+  mutate(Type = &amp;quot;1Malaysia&amp;quot;) %&amp;gt;% 
+  select(Type, lat, long) %&amp;gt;% 
+  bind_rows(clinicDesa %&amp;gt;% 
+              mutate(Type = &amp;quot;Desa&amp;quot;, 
+                     lat = latitude, 
+                     long = longitude) %&amp;gt;% 
+              select(Type, lat, long))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s try plotting the data first.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(all_clinic, aes(long, lat, color = Type)) +
+  geom_point() +
+  theme_minimal() #should remove the isolated two data&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We have 2 isolated points from Klinik Desa data. We will drop these 2 points as well.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;all_clinic2 &amp;lt;- all_clinic %&amp;gt;% filter(long &amp;gt; 25)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-the-map&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plotting the map&lt;/h2&gt;
+&lt;p&gt;There are 2 ways to plot our data to Malaysia map, that we going to cover in this post.&lt;/p&gt;
+&lt;div id=&#34;map-from-ggplot2&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;1) map from &lt;code&gt;ggplot2&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;First, we need to get the map.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;global &amp;lt;- map_data(&amp;quot;world&amp;quot;) #get map&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once, we retrieved the map, we need to filter the region to Malaysia. The rest of the codes are &lt;code&gt;ggplot2&lt;/code&gt; function as we know it.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + 
+  geom_polygon(data = global %&amp;gt;% filter(region == &amp;quot;Malaysia&amp;quot;), aes(x=long, y = lat, group = group), 
+               fill = &amp;quot;gray85&amp;quot;) + 
+  coord_fixed(1.3) +
+  geom_point(data = all_clinic2, aes(x = long, y = lat, group = Type, color = Type, shape = Type)) +
+  theme_void() + 
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Klinik 1Malaysia dan Klinik Desa di Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data dikemaskini: Klinik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;))), 
+       color = &amp;quot;Jenis klinik:&amp;quot;, 
+       shape = &amp;quot;Jenis klinik:&amp;quot;) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5), 
+        legend.position = &amp;quot;bottom&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;map-from-rworldmap&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;2) map from &lt;code&gt;rworldmap&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;The flow is similar, we need to get the map first. Then, restrict the map to Malaysia region.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world &amp;lt;- getMap(resolution = &amp;quot;low&amp;quot;) #get map
+msia &amp;lt;- world[world@data$ADMIN == &amp;quot;Malaysia&amp;quot;, ]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The rest of the codes are similar to the first approach. But, we going to change the theme a bit.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() +
+  geom_polygon(data = msia, aes(x = long, y = lat, group = group), fill = NA, colour = &amp;quot;black&amp;quot;) +
+  geom_point(data = all_clinic2, aes(x = long, y = lat, group = Type, color = Type, shape = Type)) +
+  coord_quickmap() + 
+  theme_minimal() + 
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Klinik 1Malaysia dan Klinik Desa di Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data dikemaskini: Klinik 1Malaysia - 16 Mac 2021, Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;))), 
+       color = &amp;quot;Jenis klinik:&amp;quot;, 
+       shape = &amp;quot;Jenis klinik:&amp;quot;) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5), 
+        legend.position = &amp;quot;bottom&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/index.en_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;The coordinates that we have are not as accurate as it should, or maybe there is something wrong that I miss along the way. As we can see, we have clinics on the ocean. As far as I know, we Malaysian are not that advanced yet. Also, noticed that we severely lacking clinics in Sarawak, given that our data is correct.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
