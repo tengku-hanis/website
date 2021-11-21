@@ -31,7 +31,7 @@ projects: []
 <h2>Imputation model</h2>
 <p>Imputation model is the model that we use for our imputation approach. There is another term which is complete-data model. This is a model that we want to fit after we impute the missing values (i.e; the complete-data model is the final model).</p>
 <p>Generally, we need to include as many relevant variables into the imputation model. However, this general advise may not be very efficient as we may have multicollinearity and computational issue if we include too many predictors. As a rule of thumb, the number of included variables should be no more than 15-20. <a href="https://www.jstatsoft.org/article/view/v045i03">van Buuren <em>et al</em></a><em>.</em> <a href="https://www.jstatsoft.org/article/view/v045i03">(2011)</a> mentioned that increased in explained variance in linear regression is negligible after 15 variables are included.</p>
-<p>There are 4 steps suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf">van Buuren <em>et al.</em> (1999)</a> for variable selection in the case of big dataset:</p>
+<p>There are 4 steps suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf">van Buuren <em>et al.</em> (1999)</a> for variable selection in the case of big data:</p>
 <ol style="list-style-type: decimal">
 <li><p>Include all variables that appear in the complete-data model (final model).</p>
 <ul>
