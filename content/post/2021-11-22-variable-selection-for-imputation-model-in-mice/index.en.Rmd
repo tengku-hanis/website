@@ -35,23 +35,23 @@ Generally, we need to include as many relevant variables into the imputation mod
 
 There are 4 steps suggested by [van Buuren *et al.* (1999)](https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf) for variable selection in the case of big data:
 
-1.  Include all variables that appear in the complete-data model (final model).
+1.  Include all variables that appear in the complete-data model (final model)
 
-    -   This may include this interaction terms as well (passive imputation can be used for this in `mice` package).
+    -   This may include the interaction terms as well (passive imputation can be used to specify the interaction terms in `mice` package)
 
-2.  Include variable that have influence on the occurrence of the missing data.
+2.  Include variable that have influence on the occurrence of the missing data
 
-    -   This can be assessed by a correlation matrix between NAs variables and non-NAs variables.
+    -   This can be assessed by a correlation matrix between NAs variables and non-NAs variables
 
-3.  Include variable that explain a considerable amount of variance.
+3.  Include variable that explain a considerable amount of variance
 
-    -   This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables.
+    -   This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables
 
-4.  Remove variable that have too many missing values within the subgroup of incomplete cases.
+4.  Remove variable that have too many missing values within the subgroup of incomplete cases
 
-    -   This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in the certain variable have an observed values on the predictor variables.
+    -   This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in a certain variable have an observed values on the predictor variables
 
-All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by [Oudshoorn *et al.* (1999)](https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf), which take into account important predictor of predictors. We are going focus on the four steps above, and not cover the latter suggested approach in this post.
+All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by [Oudshoorn *et al.* (1999)](https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf), which take into account important predictor of predictors. We are going to focus on the four steps above, and not cover the latter suggested approach in this post.
 
 ## R codes
 
@@ -92,7 +92,7 @@ We can ignore the warnings and the NAs as only Ozone and Solar.R have a missing 
 
 Lastly we can calculate 'manually' the PUC (proportion of usable cases). `md.pairs()` here calculate the number of observation per variable pair.
 
-```{r}
+```{r, warning=TRUE, message=TRUE}
 var_pair <- md.pairs(airquality)
 round(var_pair$mr / (var_pair$mr + var_pair$mm), digits = 3)
 ```
@@ -103,18 +103,17 @@ Actually, we have a nice function from `mice` that can do what we 'manually' did
 
 ```{r}
 quickpred(airquality)
-
 ```
 
-Again, the column variables are the predictors, and the row variable is the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in `quickpred()` are:
+Again, the column variables are the predictors, and the row variables are the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in `quickpred()` are:
 
 -   mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix.
 
 -   minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model.
 
-Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed default setting of 0.1. That's why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.
+Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed the default setting of 0.1. That's why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.
 
-As we can see we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection for imputation model. We can do the multiple imputation using `mice()`.
+Intuitively, we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection, we can do the multiple imputation using `mice()`.
 
 ```{r}
 # Finalised variable selection

@@ -33,24 +33,24 @@ projects: []
 <p>Generally, we need to include as many relevant variables into the imputation model. However, this general advise may not be very efficient as we may have multicollinearity and computational issue if we include too many predictors. As a rule of thumb, the number of included variables should be no more than 15-20. <a href="https://www.jstatsoft.org/article/view/v045i03">van Buuren <em>et al</em></a><em>.</em> <a href="https://www.jstatsoft.org/article/view/v045i03">(2011)</a> mentioned that increased in explained variance in linear regression is negligible after 15 variables are included.</p>
 <p>There are 4 steps suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf">van Buuren <em>et al.</em> (1999)</a> for variable selection in the case of big data:</p>
 <ol style="list-style-type: decimal">
-<li><p>Include all variables that appear in the complete-data model (final model).</p>
+<li><p>Include all variables that appear in the complete-data model (final model)</p>
 <ul>
-<li>This may include this interaction terms as well (passive imputation can be used for this in <code>mice</code> package).</li>
+<li>This may include the interaction terms as well (passive imputation can be used to specify the interaction terms in <code>mice</code> package)</li>
 </ul></li>
-<li><p>Include variable that have influence on the occurrence of the missing data.</p>
+<li><p>Include variable that have influence on the occurrence of the missing data</p>
 <ul>
-<li>This can be assessed by a correlation matrix between NAs variables and non-NAs variables.</li>
+<li>This can be assessed by a correlation matrix between NAs variables and non-NAs variables</li>
 </ul></li>
-<li><p>Include variable that explain a considerable amount of variance.</p>
+<li><p>Include variable that explain a considerable amount of variance</p>
 <ul>
-<li>This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables.</li>
+<li>This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables</li>
 </ul></li>
-<li><p>Remove variable that have too many missing values within the subgroup of incomplete cases.</p>
+<li><p>Remove variable that have too many missing values within the subgroup of incomplete cases</p>
 <ul>
-<li>This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in the certain variable have an observed values on the predictor variables.</li>
+<li>This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in a certain variable have an observed values on the predictor variables</li>
 </ul></li>
 </ol>
-<p>All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf">Oudshoorn <em>et al.</em> (1999)</a>, which take into account important predictor of predictors. We are going focus on the four steps above, and not cover the latter suggested approach in this post.</p>
+<p>All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf">Oudshoorn <em>et al.</em> (1999)</a>, which take into account important predictor of predictors. We are going to focus on the four steps above, and not cover the latter suggested approach in this post.</p>
 </div>
 <div id="r-codes" class="section level2">
 <h2>R codes</h2>
@@ -119,13 +119,13 @@ round(var_pair$mr / (var_pair$mr + var_pair$mm), digits = 3)</code></pre>
 ## Temp        0       0    0    0     0   0
 ## Month       0       0    0    0     0   0
 ## Day         0       0    0    0     0   0</code></pre>
-<p>Again, the column variables are the predictors, and the row variable is the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in <code>quickpred()</code> are:</p>
+<p>Again, the column variables are the predictors, and the row variables are the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in <code>quickpred()</code> are:</p>
 <ul>
 <li><p>mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix.</p></li>
 <li><p>minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model.</p></li>
 </ul>
-<p>Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.</p>
-<p>As we can see we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection for imputation model. We can do the multiple imputation using <code>mice()</code>.</p>
+<p>Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed the default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.</p>
+<p>Intuitively, we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection, we can do the multiple imputation using <code>mice()</code>.</p>
 <pre class="r"><code># Finalised variable selection
 var_sel &lt;- quickpred(airquality)
 var_sel</code></pre>
