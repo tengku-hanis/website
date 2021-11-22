@@ -107,9 +107,9 @@ quickpred(airquality)
 
 Again, the column variables are the predictors, and the row variables are the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in `quickpred()` are:
 
--   mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix.
+-   mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix
 
--   minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model.
+-   minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model
 
 Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed the default setting of 0.1. That's why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.
 
@@ -129,6 +129,6 @@ Notice that `mice()` uses the predictor matrix that we provide.
 
 References:
 
-1.  <https://www.jstatsoft.org/article/view/v045i03> - paper written byStaf van Buuren (a bit outdated in terms of codes, but runnable)
+1.  <https://www.jstatsoft.org/article/view/v045i03> - paper written by Staf van Buuren (a bit outdated in terms of codes, but runnable)
 
 2.  <https://stefvanbuuren.name/fimd/> - online book written by Stef van Buuren (See chapter 6.3.2 and 9.1.6)

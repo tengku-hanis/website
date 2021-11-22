@@ -121,8 +121,8 @@ round(var_pair$mr / (var_pair$mr + var_pair$mm), digits = 3)</code></pre>
 ## Day         0       0    0    0     0   0</code></pre>
 <p>Again, the column variables are the predictors, and the row variables are the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in <code>quickpred()</code> are:</p>
 <ul>
-<li><p>mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix.</p></li>
-<li><p>minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model.</p></li>
+<li><p>mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix</p></li>
+<li><p>minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model</p></li>
 </ul>
 <p>Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed the default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.</p>
 <p>Intuitively, we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection, we can do the multiple imputation using <code>mice()</code>.</p>
@@ -155,7 +155,7 @@ imp</code></pre>
 <p>Notice that <code>mice()</code> uses the predictor matrix that we provide.</p>
 <p>References:</p>
 <ol style="list-style-type: decimal">
-<li><p><a href="https://www.jstatsoft.org/article/view/v045i03" class="uri">https://www.jstatsoft.org/article/view/v045i03</a> - paper written byStaf van Buuren (a bit outdated in terms of codes, but runnable)</p></li>
+<li><p><a href="https://www.jstatsoft.org/article/view/v045i03" class="uri">https://www.jstatsoft.org/article/view/v045i03</a> - paper written by Staf van Buuren (a bit outdated in terms of codes, but runnable)</p></li>
 <li><p><a href="https://stefvanbuuren.name/fimd/" class="uri">https://stefvanbuuren.name/fimd/</a> - online book written by Stef van Buuren (See chapter 6.3.2 and 9.1.6)</p></li>
 </ol>
 </div>
