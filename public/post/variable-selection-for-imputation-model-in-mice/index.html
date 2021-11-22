@@ -34,10 +34,11 @@
   
     
   
-  <meta name="description" content="These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions.">
+  <meta name="description" content="Some noteI have written a short post about missing data and multiple imputation in mice package previously. This post will add to that previous post.
+Imputation modelImputation model is the model that we use for our imputation approach.">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/data-exploration-in-r/">
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">
 
   
 
@@ -262,7 +263,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
 
-  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/data-exploration-in-r/">
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">
 
   
   
@@ -278,15 +279,16 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Tengku Hanis">
-  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/data-exploration-in-r/">
-  <meta property="og:title" content="Data exploration in R | Tengku Hanis">
-  <meta property="og:description" content="These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">
+  <meta property="og:title" content="Variable selection for imputation model in {mice} | Tengku Hanis">
+  <meta property="og:description" content="Some noteI have written a short post about missing data and multiple imputation in mice package previously. This post will add to that previous post.
+Imputation modelImputation model is the model that we use for our imputation approach."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
   <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2021-08-22T00:00:00&#43;00:00">
+      <meta property="article:published_time" content="2021-11-22T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2021-08-22T05:10:54&#43;08:00">
+    <meta property="article:modified_time" content="2021-11-22T07:55:40&#43;08:00">
   
 
   
@@ -310,12 +312,12 @@
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://tengkuhanis.netlify.app/post/data-exploration-in-r/"
+    "@id": "https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/"
   },
-  "headline": "Data exploration in R",
+  "headline": "Variable selection for imputation model in {mice}",
   
-  "datePublished": "2021-08-22T00:00:00Z",
-  "dateModified": "2021-08-22T05:10:54+08:00",
+  "datePublished": "2021-11-22T00:00:00Z",
+  "dateModified": "2021-11-22T07:55:40+08:00",
   
   "author": {
     "@type": "Person",
@@ -330,7 +332,7 @@
       "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions."
+  "description": "Some note\rI have written a short post about missing data and multiple imputation in mice package previously. This post will add to that previous post.\n\rImputation model\rImputation model is the model that we use for our imputation approach."
 }
 </script>
 
@@ -348,7 +350,7 @@
 
 
 
-  <title>Data exploration in R | Tengku Hanis</title>
+  <title>Variable selection for imputation model in {mice} | Tengku Hanis</title>
 
 </head>
 
@@ -723,7 +725,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Data exploration in R</h1>
+  <h1>Variable selection for imputation model in {mice}</h1>
 
   
 
@@ -744,7 +746,7 @@
           Last updated on
       
     
-    Aug 22, 2021
+    Nov 22, 2021
   </span>
   
 
@@ -753,7 +755,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    5 min read
+    7 min read
   </span>
   
 
@@ -767,7 +769,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a>, <a href="/category/applied-statistics/">applied statistics</a></span>
   
 
 </div>
@@ -796,139 +798,144 @@
 
     <div class="article-style">
       
-<script src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/header-attrs/header-attrs.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/index.en_files/header-attrs/header-attrs.js"></script>
 
 
-<p>These are some of the packages that I find useful for data exploration. Basically, this post serves more as my note for future reference. I will list out packages (and some awesome functions from that particular package) rather than specific functions. Further, base R and tidyverse packages will not be included specifically in this list.</p>
-<p>Load supporting packages</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<p>The data we are going to use is from dlookr package:</p>
-<pre class="r"><code>glimpse(heartfailure)</code></pre>
-<pre><code>## Rows: 299
-## Columns: 13
-## $ age               &lt;int&gt; 75, 55, 65, 50, 65, 90, 75, 60, 65, 80, 75, 62, 45, ~
-## $ anaemia           &lt;fct&gt; No, No, No, Yes, Yes, Yes, Yes, Yes, No, Yes, Yes, N~
-## $ cpk_enzyme        &lt;dbl&gt; 582, 7861, 146, 111, 160, 47, 246, 315, 157, 123, 81~
-## $ diabetes          &lt;fct&gt; No, No, No, No, Yes, No, No, Yes, No, No, No, No, No~
-## $ ejection_fraction &lt;dbl&gt; 20, 38, 20, 20, 20, 40, 15, 60, 65, 35, 38, 25, 30, ~
-## $ hblood_pressure   &lt;fct&gt; Yes, No, No, No, No, Yes, No, No, No, Yes, Yes, Yes,~
-## $ platelets         &lt;dbl&gt; 265000, 263358, 162000, 210000, 327000, 204000, 1270~
-## $ creatinine        &lt;dbl&gt; 1.90, 1.10, 1.30, 1.90, 2.70, 2.10, 1.20, 1.10, 1.50~
-## $ sodium            &lt;dbl&gt; 130, 136, 129, 137, 116, 132, 137, 131, 138, 133, 13~
-## $ sex               &lt;fct&gt; Male, Male, Male, Male, Female, Male, Male, Male, Fe~
-## $ smoking           &lt;fct&gt; No, No, Yes, No, No, Yes, No, Yes, No, Yes, Yes, Yes~
-## $ time              &lt;int&gt; 4, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 11, 11, 12~
-## $ death_event       &lt;fct&gt; Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Ye~</code></pre>
-<p>We will create a few NAs in our data.</p>
-<pre class="r"><code>set.seed(2021)
-heartfailure[sample(seq(nrow(heartfailure)), 20), &quot;age&quot;] &lt;- NA
-heartfailure[sample(seq(nrow(heartfailure)), 10), &quot;sex&quot;] &lt;- NA</code></pre>
-<p><strong>1) dataMaid</strong></p>
-<pre class="r"><code>library(dataMaid)</code></pre>
-<p>One of the very useful function in dataMaid is <code>makeDataReport()</code> which give report on the data. By default it will give a pdf output, but other output options such as word and html are also available.</p>
-<pre class="r"><code>makeDataReport(heartfailure, replace = T)</code></pre>
-<p>This is the output example in <a href="https://tengkuhanis.netlify.app/files/dataMaid_heartfailure.pdf">pdf</a>.</p>
-<p><strong>2) DataExplorer</strong></p>
-<pre class="r"><code>library(DataExplorer)</code></pre>
-<p>General visualization:</p>
-<pre class="r"><code>heartfailure %&gt;% plot_intro()</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Since we have missing data, we can further visualize it:</p>
-<pre class="r"><code>heartfailure %&gt;% plot_missing()</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<pre class="r"><code>heartfailure %&gt;% profile_missing()</code></pre>
-<pre><code>##              feature num_missing pct_missing
-## 1                age          20  0.06688963
-## 2            anaemia           0  0.00000000
-## 3         cpk_enzyme           0  0.00000000
-## 4           diabetes           0  0.00000000
-## 5  ejection_fraction           0  0.00000000
-## 6    hblood_pressure           0  0.00000000
-## 7          platelets           0  0.00000000
-## 8         creatinine           0  0.00000000
-## 9             sodium           0  0.00000000
-## 10               sex          10  0.03344482
-## 11           smoking           0  0.00000000
-## 12              time           0  0.00000000
-## 13       death_event           0  0.00000000</code></pre>
-<p>We can also do a correlation plot</p>
-<pre class="r"><code>heartfailure %&gt;% 
-  select_if(is.numeric) %&gt;% 
-  drop_na() %&gt;% 
-  plot_correlation()</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>However, I do think correlation plot from corrplot packages gives a better and clean plot. Here is a plot from corrplot.</p>
-<pre class="r"><code>library(corrplot)
-
-heartfailure %&gt;% 
-  select_if(is.numeric) %&gt;% 
-  drop_na() %&gt;% 
-  cor() %&gt;% 
-  corrplot(type = &quot;upper&quot;)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Finally, we can get an overall html report from DataExplorer package using the function <code>create_report()</code>.</p>
-<p><strong>3) dlookr</strong></p>
-<pre class="r"><code>library(dlookr)</code></pre>
-<p>We can assess normality of the data using this package. The code below will plot normality for all numeric variable.</p>
-<pre class="r"><code>heartfailure %&gt;% 
-  plot_normality()</code></pre>
-<p>However, for the sake of the simplicity in this post, we will run only for one variable.</p>
-<pre class="r"><code>heartfailure %&gt;% 
-  plot_normality(age)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>We can also get a correlation matrix plot from this package, and no need to remove the NAs and filter the numeric variable before running the function.</p>
-<pre class="r"><code>heartfailure %&gt;% 
-  plot_correlate()</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Lastly, from dlookr we can get the overall report of the data exploration in pdf (and other formats as well). This report is quite comprehensive, have a <a href="https://tengkuhanis.netlify.app/files/EDA_Paged_Report.pdf">look</a>.</p>
-<pre class="r"><code>heartfailure %&gt;% 
-  eda_paged_report(target = &quot;death_event&quot;)</code></pre>
-<p><strong>4) skimr</strong></p>
-<p>skimr package, especially <code>skim()</code> function did not display correctly when using the blogdown. Hence, I included the screenshot of the result that we will typically see in the R console.</p>
-<pre class="r"><code>library(skimr)
-skim(heartfailure) </code></pre>
-<p><img src="images/black.png" style="width:100.0%;height:100.0%" /></p>
-<p>So, from skimr we can get an overview that includes the histogram for numerical data as well.</p>
-<p><strong>5) outliertree</strong></p>
-<p>This package identify outlier using a decision tree. I will not go in detail about the approach, but for those who want to read <a href="https://arxiv.org/abs/2001.00636">further</a>.</p>
-<pre class="r"><code>library(outliertree)
-outlier.tree(heartfailure)</code></pre>
-<pre><code>## Reporting top 2 outliers [out of 2 found]
-## 
-## row [251] - suspicious column: [creatinine] - suspicious value: [0.50]
-##  distribution: 96.000% &gt;= 0.70 - [mean: 1.35] - [sd: 1.22] - [norm. obs: 24]
-##  given:
-##      [cpk_enzyme] &gt; [1610.00] (value: 2522.00)
-## 
-## 
-## row [32] - suspicious column: [cpk_enzyme] - suspicious value: [23.00]
-##  distribution: 98.958% &gt;= 47.00 - [mean: 677.01] - [sd: 1321.86] - [norm. obs: 95]
-##  given:
-##      [death_event] = [Yes]</code></pre>
-<pre><code>## Outlier Tree model
-##  Numeric variables: 7
-##  Categorical variables: 6
-## 
-## Consists of 369 clusters, spread across 48 tree branches</code></pre>
-<p>We can further explore the detected outliers using histogram and boxplot. Let’s do for variable creatinine.</p>
-<pre class="r"><code># histogram
-hist(heartfailure$creatinine, breaks = 50, col = &quot;navy&quot;,
-     xlab = &quot;Creatinine&quot;, 
-     main = &quot;Creatinine level&quot;)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<pre class="r"><code># boxplot
-boxplot(heartfailure$creatinine)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/data-exploration-in-r/index.en_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
-<p>Probably in the future I will delve into more detail about outlier detection and any awesome packages in R related to it. If I ever written any post about it, I will link it here.</p>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<p>These are some useful package that I find. I may edit this post in the future to add more additional data exploration package. Furthermore, there are shiny apps for data exploration as well, though I think it’s better to sticks with coded approach in data analysis/exploration. Thus, I did not explore those apps in this post. Another thing to remember is to set the variable type accordingly prior to the data exploration.</p>
-<p>Hope this is useful!</p>
-<p>References:<br />
-<a href="https://github.com/ekstroem/dataMaid" class="uri">https://github.com/ekstroem/dataMaid</a><br />
-<a href="https://finnstats.com/index.php/2021/05/04/exploratory-data-analysis/" class="uri">https://finnstats.com/index.php/2021/05/04/exploratory-data-analysis/</a><br />
-<a href="https://cran.r-project.org/web/packages/dlookr/vignettes/EDA.html" class="uri">https://cran.r-project.org/web/packages/dlookr/vignettes/EDA.html</a><br />
-<a href="https://cran.r-project.org/web/packages/outliertree/vignettes/Introducing_OutlierTree.html" class="uri">https://cran.r-project.org/web/packages/outliertree/vignettes/Introducing_OutlierTree.html</a></p>
+<div id="some-note" class="section level2">
+<h2>Some note</h2>
+<p>I have written a <a href="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/">short post</a> about missing data and multiple imputation in <code>mice</code> package previously. This post will add to that previous post.</p>
+</div>
+<div id="imputation-model" class="section level2">
+<h2>Imputation model</h2>
+<p>Imputation model is the model that we use for our imputation approach. There is another term which is complete-data model. This is a model that we want to fit after we impute the missing values (i.e; the complete-data model is the final model).</p>
+<p>Generally, we need to include as many relevant variables into the imputation model. However, this general advise may not be very efficient as we may have multicollinearity and computational issue if we include too many predictors. As a rule of thumb, the number of included variables should be no more than 15-20. <a href="https://www.jstatsoft.org/article/view/v045i03">van Buuren <em>et al</em></a><em>.</em> <a href="https://www.jstatsoft.org/article/view/v045i03">(2011)</a> mentioned that increased in explained variance in linear regression is negligible after 15 variables are included.</p>
+<p>There are 4 steps suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf">van Buuren <em>et al.</em> (1999)</a> for variable selection in the case of big data:</p>
+<ol style="list-style-type: decimal">
+<li><p>Include all variables that appear in the complete-data model (final model).</p>
+<ul>
+<li>This may include this interaction terms as well (passive imputation can be used for this in <code>mice</code> package).</li>
+</ul></li>
+<li><p>Include variable that have influence on the occurrence of the missing data.</p>
+<ul>
+<li>This can be assessed by a correlation matrix between NAs variables and non-NAs variables.</li>
+</ul></li>
+<li><p>Include variable that explain a considerable amount of variance.</p>
+<ul>
+<li>This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables.</li>
+</ul></li>
+<li><p>Remove variable that have too many missing values within the subgroup of incomplete cases.</p>
+<ul>
+<li>This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in the certain variable have an observed values on the predictor variables.</li>
+</ul></li>
+</ol>
+<p>All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf">Oudshoorn <em>et al.</em> (1999)</a>, which take into account important predictor of predictors. We are going focus on the four steps above, and not cover the latter suggested approach in this post.</p>
+</div>
+<div id="r-codes" class="section level2">
+<h2>R codes</h2>
+<p>These are the required packages.</p>
+<pre class="r"><code>library(mice)
+library(corrplot)</code></pre>
+<p>Our data.</p>
+<pre class="r"><code>summary(airquality)</code></pre>
+<pre><code>##      Ozone           Solar.R           Wind             Temp      
+##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
+##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
+##  Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
+##  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
+##  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
+##  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
+##  NA&#39;s   :37       NA&#39;s   :7                                       
+##      Month            Day      
+##  Min.   :5.000   Min.   : 1.0  
+##  1st Qu.:6.000   1st Qu.: 8.0  
+##  Median :7.000   Median :16.0  
+##  Mean   :6.993   Mean   :15.8  
+##  3rd Qu.:8.000   3rd Qu.:23.0  
+##  Max.   :9.000   Max.   :31.0  
+## </code></pre>
+<p>We have 2 variables; Ozone and Solar.R with missing values or NAs. We can further explore the pattern of missing variable.</p>
+<pre class="r"><code>md.pattern(airquality)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre><code>##     Wind Temp Month Day Solar.R Ozone   
+## 111    1    1     1   1       1     1  0
+## 35     1    1     1   1       1     0  1
+## 5      1    1     1   1       0     1  1
+## 2      1    1     1   1       0     0  2
+##        0    0     0   0       7    37 44</code></pre>
+<p>There are 2 rows with NAs in Ozone and Solar.R, 35 rows with NAs only in Ozone, and 5 rows with NAs only in Solar.R. Next, we can check the correlation.</p>
+<pre class="r"><code>cor(airquality, use = &quot;pairwise.complete.obs&quot;) |&gt;
+  corrplot(method = &quot;number&quot;, type = &quot;upper&quot;)</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The correlations of Ozone-Temp and Ozone-Wind are the highest. Now, let’s do a correlation between the NAs variable and non-NAs variable.</p>
+<pre class="r"><code>cor(y = airquality, x = !is.na(airquality), use = &quot;pairwise.complete.obs&quot;) |&gt;
+  round(digits = 2)</code></pre>
+<pre><code>##         Ozone Solar.R  Wind Temp Month   Day
+## Ozone      NA   -0.02 -0.05 0.00  0.26 -0.05
+## Solar.R     0      NA  0.06 0.11  0.11  0.17
+## Wind       NA      NA    NA   NA    NA    NA
+## Temp       NA      NA    NA   NA    NA    NA
+## Month      NA      NA    NA   NA    NA    NA
+## Day        NA      NA    NA   NA    NA    NA</code></pre>
+<p>We can ignore the warnings and the NAs as only Ozone and Solar.R have a missing values. So, the highest correlation is 0.26 between Month-Ozone - correlation between Month values with Ozone-related NAs and Month values with non-Ozone-related NAs. The column variable in the correlation matrix is the indicators of NAs and the row variables is the variable with observed values.</p>
+<p>Lastly we can calculate ‘manually’ the PUC (proportion of usable cases). <code>md.pairs()</code> here calculate the number of observation per variable pair.</p>
+<pre class="r"><code>var_pair &lt;- md.pairs(airquality)
+round(var_pair$mr / (var_pair$mr + var_pair$mm), digits = 3)</code></pre>
+<pre><code>##         Ozone Solar.R Wind Temp Month Day
+## Ozone   0.000   0.946    1    1     1   1
+## Solar.R 0.714   0.000    1    1     1   1
+## Wind      NaN     NaN  NaN  NaN   NaN NaN
+## Temp      NaN     NaN  NaN  NaN   NaN NaN
+## Month     NaN     NaN  NaN  NaN   NaN NaN
+## Day       NaN     NaN  NaN  NaN   NaN NaN</code></pre>
+<p>Low value of PUC indicate there is a little information on the predictor to impute the target NAs variable. NaN is shown as the variables have no missing values. The row variable are the target variables to be imputed, and the column variables are the predictors in imputation model. We can see that to impute Solar.R (on the row) Ozone has a little less information (0.714) compare to Wind, Temp, and Day. The diagonal elements will always be 0 or NaN. So, from here we can drop predictors with say, 0 PUC as they contain no information to help impute the target NAs variable.</p>
+<p>Actually, we have a nice function from <code>mice</code> that can do what we ‘manually’ did just now.</p>
+<pre class="r"><code>quickpred(airquality)</code></pre>
+<pre><code>##         Ozone Solar.R Wind Temp Month Day
+## Ozone       0       1    1    1     1   0
+## Solar.R     1       0    0    1     1   1
+## Wind        0       0    0    0     0   0
+## Temp        0       0    0    0     0   0
+## Month       0       0    0    0     0   0
+## Day         0       0    0    0     0   0</code></pre>
+<p>Again, the column variables are the predictors, and the row variable is the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in <code>quickpred()</code> are:</p>
+<ul>
+<li><p>mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix.</p></li>
+<li><p>minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model.</p></li>
+</ul>
+<p>Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.</p>
+<p>As we can see we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection for imputation model. We can do the multiple imputation using <code>mice()</code>.</p>
+<pre class="r"><code># Finalised variable selection
+var_sel &lt;- quickpred(airquality)
+var_sel</code></pre>
+<pre><code>##         Ozone Solar.R Wind Temp Month Day
+## Ozone       0       1    1    1     1   0
+## Solar.R     1       0    0    1     1   1
+## Wind        0       0    0    0     0   0
+## Temp        0       0    0    0     0   0
+## Month       0       0    0    0     0   0
+## Day         0       0    0    0     0   0</code></pre>
+<pre class="r"><code># Impute
+imp &lt;- mice(airquality, m = 5, predictorMatrix = var_sel, printFlag = F)
+imp</code></pre>
+<pre><code>## Class: mids
+## Number of multiple imputations:  5 
+## Imputation methods:
+##   Ozone Solar.R    Wind    Temp   Month     Day 
+##   &quot;pmm&quot;   &quot;pmm&quot;      &quot;&quot;      &quot;&quot;      &quot;&quot;      &quot;&quot; 
+## PredictorMatrix:
+##         Ozone Solar.R Wind Temp Month Day
+## Ozone       0       1    1    1     1   0
+## Solar.R     1       0    0    1     1   1
+## Wind        0       0    0    0     0   0
+## Temp        0       0    0    0     0   0
+## Month       0       0    0    0     0   0
+## Day         0       0    0    0     0   0</code></pre>
+<p>Notice that <code>mice()</code> uses the predictor matrix that we provide.</p>
+<p>References:</p>
+<ol style="list-style-type: decimal">
+<li><p><a href="https://www.jstatsoft.org/article/view/v045i03" class="uri">https://www.jstatsoft.org/article/view/v045i03</a> - paper written byStaf van Buuren (a bit outdated in terms of codes, but runnable)</p></li>
+<li><p><a href="https://stefvanbuuren.name/fimd/" class="uri">https://stefvanbuuren.name/fimd/</a> - online book written by Stef van Buuren (See chapter 6.3.2 and 9.1.6)</p></li>
+</ol>
 </div>
 
     </div>
@@ -942,7 +949,7 @@ boxplot(heartfailure$creatinine)</code></pre>
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tag/data-exploration/">Data exploration</a>
+  <a class="badge badge-light" href="/tag/missing-data/">missing data</a>
   
 </div>
 
@@ -1093,15 +1100,15 @@ boxplot(heartfailure$creatinine)</code></pre>
     <h3>Related</h3>
     <ul>
       
-      <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
-      
-      <li><a href="/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+      <li><a href="/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a></li>
       
       <li><a href="/post/making-maps-with-r-my-first-attempt-ever/">Making maps with R (my first attempt ever!)</a></li>
       
       <li><a href="/post/some-covid-19-plots-for-southeast-asian-countries/">Some COVID-19 plots for Southeast Asian countries</a></li>
       
-      <li><a href="/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a></li>
+      <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
+      
+      <li><a href="/post/covid-19-vaccine-interest-in-malaysia/">COVID-19 vaccine interest in Malaysia</a></li>
       
     </ul>
   </div>

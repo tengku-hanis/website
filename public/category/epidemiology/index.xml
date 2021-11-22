@@ -26,7 +26,7 @@
 &lt;li&gt;Klinik 1Malaysia (1Malaysia clinic)&lt;/li&gt;
 &lt;li&gt;Klinik Desa (Desa clinic)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Originally, these two data are a separated data. Both of the data can be downloaded from &lt;a href=&#34;https://www.data.gov.my/data/ms_MY/group/pemetaan&#34;&gt;here&lt;/a&gt;. Also, I have uploaded the data into my &lt;a href=&#34;https://github.com/tengku-hanis/clinic-data&#34;&gt;GitHub repo&lt;/a&gt; for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia does not.&lt;/p&gt;
+&lt;p&gt;Originally, these two data are a separated data. Both of the data can be downloaded from &lt;a href=&#34;https://www.data.gov.my/data/ms_MY/group/pemetaan&#34;&gt;here&lt;/a&gt;. Also, I have uploaded the data into my &lt;a href=&#34;https://github.com/tengku-hanis/clinic-data&#34;&gt;GitHub repo&lt;/a&gt; for those interested. Klinik Desa data have a latitude and longitude information, but Klinik 1Malaysia data does not.&lt;/p&gt;
 &lt;p&gt;These are the required packages.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rworldmap) #to get a Malaysia map
 library(tidyverse)
