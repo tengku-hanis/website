@@ -33,6 +33,7 @@ These are the required packages.
 library(tidyverse)
 library(tidygeocoder)
 library(leaflet)
+library(htmltools)
 ```
 
 So, I'm going to use a clinics location data in Malaysia. I already uploaded this data tomy [GitHub repo](https://github.com/tengku-hanis/clinic-data). I will skip the explanation for the pre-processing part, but it is the same pre-processing as my [previous post](https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/).
@@ -100,12 +101,22 @@ all_clinic2 <- all_clinic %>% filter(long > 25)
 
 Once we have our data ready, we can supply to `leaflet`. We can choose the type of map from `addProviderTiles()`. Some need an api, but the one we choose here does not. We supply the longitude and latitude of our data to `addCircleMarkers()`, and `clusterOptions` to cluster our data.
 
-```{r}
+```{r, eval=FALSE}
 leaflet(all_clinic2) %>% 
   addProviderTiles(providers$Stamen.Watercolor) %>%
   addProviderTiles(providers$Stamen.TerrainLabels) %>%
   addCircleMarkers(~long, ~lat, 
                    clusterOptions = markerClusterOptions())
+```
+
+```{r, echo=FALSE}
+map1 <- 
+  leaflet(all_clinic2) %>% 
+  addProviderTiles(providers$Stamen.Watercolor) %>%
+  addProviderTiles(providers$Stamen.TerrainLabels) %>%
+  addCircleMarkers(~long, ~lat, 
+                   clusterOptions = markerClusterOptions())
+widgetframe::frameWidget(map1)
 ```
 
 Next, we can add a label.
@@ -116,15 +127,26 @@ labels <-
   lapply(htmltools::HTML)
 ```
 
-Also, we can add a minimap to our map. Here, I change the type of map to a more appropriate one.
+Also, we can add a mini map to our map. Here, I change the type of map to a more appropriate one.
 
-```{r}
+```{r, eval=FALSE}
 leaflet(all_clinic2) %>% 
   addProviderTiles(providers$OpenStreetMap) %>%
   addCircleMarkers(~long, ~lat, popup = ~labels, # popup add the label
                    clusterOptions = markerClusterOptions()) %>% 
-    # add a minimap
+    # add a mini map
   addMiniMap(tiles = providers$OpenStreetMap, zoomLevelOffset = -3)
+```
+
+```{r, echo=FALSE}
+map2 <- 
+  leaflet(all_clinic2) %>% 
+  addProviderTiles(providers$OpenStreetMap) %>%
+  addCircleMarkers(~long, ~lat, popup = ~labels, # popup add the label
+                   clusterOptions = markerClusterOptions()) %>% 
+    # add a mini map
+  addMiniMap(tiles = providers$OpenStreetMap, zoomLevelOffset = -3)
+widgetframe::frameWidget(map2)
 ```
 
 Notice that the coordinates look more accurate as compared to the map I created with `ggplot2` previously.
