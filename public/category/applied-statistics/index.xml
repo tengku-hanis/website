@@ -31,24 +31,24 @@
 &lt;p&gt;Generally, we need to include as many relevant variables into the imputation model. However, this general advise may not be very efficient as we may have multicollinearity and computational issue if we include too many predictors. As a rule of thumb, the number of included variables should be no more than 15-20. &lt;a href=&#34;https://www.jstatsoft.org/article/view/v045i03&#34;&gt;van Buuren &lt;em&gt;et al&lt;/em&gt;&lt;/a&gt;&lt;em&gt;.&lt;/em&gt; &lt;a href=&#34;https://www.jstatsoft.org/article/view/v045i03&#34;&gt;(2011)&lt;/a&gt; mentioned that increased in explained variance in linear regression is negligible after 15 variables are included.&lt;/p&gt;
 &lt;p&gt;There are 4 steps suggested by &lt;a href=&#34;https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf&#34;&gt;van Buuren &lt;em&gt;et al.&lt;/em&gt; (1999)&lt;/a&gt; for variable selection in the case of big data:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;p&gt;Include all variables that appear in the complete-data model (final model).&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Include all variables that appear in the complete-data model (final model)&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;This may include this interaction terms as well (passive imputation can be used for this in &lt;code&gt;mice&lt;/code&gt; package).&lt;/li&gt;
+&lt;li&gt;This may include the interaction terms as well (passive imputation can be used to specify the interaction terms in &lt;code&gt;mice&lt;/code&gt; package)&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Include variable that have influence on the occurrence of the missing data.&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Include variable that have influence on the occurrence of the missing data&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;This can be assessed by a correlation matrix between NAs variables and non-NAs variables.&lt;/li&gt;
+&lt;li&gt;This can be assessed by a correlation matrix between NAs variables and non-NAs variables&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Include variable that explain a considerable amount of variance.&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Include variable that explain a considerable amount of variance&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables.&lt;/li&gt;
+&lt;li&gt;This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Remove variable that have too many missing values within the subgroup of incomplete cases.&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Remove variable that have too many missing values within the subgroup of incomplete cases&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in the certain variable have an observed values on the predictor variables.&lt;/li&gt;
+&lt;li&gt;This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in a certain variable have an observed values on the predictor variables&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by &lt;a href=&#34;https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf&#34;&gt;Oudshoorn &lt;em&gt;et al.&lt;/em&gt; (1999)&lt;/a&gt;, which take into account important predictor of predictors. We are going focus on the four steps above, and not cover the latter suggested approach in this post.&lt;/p&gt;
+&lt;p&gt;All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by &lt;a href=&#34;https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf&#34;&gt;Oudshoorn &lt;em&gt;et al.&lt;/em&gt; (1999)&lt;/a&gt;, which take into account important predictor of predictors. We are going to focus on the four steps above, and not cover the latter suggested approach in this post.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;r-codes&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;R codes&lt;/h2&gt;
@@ -117,13 +117,13 @@ round(var_pair$mr / (var_pair$mr + var_pair$mm), digits = 3)&lt;/code&gt;&lt;/pr
 ## Temp        0       0    0    0     0   0
 ## Month       0       0    0    0     0   0
 ## Day         0       0    0    0     0   0&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Again, the column variables are the predictors, and the row variable is the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in &lt;code&gt;quickpred()&lt;/code&gt; are:&lt;/p&gt;
+&lt;p&gt;Again, the column variables are the predictors, and the row variables are the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in &lt;code&gt;quickpred()&lt;/code&gt; are:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.&lt;/p&gt;
-&lt;p&gt;As we can see we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection for imputation model. We can do the multiple imputation using &lt;code&gt;mice()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed the default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.&lt;/p&gt;
+&lt;p&gt;Intuitively, we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection, we can do the multiple imputation using &lt;code&gt;mice()&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Finalised variable selection
 var_sel &amp;lt;- quickpred(airquality)
 var_sel&lt;/code&gt;&lt;/pre&gt;
@@ -153,7 +153,7 @@ imp&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Notice that &lt;code&gt;mice()&lt;/code&gt; uses the predictor matrix that we provide.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.jstatsoft.org/article/view/v045i03&#34; class=&#34;uri&#34;&gt;https://www.jstatsoft.org/article/view/v045i03&lt;/a&gt; - paper written byStaf van Buuren (a bit outdated in terms of codes, but runnable)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.jstatsoft.org/article/view/v045i03&#34; class=&#34;uri&#34;&gt;https://www.jstatsoft.org/article/view/v045i03&lt;/a&gt; - paper written by Staf van Buuren (a bit outdated in terms of codes, but runnable)&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://stefvanbuuren.name/fimd/&#34; class=&#34;uri&#34;&gt;https://stefvanbuuren.name/fimd/&lt;/a&gt; - online book written by Stef van Buuren (See chapter 6.3.2 and 9.1.6)&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;

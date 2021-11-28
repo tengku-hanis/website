@@ -1,0 +1,1274 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Tengku Muhammad Hanis">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="I have tried creating a map with ggplot2 previously. In this post, I will try to create an interactive map using leaflet package in R.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
+
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Tengku Hanis">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/">
+  <meta property="og:title" content="My first interactive map with {leaflet} | Tengku Hanis">
+  <meta property="og:description" content="I have tried creating a map with ggplot2 previously. In this post, I will try to create an interactive map using leaflet package in R."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2021-11-28T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2021-11-28T09:56:59&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/"
+  },
+  "headline": "My first interactive map with {leaflet}",
+  
+  "datePublished": "2021-11-28T00:00:00Z",
+  "dateModified": "2021-11-28T09:56:59+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Tengku Muhammad Hanis"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tengku Hanis",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "I have tried creating a map with ggplot2 previously. In this post, I will try to create an interactive map using leaflet package in R."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>My first interactive map with {leaflet} | Tengku Hanis</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Ongoing</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Blog</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>Light</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>Dark</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>Automatic</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>My first interactive map with {leaflet}</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Nov 28, 2021
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    29 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a>, <a href="/category/map/">Map</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/header-attrs/header-attrs.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/jquery/jquery.min.js"></script>
+<link href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet/leaflet.css" rel="stylesheet" />
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet/leaflet.js"></script>
+<link href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/proj4/proj4.min.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-binding/leaflet.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-providers/leaflet-providers_1.9.0.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
+<link href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-markercluster/MarkerCluster.css" rel="stylesheet" />
+<link href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-markercluster/MarkerCluster.Default.css" rel="stylesheet" />
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-markercluster/leaflet.markercluster.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-markercluster/leaflet.markercluster.freezable.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-markercluster/leaflet.markercluster.layersupport.js"></script>
+<link href="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-minimap/Control.MiniMap.min.css" rel="stylesheet" />
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-minimap/Control.MiniMap.min.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/leaflet-minimap/Minimap-binding.js"></script>
+
+
+<p>I have tried creating a map with ggplot2 <a href="https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/">previously</a>. In this post, I will try to create an interactive map using <code>leaflet</code> package in R.</p>
+<p>These are the required packages.</p>
+<pre class="r"><code>library(tidyverse)
+library(tidygeocoder)
+library(leaflet)</code></pre>
+<p>So, I’m going to use a clinics location data in Malaysia. I already uploaded this data tomy <a href="https://github.com/tengku-hanis/clinic-data">GitHub repo</a>. I will skip the explanation for the pre-processing part, but it is the same pre-processing as my <a href="https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/">previous post</a>.</p>
+<pre class="r"><code># Read the data
+clinic1m &lt;- read.csv(&quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinic1m.csv&quot;)
+clinicDesa &lt;- read.csv(&quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv&quot;)</code></pre>
+<details>
+<summary>
+Show code for pre-processing
+</summary>
+<pre class="r"><code># Get the missing coordinate based on postal codes
+clinic1m2 &lt;- 
+  clinic1m %&gt;%
+  mutate(country = &quot;malaysia&quot;) %&gt;% 
+  select(name, postcode, country) %&gt;% 
+  mutate(postcode = ifelse(nchar(postcode) == 4, paste0(0, postcode), postcode)) %&gt;%
+  geocode(postalcode = postcode, country = country, method = &quot;osm&quot;)
+
+# Add coordinate from external sources for the still missing coordinates
+add_coord &lt;- 
+  read.table(header = T, text = &quot;
+postal_code    latitude   longitude
+16070            6.0334    102.3499
+26060            3.6228    102.3926
+90700            5.8456    118.0571
+26060            3.6228    102.3926&quot;)
+
+# Drop clinics with the still missing coordinate
+clinic1m2 &lt;- 
+  clinic1m2 %&gt;% 
+  mutate(lat = ifelse(postcode %in% add_coord$postal_code, add_coord$latitude, lat), 
+         long = ifelse(postcode %in% add_coord$postal_code, add_coord$longitude, long)) %&gt;% 
+  drop_na() #drop 2 clinic1m
+
+# Bind the 2 data
+all_clinic &lt;- 
+  clinic1m2 %&gt;% 
+  mutate(Type = &quot;1Malaysia&quot;) %&gt;% 
+  select(name, Type, lat, long) %&gt;% 
+  bind_rows(clinicDesa %&gt;% 
+              mutate(Type = &quot;Desa&quot;, 
+                     lat = latitude, 
+                     long = longitude) %&gt;% 
+              select(name, Type, lat, long)) %&gt;% 
+  mutate(name = str_to_title(name))</code></pre>
+</details>
+<p>First, we going to plot the coordinates to see if there is anything strange.</p>
+<pre class="r"><code>ggplot(all_clinic, aes(long, lat, color = Type)) +
+  geom_point() +
+  theme_minimal()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>So, we are going to remove the two isolated points as seen from the plot.</p>
+<pre class="r"><code>all_clinic2 &lt;- all_clinic %&gt;% filter(long &gt; 25)</code></pre>
+<p>Once we have our data ready, we can supply to <code>leaflet</code>. We can choose the type of map from <code>addProviderTiles()</code>. Some need an api, but the one we choose here does not. We supply the longitude and latitude of our data to <code>addCircleMarkers()</code>, and <code>clusterOptions</code> to cluster our data.</p>
+<pre class="r"><code>leaflet(all_clinic2) %&gt;% 
+  addProviderTiles(providers$Stamen.Watercolor) %&gt;%
+  addProviderTiles(providers$Stamen.TerrainLabels) %&gt;%
+  addCircleMarkers(~long, ~lat, 
+                   clusterOptions = markerClusterOptions())</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Stamen.TerrainLabels",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[5.33880907722022,4.85160066904762,5.8456,5.62644150854728,4.35061049117647,1.49925632798826,5.27711189444445,2.25218980487805,5.2551938,4.61392872848101,4.23214280909091,3.31624216304348,2.24976610066722,5.2219947,3.31624216304348,5.96073163009595,3.21155373426554,3.21155373426554,2.28864311339869,3.6228,5.39808600108696,6.43976303636364,3.83424409,6.17270023846154,5.40864288912474,3.10954593867925,1.60137137045455,6.04250286923077,3.13947446373911,3.09959146323529,2.68444715,2.37068824605263,1.65098895,6.00228228947368,5.32363537254675,3.190189136,3.2395317698718,3.6228,1.71088713333333,1.49925632798826,3.21907936315789,2.15107085427457,2.694598474,2.83417827666753,2.03078982258064,3.190189136,5.47917118333333,4.01257807551021,3.46624913851537,5.37209464285714,3.10600183947368,1.93333,1.8891,1.87789,1.901515,1.90512,2.06531,2.028458,1.79129,1.93139,2.01683,1.91869,2.02919,1.88937,2.00155,1.8392,1.96733,1.72163,1.847441,1.77968,1.79888,1.75532,1.86473,1.81665,1.91175,1.94028,1.82084,1.90059,1.88362,2.00995,1.89869,1.77769,1.72131,1.84944,2.06875,1.90999,1.77506,1.72554,2.01013,1.93368,1.84388,1.78632,1.87253,1.66576,1.92031,1.90366,1.75515,1.84611,1.506667,1.49833,1.63325,1.52397,1.477146,1.55772,1.53564,1.53267,1.51854,1.50216,1.58128,1.43489,1.37694,1.51017,1.52262,1.53821,1.4519,1.5854,1.46822,1.38243,2.14081,2.16738,1.948206,2.03306,1.81845,1.91647,2.26698,2.10405,2.09163,2.04472,2.05287,1.84148,1.87703,1.80934,2.024283,1.99118,1.830082,1.92102,1.85686,1.496596,2.13038,1.70582,1.627822,1.6008,1.825254,1.83221,1.77562,1.753907,1.90299,1.48408,1.84128,1.825833,1.85169,1.71273,1.41934,1.7603,1.82583,1.75452,1.57162,1.728544,2.01053,1.35313,1.78483,1.84553,1.49792,1.56298,1.37243,1.98904,1.4652,1.69662,1.728973,1.76745,1.77256,1.73138,1.728973,1.66868,1.63198,1.71151,1.59937,1.53,2.349465,2.18025,2.30359,2.33577,2.39487,2.13689,2.23516,2.12002,1.86368,2.18998,2.21667,2.12243,2.2219,2.25067,2.27226,2.14714,2.180542,2.16263,2.20879,2.284486,2.22814,2.19885,2.34377,2.39237,2.25685,2.19834,2.13333,2.18079,2.61342,2.63219,2.38163,2.39535,2.44926,2.57586,2.22456,2.30161,2.472,2.39235,2.08241,2.15435,2.62722,2.03352,2.01282,2.20471,2.24358,2.25158,2.27641,2.04459,2.34567,2.37917,1.975951,2.060494,2.12912,2.16892,2.20053,2.354833,2.22997,2.17213,2.11528,2.01556,1.98524,1.916773,1.93758,1.9384,1.96505,2.0218,1.99065,1.92623,1.98849,1.97737,1.978605,1.946146,1.96336,2.02758,2.15783,1.89177,1.91683,1.90789,1.91248,2.0889,2.14343,2.08976,1.52398,5.98338,1.37763,1.54375,1.32778,1.59833,1.64885,1.65102,1.71191,1.53779,1.68953,1.63158,1.62955,1.66574,1.49833,1.44556,1.52588,1.5223,1.59066,1.33619,1.68799,1.29653,1.58305,1.66061,1.45525,1.62924,1.48996,1.35,1.47441,1.4803,1.41615,1.56483,1.41229,2.72833,2.37861,2.52071,2.52528,2.29302,2.50672,2.57638,2.58364,2.48729,2.64691,2.55018,2.50681,2.47373,2.52887,2.57755,2.47849,2.44358,2.70232,2.48795,2.53435,2.64594,2.35346,2.18917,2.46579,2.46593,5.69622,5.44608,5.75578,5.80135,5.66086,5.71797,5.64726,5.69972,5.57603,5.589,5.67642,5.60047,5.54831,5.650667,5.56883,5.60586,5.63658,5.70308,5.53196,5.62442,5.65453,5.69122,5.53333,5.67661,5.57874,5.88903,5.71703,5.64289,5.70758,5.75919,5.65281,5.67514,5.5864,5.52061,5.84722,5.18231,5.09096,5.11708,5.11697,5.13565,5.23318,5.23563,5.25603,5.31187,5.17456,5.28005,5.29341,6.089383,6.17537,6.188889,6.145527,6.198305,6.201762,6.188392,6.161459,6.160412,6.07912,6.00469,6.105432,6.16884,6.132,6.20713,6.101354,6.201385,6.112414,6.158061,6.158715,6.077268,6.07393,6.045587,6.16575,6.094752,6.19428,6.07527,6.11537,5.680944,5.81861,5.799025,5.62443,5.608333,5.688389,5.61202,5.81979,5.75321,5.54992,5.836417,5.636046,5.56145,5.574806,5.65257,5.704353,5.69975,5.66628,5.6029,5.682778,5.65832,5.584444,6.3215,6.42628,6.33524,6.48897,6.29676,6.38295,6.20861,6.39743,6.22285,6.255934,6.28573,6.28655,6.28858,6.32681,6.36177,6.31443,6.35626,6.26406,6.26124,6.28414,6.28119,6.23663,6.24472,6.3457,6.44833,6.44551,5.35397,5.28574,5.25789,5.45628,5.46897,5.53412,5.3682,5.52714,5.30258,5.38965,5.3915,5.50248,5.44021,5.49212,5.48504,5.52917,5.51488,5.42759,5.41553,5.79342,5.44761,5.285515,5.37454,5.28471,6.33046,6.39987,6.38846,6.31982,6.32783,6.3619,6.36257,6.23364,6.248778,6.29809,6.35168,6.18631,6.21171,5.94556,6.24633,6.2206,6.05283,6.28235,6.32027,6.30217,6.34214,6.23424,6.31763,6.22167,6.19198,6.22712,5.961169,5.905896,6.008377,6.00356,5.979626,5.964167,5.872267,6.02988,5.973283,6.033499,5.964923,5.89198,6.034229,5.583477,6.03031,6.0176,6.004889,6.051832,5.85681,5.801879,5.79254,5.79007,5.8416,5.77636,5.89558,5.938869,5.88731,6.00708,6.10076,5.87854,6.00559,5.82048,5.91546,5.8553,5.71553,5.75542,5.89031,5.95359,5.85365,5.80539,5.92894,5.82058,5.9567,5.87212,5.91712,5.73242,5.92203,5.82402,5.847882,5.87495,5.95832,6.04402,5.95744,5.916524,5.94222,6.15611,6.009178,5.94972,5.947187,5.93736,6.0366,6.02154,6.0325,5.94077,6.02658,6.00901,6.092933,6.093399,6.073251,6.005,6.120799,5.971493,6.13996,4.95433,5.09694,4.915717,4.928806,5.02849,5.16718,4.79056,4.93899,5.08666,4.90125,5.162629,5.07603,5.00944,5.00639,4.88638,4.909778,4.95433,5.73785,5.71861,5.75083,5.47722,5.762243,5.69414,5.51194,5.75028,5.56364,5.64461,5.68444,5.72954,5.923133,6.121952,5.93194,5.99861,5.993021,6.052094,6.02917,5.99917,5.978665,6.20101,6.13667,6.17599,5.97722,5.96322,6.081137,6.054848,6.058673,6.10167,6.15412,6.04293,6.17254,6.153603,6.077487,5.91917,6.139583,6.1293,6.19875,6.152844,6.03918,6.07333,5.588114,5.51806,5.33472,5.38229,5.34639,5.46778,5.61194,5.31423,5.62524,5.59502,5.30674,5.428898,5.24806,5.38056,5.65778,5.29329,5.38892,5.59318,5.33139,5.48611,5.75992,5.7413,5.89459,5.83108,5.71671,5.82876,5.678,5.75188,5.78889,5.80038,5.86861,5.77222,6.05056,5.92417,6.069582,5.922747,6.09498,5.95261,5.96855,5.99528,6.02861,6.04056,6.12181,5.92045,6.04942,5.96917,6.018646,5.95363,6.01639,6.107217,6.0714,6.06982,6.03028,5.91806,5.85674,5.861093,5.87594,5.76889,5.905989,5.8525,5.84472,5.869746,5.88806,5.86299,5.78083,5.8448,5.846301,5.81611,5.90095,5.77158,5.89528,5.91944,5.76625,5.892577,5.813531,5.782187,5.854215,5.844825,5.839454,5.720777,5.858462,5.875299,5.720051,5.848112,5.682705,5.630147,5.733489,5.759333,5.753846,5.87726,5.789536,5.987009,5.821667,5.666453,6.157569,6.143424,6.19406,6.201952,6.137568,6.174036,6.160614,6.177026,6.145472,6.101314,6.15848,6.17455,6.166868,6.096951,6.137429,6.119289,6.1261,6.219953,6.194795,6.156582,6.195616,6.215093,6.118577,2.3839,2.40764,2.31867,2.4342,2.35348,2.40825,2.37216,2.37848,2.35859,2.38157,2.35762,2.4298,2.45757,2.34215,2.39857,2.32368,2.451027,2.39719,2.33213,2.41216,2.42465,2.3459,2.44186,2.48168,2.30487,2.45439,2.39329,2.27848,2.13038,2.47231,2.15575,2.267561,2.39438,2.298717,2.28786,2.23347,2.32683,2.3163,2.40683,2.433686,2.47109,2.14712,2.14225,2.12343,2.22115,2.293696,2.14394,2.2256,2.24962,2.28971,2.2245,2.21409,2.2208,2.29698,2.22758,2.1928,2.29342,2.20268,2.25359,2.16452,2.21387,2.99023,2.915663,3.12627,3.091737,3.05129,3.016219,3.01433,2.965851,3.015415,3.15238,2.94837,2.91914,2.873138,2.946846,2.67607,2.93722,2.82733,2.86009,2.95541,3.00169,3.0693,2.68544,2.83315,2.85535,2.73121,2.68341,2.9388,2.92924,2.9617,2.70845,2.81881,2.89514,2.92531,3.08402,2.738299,2.56119,2.77493,2.54467,2.64409,2.73891,2.69427,2.62198,2.71413,2.73884,2.70072,2.77153,2.739007,2.7698,2.77766,2.70577,2.75704,2.739415,2.85973,2.8095,2.69284,2.50458,2.63886,2.60467,2.44705,2.42713,2.51563,2.45516,2.61639,2.52263,2.56916,2.52177,2.52561,2.465336,2.5864,2.529632,2.543337,2.4866,2.588503,2.48248,2.6332,2.74446,2.88862,2.72678,2.69921,2.76585,2.766751,2.62402,2.670822,2.81199,2.84426,2.78461,2.74549,2.57906,2.856703,2.88773,2.66088,2.61192,2.51126,2.60524,2.66073,2.55642,2.51955,2.49353,2.65125,2.54772,2.59272,2.48261,2.5668,3.35705,3.243694,3.45595,3.325274,3.496699,3.16971,4.12022,3.20453,3.278774,3.47956,3.40286,3.45337,3.589751,3.569681,3.292628,3.34004,3.23077,3.34225,3.11052,3.414039,3.2635,3.37978,3.329281,3.31055,3.36657,3.33107,3.18736,3.10971,3.264721,3.179877,3.246944,3.2568,4.56712,4.548263,4.41729,4.41358,4.51617,3.97512,3.83331,3.84686,3.83065,3.77726,3.78749,3.81445,3.9586,3.91994,4.107147,4.167187,4.446773,3.92372,3.92251,4.523335,3.91455,4.459416,4.03421,3.968575,3.88508,3.90111,3.895535,4.132031,3.86403,3.89196,3.94461,3.950486,3.8659,3.94952,4.01014,4.16296,4.104102,3.61222,3.82331,3.92064,3.750994,3.89178,3.92572,3.65556,3.67572,3.65923,3.68943,3.65861,3.79116,3.913515,3.78721,3.792275,3.815869,3.83813,4.045683,3.80187,4.247655,4.4255,4.48497,4.31858,4.0043,4.0386,3.99505,3.97082,4.01508,4.12022,4.19032,4.249321,4.297199,4.11622,4.17279,4.17418,4.28547,4.19169,4.25112,4.38041,3.99319,4.2833,4.37938,4.01571,4.2651,3.45394,3.58284,3.82934,3.83167,3.790219,3.727485,3.709759,3.697565,3.6359,3.596499,3.569098,3.649607,3.73312,3.63641,3.727605,3.68336,3.6678,3.62226,3.63999,3.616455,3.76275,3.50565,3.608129,3.645079,3.44122,3.65748,3.48918,3.511029,3.47827,3.53396,3.50652,3.52174,3.54644,3.49391,3.77867,3.67302,3.53144,3.53416,3.75533,3.388,3.56694,3.37456,3.32137,3.32137,3.541031,3.52385,3.012438,3.47611,3.418829,3.17083,3.5315,3.53977,3.60129,3.464418,3.58806,3.48528,3.50273,3.50778,3.55667,3.28583,3.477,3.08879,3.22722,3.204693,3.54489,3.524408,3.58553,3.54139,3.60566,3.976815,3.714859,3.88618,3.86573,3.94833,3.75083,4.02806,3.98841,3.65583,3.94618,3.71056,3.74222,3.80801,3.89264,4.04778,3.93806,4.00868,3.98917,2.90528,3.09722,2.77028,2.7398,2.793039,2.89583,2.90972,2.90983,2.89583,2.93582,2.97611,2.76692,2.94496,2.88978,2.72409,2.65005,2.886615,2.924363,2.63,2.6225,2.63111,2.65194,2.75433,3.547382,3.540865,3.43601,3.4164,3.5002,3.53121,3.63347,3.68134,3.470221,3.49636,3.342698,3.6077,3.73279,3.48082,3.57585,3.48346,3.76822,3.6216,3.53241,3.39102,3.40188,3.57901,3.45941,3.78067,3.566136,3.55251,4.18666,4.22457,4.24674,4.198047,3.74464,3.755425,3.965038,4.264324,3.84331,3.69236,4.062425,4.21169,4.04599,4.00177,4.20481,3.81215,4.233481,4.07951,3.78739,3.85862,3.847372,3.77923,3.98864,4.23435,4.17386,4.24259,4.238534,3.892646,3.93918,3.95192,4.02015,3.79729,3.890581,3.89199,4.00488,4.65367,3.991838,4.07515,4.04331,3.98163,3.89561,4.05818,3.94974,3.97439,3.90528,3.98387,3.95112,4.10346,3.76361,3.9594,3.8025,3.90843,4.05694,4.05593,4.13326,3.978132,3.95257,4.01058,3.81635,5.229178,5.014936,5.13559,5.1286,5.517,5.05468,4.9962,5.19452,5.39647,5.45484,5.089214,5.47346,5.30754,5.31601,5.66758,5.63349,5.72059,5.45655,5.68972,5.04386,5.6001,5.16278,5.39038,5.10263,4.955608,5.023711,5.059616,5.049928,5.13044,4.9511,4.916144,4.97108,5.115081,5.026242,4.984953,5.029958,5.022842,5.016733,5.020569,5.06107,4.994417,5.088186,5.052025,5.041669,5.077217,4.929278,5.048594,5.051917,4.978794,5.083536,4.91685,4.989758,5.015825,5.054169,5.103675,4.36344,4.46356,4.26512,4.27663,4.41329,4.42946,4.357994,4.392127,4.391523,4.69957,4.2677,4.53156,4.50495,4.53036,4.46377,4.31628,4.45955,4.48121,4.60696,4.74985,4.61913,4.995961,4.578187,4.82146,4.67674,4.90003,4.88456,4.83372,4.81853,4.73054,4.85277,4.84542,4.80427,4.87591,4.78939,4.79435,4.82422,4.92572,4.718777,4.794544,4.84042,4.77432,4.941118,4.77611,4.86827,4.88602,4.695,4.94269,4.8858,5.13361,4.53982,5.00826,4.951343,4.78379,4.76006,4.93389,5.16557,4.79496,5.01303,4.75734,5.13262,4.77513,4.77513,4.88691,4.9587,4.71266,5.16491,4.84016,4.6156,4.60896,4.543303,5.00826,5.23892,5.07222,5.26345,4.6517,5.21299,4.33724,4.12352,4.279379,4.357003,4.1947,4.20487,4.377583,4.293653,4.18068,4.49689,4.0528,4.40833,4.1941,4.52004,4.33724,4.22392,4.51936,4.16871,4.22217,4.48093,4.22514,4.30986,4.32257,4.18666,4.21134,4.47792,4.34881,4.44332,4.52487,4.32221,4.24551,4.0199,4.27267,4.40012,4.40162,4.32703,4.44341,4.22826,4.14212,4.576103,4.37229,4.36329,4.23035,4.22229,4.17591,4.09698,4.062542,4.079258,4.50869,4.20868,4.29718,4.31606,4.47648,4.24881,4.26204,4.52899,6.48837,6.54907,6.39728,6.35945,6.44097,6.49257,6.66335,6.4773,6.41848,6.44561,6.39906,6.3009,6.39216,6.64973,6.47545,6.28957,6.5515,6.51443,6.49061,6.45419,6.51583,6.437,6.47028,6.40728,6.33374,6.33501,6.30816,6.38421,6.63502,6.41334,5.28219,5.31086,5.41523,5.2738,5.37337,5.33242,5.33084,5.31826,5.28696,5.33732,5.39407,5.28754,5.47325,5.37364,5.39776,5.39281,5.33461,5.40739,5.34747,5.31584,5.39209,5.3162,5.40866,5.33976,5.42522,5.41531,5.41127,5.3691,5.2983,5.39167,5.44757,5.39521,5.5536,5.50437,5.57206,5.53829,5.46652,5.45527,5.50008,5.55568,5.53833,5.47872,5.57921,5.47912,5.55567,5.51127,5.55191,5.48474,5.44615,5.48814,5.50618,5.26571,5.2738,5.20141,5.13169,5.268877,5.12503,5.20915,5.15018,5.28094,5.24662,5.2102,5.28333,5.52723,5.26394,5.3575,5.33534,5.41056,5.197778,5.36918,5.509579,5.42276,5.4168,6.2428,6.66801,6.13818,5.8207,5.89642,6.23209,5.97664,6.44556,5.27873,5.39111,5.28222,5.34833,5.44056,5.0325,5.11022,5.259678,4.95194,5.35326,5.25917,5.15513,5.34796,5.91344,6.59444,6.07447,6.148567,6.30361,6.04972,6.38355,6.317117,6.468265,6.39367,6.34528,6.49417,6.41889,6.21222,6.42278,6.10929,5.9834,6.019263,6.00415,5.98528,5.99361,5.70774,6.47322,6.31528,6.515764,6.47623,6.48583,6.52854,6.49868,6.602456,6.45408,5.50259,5.477004,5.54522,6.94685,6.83267,6.76303,6.86081,6.79873,6.780813,6.997895,6.79194,4.70679,4.72662,5.095946,5.15156,5.23383,5.34292,5.32611,5.03331,4.962335,4.98591,5.082352,5.01552,5.00736,5.17056,5.03736,5.09148,4.95972,5.69124,5.71806,5.61861,5.77152,5.64194,5.74667,5.7562,5.69528,5.511104,5.56889,5.90611,5.878084,5.88775,5.92615,5.91415,5.87944,6.912485,6.6475,6.60667,6.93022,6.995773,6.67539,6.70056,6.0198,5.89917,6.00129,6.031877,5.80257,5.93532,5.989438,6.14972,5.87687,5.70218,5.94972,4.29325,4.26526,5.8521,5.895355,5.81066,5.80333,5.914823,6.11054,5.84323,5.8388,5.743746,4.53673,4.46724,4.47028,4.42408,4.418972,4.46519,4.38306,4.5167,4.98425,4.405847,5.081941,5.11032,4.98409,5.87052,5.82477,6.73583,5.717713,5.62386,5.76023,5.53944,5.94,5.9125,4.385522,4.39972,4.41361,4.41528,4.31364,4.285,4.94395,5.03306,5.14934,5.0758,5.015562,5.29368,5.06639,4.695,5.5287,5.51667,5.24017,5.34648,6.14818,6.20472,6.18308,5.949798,6.11944,6.2526,6.30361,6.14305,5.98944,6.02639,6.24756,6.21056,6.11278,6.18917,1.36619,1.44851,2.68444,1.2475,1.64711,2.86194,1.61667,2.01658,2.51694,1.123323,3.246052,3.201577,3.311739,3.276398,3.246481,3.282017,3.027356,2.902257,3.163233,2.945845,3.142819,3.196416,2.885904,2.90153,2.91505,2.999514,3.16485,2.99053,3.02268,3.110627,3.467581,3.74119,3.466616,3.48588,3.724065,3.423207,3.588839,3.393004,3.439043,3.565283,3.670933,3.4349,3.01928,3.07619,3.162324,3.003473,2.971973,3.157475,3.028128,3.136919,2.97914,3.140473,3.053298,3.068781,3.0913,3.048317,3.0395,3.14902,3.0375,2.956783,3.031533,2.676873,2.73401,2.887649,2.932169,2.788439,2.747031,2.912278,2.79424,2.679514,2.803613,2.750723,2.836243,2.836307,2.9325,2.95137,2.886327,2.819344,2.792117,2.822133,2.67414,3.33986,3.300769,3.39733,3.424087,3.389969,3.27221,3.21052,3.27177,3.36319,3.359971,3.50383,3.363554,3.232341,3.40662,3.45252,3.44452,3.46285,3.40967,3.192151,3.47055,3.43921,3.4276,3.02085,3.1289,3.151681,3.21706,3.200347,3.7798,3.75814,3.79305,3.750611,3.72363,3.73055,3.82464,3.759191,3.71337,3.728485,3.66151,3.70812,3.554436,3.729895,3.83021,3.56442,3.775824,3.624094,3.70676,3.60469,3.802912,3.79449,2.66208,2.963313,2.79486,2.86868,2.955172,2.930955,2.662082,2.938862,2.87934,2.657289,5.48533,5.81578,5.70886,5.75722,5.67444,5.69875,5.79853,5.58246,5.64417,5.74918,5.70278,5.52647,5.72222,5.74333,5.72497,5.89648,5.73752,5.70028,5.56058,5.796698,4.65722,4.79682,4.82177,4.68425,4.920979,4.67889,4.65625,4.72417,4.84889,4.77232,4.80454,4.56421,4.79545,4.78907,4.73367,4.79885,5.08583,5.01159,5.04174,5.34998,5.17806,5.0625,5.00194,5.19861,4.9401,4.85833,4.975,5.20439,5.07583,5.21896,5.10695,5.13139,4.96417,4.981796,4.40687,4.5689,4.22965,4.26456,4.22115,4.4744,4.12056,4.20369,4.32528,4.23064,4.01053,4.13028,3.99544,4.32306,4.405288,4.24425,4.1895,3.97074,4.2757,4.43059,4.28666,5.25645,5.320752,5.28101,5.32901,5.39309,5.34993,5.40099,5.27359,5.30764,5.27363,5.33313,5.29134,5.29412,5.26519,5.3079,5.2933,5.28728,5.31727,5.42351,5.35296,5.278,5.45167,5.33694,5.27067,5.32949,5.77917,5.31086,5.35534,5.26275,5.3026,5.17937,5.19424,5.10514,4.9432,5.13701,5.23544,5.02015,4.97567,5.12364,5.20694,5.17802,5.24528,5.16507,5.22679,5.21951,5.56664,5.55333,5.62951,5.22318,5.410101,5.64163,5.46177,5.58472,5.37139,5.52981,5.30951,5.60611,5.42727,5.38478,5.27466,5.32717,5.34528,5.33217,5.36594,5.26717,5.28412,5.30127,5.34489],[100.481132925722,100.739476986393,118.0571,100.520375121834,100.879790349837,103.860022244384,116.787700209484,102.251752262768,100.475224502457,101.121323364627,103.39939786074,101.545555416063,102.303604669142,103.129317,101.545555416063,116.082729927756,101.62676546212,101.62676546212,111.838355932252,102.3926,100.286073220101,100.201734630202,103.286330402626,102.260852735682,100.523246785466,101.59494567457,110.318209194477,102.131230537635,101.72226963817,101.63696162874,101.985756984364,102.203497149143,103.651973740263,116.130097205218,100.284103659445,113.052804956,101.675768310208,102.3926,103.53767570233,103.860022244384,101.73750291612,102.74821616181,101.923714763945,101.786517737099,103.327402921928,113.052804956,100.383413114474,101.017021919077,102.401725162797,103.093532984732,101.668191256815,103.11667,102.87775,102.985754,102.966464,103.03723,103.12484,102.884881,102.89404,102.89017,102.95778,102.92154,102.98374,102.94855,102.86493,102.87806,103.05287,103.08015,103.084695,103.1065,103.03472,103.10791,103.81435,103.11945,102.80834,102.85224,103.06503,102.82298,103.15039,102.94438,103.02322,102.90729,103.12645,102.90492,102.9474,102.86731,103.14424,103.14862,102.97406,103.08321,103.14597,102.93634,102.93067,103.18359,102.79886,103.12825,103.01356,102.94493,103.768932,103.78583,103.75984,103.935,103.566077,103.592255,103.757951,103.71484,103.99469,103.61673,103.71783,103.93095,103.59361,103.82005,103.82061,103.66023,103.69329,103.88062,104.00688,103.56832,103.240242,103.13272,103.23256,103.42,103.47349,103.5252,103.60884,103.39596,103.278909,103.33333,103.3465,103.4113,103.26819,103.30483,103.317789,103.25408,103.264961,103.37339,103.2985,104.04431,102.44822,103.98697,104.089408,104.08655,103.992827,104.02162,103.87379,103.726301,104.06068,104.0575,104.14571,103.76838,103.97943,103.95592,104.1026,103.67594,103.76838,103.78254,104.10218,103.826036,103.8615,104.1798,103.68386,103.63925,104.04394,104.02915,104.24753,104.08737,104.0431,103.48971,103.444133,103.52046,103.61011,103.64521,103.444133,103.53304,103.63384,103.52617,103.64472,103.54528,102.521024,102.55085,102.61196,102.72293,102.68477,102.54194,102.76944,102.57941,103.10959,102.62157,102.5,102.55663,102.67633,102.67147,102.69109,102.58091,102.573904,102.58606,102.60571,102.51773,102.6198,102.63573,102.78773,102.75832,102.5271,102.66262,102.61667,102.513,103.66813,103.64122,103.71319,103.6751,104.52049,104.33041,104.06404,104.12014,103.81344,103.6751,103.88776,103.90732,103.72111,102.6058,102.8094,102.81408,102.85399,102.83563,102.8159,102.6404,102.83049,102.915,102.66376,102.618184,102.64556,102.756693,102.70334,102.842296,102.79007,102.7089,102.76312,102.62859,102.78985,102.680389,102.71058,102.78864,102.62297,102.5791,102.60276,102.67254,102.63317,102.6272,102.627637,102.65663,102.71303,102.76519,102.78064,102.76712,102.75106,102.73691,102.72388,102.61391,102.60353,102.58301,103.46012,100.48845,103.46251,103.49439,103.44673,103.48063,103.33067,103.2294,103.25123,103.36693,103.28172,103.35188,103.25909,103.30196,103.41889,103.43472,103.44206,103.42298,103.40755,103.45974,103.23604,103.50439,103.34398,103.31009,103.40437,103.30077,103.448,103.51389,103.42047,103.50999,103.42563,103.41513,103.42617,102.74294,102.9475,102.95592,102.88444,102.96459,103.01721,102.81879,102.62733,102.79309,102.66114,102.82281,102.83607,102.80517,102.81413,102.76691,102.71812,102.87984,102.68638,102.82023,102.80907,102.76346,103.038,103.03834,102.9581,102.95779,100.8136,100.7286,100.8982,100.577818,100.6682,100.9114,100.73032,100.83466,100.8672,100.73672,100.807,100.8579,100.7309,100.775269,100.8883,100.7055,100.8148,100.7578,100.70019,100.702,100.892,100.94644,100.75606,100.8686,100.78641,100.8986,100.6583,100.9066,100.9243,100.9208,100.9243,100.7082,100.87936,100.7558,100.8901,100.60091,100.56185,100.52514,100.55981,100.49797,100.55489,100.68254,100.66118,100.70214,100.5478,100.72203,100.65755,100.379425,100.31699,100.658333,100.56203,100.429206,100.455572,100.338716,100.40294,100.475853,100.38947,100.34346,100.292775,100.28696,100.29855,100.451921,100.331685,100.304727,100.287253,100.366837,100.330537,100.430181,100.3626,100.332327,100.45843,100.328228,100.38274,100.46173,100.47522,100.416722,100.51716,100.593217,100.64813,100.406944,100.435861,100.3617,100.47765,100.64884,100.558,100.532056,100.358095,100.53246,100.48025,100.3406,100.471933,100.517167,100.47606,100.47177,100.362981,100.36118,100.435556,100.4483,100.38708,100.44121,100.47486,100.39954,100.38371,100.27205,100.45083,100.38847,100.360397,100.446102,100.25913,100.44543,100.33196,100.42062,100.36452,100.33933,100.31748,100.26788,100.32747,100.27186,100.3181,100.39718,100.3674,100.40236,100.44155,100.53593,100.5443,100.6044,100.63448,100.69001,100.54617,100.69386,100.67445,100.53531,100.54861,100.56318,100.67966,100.59241,100.62773,100.54407,100.56769,100.61303,100.64453,100.54072,100.62131,100.55151,100.672584,100.58136,100.62579,99.76824,99.74896,99.70297,99.73664,99.83777,99.71261,99.74696,99.85496,99.830476,99.73867,99.77364,100.69543,100.5346,100.6668,100.54402,100.61561,100.76122,100.55624,100.66885,100.65895,100.6833,100.68459,100.58915,100.57749,100.64326,100.72109,100.463442,100.47637,100.452768,100.51819,100.502959,100.5775,100.481156,100.45454,100.446847,100.611979,100.525892,100.54164,100.540031,100.476994,100.48297,100.481025,100.425244,100.825547,100.81822,100.672562,100.69859,100.63467,100.78451,100.74959,100.64907,100.685277,100.75434,100.83597,100.84031,100.63002,100.74793,100.79485,100.72558,100.76443,100.67976,100.71613,100.44173,100.40865,100.38364,100.39073,100.3687,100.41285,100.36092,100.38171,100.42613,100.37974,100.39254,100.38493,100.432348,100.42198,102.31786,102.36155,102.34495,102.400603,102.41694,102.34917,102.373331,102.44472,102.353504,102.32748,102.38648,102.33936,102.40047,102.30552,102.41073,102.334111,102.360118,102.386383,102.359782,102.42639,102.356818,102.3687,102.337508,101.9631,102.28444,102.173152,102.18225,102.14769,102.00541,101.945,102.04133,101.97278,101.78606,102.338022,102.06702,102.23139,102.27056,101.85564,102.084398,101.963103,101.92909,101.74194,101.74694,101.90806,101.86547,101.77788,101.89361,101.89834,101.88555,101.87431,101.70944,101.90141,102.265828,102.271395,102.20417,102.24472,102.316324,102.301941,102.21972,102.22056,102.262266,102.23851,102.27528,102.25295,102.22667,102.28911,102.299549,102.273308,102.220674,102.23056,102.24327,102.23783,102.3308,102.318053,102.321208,102.21833,102.325508,102.30091,102.25461,102.326574,102.19467,102.29028,102.179589,102.275,102.24861,102.32027,101.98083,102.15778,102.2775,102.25675,102.20156,102.15586,102.27263,102.246044,102.00972,102.27139,102.2125,102.02142,102.06359,102.13586,102.20222,102.30083,102.29246,102.24469,102.19439,102.22551,102.19036,102.19521,102.10991,102.15916,102.19694,102.25015,102.18944,102.17556,102.11222,102.02889,102.108865,102.100475,102.17609,102.08503,102.20133,102.14139,102.02028,102.05556,102.12054,101.93165,102.17055,102.01583,102.127595,101.94472,102.14417,102.138768,102.13188,102.07923,102.09389,102.15778,102.37746,102.314936,102.3418,102.46028,102.294366,102.51944,102.47972,102.424743,102.38861,102.46655,102.37111,102.36238,102.33067,102.45028,102.35899,102.33851,102.4775,102.34028,102.43044,102.10526,102.043639,102.084929,102.167447,102.072714,102.150198,102.054617,102.122946,102.158537,102.100242,102.007652,102.073084,102.104718,102.025341,102.087965,102.143447,101.94673,101.972024,102.150506,101.968084,102.034141,102.151772,102.223985,102.143433,102.199942,102.151727,102.185361,102.165532,102.090675,102.187043,102.188655,102.2304,102.21184,102.209622,102.208927,102.210507,102.196519,102.22289,102.104249,102.09698,102.128086,102.225018,102.120795,102.193306,102.04639,102.16711,102.25918,102.13826,102.13113,102.24828,102.07655,101.97946,102.17203,102.27772,102.23011,102.18669,102.23083,102.25408,102.21204,102.07285,102.228287,102.08599,102.20914,102.3008,102.15539,102.2042,102.10904,102.18054,102.08415,102.3405,102.54616,102.39941,102.44822,102.414336,102.47682,102.377729,102.41477,102.471135,102.487872,102.34792,102.37065,102.39752,102.49009,102.47225,102.38327,102.51467,102.36902,102.4715,102.45712,102.444355,102.39232,102.24143,102.25208,102.19137,102.29975,102.27576,102.22029,102.25151,102.14964,102.34994,102.21401,102.28313,102.15167,102.32077,102.36227,102.05713,102.052041,102.24774,102.072517,102.25602,102.26836,102.30091,102.136966,102.180663,102.19929,102.25922,102.08224,102.017948,102.03784,102.37936,102.38,102.31707,102.52171,102.3799,102.40026,102.40893,102.56658,102.57943,102.61994,102.58774,102.61791,102.30241,102.32932,102.48162,102.50416,102.35365,102.3186,102.27653,102.3648,102.211003,102.25906,102.2474,102.22368,102.3203,102.3468,102.21978,102.25398,102.18202,102.34666,102.32533,102.16212,102.2301,102.26285,102.31371,102.25318,102.27579,102.191584,102.19076,102.27864,102.20044,101.8359,101.76052,101.76584,102.01782,101.95667,101.99774,101.8569,102.09111,102.17312,102.12216,102.157145,102.03462,102.068095,102.04799,102.063268,102.109402,102.10361,102.123971,102.12412,102.083352,101.84339,101.89731,101.78605,101.8391,101.77848,101.813866,101.94074,101.91592,101.88729,101.84959,101.99244,101.961601,101.90514,101.910532,101.87144,101.86703,102.59012,102.53926,102.40256,102.41745,102.432,102.40602,102.29246,102.53432,102.36241,102.51302,102.32942,102.38524,101.81538,102.242708,102.08775,101.859999,101.92611,102.23956,102.00838,102.16279,102.225432,102.06753,101.78023,101.99204,101.888089,101.888627,102.087946,102.61061,102.32518,102.44358,102.53238,102.572823,102.45463,102.52856,102.506569,102.6514,102.6614,102.41921,102.39729,102.54449,102.621966,102.271793,102.415206,102.56646,101.40761,101.414511,101.399,101.38061,101.42686,102.16974,102.37631,102.40232,102.42779,102.48742,102.43848,102.46815,102.42412,102.28762,102.365526,102.372108,102.483795,102.50658,102.59837,102.590032,102.69306,102.656679,102.38096,102.350349,102.53039,102.3307,102.442938,102.385206,102.63693,102.38781,102.324,103.237839,103.21618,103.19254,103.15443,103.4009,103.381047,103.38361,103.29122,103.305,103.321953,103.14862,103.04516,103.08639,103.03116,102.9882,102.93041,103.35222,103.2676,103.25773,103.27842,103.166663,103.200433,103.160908,103.3942,103.3409,101.868721,101.93027,101.95556,102.03085,102.09291,101.95831,101.99228,101.97885,102.01753,102.00838,101.96403,101.955979,101.979067,102.20159,102.16531,102.08306,101.80315,101.92636,101.70748,101.61501,101.73472,101.5167,102.05922,102.05544,101.84484,102.88742,102.7328,102.59589,102.54673,102.527611,102.522283,102.545887,102.532954,102.55477,102.535229,102.517655,102.517354,102.47012,102.474761,102.430322,102.60827,102.64413,102.68459,102.62367,102.615244,102.46824,102.53059,102.826109,102.853081,102.60243,102.69157,102.79257,102.77238,102.59839,102.63762,102.54505,102.636809,102.77459,102.82555,102.64398,102.87456,102.92005,102.50326,102.62831,103.117715,103.09972,102.94578,103.01579,103.01579,103.299358,103.44356,103.426817,103.06639,103.424499,103.14472,103.46044,103.35039,103.00834,103.025803,103.35083,103.09861,103.43558,103.40472,103.32417,103.18167,102.96603,103.2066,103.21667,103.443118,103.33076,103.173816,103.41177,103.22667,103.32703,101.783266,101.734042,101.94648,101.89219,101.86465,101.90806,101.92167,101.64389,101.84611,101.84139,101.82111,101.98528,101.93982,102.38586,101.93333,102.01278,101.8879,101.73713,102.81444,102.93535,102.96222,102.91095,104.201925,102.87972,102.87556,102.91091,102.91611,102.96368,102.92667,104.12593,102.7717,103.42757,104.17562,103.58834,103.230286,103.110302,103.01833,103.00611,103.02889,103.43722,103.49384,102.160749,102.120014,102.3982,102.50532,102.2713,102.39726,102.30771,102.30976,102.436781,102.43921,102.481992,101.92587,102.28115,102.39554,102.37111,102.1453,102.36655,102.40083,102.077737,102.43243,102.42254,102.39702,102.46311,102.35342,102.414122,102.43876,101.1421,101.2895,101.30849,101.282401,101.44994,101.495443,101.317984,101.23841,101.29489,101.51505,101.239699,101.185799,101.29241,101.32848,101.2952,101.3654,101.214835,101.34087,101.27474,101.44844,101.468884,101.45526,101.36958,101.14529,101.19292,101.1957,101.177177,101.376309,101.41417,101.36152,101.20267,101.03712,100.817279,100.8148,101.17717,101.16192,101.054268,101.12396,101.17254,101.02526,100.9369,101.07861,100.71389,101.05025,100.77733,100.73225,100.86652,101.11145,101.1025,100.80601,101.03069,100.71738,101.10076,101.05052,101.14531,100.902735,100.89576,101.03437,100.98377,101.072745,100.981792,101.03551,100.99068,101.12661,100.95794,100.93934,101.05858,101.11037,101.19979,100.997875,101.20438,101.07984,101.14474,100.97348,101.02383,101.00091,101.16911,101.08247,100.9867,101.06308,100.99607,101.07712,100.40648,100.671581,100.4081,100.594706,100.652142,100.63075,100.61975,100.657353,100.55558,100.48015,100.463278,100.5026,100.559181,100.481692,100.616919,100.583994,100.48497,100.563611,100.426717,100.497597,100.411822,100.459197,100.627686,100.387792,100.514011,100.598261,100.414569,100.603439,100.632456,100.652186,100.439758,100.464003,101.06184,101.0132,101.08998,101.05302,101.04708,101.16594,101.121575,101.006202,101.221505,101.08842,101.14774,101.07029,101.07784,101.12997,100.98796,101.03796,101.1885,101.04837,101.1419,101.15112,100.88973,101.141296,100.926916,100.94208,100.92123,100.96989,101.10112,101.14626,100.96193,100.91185,101.18879,100.95811,100.89524,100.90846,100.95211,100.94625,100.85825,101.07184,100.949123,101.103035,100.99212,100.95429,100.965154,100.91022,100.93837,101.01684,100.90005,100.78396,100.67747,100.75059,100.71897,100.73092,100.791379,100.76046,100.74027,100.72285,100.76786,100.67929,100.81042,100.76729,100.8359,100.69276,100.69276,100.72966,100.81873,100.699566,100.67614,100.66094,100.71647,100.60963,100.665963,100.73092,100.72945,100.82316,100.82176,100.69307,100.76578,100.75087,100.7692,100.623745,100.626413,100.75736,100.5785,100.791646,100.671676,100.65253,100.8088,100.79224,100.77899,100.70464,100.65236,100.75087,100.70281,100.68974,100.68927,100.74537,100.63815,100.57432,100.72042,100.66685,101.1421,101.00767,100.90423,100.88266,100.90643,100.86501,100.952508,101.03053,100.8708,100.90451,100.88619,100.87807,100.90578,100.89872,100.90198,100.97927,101.079519,100.9002,100.89284,100.92337,100.92112,100.926198,100.949078,100.928135,100.927148,100.91893,100.9169,100.9037,100.88078,100.90975,100.91578,100.89522,100.93249,100.19967,100.28821,100.18407,100.16253,100.15585,100.33722,100.27847,100.28827,100.27567,100.23823,100.20304,100.20849,100.22758,100.22691,100.25876,100.18322,100.2292,100.21001,100.21826,100.29651,100.27027,100.30273,100.22807,100.13124,100.22929,100.16624,100.16984,100.2462,100.26113,100.16978,100.19793,100.2037,100.19641,100.2692,100.21158,100.2182,100.27677,100.2743,100.24162,100.20737,100.21087,100.22992,100.24797,100.31397,100.27696,100.28123,100.46703,100.45199,100.43446,100.44347,100.41791,100.4215,100.48248,100.51293,100.46774,100.43762,100.41268,100.45352,100.47933,100.52214,100.38279,100.37356,100.43595,100.52235,100.3409,100.4168,100.46145,100.47288,100.42635,100.37218,100.44278,100.40151,100.37444,100.42729,100.38969,100.40392,100.50374,100.45061,100.39607,100.3841,100.48229,100.42079,100.44931,100.47099,100.48036,100.390206,100.41906,100.534,100.46171,100.51885,100.48054,100.5061,115.533,115.69164,115.65731,115.6125,115.58317,115.66444,115.624795,115.67164,115.784547,115.83756,115.67816,117.123,117.44218,117.38905,117.22317,117.61471,117.25317,117.40321,117.69611,116.12152,116.20444,116.16889,116.13194,116.18444,116.11694,116.23441,116.374282,115.51778,116.16885,116.04111,116.38547,116.18472,118.03728,116.56778,116.45772,116.442611,116.36389,116.48333,116.35117,116.584703,116.531188,116.40243,116.40056,116.5,116.55222,116.5575,116.41667,116.13328,116.18034,116.197608,116.11627,116.16139,116.2375,116.01183,116.764,116.73611,116.758511,116.84347,116.86556,116.89035,116.71218,116.85885,116.80514,115.565789,115.523611,115.55644,116.72259,116.76068,116.63942,116.70506,116.81742,116.750583,116.764968,116.71083,118.20697,118.17544,118.230318,119.00673,119.2044,119.20441,119.05889,118.85736,118.201644,118.34407,118.288298,118.28252,118.51088,119.23639,118.38107,116.44324,116.46861,115.92505,115.96056,115.9175,116.01946,115.95361,115.90889,115.96415,115.98778,115.922773,115.95639,116.18278,116.09568,116.23478,116.08354,116.05379,116.37139,117.103314,117.215,117.01106,117.1825,117.132572,116.9409,116.98,116.757739,116.6207,116.72564,116.599994,116.82019,116.77937,116.799937,116.73333,116.57603,116.83807,116.5097,117.98822,117.96802,118.12965,117.919063,118.07064,118.30889,118.106062,118.0177,118.04184,118.16051,117.995643,118.53885,118.59447,118.69472,118.66135,118.616802,118.52161,118.57111,118.53641,115.47134,115.729508,115.587695,115.5924,115.54571,116.49675,116.49502,116.8,116.406452,116.33984,116.4423,116.36806,116.4925,116.48722,118.068595,117.495,117.77778,118.02083,117.84036,117.87505,115.91672,115.95,115.9888,115.9746,115.913723,116.01592,115.93333,115.86944,117.0456,117.05,116.80015,116.85287,116.25965,116.20583,116.26074,116.509385,116.2375,116.37428,116.36389,116.20561,116.41222,116.32028,116.24045,116.20278,116.325,116.3,110.11887,110.21778,111.935,110.25694,110.48432,112.16167,110.45,111.56706,112.06694,110.520351,101.722691,101.762195,101.582637,101.513052,101.669862,101.546417,101.746788,101.778374,101.847117,101.864733,101.837382,101.852133,101.881317,101.81258,101.862367,101.872168,101.882617,101.76719,101.772408,101.854849,101.644156,101.38433,101.663833,101.69512,101.424708,101.662846,101.601455,101.528024,101.201377,101.435,101.526467,101.65634,101.24598,101.436947,101.417928,101.505218,101.515174,101.469147,101.462882,101.41531,101.429472,101.334586,101.490219,101.411512,101.387158,101.42675,101.27917,101.3286,101.411967,101.385717,101.4784,101.511467,101.4708,101.515048,101.473825,101.515174,101.492987,101.48788,101.442926,101.536265,101.611218,101.444685,101.587132,101.428823,101.43472,101.45965,101.554849,101.517298,101.544683,101.510133,101.58834,101.406276,101.289525,101.17268,101.445715,101.272295,101.36482,101.40162,101.34238,101.422691,101.301284,101.1408,101.247425,101.425309,101.317527,101.21393,101.23641,101.13755,101.20468,101.315081,101.1729,101.20103,101.24227,101.59255,101.63158,101.533048,101.51425,101.551158,101.02988,100.92352,100.95496,100.955607,100.93559,100.92367,100.87973,101.073081,101.12659,101.062267,101.04849,101.0127,101.080694,101.029736,100.84451,101.07615,100.882197,101.053233,100.94928,101.06311,100.918715,100.84423,101.67272,101.730931,101.7388,101.73076,101.62508,101.75108,101.672716,101.742454,101.76419,101.689857,102.49143,102.57784,102.48922,102.53028,102.62889,102.54303,102.51714,102.49171,102.61583,102.5746,102.51861,102.48506,102.56278,102.45258,102.54416,102.72906,102.61647,102.60778,102.49785,102.564548,103.32472,103.305387,103.18173,103.35343,103.118471,103.04972,103.41525,103.08528,103.2025,103.40856,103.25513,102.97816,103.40225,103.42702,103.42489,103.36502,103.10972,103.15424,103.11036,103.01311,103.03611,103.00722,103.07361,102.88194,103.06097,103.02944,102.97278,103.04191,102.96944,103.03101,103.00027,103.04278,103.04139,103.151869,103.39616,103.39796,103.36442,103.4286,103.40553,103.40755,103.17667,103.43421,103.36667,103.44079,103.276723,103.23556,103.27857,103.3975,103.250683,103.29451,103.4319,103.28884,103.2514,103.22645,103.47407,103.1321,103.048003,103.07858,102.94462,103.0383,103.05066,103.00755,103.1751,103.10943,103.117,103.10514,103.11534,103.14984,103.14498,103.05305,103.0334,103.16651,103.11609,103.07639,103.07073,103.09693,103.03944,103.08833,103.05277,103.12312,103.01056,103.09597,103.1289,103.05774,103.06935,103.20574,103.10047,103.1027,103.3465,103.12982,103.18271,103.30245,103.33058,103.2497,103.07917,103.22232,103.18472,103.18765,103.078,103.12928,102.76946,102.87278,102.6752,102.93181,102.821281,102.7432,102.84293,102.70556,102.82417,102.94934,102.82654,102.81556,102.84634,115.2339,115.18689,115.21178,115.23422,115.19255,115.22914,115.23169,115.22758,115.17833,115.24266],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},{"showCoverageOnHover":true,"zoomToBoundsOnClick":true,"spiderfyOnMaxZoom":true,"removeOutsideVisibleBounds":true,"spiderLegPolylineOptions":{"weight":1.5,"color":"#222","opacity":0.5},"freezeAtZoom":false},null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[1.123323,6.997895],"lng":[99.70297,119.23639]}},"evals":[],"jsHooks":[]}</script>
+<p>Next, we can add a label.</p>
+<pre class="r"><code>labels &lt;- 
+  sprintf(&quot;&lt;strong&gt;%s&lt;/strong&gt;&quot;, all_clinic$name) %&gt;% 
+  lapply(htmltools::HTML)</code></pre>
+<p>Also, we can add a minimap to our map. Here, I change the type of map to a more appropriate one.</p>
+<pre class="r"><code>leaflet(all_clinic2) %&gt;% 
+  addProviderTiles(providers$OpenStreetMap) %&gt;%
+  addCircleMarkers(~long, ~lat, popup = ~labels, # popup add the label
+                   clusterOptions = markerClusterOptions()) %&gt;% 
+    # add a minimap
+  addMiniMap(tiles = providers$OpenStreetMap, zoomLevelOffset = -3)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["OpenStreetMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[5.33880907722022,4.85160066904762,5.8456,5.62644150854728,4.35061049117647,1.49925632798826,5.27711189444445,2.25218980487805,5.2551938,4.61392872848101,4.23214280909091,3.31624216304348,2.24976610066722,5.2219947,3.31624216304348,5.96073163009595,3.21155373426554,3.21155373426554,2.28864311339869,3.6228,5.39808600108696,6.43976303636364,3.83424409,6.17270023846154,5.40864288912474,3.10954593867925,1.60137137045455,6.04250286923077,3.13947446373911,3.09959146323529,2.68444715,2.37068824605263,1.65098895,6.00228228947368,5.32363537254675,3.190189136,3.2395317698718,3.6228,1.71088713333333,1.49925632798826,3.21907936315789,2.15107085427457,2.694598474,2.83417827666753,2.03078982258064,3.190189136,5.47917118333333,4.01257807551021,3.46624913851537,5.37209464285714,3.10600183947368,1.93333,1.8891,1.87789,1.901515,1.90512,2.06531,2.028458,1.79129,1.93139,2.01683,1.91869,2.02919,1.88937,2.00155,1.8392,1.96733,1.72163,1.847441,1.77968,1.79888,1.75532,1.86473,1.81665,1.91175,1.94028,1.82084,1.90059,1.88362,2.00995,1.89869,1.77769,1.72131,1.84944,2.06875,1.90999,1.77506,1.72554,2.01013,1.93368,1.84388,1.78632,1.87253,1.66576,1.92031,1.90366,1.75515,1.84611,1.506667,1.49833,1.63325,1.52397,1.477146,1.55772,1.53564,1.53267,1.51854,1.50216,1.58128,1.43489,1.37694,1.51017,1.52262,1.53821,1.4519,1.5854,1.46822,1.38243,2.14081,2.16738,1.948206,2.03306,1.81845,1.91647,2.26698,2.10405,2.09163,2.04472,2.05287,1.84148,1.87703,1.80934,2.024283,1.99118,1.830082,1.92102,1.85686,1.496596,2.13038,1.70582,1.627822,1.6008,1.825254,1.83221,1.77562,1.753907,1.90299,1.48408,1.84128,1.825833,1.85169,1.71273,1.41934,1.7603,1.82583,1.75452,1.57162,1.728544,2.01053,1.35313,1.78483,1.84553,1.49792,1.56298,1.37243,1.98904,1.4652,1.69662,1.728973,1.76745,1.77256,1.73138,1.728973,1.66868,1.63198,1.71151,1.59937,1.53,2.349465,2.18025,2.30359,2.33577,2.39487,2.13689,2.23516,2.12002,1.86368,2.18998,2.21667,2.12243,2.2219,2.25067,2.27226,2.14714,2.180542,2.16263,2.20879,2.284486,2.22814,2.19885,2.34377,2.39237,2.25685,2.19834,2.13333,2.18079,2.61342,2.63219,2.38163,2.39535,2.44926,2.57586,2.22456,2.30161,2.472,2.39235,2.08241,2.15435,2.62722,2.03352,2.01282,2.20471,2.24358,2.25158,2.27641,2.04459,2.34567,2.37917,1.975951,2.060494,2.12912,2.16892,2.20053,2.354833,2.22997,2.17213,2.11528,2.01556,1.98524,1.916773,1.93758,1.9384,1.96505,2.0218,1.99065,1.92623,1.98849,1.97737,1.978605,1.946146,1.96336,2.02758,2.15783,1.89177,1.91683,1.90789,1.91248,2.0889,2.14343,2.08976,1.52398,5.98338,1.37763,1.54375,1.32778,1.59833,1.64885,1.65102,1.71191,1.53779,1.68953,1.63158,1.62955,1.66574,1.49833,1.44556,1.52588,1.5223,1.59066,1.33619,1.68799,1.29653,1.58305,1.66061,1.45525,1.62924,1.48996,1.35,1.47441,1.4803,1.41615,1.56483,1.41229,2.72833,2.37861,2.52071,2.52528,2.29302,2.50672,2.57638,2.58364,2.48729,2.64691,2.55018,2.50681,2.47373,2.52887,2.57755,2.47849,2.44358,2.70232,2.48795,2.53435,2.64594,2.35346,2.18917,2.46579,2.46593,5.69622,5.44608,5.75578,5.80135,5.66086,5.71797,5.64726,5.69972,5.57603,5.589,5.67642,5.60047,5.54831,5.650667,5.56883,5.60586,5.63658,5.70308,5.53196,5.62442,5.65453,5.69122,5.53333,5.67661,5.57874,5.88903,5.71703,5.64289,5.70758,5.75919,5.65281,5.67514,5.5864,5.52061,5.84722,5.18231,5.09096,5.11708,5.11697,5.13565,5.23318,5.23563,5.25603,5.31187,5.17456,5.28005,5.29341,6.089383,6.17537,6.188889,6.145527,6.198305,6.201762,6.188392,6.161459,6.160412,6.07912,6.00469,6.105432,6.16884,6.132,6.20713,6.101354,6.201385,6.112414,6.158061,6.158715,6.077268,6.07393,6.045587,6.16575,6.094752,6.19428,6.07527,6.11537,5.680944,5.81861,5.799025,5.62443,5.608333,5.688389,5.61202,5.81979,5.75321,5.54992,5.836417,5.636046,5.56145,5.574806,5.65257,5.704353,5.69975,5.66628,5.6029,5.682778,5.65832,5.584444,6.3215,6.42628,6.33524,6.48897,6.29676,6.38295,6.20861,6.39743,6.22285,6.255934,6.28573,6.28655,6.28858,6.32681,6.36177,6.31443,6.35626,6.26406,6.26124,6.28414,6.28119,6.23663,6.24472,6.3457,6.44833,6.44551,5.35397,5.28574,5.25789,5.45628,5.46897,5.53412,5.3682,5.52714,5.30258,5.38965,5.3915,5.50248,5.44021,5.49212,5.48504,5.52917,5.51488,5.42759,5.41553,5.79342,5.44761,5.285515,5.37454,5.28471,6.33046,6.39987,6.38846,6.31982,6.32783,6.3619,6.36257,6.23364,6.248778,6.29809,6.35168,6.18631,6.21171,5.94556,6.24633,6.2206,6.05283,6.28235,6.32027,6.30217,6.34214,6.23424,6.31763,6.22167,6.19198,6.22712,5.961169,5.905896,6.008377,6.00356,5.979626,5.964167,5.872267,6.02988,5.973283,6.033499,5.964923,5.89198,6.034229,5.583477,6.03031,6.0176,6.004889,6.051832,5.85681,5.801879,5.79254,5.79007,5.8416,5.77636,5.89558,5.938869,5.88731,6.00708,6.10076,5.87854,6.00559,5.82048,5.91546,5.8553,5.71553,5.75542,5.89031,5.95359,5.85365,5.80539,5.92894,5.82058,5.9567,5.87212,5.91712,5.73242,5.92203,5.82402,5.847882,5.87495,5.95832,6.04402,5.95744,5.916524,5.94222,6.15611,6.009178,5.94972,5.947187,5.93736,6.0366,6.02154,6.0325,5.94077,6.02658,6.00901,6.092933,6.093399,6.073251,6.005,6.120799,5.971493,6.13996,4.95433,5.09694,4.915717,4.928806,5.02849,5.16718,4.79056,4.93899,5.08666,4.90125,5.162629,5.07603,5.00944,5.00639,4.88638,4.909778,4.95433,5.73785,5.71861,5.75083,5.47722,5.762243,5.69414,5.51194,5.75028,5.56364,5.64461,5.68444,5.72954,5.923133,6.121952,5.93194,5.99861,5.993021,6.052094,6.02917,5.99917,5.978665,6.20101,6.13667,6.17599,5.97722,5.96322,6.081137,6.054848,6.058673,6.10167,6.15412,6.04293,6.17254,6.153603,6.077487,5.91917,6.139583,6.1293,6.19875,6.152844,6.03918,6.07333,5.588114,5.51806,5.33472,5.38229,5.34639,5.46778,5.61194,5.31423,5.62524,5.59502,5.30674,5.428898,5.24806,5.38056,5.65778,5.29329,5.38892,5.59318,5.33139,5.48611,5.75992,5.7413,5.89459,5.83108,5.71671,5.82876,5.678,5.75188,5.78889,5.80038,5.86861,5.77222,6.05056,5.92417,6.069582,5.922747,6.09498,5.95261,5.96855,5.99528,6.02861,6.04056,6.12181,5.92045,6.04942,5.96917,6.018646,5.95363,6.01639,6.107217,6.0714,6.06982,6.03028,5.91806,5.85674,5.861093,5.87594,5.76889,5.905989,5.8525,5.84472,5.869746,5.88806,5.86299,5.78083,5.8448,5.846301,5.81611,5.90095,5.77158,5.89528,5.91944,5.76625,5.892577,5.813531,5.782187,5.854215,5.844825,5.839454,5.720777,5.858462,5.875299,5.720051,5.848112,5.682705,5.630147,5.733489,5.759333,5.753846,5.87726,5.789536,5.987009,5.821667,5.666453,6.157569,6.143424,6.19406,6.201952,6.137568,6.174036,6.160614,6.177026,6.145472,6.101314,6.15848,6.17455,6.166868,6.096951,6.137429,6.119289,6.1261,6.219953,6.194795,6.156582,6.195616,6.215093,6.118577,2.3839,2.40764,2.31867,2.4342,2.35348,2.40825,2.37216,2.37848,2.35859,2.38157,2.35762,2.4298,2.45757,2.34215,2.39857,2.32368,2.451027,2.39719,2.33213,2.41216,2.42465,2.3459,2.44186,2.48168,2.30487,2.45439,2.39329,2.27848,2.13038,2.47231,2.15575,2.267561,2.39438,2.298717,2.28786,2.23347,2.32683,2.3163,2.40683,2.433686,2.47109,2.14712,2.14225,2.12343,2.22115,2.293696,2.14394,2.2256,2.24962,2.28971,2.2245,2.21409,2.2208,2.29698,2.22758,2.1928,2.29342,2.20268,2.25359,2.16452,2.21387,2.99023,2.915663,3.12627,3.091737,3.05129,3.016219,3.01433,2.965851,3.015415,3.15238,2.94837,2.91914,2.873138,2.946846,2.67607,2.93722,2.82733,2.86009,2.95541,3.00169,3.0693,2.68544,2.83315,2.85535,2.73121,2.68341,2.9388,2.92924,2.9617,2.70845,2.81881,2.89514,2.92531,3.08402,2.738299,2.56119,2.77493,2.54467,2.64409,2.73891,2.69427,2.62198,2.71413,2.73884,2.70072,2.77153,2.739007,2.7698,2.77766,2.70577,2.75704,2.739415,2.85973,2.8095,2.69284,2.50458,2.63886,2.60467,2.44705,2.42713,2.51563,2.45516,2.61639,2.52263,2.56916,2.52177,2.52561,2.465336,2.5864,2.529632,2.543337,2.4866,2.588503,2.48248,2.6332,2.74446,2.88862,2.72678,2.69921,2.76585,2.766751,2.62402,2.670822,2.81199,2.84426,2.78461,2.74549,2.57906,2.856703,2.88773,2.66088,2.61192,2.51126,2.60524,2.66073,2.55642,2.51955,2.49353,2.65125,2.54772,2.59272,2.48261,2.5668,3.35705,3.243694,3.45595,3.325274,3.496699,3.16971,4.12022,3.20453,3.278774,3.47956,3.40286,3.45337,3.589751,3.569681,3.292628,3.34004,3.23077,3.34225,3.11052,3.414039,3.2635,3.37978,3.329281,3.31055,3.36657,3.33107,3.18736,3.10971,3.264721,3.179877,3.246944,3.2568,4.56712,4.548263,4.41729,4.41358,4.51617,3.97512,3.83331,3.84686,3.83065,3.77726,3.78749,3.81445,3.9586,3.91994,4.107147,4.167187,4.446773,3.92372,3.92251,4.523335,3.91455,4.459416,4.03421,3.968575,3.88508,3.90111,3.895535,4.132031,3.86403,3.89196,3.94461,3.950486,3.8659,3.94952,4.01014,4.16296,4.104102,3.61222,3.82331,3.92064,3.750994,3.89178,3.92572,3.65556,3.67572,3.65923,3.68943,3.65861,3.79116,3.913515,3.78721,3.792275,3.815869,3.83813,4.045683,3.80187,4.247655,4.4255,4.48497,4.31858,4.0043,4.0386,3.99505,3.97082,4.01508,4.12022,4.19032,4.249321,4.297199,4.11622,4.17279,4.17418,4.28547,4.19169,4.25112,4.38041,3.99319,4.2833,4.37938,4.01571,4.2651,3.45394,3.58284,3.82934,3.83167,3.790219,3.727485,3.709759,3.697565,3.6359,3.596499,3.569098,3.649607,3.73312,3.63641,3.727605,3.68336,3.6678,3.62226,3.63999,3.616455,3.76275,3.50565,3.608129,3.645079,3.44122,3.65748,3.48918,3.511029,3.47827,3.53396,3.50652,3.52174,3.54644,3.49391,3.77867,3.67302,3.53144,3.53416,3.75533,3.388,3.56694,3.37456,3.32137,3.32137,3.541031,3.52385,3.012438,3.47611,3.418829,3.17083,3.5315,3.53977,3.60129,3.464418,3.58806,3.48528,3.50273,3.50778,3.55667,3.28583,3.477,3.08879,3.22722,3.204693,3.54489,3.524408,3.58553,3.54139,3.60566,3.976815,3.714859,3.88618,3.86573,3.94833,3.75083,4.02806,3.98841,3.65583,3.94618,3.71056,3.74222,3.80801,3.89264,4.04778,3.93806,4.00868,3.98917,2.90528,3.09722,2.77028,2.7398,2.793039,2.89583,2.90972,2.90983,2.89583,2.93582,2.97611,2.76692,2.94496,2.88978,2.72409,2.65005,2.886615,2.924363,2.63,2.6225,2.63111,2.65194,2.75433,3.547382,3.540865,3.43601,3.4164,3.5002,3.53121,3.63347,3.68134,3.470221,3.49636,3.342698,3.6077,3.73279,3.48082,3.57585,3.48346,3.76822,3.6216,3.53241,3.39102,3.40188,3.57901,3.45941,3.78067,3.566136,3.55251,4.18666,4.22457,4.24674,4.198047,3.74464,3.755425,3.965038,4.264324,3.84331,3.69236,4.062425,4.21169,4.04599,4.00177,4.20481,3.81215,4.233481,4.07951,3.78739,3.85862,3.847372,3.77923,3.98864,4.23435,4.17386,4.24259,4.238534,3.892646,3.93918,3.95192,4.02015,3.79729,3.890581,3.89199,4.00488,4.65367,3.991838,4.07515,4.04331,3.98163,3.89561,4.05818,3.94974,3.97439,3.90528,3.98387,3.95112,4.10346,3.76361,3.9594,3.8025,3.90843,4.05694,4.05593,4.13326,3.978132,3.95257,4.01058,3.81635,5.229178,5.014936,5.13559,5.1286,5.517,5.05468,4.9962,5.19452,5.39647,5.45484,5.089214,5.47346,5.30754,5.31601,5.66758,5.63349,5.72059,5.45655,5.68972,5.04386,5.6001,5.16278,5.39038,5.10263,4.955608,5.023711,5.059616,5.049928,5.13044,4.9511,4.916144,4.97108,5.115081,5.026242,4.984953,5.029958,5.022842,5.016733,5.020569,5.06107,4.994417,5.088186,5.052025,5.041669,5.077217,4.929278,5.048594,5.051917,4.978794,5.083536,4.91685,4.989758,5.015825,5.054169,5.103675,4.36344,4.46356,4.26512,4.27663,4.41329,4.42946,4.357994,4.392127,4.391523,4.69957,4.2677,4.53156,4.50495,4.53036,4.46377,4.31628,4.45955,4.48121,4.60696,4.74985,4.61913,4.995961,4.578187,4.82146,4.67674,4.90003,4.88456,4.83372,4.81853,4.73054,4.85277,4.84542,4.80427,4.87591,4.78939,4.79435,4.82422,4.92572,4.718777,4.794544,4.84042,4.77432,4.941118,4.77611,4.86827,4.88602,4.695,4.94269,4.8858,5.13361,4.53982,5.00826,4.951343,4.78379,4.76006,4.93389,5.16557,4.79496,5.01303,4.75734,5.13262,4.77513,4.77513,4.88691,4.9587,4.71266,5.16491,4.84016,4.6156,4.60896,4.543303,5.00826,5.23892,5.07222,5.26345,4.6517,5.21299,4.33724,4.12352,4.279379,4.357003,4.1947,4.20487,4.377583,4.293653,4.18068,4.49689,4.0528,4.40833,4.1941,4.52004,4.33724,4.22392,4.51936,4.16871,4.22217,4.48093,4.22514,4.30986,4.32257,4.18666,4.21134,4.47792,4.34881,4.44332,4.52487,4.32221,4.24551,4.0199,4.27267,4.40012,4.40162,4.32703,4.44341,4.22826,4.14212,4.576103,4.37229,4.36329,4.23035,4.22229,4.17591,4.09698,4.062542,4.079258,4.50869,4.20868,4.29718,4.31606,4.47648,4.24881,4.26204,4.52899,6.48837,6.54907,6.39728,6.35945,6.44097,6.49257,6.66335,6.4773,6.41848,6.44561,6.39906,6.3009,6.39216,6.64973,6.47545,6.28957,6.5515,6.51443,6.49061,6.45419,6.51583,6.437,6.47028,6.40728,6.33374,6.33501,6.30816,6.38421,6.63502,6.41334,5.28219,5.31086,5.41523,5.2738,5.37337,5.33242,5.33084,5.31826,5.28696,5.33732,5.39407,5.28754,5.47325,5.37364,5.39776,5.39281,5.33461,5.40739,5.34747,5.31584,5.39209,5.3162,5.40866,5.33976,5.42522,5.41531,5.41127,5.3691,5.2983,5.39167,5.44757,5.39521,5.5536,5.50437,5.57206,5.53829,5.46652,5.45527,5.50008,5.55568,5.53833,5.47872,5.57921,5.47912,5.55567,5.51127,5.55191,5.48474,5.44615,5.48814,5.50618,5.26571,5.2738,5.20141,5.13169,5.268877,5.12503,5.20915,5.15018,5.28094,5.24662,5.2102,5.28333,5.52723,5.26394,5.3575,5.33534,5.41056,5.197778,5.36918,5.509579,5.42276,5.4168,6.2428,6.66801,6.13818,5.8207,5.89642,6.23209,5.97664,6.44556,5.27873,5.39111,5.28222,5.34833,5.44056,5.0325,5.11022,5.259678,4.95194,5.35326,5.25917,5.15513,5.34796,5.91344,6.59444,6.07447,6.148567,6.30361,6.04972,6.38355,6.317117,6.468265,6.39367,6.34528,6.49417,6.41889,6.21222,6.42278,6.10929,5.9834,6.019263,6.00415,5.98528,5.99361,5.70774,6.47322,6.31528,6.515764,6.47623,6.48583,6.52854,6.49868,6.602456,6.45408,5.50259,5.477004,5.54522,6.94685,6.83267,6.76303,6.86081,6.79873,6.780813,6.997895,6.79194,4.70679,4.72662,5.095946,5.15156,5.23383,5.34292,5.32611,5.03331,4.962335,4.98591,5.082352,5.01552,5.00736,5.17056,5.03736,5.09148,4.95972,5.69124,5.71806,5.61861,5.77152,5.64194,5.74667,5.7562,5.69528,5.511104,5.56889,5.90611,5.878084,5.88775,5.92615,5.91415,5.87944,6.912485,6.6475,6.60667,6.93022,6.995773,6.67539,6.70056,6.0198,5.89917,6.00129,6.031877,5.80257,5.93532,5.989438,6.14972,5.87687,5.70218,5.94972,4.29325,4.26526,5.8521,5.895355,5.81066,5.80333,5.914823,6.11054,5.84323,5.8388,5.743746,4.53673,4.46724,4.47028,4.42408,4.418972,4.46519,4.38306,4.5167,4.98425,4.405847,5.081941,5.11032,4.98409,5.87052,5.82477,6.73583,5.717713,5.62386,5.76023,5.53944,5.94,5.9125,4.385522,4.39972,4.41361,4.41528,4.31364,4.285,4.94395,5.03306,5.14934,5.0758,5.015562,5.29368,5.06639,4.695,5.5287,5.51667,5.24017,5.34648,6.14818,6.20472,6.18308,5.949798,6.11944,6.2526,6.30361,6.14305,5.98944,6.02639,6.24756,6.21056,6.11278,6.18917,1.36619,1.44851,2.68444,1.2475,1.64711,2.86194,1.61667,2.01658,2.51694,1.123323,3.246052,3.201577,3.311739,3.276398,3.246481,3.282017,3.027356,2.902257,3.163233,2.945845,3.142819,3.196416,2.885904,2.90153,2.91505,2.999514,3.16485,2.99053,3.02268,3.110627,3.467581,3.74119,3.466616,3.48588,3.724065,3.423207,3.588839,3.393004,3.439043,3.565283,3.670933,3.4349,3.01928,3.07619,3.162324,3.003473,2.971973,3.157475,3.028128,3.136919,2.97914,3.140473,3.053298,3.068781,3.0913,3.048317,3.0395,3.14902,3.0375,2.956783,3.031533,2.676873,2.73401,2.887649,2.932169,2.788439,2.747031,2.912278,2.79424,2.679514,2.803613,2.750723,2.836243,2.836307,2.9325,2.95137,2.886327,2.819344,2.792117,2.822133,2.67414,3.33986,3.300769,3.39733,3.424087,3.389969,3.27221,3.21052,3.27177,3.36319,3.359971,3.50383,3.363554,3.232341,3.40662,3.45252,3.44452,3.46285,3.40967,3.192151,3.47055,3.43921,3.4276,3.02085,3.1289,3.151681,3.21706,3.200347,3.7798,3.75814,3.79305,3.750611,3.72363,3.73055,3.82464,3.759191,3.71337,3.728485,3.66151,3.70812,3.554436,3.729895,3.83021,3.56442,3.775824,3.624094,3.70676,3.60469,3.802912,3.79449,2.66208,2.963313,2.79486,2.86868,2.955172,2.930955,2.662082,2.938862,2.87934,2.657289,5.48533,5.81578,5.70886,5.75722,5.67444,5.69875,5.79853,5.58246,5.64417,5.74918,5.70278,5.52647,5.72222,5.74333,5.72497,5.89648,5.73752,5.70028,5.56058,5.796698,4.65722,4.79682,4.82177,4.68425,4.920979,4.67889,4.65625,4.72417,4.84889,4.77232,4.80454,4.56421,4.79545,4.78907,4.73367,4.79885,5.08583,5.01159,5.04174,5.34998,5.17806,5.0625,5.00194,5.19861,4.9401,4.85833,4.975,5.20439,5.07583,5.21896,5.10695,5.13139,4.96417,4.981796,4.40687,4.5689,4.22965,4.26456,4.22115,4.4744,4.12056,4.20369,4.32528,4.23064,4.01053,4.13028,3.99544,4.32306,4.405288,4.24425,4.1895,3.97074,4.2757,4.43059,4.28666,5.25645,5.320752,5.28101,5.32901,5.39309,5.34993,5.40099,5.27359,5.30764,5.27363,5.33313,5.29134,5.29412,5.26519,5.3079,5.2933,5.28728,5.31727,5.42351,5.35296,5.278,5.45167,5.33694,5.27067,5.32949,5.77917,5.31086,5.35534,5.26275,5.3026,5.17937,5.19424,5.10514,4.9432,5.13701,5.23544,5.02015,4.97567,5.12364,5.20694,5.17802,5.24528,5.16507,5.22679,5.21951,5.56664,5.55333,5.62951,5.22318,5.410101,5.64163,5.46177,5.58472,5.37139,5.52981,5.30951,5.60611,5.42727,5.38478,5.27466,5.32717,5.34528,5.33217,5.36594,5.26717,5.28412,5.30127,5.34489],[100.481132925722,100.739476986393,118.0571,100.520375121834,100.879790349837,103.860022244384,116.787700209484,102.251752262768,100.475224502457,101.121323364627,103.39939786074,101.545555416063,102.303604669142,103.129317,101.545555416063,116.082729927756,101.62676546212,101.62676546212,111.838355932252,102.3926,100.286073220101,100.201734630202,103.286330402626,102.260852735682,100.523246785466,101.59494567457,110.318209194477,102.131230537635,101.72226963817,101.63696162874,101.985756984364,102.203497149143,103.651973740263,116.130097205218,100.284103659445,113.052804956,101.675768310208,102.3926,103.53767570233,103.860022244384,101.73750291612,102.74821616181,101.923714763945,101.786517737099,103.327402921928,113.052804956,100.383413114474,101.017021919077,102.401725162797,103.093532984732,101.668191256815,103.11667,102.87775,102.985754,102.966464,103.03723,103.12484,102.884881,102.89404,102.89017,102.95778,102.92154,102.98374,102.94855,102.86493,102.87806,103.05287,103.08015,103.084695,103.1065,103.03472,103.10791,103.81435,103.11945,102.80834,102.85224,103.06503,102.82298,103.15039,102.94438,103.02322,102.90729,103.12645,102.90492,102.9474,102.86731,103.14424,103.14862,102.97406,103.08321,103.14597,102.93634,102.93067,103.18359,102.79886,103.12825,103.01356,102.94493,103.768932,103.78583,103.75984,103.935,103.566077,103.592255,103.757951,103.71484,103.99469,103.61673,103.71783,103.93095,103.59361,103.82005,103.82061,103.66023,103.69329,103.88062,104.00688,103.56832,103.240242,103.13272,103.23256,103.42,103.47349,103.5252,103.60884,103.39596,103.278909,103.33333,103.3465,103.4113,103.26819,103.30483,103.317789,103.25408,103.264961,103.37339,103.2985,104.04431,102.44822,103.98697,104.089408,104.08655,103.992827,104.02162,103.87379,103.726301,104.06068,104.0575,104.14571,103.76838,103.97943,103.95592,104.1026,103.67594,103.76838,103.78254,104.10218,103.826036,103.8615,104.1798,103.68386,103.63925,104.04394,104.02915,104.24753,104.08737,104.0431,103.48971,103.444133,103.52046,103.61011,103.64521,103.444133,103.53304,103.63384,103.52617,103.64472,103.54528,102.521024,102.55085,102.61196,102.72293,102.68477,102.54194,102.76944,102.57941,103.10959,102.62157,102.5,102.55663,102.67633,102.67147,102.69109,102.58091,102.573904,102.58606,102.60571,102.51773,102.6198,102.63573,102.78773,102.75832,102.5271,102.66262,102.61667,102.513,103.66813,103.64122,103.71319,103.6751,104.52049,104.33041,104.06404,104.12014,103.81344,103.6751,103.88776,103.90732,103.72111,102.6058,102.8094,102.81408,102.85399,102.83563,102.8159,102.6404,102.83049,102.915,102.66376,102.618184,102.64556,102.756693,102.70334,102.842296,102.79007,102.7089,102.76312,102.62859,102.78985,102.680389,102.71058,102.78864,102.62297,102.5791,102.60276,102.67254,102.63317,102.6272,102.627637,102.65663,102.71303,102.76519,102.78064,102.76712,102.75106,102.73691,102.72388,102.61391,102.60353,102.58301,103.46012,100.48845,103.46251,103.49439,103.44673,103.48063,103.33067,103.2294,103.25123,103.36693,103.28172,103.35188,103.25909,103.30196,103.41889,103.43472,103.44206,103.42298,103.40755,103.45974,103.23604,103.50439,103.34398,103.31009,103.40437,103.30077,103.448,103.51389,103.42047,103.50999,103.42563,103.41513,103.42617,102.74294,102.9475,102.95592,102.88444,102.96459,103.01721,102.81879,102.62733,102.79309,102.66114,102.82281,102.83607,102.80517,102.81413,102.76691,102.71812,102.87984,102.68638,102.82023,102.80907,102.76346,103.038,103.03834,102.9581,102.95779,100.8136,100.7286,100.8982,100.577818,100.6682,100.9114,100.73032,100.83466,100.8672,100.73672,100.807,100.8579,100.7309,100.775269,100.8883,100.7055,100.8148,100.7578,100.70019,100.702,100.892,100.94644,100.75606,100.8686,100.78641,100.8986,100.6583,100.9066,100.9243,100.9208,100.9243,100.7082,100.87936,100.7558,100.8901,100.60091,100.56185,100.52514,100.55981,100.49797,100.55489,100.68254,100.66118,100.70214,100.5478,100.72203,100.65755,100.379425,100.31699,100.658333,100.56203,100.429206,100.455572,100.338716,100.40294,100.475853,100.38947,100.34346,100.292775,100.28696,100.29855,100.451921,100.331685,100.304727,100.287253,100.366837,100.330537,100.430181,100.3626,100.332327,100.45843,100.328228,100.38274,100.46173,100.47522,100.416722,100.51716,100.593217,100.64813,100.406944,100.435861,100.3617,100.47765,100.64884,100.558,100.532056,100.358095,100.53246,100.48025,100.3406,100.471933,100.517167,100.47606,100.47177,100.362981,100.36118,100.435556,100.4483,100.38708,100.44121,100.47486,100.39954,100.38371,100.27205,100.45083,100.38847,100.360397,100.446102,100.25913,100.44543,100.33196,100.42062,100.36452,100.33933,100.31748,100.26788,100.32747,100.27186,100.3181,100.39718,100.3674,100.40236,100.44155,100.53593,100.5443,100.6044,100.63448,100.69001,100.54617,100.69386,100.67445,100.53531,100.54861,100.56318,100.67966,100.59241,100.62773,100.54407,100.56769,100.61303,100.64453,100.54072,100.62131,100.55151,100.672584,100.58136,100.62579,99.76824,99.74896,99.70297,99.73664,99.83777,99.71261,99.74696,99.85496,99.830476,99.73867,99.77364,100.69543,100.5346,100.6668,100.54402,100.61561,100.76122,100.55624,100.66885,100.65895,100.6833,100.68459,100.58915,100.57749,100.64326,100.72109,100.463442,100.47637,100.452768,100.51819,100.502959,100.5775,100.481156,100.45454,100.446847,100.611979,100.525892,100.54164,100.540031,100.476994,100.48297,100.481025,100.425244,100.825547,100.81822,100.672562,100.69859,100.63467,100.78451,100.74959,100.64907,100.685277,100.75434,100.83597,100.84031,100.63002,100.74793,100.79485,100.72558,100.76443,100.67976,100.71613,100.44173,100.40865,100.38364,100.39073,100.3687,100.41285,100.36092,100.38171,100.42613,100.37974,100.39254,100.38493,100.432348,100.42198,102.31786,102.36155,102.34495,102.400603,102.41694,102.34917,102.373331,102.44472,102.353504,102.32748,102.38648,102.33936,102.40047,102.30552,102.41073,102.334111,102.360118,102.386383,102.359782,102.42639,102.356818,102.3687,102.337508,101.9631,102.28444,102.173152,102.18225,102.14769,102.00541,101.945,102.04133,101.97278,101.78606,102.338022,102.06702,102.23139,102.27056,101.85564,102.084398,101.963103,101.92909,101.74194,101.74694,101.90806,101.86547,101.77788,101.89361,101.89834,101.88555,101.87431,101.70944,101.90141,102.265828,102.271395,102.20417,102.24472,102.316324,102.301941,102.21972,102.22056,102.262266,102.23851,102.27528,102.25295,102.22667,102.28911,102.299549,102.273308,102.220674,102.23056,102.24327,102.23783,102.3308,102.318053,102.321208,102.21833,102.325508,102.30091,102.25461,102.326574,102.19467,102.29028,102.179589,102.275,102.24861,102.32027,101.98083,102.15778,102.2775,102.25675,102.20156,102.15586,102.27263,102.246044,102.00972,102.27139,102.2125,102.02142,102.06359,102.13586,102.20222,102.30083,102.29246,102.24469,102.19439,102.22551,102.19036,102.19521,102.10991,102.15916,102.19694,102.25015,102.18944,102.17556,102.11222,102.02889,102.108865,102.100475,102.17609,102.08503,102.20133,102.14139,102.02028,102.05556,102.12054,101.93165,102.17055,102.01583,102.127595,101.94472,102.14417,102.138768,102.13188,102.07923,102.09389,102.15778,102.37746,102.314936,102.3418,102.46028,102.294366,102.51944,102.47972,102.424743,102.38861,102.46655,102.37111,102.36238,102.33067,102.45028,102.35899,102.33851,102.4775,102.34028,102.43044,102.10526,102.043639,102.084929,102.167447,102.072714,102.150198,102.054617,102.122946,102.158537,102.100242,102.007652,102.073084,102.104718,102.025341,102.087965,102.143447,101.94673,101.972024,102.150506,101.968084,102.034141,102.151772,102.223985,102.143433,102.199942,102.151727,102.185361,102.165532,102.090675,102.187043,102.188655,102.2304,102.21184,102.209622,102.208927,102.210507,102.196519,102.22289,102.104249,102.09698,102.128086,102.225018,102.120795,102.193306,102.04639,102.16711,102.25918,102.13826,102.13113,102.24828,102.07655,101.97946,102.17203,102.27772,102.23011,102.18669,102.23083,102.25408,102.21204,102.07285,102.228287,102.08599,102.20914,102.3008,102.15539,102.2042,102.10904,102.18054,102.08415,102.3405,102.54616,102.39941,102.44822,102.414336,102.47682,102.377729,102.41477,102.471135,102.487872,102.34792,102.37065,102.39752,102.49009,102.47225,102.38327,102.51467,102.36902,102.4715,102.45712,102.444355,102.39232,102.24143,102.25208,102.19137,102.29975,102.27576,102.22029,102.25151,102.14964,102.34994,102.21401,102.28313,102.15167,102.32077,102.36227,102.05713,102.052041,102.24774,102.072517,102.25602,102.26836,102.30091,102.136966,102.180663,102.19929,102.25922,102.08224,102.017948,102.03784,102.37936,102.38,102.31707,102.52171,102.3799,102.40026,102.40893,102.56658,102.57943,102.61994,102.58774,102.61791,102.30241,102.32932,102.48162,102.50416,102.35365,102.3186,102.27653,102.3648,102.211003,102.25906,102.2474,102.22368,102.3203,102.3468,102.21978,102.25398,102.18202,102.34666,102.32533,102.16212,102.2301,102.26285,102.31371,102.25318,102.27579,102.191584,102.19076,102.27864,102.20044,101.8359,101.76052,101.76584,102.01782,101.95667,101.99774,101.8569,102.09111,102.17312,102.12216,102.157145,102.03462,102.068095,102.04799,102.063268,102.109402,102.10361,102.123971,102.12412,102.083352,101.84339,101.89731,101.78605,101.8391,101.77848,101.813866,101.94074,101.91592,101.88729,101.84959,101.99244,101.961601,101.90514,101.910532,101.87144,101.86703,102.59012,102.53926,102.40256,102.41745,102.432,102.40602,102.29246,102.53432,102.36241,102.51302,102.32942,102.38524,101.81538,102.242708,102.08775,101.859999,101.92611,102.23956,102.00838,102.16279,102.225432,102.06753,101.78023,101.99204,101.888089,101.888627,102.087946,102.61061,102.32518,102.44358,102.53238,102.572823,102.45463,102.52856,102.506569,102.6514,102.6614,102.41921,102.39729,102.54449,102.621966,102.271793,102.415206,102.56646,101.40761,101.414511,101.399,101.38061,101.42686,102.16974,102.37631,102.40232,102.42779,102.48742,102.43848,102.46815,102.42412,102.28762,102.365526,102.372108,102.483795,102.50658,102.59837,102.590032,102.69306,102.656679,102.38096,102.350349,102.53039,102.3307,102.442938,102.385206,102.63693,102.38781,102.324,103.237839,103.21618,103.19254,103.15443,103.4009,103.381047,103.38361,103.29122,103.305,103.321953,103.14862,103.04516,103.08639,103.03116,102.9882,102.93041,103.35222,103.2676,103.25773,103.27842,103.166663,103.200433,103.160908,103.3942,103.3409,101.868721,101.93027,101.95556,102.03085,102.09291,101.95831,101.99228,101.97885,102.01753,102.00838,101.96403,101.955979,101.979067,102.20159,102.16531,102.08306,101.80315,101.92636,101.70748,101.61501,101.73472,101.5167,102.05922,102.05544,101.84484,102.88742,102.7328,102.59589,102.54673,102.527611,102.522283,102.545887,102.532954,102.55477,102.535229,102.517655,102.517354,102.47012,102.474761,102.430322,102.60827,102.64413,102.68459,102.62367,102.615244,102.46824,102.53059,102.826109,102.853081,102.60243,102.69157,102.79257,102.77238,102.59839,102.63762,102.54505,102.636809,102.77459,102.82555,102.64398,102.87456,102.92005,102.50326,102.62831,103.117715,103.09972,102.94578,103.01579,103.01579,103.299358,103.44356,103.426817,103.06639,103.424499,103.14472,103.46044,103.35039,103.00834,103.025803,103.35083,103.09861,103.43558,103.40472,103.32417,103.18167,102.96603,103.2066,103.21667,103.443118,103.33076,103.173816,103.41177,103.22667,103.32703,101.783266,101.734042,101.94648,101.89219,101.86465,101.90806,101.92167,101.64389,101.84611,101.84139,101.82111,101.98528,101.93982,102.38586,101.93333,102.01278,101.8879,101.73713,102.81444,102.93535,102.96222,102.91095,104.201925,102.87972,102.87556,102.91091,102.91611,102.96368,102.92667,104.12593,102.7717,103.42757,104.17562,103.58834,103.230286,103.110302,103.01833,103.00611,103.02889,103.43722,103.49384,102.160749,102.120014,102.3982,102.50532,102.2713,102.39726,102.30771,102.30976,102.436781,102.43921,102.481992,101.92587,102.28115,102.39554,102.37111,102.1453,102.36655,102.40083,102.077737,102.43243,102.42254,102.39702,102.46311,102.35342,102.414122,102.43876,101.1421,101.2895,101.30849,101.282401,101.44994,101.495443,101.317984,101.23841,101.29489,101.51505,101.239699,101.185799,101.29241,101.32848,101.2952,101.3654,101.214835,101.34087,101.27474,101.44844,101.468884,101.45526,101.36958,101.14529,101.19292,101.1957,101.177177,101.376309,101.41417,101.36152,101.20267,101.03712,100.817279,100.8148,101.17717,101.16192,101.054268,101.12396,101.17254,101.02526,100.9369,101.07861,100.71389,101.05025,100.77733,100.73225,100.86652,101.11145,101.1025,100.80601,101.03069,100.71738,101.10076,101.05052,101.14531,100.902735,100.89576,101.03437,100.98377,101.072745,100.981792,101.03551,100.99068,101.12661,100.95794,100.93934,101.05858,101.11037,101.19979,100.997875,101.20438,101.07984,101.14474,100.97348,101.02383,101.00091,101.16911,101.08247,100.9867,101.06308,100.99607,101.07712,100.40648,100.671581,100.4081,100.594706,100.652142,100.63075,100.61975,100.657353,100.55558,100.48015,100.463278,100.5026,100.559181,100.481692,100.616919,100.583994,100.48497,100.563611,100.426717,100.497597,100.411822,100.459197,100.627686,100.387792,100.514011,100.598261,100.414569,100.603439,100.632456,100.652186,100.439758,100.464003,101.06184,101.0132,101.08998,101.05302,101.04708,101.16594,101.121575,101.006202,101.221505,101.08842,101.14774,101.07029,101.07784,101.12997,100.98796,101.03796,101.1885,101.04837,101.1419,101.15112,100.88973,101.141296,100.926916,100.94208,100.92123,100.96989,101.10112,101.14626,100.96193,100.91185,101.18879,100.95811,100.89524,100.90846,100.95211,100.94625,100.85825,101.07184,100.949123,101.103035,100.99212,100.95429,100.965154,100.91022,100.93837,101.01684,100.90005,100.78396,100.67747,100.75059,100.71897,100.73092,100.791379,100.76046,100.74027,100.72285,100.76786,100.67929,100.81042,100.76729,100.8359,100.69276,100.69276,100.72966,100.81873,100.699566,100.67614,100.66094,100.71647,100.60963,100.665963,100.73092,100.72945,100.82316,100.82176,100.69307,100.76578,100.75087,100.7692,100.623745,100.626413,100.75736,100.5785,100.791646,100.671676,100.65253,100.8088,100.79224,100.77899,100.70464,100.65236,100.75087,100.70281,100.68974,100.68927,100.74537,100.63815,100.57432,100.72042,100.66685,101.1421,101.00767,100.90423,100.88266,100.90643,100.86501,100.952508,101.03053,100.8708,100.90451,100.88619,100.87807,100.90578,100.89872,100.90198,100.97927,101.079519,100.9002,100.89284,100.92337,100.92112,100.926198,100.949078,100.928135,100.927148,100.91893,100.9169,100.9037,100.88078,100.90975,100.91578,100.89522,100.93249,100.19967,100.28821,100.18407,100.16253,100.15585,100.33722,100.27847,100.28827,100.27567,100.23823,100.20304,100.20849,100.22758,100.22691,100.25876,100.18322,100.2292,100.21001,100.21826,100.29651,100.27027,100.30273,100.22807,100.13124,100.22929,100.16624,100.16984,100.2462,100.26113,100.16978,100.19793,100.2037,100.19641,100.2692,100.21158,100.2182,100.27677,100.2743,100.24162,100.20737,100.21087,100.22992,100.24797,100.31397,100.27696,100.28123,100.46703,100.45199,100.43446,100.44347,100.41791,100.4215,100.48248,100.51293,100.46774,100.43762,100.41268,100.45352,100.47933,100.52214,100.38279,100.37356,100.43595,100.52235,100.3409,100.4168,100.46145,100.47288,100.42635,100.37218,100.44278,100.40151,100.37444,100.42729,100.38969,100.40392,100.50374,100.45061,100.39607,100.3841,100.48229,100.42079,100.44931,100.47099,100.48036,100.390206,100.41906,100.534,100.46171,100.51885,100.48054,100.5061,115.533,115.69164,115.65731,115.6125,115.58317,115.66444,115.624795,115.67164,115.784547,115.83756,115.67816,117.123,117.44218,117.38905,117.22317,117.61471,117.25317,117.40321,117.69611,116.12152,116.20444,116.16889,116.13194,116.18444,116.11694,116.23441,116.374282,115.51778,116.16885,116.04111,116.38547,116.18472,118.03728,116.56778,116.45772,116.442611,116.36389,116.48333,116.35117,116.584703,116.531188,116.40243,116.40056,116.5,116.55222,116.5575,116.41667,116.13328,116.18034,116.197608,116.11627,116.16139,116.2375,116.01183,116.764,116.73611,116.758511,116.84347,116.86556,116.89035,116.71218,116.85885,116.80514,115.565789,115.523611,115.55644,116.72259,116.76068,116.63942,116.70506,116.81742,116.750583,116.764968,116.71083,118.20697,118.17544,118.230318,119.00673,119.2044,119.20441,119.05889,118.85736,118.201644,118.34407,118.288298,118.28252,118.51088,119.23639,118.38107,116.44324,116.46861,115.92505,115.96056,115.9175,116.01946,115.95361,115.90889,115.96415,115.98778,115.922773,115.95639,116.18278,116.09568,116.23478,116.08354,116.05379,116.37139,117.103314,117.215,117.01106,117.1825,117.132572,116.9409,116.98,116.757739,116.6207,116.72564,116.599994,116.82019,116.77937,116.799937,116.73333,116.57603,116.83807,116.5097,117.98822,117.96802,118.12965,117.919063,118.07064,118.30889,118.106062,118.0177,118.04184,118.16051,117.995643,118.53885,118.59447,118.69472,118.66135,118.616802,118.52161,118.57111,118.53641,115.47134,115.729508,115.587695,115.5924,115.54571,116.49675,116.49502,116.8,116.406452,116.33984,116.4423,116.36806,116.4925,116.48722,118.068595,117.495,117.77778,118.02083,117.84036,117.87505,115.91672,115.95,115.9888,115.9746,115.913723,116.01592,115.93333,115.86944,117.0456,117.05,116.80015,116.85287,116.25965,116.20583,116.26074,116.509385,116.2375,116.37428,116.36389,116.20561,116.41222,116.32028,116.24045,116.20278,116.325,116.3,110.11887,110.21778,111.935,110.25694,110.48432,112.16167,110.45,111.56706,112.06694,110.520351,101.722691,101.762195,101.582637,101.513052,101.669862,101.546417,101.746788,101.778374,101.847117,101.864733,101.837382,101.852133,101.881317,101.81258,101.862367,101.872168,101.882617,101.76719,101.772408,101.854849,101.644156,101.38433,101.663833,101.69512,101.424708,101.662846,101.601455,101.528024,101.201377,101.435,101.526467,101.65634,101.24598,101.436947,101.417928,101.505218,101.515174,101.469147,101.462882,101.41531,101.429472,101.334586,101.490219,101.411512,101.387158,101.42675,101.27917,101.3286,101.411967,101.385717,101.4784,101.511467,101.4708,101.515048,101.473825,101.515174,101.492987,101.48788,101.442926,101.536265,101.611218,101.444685,101.587132,101.428823,101.43472,101.45965,101.554849,101.517298,101.544683,101.510133,101.58834,101.406276,101.289525,101.17268,101.445715,101.272295,101.36482,101.40162,101.34238,101.422691,101.301284,101.1408,101.247425,101.425309,101.317527,101.21393,101.23641,101.13755,101.20468,101.315081,101.1729,101.20103,101.24227,101.59255,101.63158,101.533048,101.51425,101.551158,101.02988,100.92352,100.95496,100.955607,100.93559,100.92367,100.87973,101.073081,101.12659,101.062267,101.04849,101.0127,101.080694,101.029736,100.84451,101.07615,100.882197,101.053233,100.94928,101.06311,100.918715,100.84423,101.67272,101.730931,101.7388,101.73076,101.62508,101.75108,101.672716,101.742454,101.76419,101.689857,102.49143,102.57784,102.48922,102.53028,102.62889,102.54303,102.51714,102.49171,102.61583,102.5746,102.51861,102.48506,102.56278,102.45258,102.54416,102.72906,102.61647,102.60778,102.49785,102.564548,103.32472,103.305387,103.18173,103.35343,103.118471,103.04972,103.41525,103.08528,103.2025,103.40856,103.25513,102.97816,103.40225,103.42702,103.42489,103.36502,103.10972,103.15424,103.11036,103.01311,103.03611,103.00722,103.07361,102.88194,103.06097,103.02944,102.97278,103.04191,102.96944,103.03101,103.00027,103.04278,103.04139,103.151869,103.39616,103.39796,103.36442,103.4286,103.40553,103.40755,103.17667,103.43421,103.36667,103.44079,103.276723,103.23556,103.27857,103.3975,103.250683,103.29451,103.4319,103.28884,103.2514,103.22645,103.47407,103.1321,103.048003,103.07858,102.94462,103.0383,103.05066,103.00755,103.1751,103.10943,103.117,103.10514,103.11534,103.14984,103.14498,103.05305,103.0334,103.16651,103.11609,103.07639,103.07073,103.09693,103.03944,103.08833,103.05277,103.12312,103.01056,103.09597,103.1289,103.05774,103.06935,103.20574,103.10047,103.1027,103.3465,103.12982,103.18271,103.30245,103.33058,103.2497,103.07917,103.22232,103.18472,103.18765,103.078,103.12928,102.76946,102.87278,102.6752,102.93181,102.821281,102.7432,102.84293,102.70556,102.82417,102.94934,102.82654,102.81556,102.84634,115.2339,115.18689,115.21178,115.23422,115.19255,115.22914,115.23169,115.22758,115.17833,115.24266],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},{"showCoverageOnHover":true,"zoomToBoundsOnClick":true,"spiderfyOnMaxZoom":true,"removeOutsideVisibleBounds":true,"spiderLegPolylineOptions":{"weight":1.5,"color":"#222","opacity":0.5},"freezeAtZoom":false},null,["<strong>Klinik 1 Malaysia Alma Jaya<\/strong>","<strong>Klinik 1 Malaysia Aulong<\/strong>","<strong>Klinik 1 Malaysia Bandar Lela<\/strong>","<strong>Klinik 1 Malaysia Bandar Puteri Jaya<\/strong>","<strong>Klinik 1 Malaysia Bandar Seri Iskandar<\/strong>","<strong>Klinik 1 Malaysia Bandar Sri Alam<\/strong>","<strong>Klinik 1 Malaysia Bandar Sri Indah<\/strong>","<strong>Klinik 1 Malaysia Batu Berendam<\/strong>","<strong>Klinik 1 Malaysia Batu Kawan<\/strong>","<strong>Klinik 1 Malaysia Bercham<\/strong>","<strong>Klinik 1 Malaysia Binjai<\/strong>","<strong>Klinik 1 Malaysia Bukit Beruntung<\/strong>","<strong>Klinik 1 Malaysia Bukit Katil<\/strong>","<strong>Klinik 1 Malaysia Bukit Payong<\/strong>","<strong>Klinik 1 Malaysia Bukit Sentosa<\/strong>","<strong>Klinik 1 Malaysia Bundusan Square<\/strong>","<strong>Klinik 1 Malaysia Desa Rejang<\/strong>","<strong>Klinik 1 Malaysia Intan Baiduri<\/strong>","<strong>Klinik 1 Malaysia Jalan Teku<\/strong>","<strong>Klinik 1 Malaysia Jelawat<\/strong>","<strong>Klinik 1 Malaysia Jelutong<\/strong>","<strong>Klinik 1 Malaysia Kangar<\/strong>","<strong>Klinik 1 Malaysia Kg Padang Jaya<\/strong>","<strong>Klinik 1 Malaysia Kota Bharu<\/strong>","<strong>Klinik 1 Malaysia Kota Kenari<\/strong>","<strong>Klinik 1 Malaysia Lembah Subang<\/strong>","<strong>Klinik 1 Malaysia Matang Jaya<\/strong>","<strong>Klinik 1 Malaysia Pengkalan Batu<\/strong>","<strong>Klinik 1 Malaysia Perkasa<\/strong>","<strong>Klinik 1 Malaysia Pjs 6<\/strong>","<strong>Klinik 1 Malaysia Seremban Jaya<\/strong>","<strong>Klinik 1 Malaysia Seri Pengkalan<\/strong>","<strong>Klinik 1 Malaysia Sri Stulang<\/strong>","<strong>Klinik 1 Malaysia Sulaman Sentral<\/strong>","<strong>Klinik 1 Malaysia Sungai Ara<\/strong>","<strong>Klinik 1 Malaysia Sungai Plan<\/strong>","<strong>Klinik 1 Malaysia Taman Gombak Permai<\/strong>","<strong>Klinik 1 Malaysia Taman Kempadang Makmur<\/strong>","<strong>Klinik 1 Malaysia Taman Manis<\/strong>","<strong>Klinik 1 Malaysia Taman Megah Ria<\/strong>","<strong>Klinik 1 Malaysia Taman Melati<\/strong>","<strong>Klinik 1 Malaysia Taman Pagoh Jaya<\/strong>","<strong>Klinik 1 Malaysia Taman Rasah Jaya<\/strong>","<strong>Klinik 1 Malaysia Taman Semarak 2<\/strong>","<strong>Klinik 1 Malaysia Taman Seri Lambak<\/strong>","<strong>Klinik 1 Malaysia Taman Tunku<\/strong>","<strong>Klinik 1 Malaysia Teluk Air Tawar<\/strong>","<strong>Klinik 1 Malaysia Teluk Intan<\/strong>","<strong>Klinik 1 Malaysia Temerloh<\/strong>","<strong>Klinik 1 Malaysia Wakaf Baru<\/strong>","<strong>Klinik 1malaysia Kerinchi<\/strong>","<strong>Klinik Desa Assam Bubok<\/strong>","<strong>Klinik Desa Batu Putih<\/strong>","<strong>Klinik Desa Beroleh<\/strong>","<strong>Klinik Desa Bindu<\/strong>","<strong>Klinik Desa Kampung Baru<\/strong>","<strong>Klinik Desa Kangkar Baru<\/strong>","<strong>Klinik Desa Kangkar Senangar<\/strong>","<strong>Klinik Desa Minyak Beku<\/strong>","<strong>Klinik Desa Parit Abdul Rahman<\/strong>","<strong>Klinik Desa Parit Basri<\/strong>","<strong>Klinik Desa Parit Belemam<\/strong>","<strong>Klinik Desa Parit Betaling<\/strong>","<strong>Klinik Desa Parit Bilal<\/strong>","<strong>Klinik Desa Parit Gantong<\/strong>","<strong>Klinik Desa Parit Haji Salam<\/strong>","<strong>Klinik Desa Parit Hamil<\/strong>","<strong>Klinik Desa Parit Hylam<\/strong>","<strong>Klinik Desa Parit Jelutong<\/strong>","<strong>Klinik Desa Parit Kader<\/strong>","<strong>Klinik Desa Parit Kasih<\/strong>","<strong>Klinik Desa Parit Kemang<\/strong>","<strong>Klinik Desa Parit Kuda<\/strong>","<strong>Klinik Desa Parit Lapis Sempadan<\/strong>","<strong>Klinik Desa Parit Lubuk<\/strong>","<strong>Klinik Desa Parit Maimon<\/strong>","<strong>Klinik Desa Parit Pandan<\/strong>","<strong>Klinik Desa Parit Sangit<\/strong>","<strong>Klinik Desa Parit Semarang<\/strong>","<strong>Klinik Desa Parit Warijo<\/strong>","<strong>Klinik Desa Parit Yob<\/strong>","<strong>Klinik Desa Patah Pedang<\/strong>","<strong>Klinik Desa Perpat<\/strong>","<strong>Klinik Desa Peserai<\/strong>","<strong>Klinik Desa Sejagong<\/strong>","<strong>Klinik Desa Separap<\/strong>","<strong>Klinik Desa Simpang 6<\/strong>","<strong>Klinik Desa Sri Ladang<\/strong>","<strong>Klinik Desa Sri Menanti<\/strong>","<strong>Klinik Desa Sri Mendapat<\/strong>","<strong>Klinik Desa Sri Paya<\/strong>","<strong>Klinik Desa Sungai Ayam<\/strong>","<strong>Klinik Desa Sungai Linau Kecil<\/strong>","<strong>Klinik Desa Sungai Merlong<\/strong>","<strong>Klinik Desa Sungai Nibong<\/strong>","<strong>Klinik Desa Talang Bunut<\/strong>","<strong>Klinik Desa Tanjung Laboh<\/strong>","<strong>Klinik Desa Tanjung Semberong<\/strong>","<strong>Klinik Desa Antoi<\/strong>","<strong>Klinik Desa Bakar Batu<\/strong>","<strong>Klinik Desa Felda Ulu Tebrau<\/strong>","<strong>Klinik Desa Kampung Cahaya Baru<\/strong>","<strong>Klinik Desa Kampung Pulai<\/strong>","<strong>Klinik Desa Kangkar Pulai<\/strong>","<strong>Klinik Desa Kangkar Tebrau<\/strong>","<strong>Klinik Desa Kempas<\/strong>","<strong>Klinik Desa Kong Kong Laut<\/strong>","<strong>Klinik Desa Lima Kedai<\/strong>","<strong>Klinik Desa Maju Jaya<\/strong>","<strong>Klinik Desa Pasir Putih<\/strong>","<strong>Klinik Desa Paya Mengkuang<\/strong>","<strong>Klinik Desa Permas Jaya<\/strong>","<strong>Klinik Desa Plentong<\/strong>","<strong>Klinik Desa Skudai<\/strong>","<strong>Klinik Desa Sungai Melayu<\/strong>","<strong>Klinik Desa Sungai Tiram<\/strong>","<strong>Klinik Desa Tanjong Langsat<\/strong>","<strong>Klinik Desa Tiram Duku<\/strong>","<strong>Klinik Desa Chamek<\/strong>","<strong>Klinik Desa Felcra Batu 4 1/2 Paloh<\/strong>","<strong>Klinik Desa Felda Air Hitam<\/strong>","<strong>Klinik Desa Felda Kahang Barat<\/strong>","<strong>Klinik Desa Felda Layang-Layang<\/strong>","<strong>Klinik Desa Felda Ulu Penggeli<\/strong>","<strong>Klinik Desa Kahang Batu 28<\/strong>","<strong>Klinik Desa Kampung Gajah<\/strong>","<strong>Klinik Desa Kampung Nyior<\/strong>","<strong>Klinik Desa Kampung Paya<\/strong>","<strong>Klinik Desa Kampung Tengah<\/strong>","<strong>Klinik Desa Kampung Tengah Renggam<\/strong>","<strong>Klinik Desa Macap<\/strong>","<strong>Klinik Desa Parit Haji Hasyim<\/strong>","<strong>Klinik Desa Parit Ibrahim Majid<\/strong>","<strong>Klinik Desa Sri Lalang<\/strong>","<strong>Klinik Desa Sungai Linau<\/strong>","<strong>Klinik Desa Sungai Sayong<\/strong>","<strong>Klinik Desa Ulu Benut<\/strong>","<strong>Klinik Desa Tanjung Serindit<\/strong>","<strong>Klinik Desa Air Tawar 1 (Felda)<\/strong>","<strong>Klinik Desa Air Tawar 3 (Felda)<\/strong>","<strong>Klinik Desa Air Tawar 4 (Felda)<\/strong>","<strong>Klinik Desa Air Tawar 5 (Felda)<\/strong>","<strong>Klinik Desa Aping Barat (Felda)<\/strong>","<strong>Klinik Desa Aping Timur (Felda)<\/strong>","<strong>Klinik Desa Batu 4<\/strong>","<strong>Klinik Desa Bukit Ramun (Felda)<\/strong>","<strong>Klinik Desa Gembut<\/strong>","<strong>Klinik Desa Kampung Linting<\/strong>","<strong>Klinik Desa Kuala Sedili Kecil<\/strong>","<strong>Klinik Desa Linggiu (Felda)<\/strong>","<strong>Klinik Desa Mawai Baru<\/strong>","<strong>Klinik Desa Pasak (Felda)<\/strong>","<strong>Klinik Desa Pasir Gogok<\/strong>","<strong>Klinik Desa Pasir Raja (Felda)<\/strong>","<strong>Klinik Desa Petri Jaya<\/strong>","<strong>Klinik Desa Semanggar<\/strong>","<strong>Klinik Desa Semenchu (Felda)<\/strong>","<strong>Klinik Desa Sg. Telor<\/strong>","<strong>Klinik Desa Sungai Ara (Felcra)<\/strong>","<strong>Klinik Desa Sungai Kapal<\/strong>","<strong>Klinik Desa Sungai Sayong (Felda)<\/strong>","<strong>Klinik Desa Sungai Sibol / Penggeli (Felda)<\/strong>","<strong>Klinik Desa Tanjong Buai<\/strong>","<strong>Klinik Desa Telok Sengat<\/strong>","<strong>Klinik Desa Teluk Ramunia<\/strong>","<strong>Klinik Desa Tenggaroh Selatan 1<\/strong>","<strong>Klinik Desa Tunjuk Laut (Rumah Ladang)<\/strong>","<strong>Klinik Desa Air Bemban<\/strong>","<strong>Klinik Desa Bukit Batu (Felda)<\/strong>","<strong>Klinik Desa Bukit Permai (Felda)<\/strong>","<strong>Klinik Desa Felda Inas<\/strong>","<strong>Klinik Desa Kampung Bahagia<\/strong>","<strong>Klinik Desa Kampung Bukit Batu<\/strong>","<strong>Klinik Desa Kelapa Sawit<\/strong>","<strong>Klinik Desa Saleng<\/strong>","<strong>Klinik Desa Sedenak<\/strong>","<strong>Klinik Desa Senai<\/strong>","<strong>Klinik Desa Ulu Choh<\/strong>","<strong>Klinik Desa Bekoh Beladang<\/strong>","<strong>Klinik Desa Bukit Kangkar<\/strong>","<strong>Klinik Desa Kampung Sagil<\/strong>","<strong>Klinik Desa Kampung Teratai<\/strong>","<strong>Klinik Desa Kebun Baru<\/strong>","<strong>Klinik Desa Kesang<\/strong>","<strong>Klinik Desa Kundang Ulu<\/strong>","<strong>Klinik Desa Pantai Layang<\/strong>","<strong>Klinik Desa Parit Raja<\/strong>","<strong>Klinik Desa Parit Zing<\/strong>","<strong>Klinik Desa Paya Kepong<\/strong>","<strong>Klinik Desa Rawang<\/strong>","<strong>Klinik Desa Sawah Ring<\/strong>","<strong>Klinik Desa Sengkang Batu 18<\/strong>","<strong>Klinik Desa Sengkang Batu 20<\/strong>","<strong>Klinik Desa Serom 1<\/strong>","<strong>Klinik Desa Serom 2<\/strong>","<strong>Klinik Desa Serom 3<\/strong>","<strong>Klinik Desa Serom 6<\/strong>","<strong>Klinik Desa Sialang<\/strong>","<strong>Klinik Desa Simpang Lima Darat<\/strong>","<strong>Klinik Desa Simpang Lima Pekan<\/strong>","<strong>Klinik Desa Sri Jaya (Felda)<\/strong>","<strong>Klinik Desa Sri Ledang(Felda)<\/strong>","<strong>Klinik Desa Sri Makmor<\/strong>","<strong>Klinik Desa Sungai Bilah<\/strong>","<strong>Klinik Desa Telok Bakong<\/strong>","<strong>Klinik Desa Telok Rimba<\/strong>","<strong>Klinik Desa Felda Endau<\/strong>","<strong>Klinik Desa Kampung Hubong<\/strong>","<strong>Klinik Desa Nitar 1 (Felda)<\/strong>","<strong>Klinik Desa Nitar 2 (Felda)<\/strong>","<strong>Klinik Desa Pulau Aur<\/strong>","<strong>Klinik Desa Pulau Pemanggil<\/strong>","<strong>Klinik Desa Pulau Sibu<\/strong>","<strong>Klinik Desa Pulau Tinggi<\/strong>","<strong>Klinik Desa Sawah Datok<\/strong>","<strong>Klinik Desa Sri Pantai<\/strong>","<strong>Klinik Desa Tenggaroh 1 (Felda)<\/strong>","<strong>Klinik Desa Tenggaroh 5 (Felda)<\/strong>","<strong>Klinik Desa Triang<\/strong>","<strong>Klinik Desa Kereta Lembu<\/strong>","<strong>Klinik Desa Batu 18 1/2 Air Hitam<\/strong>","<strong>Klinik Desa Batu 23 Pagoh<\/strong>","<strong>Klinik Desa Batu 27 Lenga<\/strong>","<strong>Klinik Desa Batu 28 Lenga<\/strong>","<strong>Klinik Desa Batu 31 Lenga<\/strong>","<strong>Klinik Desa Batu 5 Bakri<\/strong>","<strong>Klinik Desa Bukit Kepong<\/strong>","<strong>Klinik Desa Bukit Kepong (Felcra)<\/strong>","<strong>Klinik Desa Bukit Mor<\/strong>","<strong>Klinik Desa Jeram Tepi<\/strong>","<strong>Klinik Desa Jorak<\/strong>","<strong>Klinik Desa Kampung Raja<\/strong>","<strong>Klinik Desa Kampung Semaseh<\/strong>","<strong>Klinik Desa Kampung Tui<\/strong>","<strong>Klinik Desa Liang Batu<\/strong>","<strong>Klinik Desa Panchor<\/strong>","<strong>Klinik Desa Panjang Sari<\/strong>","<strong>Klinik Desa Parit Bakar Darat<\/strong>","<strong>Klinik Desa Parit Baru<\/strong>","<strong>Klinik Desa Parit Bulat Darat<\/strong>","<strong>Klinik Desa Parit Bulat Lintang<\/strong>","<strong>Klinik Desa Parit Haji Latiff<\/strong>","<strong>Klinik Desa Parit Kassim Laut<\/strong>","<strong>Klinik Desa Parit Keroma<\/strong>","<strong>Klinik Desa Parit Payong<\/strong>","<strong>Klinik Desa Parit Pecah<\/strong>","<strong>Klinik Desa Parit Pinang Seribu<\/strong>","<strong>Klinik Desa Parit Samsu Darat<\/strong>","<strong>Klinik Desa Parit Samsu Ulu<\/strong>","<strong>Klinik Desa Parit Tengah<\/strong>","<strong>Klinik Desa Parit Ulu Jamil<\/strong>","<strong>Klinik Desa Parit Zain <\/strong>","<strong>Klinik Desa Paya Redan<\/strong>","<strong>Klinik Desa Sarang Buaya<\/strong>","<strong>Klinik Desa Sungai Balang Darat<\/strong>","<strong>Klinik Desa Sungai Gersik<\/strong>","<strong>Klinik Desa Sungai Muda<\/strong>","<strong>Klinik Desa Sungai Terap<\/strong>","<strong>Klinik Desa Tanjung Selabu<\/strong>","<strong>Klinik Desa Temiang<\/strong>","<strong>Klinik Desa Batu 30<\/strong>","<strong>Klinik Desa Batu Hampar<\/strong>","<strong>Klinik Desa Kampung Baru<\/strong>","<strong>Klinik Desa Kampung Sawah<\/strong>","<strong>Klinik Desa Kukup Laut<\/strong>","<strong>Klinik Desa Melayu Raya<\/strong>","<strong>Klinik Desa Parit 1 Sanglang<\/strong>","<strong>Klinik Desa Parit Haji Abdul Rahman<\/strong>","<strong>Klinik Desa Parit Haji Ariff<\/strong>","<strong>Klinik Desa Parit Haji Omar<\/strong>","<strong>Klinik Desa Parit Ismail<\/strong>","<strong>Klinik Desa Parit Kahar<\/strong>","<strong>Klinik Desa Parit Lapis Sayang<\/strong>","<strong>Klinik Desa Parit Marjunid<\/strong>","<strong>Klinik Desa Parit Mesjid<\/strong>","<strong>Klinik Desa Parit Rambai<\/strong>","<strong>Klinik Desa Parit Selangor<\/strong>","<strong>Klinik Desa Parit Semerah<\/strong>","<strong>Klinik Desa Parit Sikom<\/strong>","<strong>Klinik Desa Permas<\/strong>","<strong>Klinik Desa Permatang Duku<\/strong>","<strong>Klinik Desa Perpat Serkat<\/strong>","<strong>Klinik Desa Pulai Sebatang<\/strong>","<strong>Klinik Desa Puteri Menangis<\/strong>","<strong>Klinik Desa Rimba Terjun<\/strong>","<strong>Klinik Desa Sanglang<\/strong>","<strong>Klinik Desa Sri Bunian<\/strong>","<strong>Klinik Desa Sungai Boh<\/strong>","<strong>Klinik Desa Sungai Bunyi<\/strong>","<strong>Klinik Desa Sungai Burung<\/strong>","<strong>Klinik Desa Sungai Karang<\/strong>","<strong>Klinik Desa Tanjung Ayer Hitam<\/strong>","<strong>Klinik Desa Telok Kerang<\/strong>","<strong>Klinik Desa Balai Badang<\/strong>","<strong>Klinik Desa Chempelak<\/strong>","<strong>Klinik Desa Felda Kemelah<\/strong>","<strong>Klinik Desa Felda Medoi<\/strong>","<strong>Klinik Desa Felda Moakil<\/strong>","<strong>Klinik Desa Felda Redong<\/strong>","<strong>Klinik Desa Gelang Cincin<\/strong>","<strong>Klinik Desa Gemas Baru<\/strong>","<strong>Klinik Desa Gemerah<\/strong>","<strong>Klinik Desa Kampung Awat<\/strong>","<strong>Klinik Desa Kampung Jabi<\/strong>","<strong>Klinik Desa Kampung Jawa<\/strong>","<strong>Klinik Desa Kampung Pogoh<\/strong>","<strong>Klinik Desa Kampung Tengah<\/strong>","<strong>Klinik Desa Kuala Paya<\/strong>","<strong>Klinik Desa Lubok Bandan<\/strong>","<strong>Klinik Desa Melayu Raya<\/strong>","<strong>Klinik Desa Palong Timur<\/strong>","<strong>Klinik Desa Paya Pulai<\/strong>","<strong>Klinik Desa Pekan Jabi<\/strong>","<strong>Klinik Desa Sepang Loi<\/strong>","<strong>Klinik Desa Sungai Karas<\/strong>","<strong>Klinik Desa Temu Jodoh<\/strong>","<strong>Klinik Desa Tenang<\/strong>","<strong>Klinik Desa Tenang Station<\/strong>","<strong>Klinik Desa Asam Jawa<\/strong>","<strong>Klinik Desa Badang<\/strong>","<strong>Klinik Desa Bandar<\/strong>","<strong>Klinik Desa Batu 8<\/strong>","<strong>Klinik Desa Belida<\/strong>","<strong>Klinik Desa Bongor<\/strong>","<strong>Klinik Desa Charok Beras<\/strong>","<strong>Klinik Desa Charok Kelian<\/strong>","<strong>Klinik Desa Iboi<\/strong>","<strong>Klinik Desa Kampung Binjul Luar<\/strong>","<strong>Klinik Desa Kampung Padang<\/strong>","<strong>Klinik Desa Kampung Pisang<\/strong>","<strong>Klinik Desa Kejai Baru<\/strong>","<strong>Klinik Desa Kijang<\/strong>","<strong>Klinik Desa Kuala Kuang<\/strong>","<strong>Klinik Desa Kuala Merah<\/strong>","<strong>Klinik Desa Kuala Pegang<\/strong>","<strong>Klinik Desa Lanai<\/strong>","<strong>Klinik Desa Machang Bubuk<\/strong>","<strong>Klinik Desa Paya Besar<\/strong>","<strong>Klinik Desa Pulai<\/strong>","<strong>Klinik Desa Rambong<\/strong>","<strong>Klinik Desa Seputih<\/strong>","<strong>Klinik Desa Sungai Limau<\/strong>","<strong>Klinik Desa Sungai Tawar<\/strong>","<strong>Klinik Desa Tanjung Pari<\/strong>","<strong>Klinik Desa Teloi Kanan (Felda)<\/strong>","<strong>Klinik Desa Telok Sera<\/strong>","<strong>Klinik Desa Telok Sungai Durian<\/strong>","<strong>Klinik Desa Telok Temelah<\/strong>","<strong>Klinik Desa Teluk Teduri<\/strong>","<strong>Klinik Desa Tembak A<\/strong>","<strong>Klinik Desa Tiak<\/strong>","<strong>Klinik Desa Ulu Bakai<\/strong>","<strong>Klinik Desa Weng<\/strong>","<strong>Klinik Desa Ayer Puteh<\/strong>","<strong>Klinik Desa Bagan Samak<\/strong>","<strong>Klinik Desa Parit Nibong<\/strong>","<strong>Klinik Desa Permatang Kerat Telunjuk<\/strong>","<strong>Klinik Desa Permatang Pasir<\/strong>","<strong>Klinik Desa Relau<\/strong>","<strong>Klinik Desa Selama<\/strong>","<strong>Klinik Desa Seribu Relong<\/strong>","<strong>Klinik Desa Sungai Batu<\/strong>","<strong>Klinik Desa Sungai Kecil Ilir<\/strong>","<strong>Klinik Desa Sungai Taka<\/strong>","<strong>Klinik Desa Sungai Tengas<\/strong>","<strong>Klinik Desa Alor Mengkudu<\/strong>","<strong>Klinik Desa Budi<\/strong>","<strong>Klinik Desa Bukit Lada<\/strong>","<strong>Klinik Desa Bukit Payong<\/strong>","<strong>Klinik Desa Bukit Pinang<\/strong>","<strong>Klinik Desa Derang<\/strong>","<strong>Klinik Desa Gunung Keriang<\/strong>","<strong>Klinik Desa Hutan Kampung<\/strong>","<strong>Klinik Desa Jabi<\/strong>","<strong>Klinik Desa Kampung Kolam<\/strong>","<strong>Klinik Desa Kangkong<\/strong>","<strong>Klinik Desa Kuala Kedah<\/strong>","<strong>Klinik Desa Kubang Jawi<\/strong>","<strong>Klinik Desa Kubang Rotan<\/strong>","<strong>Klinik Desa Lengkuas<\/strong>","<strong>Klinik Desa Lepai<\/strong>","<strong>Klinik Desa Padang Hang<\/strong>","<strong>Klinik Desa Seberang Kota<\/strong>","<strong>Klinik Desa Suka Menanti<\/strong>","<strong>Klinik Desa Sungai Baru<\/strong>","<strong>Klinik Desa Tajar Utara<\/strong>","<strong>Klinik Desa Tandop<\/strong>","<strong>Klinik Desa Tebengau<\/strong>","<strong>Klinik Desa Telaga Mas<\/strong>","<strong>Klinik Desa Telok Kechai<\/strong>","<strong>Klinik Desa Titi Gajah<\/strong>","<strong>Klinik Desa Titi Haji Idris<\/strong>","<strong>Klinik Desa Tualang<\/strong>","<strong>Klinik Desa Ban Merbok<\/strong>","<strong>Klinik Desa Batu 3 <\/strong>","<strong>Klinik Desa Batu 9<\/strong>","<strong>Klinik Desa Batu Belachan<\/strong>","<strong>Klinik Desa Batu Lintang<\/strong>","<strong>Klinik Desa Bujang<\/strong>","<strong>Klinik Desa Bukit Meriam<\/strong>","<strong>Klinik Desa Gurun<\/strong>","<strong>Klinik Desa Kuala Sim<\/strong>","<strong>Klinik Desa Lubuk Saga<\/strong>","<strong>Klinik Desa Padang Lembu<\/strong>","<strong>Klinik Desa Padang Salim<\/strong>","<strong>Klinik Desa Pantai Perai<\/strong>","<strong>Klinik Desa Permatang Berangan<\/strong>","<strong>Klinik Desa Pulau Sayak<\/strong>","<strong>Klinik Desa Semeling<\/strong>","<strong>Klinik Desa Sungai Lalang<\/strong>","<strong>Klinik Desa Sungai Layar Hujung<\/strong>","<strong>Klinik Desa Sungai Pasir<\/strong>","<strong>Klinik Desa Tanjung Dawai<\/strong>","<strong>Klinik Desa Telok Nipah<\/strong>","<strong>Klinik Desa Tikam Batu<\/strong>","<strong>Klinik Desa Batu Empat<\/strong>","<strong>Klinik Desa Batu Lapan<\/strong>","<strong>Klinik Desa Binjal<\/strong>","<strong>Klinik Desa Bukit Tangga<\/strong>","<strong>Klinik Desa Gelong<\/strong>","<strong>Klinik Desa Guar Napai<\/strong>","<strong>Klinik Desa Jerlun<\/strong>","<strong>Klinik Desa Kampung Darat<\/strong>","<strong>Klinik Desa Kampung Naga<\/strong>","<strong>Klinik Desa Kampung Raja<\/strong>","<strong>Klinik Desa Kg. Tradisi Paya Pahlawan<\/strong>","<strong>Klinik Desa Lana Bulu<\/strong>","<strong>Klinik Desa Malau<\/strong>","<strong>Klinik Desa Megat Dewa<\/strong>","<strong>Klinik Desa Napoh<\/strong>","<strong>Klinik Desa Padang Perahu<\/strong>","<strong>Klinik Desa Padang Sera<\/strong>","<strong>Klinik Desa Permatang Keriang<\/strong>","<strong>Klinik Desa Permatang Paku<\/strong>","<strong>Klinik Desa Pida Dua<\/strong>","<strong>Klinik Desa Sanglang<\/strong>","<strong>Klinik Desa Sungai Korok<\/strong>","<strong>Klinik Desa Teluk Malek<\/strong>","<strong>Klinik Desa Temalang<\/strong>","<strong>Klinik Desa Titi Kerbau<\/strong>","<strong>Klinik Desa Tradisi Lembah Keriang<\/strong>","<strong>Klinik Desa Ayer Merah<\/strong>","<strong>Klinik Desa Ayer Puteh<\/strong>","<strong>Klinik Desa Badlishah<\/strong>","<strong>Klinik Desa Batu Puteh<\/strong>","<strong>Klinik Desa Bikan<\/strong>","<strong>Klinik Desa Guar Lobak<\/strong>","<strong>Klinik Desa Gunung Bongsu<\/strong>","<strong>Klinik Desa Jubai<\/strong>","<strong>Klinik Desa Junjung<\/strong>","<strong>Klinik Desa Keladi<\/strong>","<strong>Klinik Desa Kilang Lama<\/strong>","<strong>Klinik Desa Labu Besar<\/strong>","<strong>Klinik Desa Padang Cina<\/strong>","<strong>Klinik Desa Padang Meha<\/strong>","<strong>Klinik Desa Permatang Durian<\/strong>","<strong>Klinik Desa Sidam Kanan<\/strong>","<strong>Klinik Desa Sungai Karangan<\/strong>","<strong>Klinik Desa Sungai Kob<\/strong>","<strong>Klinik Desa Sungai Limau<\/strong>","<strong>Klinik Desa Sungai Sedim<\/strong>","<strong>Klinik Desa Sungai Seluang<\/strong>","<strong>Klinik Desa Sungai Tengas Ulu<\/strong>","<strong>Klinik Desa Sungai Ular<\/strong>","<strong>Klinik Desa Terap<\/strong>","<strong>Klinik Desa Bayas<\/strong>","<strong>Klinik Desa Ewa<\/strong>","<strong>Klinik Desa Felcra Kok<\/strong>","<strong>Klinik Desa Kedawang<\/strong>","<strong>Klinik Desa Kelibang<\/strong>","<strong>Klinik Desa Kuala Teriang<\/strong>","<strong>Klinik Desa Nyior Chabang <\/strong>","<strong>Klinik Desa Pulau Tuba<\/strong>","<strong>Klinik Desa Selat Lubuk Cempedak<\/strong>","<strong>Klinik Desa Temonyong<\/strong>","<strong>Klinik Desa Ulu Melaka<\/strong>","<strong>Klinik Desa Belukar Luas<\/strong>","<strong>Klinik Desa Bukit Tembaga (Felda)<\/strong>","<strong>Klinik Desa Kampung Perik<\/strong>","<strong>Klinik Desa Kura Baru<\/strong>","<strong>Klinik Desa Nai Teh <\/strong>","<strong>Klinik Desa Nako Nambua<\/strong>","<strong>Klinik Desa Nami<\/strong>","<strong>Klinik Desa Padang Balai<\/strong>","<strong>Klinik Desa Padang Chenderai<\/strong>","<strong>Klinik Desa Padang Nyior<\/strong>","<strong>Klinik Desa Padang Sanai<\/strong>","<strong>Klinik Desa Pedu<\/strong>","<strong>Klinik Desa Pengkalan Tok Putih<\/strong>","<strong>Klinik Desa Pokok Machang<\/strong>","<strong>Klinik Desa Tandop Besar<\/strong>","<strong>Klinik Desa Tong Plu<\/strong>","<strong>Klinik Desa Bukit Jambul<\/strong>","<strong>Klinik Desa Bukit Jenun<\/strong>","<strong>Klinik Desa Bukit Paya<\/strong>","<strong>Klinik Desa Charuk Kudong<\/strong>","<strong>Klinik Desa Gajah Mati<\/strong>","<strong>Klinik Desa Kampung Baru<\/strong>","<strong>Klinik Desa Kampung Kedah<\/strong>","<strong>Klinik Desa Kampung Rambai<\/strong>","<strong>Klinik Desa Kobah<\/strong>","<strong>Klinik Desa Padang Durian<\/strong>","<strong>Klinik Desa Padang Pusing<\/strong>","<strong>Klinik Desa Paya Mak Insun<\/strong>","<strong>Klinik Desa Paya Rawa<\/strong>","<strong>Klinik Desa Pokok Asam<\/strong>","<strong>Klinik Desa Tanah Merah<\/strong>","<strong>Klinik Desa Tobiar<\/strong>","<strong>Klinik Desa Tokai<\/strong>","<strong>Klinik Desa Belantik<\/strong>","<strong>Klinik Desa Bendang Man<\/strong>","<strong>Klinik Desa Beris Jaya<\/strong>","<strong>Klinik Desa Charok Pelanduk<\/strong>","<strong>Klinik Desa Chemara<\/strong>","<strong>Klinik Desa Chepir<\/strong>","<strong>Klinik Desa Hujung Bandar<\/strong>","<strong>Klinik Desa Jeneri<\/strong>","<strong>Klinik Desa Kampung Betong<\/strong>","<strong>Klinik Desa Kampung Chong<\/strong>","<strong>Klinik Desa Kampung Melaka<\/strong>","<strong>Klinik Desa Kota Aur<\/strong>","<strong>Klinik Desa Kota Bukit<\/strong>","<strong>Klinik Desa Kubang Kesum<\/strong>","<strong>Klinik Desa Lubuk Tualang<\/strong>","<strong>Klinik Desa Sungai Senam<\/strong>","<strong>Klinik Desa Tanah Hitam<\/strong>","<strong>Klinik Desa Teloi Timur (Felda)<\/strong>","<strong>Klinik Desa Tupai<\/strong>","<strong>Klinik Desa Batu 17<\/strong>","<strong>Klinik Desa Bukit Besar<\/strong>","<strong>Klinik Desa Dulang Kecil<\/strong>","<strong>Klinik Desa Kampung Pauh<\/strong>","<strong>Klinik Desa Kampung Pisang<\/strong>","<strong>Klinik Desa Kampung Setar<\/strong>","<strong>Klinik Desa Permatang Buloh<\/strong>","<strong>Klinik Desa Simpang Empat Sedaka<\/strong>","<strong>Klinik Desa Simpang Tiga<\/strong>","<strong>Klinik Desa Singkir <\/strong>","<strong>Klinik Desa Sungai Daun Tengah<\/strong>","<strong>Klinik Desa Sungai Yan <\/strong>","<strong>Klinik Desa Teroi<\/strong>","<strong>Klinik Desa Ulu Sedaka<\/strong>","<strong>Klinik Desa Alor Bakat<\/strong>","<strong>Klinik Desa Bekalam<\/strong>","<strong>Klinik Desa Belukar Bachok<\/strong>","<strong>Klinik Desa Beoh<\/strong>","<strong>Klinik Desa Beris Lalang<\/strong>","<strong>Klinik Desa Cherang Laut<\/strong>","<strong>Klinik Desa Jelawat<\/strong>","<strong>Klinik Desa Kandis<\/strong>","<strong>Klinik Desa Kepala Batas<\/strong>","<strong>Klinik Desa Kolam<\/strong>","<strong>Klinik Desa Kuau<\/strong>","<strong>Klinik Desa Kuchelong<\/strong>","<strong>Klinik Desa Melawi<\/strong>","<strong>Klinik Desa Pak Badol<\/strong>","<strong>Klinik Desa Pantai Baru<\/strong>","<strong>Klinik Desa Pauh Lima<\/strong>","<strong>Klinik Desa Pauh Sembilan<\/strong>","<strong>Klinik Desa Perupok<\/strong>","<strong>Klinik Desa Pintu Gerbang<\/strong>","<strong>Klinik Desa Rekang<\/strong>","<strong>Klinik Desa Tawang<\/strong>","<strong>Klinik Desa Telaga Ara<\/strong>","<strong>Klinik Desa Wakaf Aik<\/strong>","<strong>Klinik Desa (Sedc) Sungai Terah<\/strong>","<strong>Klinik Desa Chalil (Kesedar)<\/strong>","<strong>Klinik Desa Chiku 1<\/strong>","<strong>Klinik Desa Chiku 2<\/strong>","<strong>Klinik Desa Chiku 7<\/strong>","<strong>Klinik Desa Kampung Jerek<\/strong>","<strong>Klinik Desa Kampung Pulai<\/strong>","<strong>Klinik Desa Kampung Renok Baru<\/strong>","<strong>Klinik Desa Kampung Star<\/strong>","<strong>Klinik Desa Kuala Betis<\/strong>","<strong>Klinik Desa Lebir<\/strong>","<strong>Klinik Desa Limau Kasturi<\/strong>","<strong>Klinik Desa Paloh 1 (Kesedar)<\/strong>","<strong>Klinik Desa Paloh 3 (Kesedar)<\/strong>","<strong>Klinik Desa Panggong Lalat<\/strong>","<strong>Klinik Desa Perasu<\/strong>","<strong>Klinik Desa Sungai Terah (Rpt)<\/strong>","<strong>Klinik Desa Ayer Canal<\/strong>","<strong>Klinik Desa Batu Melintang<\/strong>","<strong>Klinik Desa Kalai<\/strong>","<strong>Klinik Desa Kampung Bukit Jering<\/strong>","<strong>Klinik Desa Kampung Gemang<\/strong>","<strong>Klinik Desa Kuala Long<\/strong>","<strong>Klinik Desa Kubor Datu<\/strong>","<strong>Klinik Desa Legeh<\/strong>","<strong>Klinik Desa Lubok Bongor<\/strong>","<strong>Klinik Desa Pasir Dusun<\/strong>","<strong>Klinik Desa Pendok<\/strong>","<strong>Klinik Desa Sungai Satan (Kesedar)<\/strong>","<strong>Klinik Desa Batu Tinggi<\/strong>","<strong>Klinik Desa Bayu Bayam<\/strong>","<strong>Klinik Desa Gondang<\/strong>","<strong>Klinik Desa Kadok<\/strong>","<strong>Klinik Desa Kampung Aril<\/strong>","<strong>Klinik Desa Kampung Berek<\/strong>","<strong>Klinik Desa Kampung Beta Hilir<\/strong>","<strong>Klinik Desa Kampung Beta Hulu<\/strong>","<strong>Klinik Desa Kampung But<\/strong>","<strong>Klinik Desa Kampung Che Latif<\/strong>","<strong>Klinik Desa Kampung Chempaka<\/strong>","<strong>Klinik Desa Kampung Kijang<\/strong>","<strong>Klinik Desa Kampung Kubang Kiat<\/strong>","<strong>Klinik Desa Kampung Melor<\/strong>","<strong>Klinik Desa Kampung Mentuan<\/strong>","<strong>Klinik Desa Kampung Parit<\/strong>","<strong>Klinik Desa Kampung Pendek<\/strong>","<strong>Klinik Desa Kampung Pintu Geng<\/strong>","<strong>Klinik Desa Kampung Tikat<\/strong>","<strong>Klinik Desa Kedai Mulong<\/strong>","<strong>Klinik Desa Kemerok<\/strong>","<strong>Klinik Desa Kemumin <\/strong>","<strong>Klinik Desa Lubuk Pukul<\/strong>","<strong>Klinik Desa Pangkal Kalong<\/strong>","<strong>Klinik Desa Pangkalan Datu<\/strong>","<strong>Klinik Desa Panji<\/strong>","<strong>Klinik Desa Pantai Kundor<\/strong>","<strong>Klinik Desa Pengkalan Feri<\/strong>","<strong>Klinik Desa Salor<\/strong>","<strong>Klinik Desa Wakaf Stan<\/strong>","<strong>Klinik Desa Batu Jong<\/strong>","<strong>Klinik Desa Batu Mengkebang<\/strong>","<strong>Klinik Desa Biak<\/strong>","<strong>Klinik Desa Chuchoh Putri<\/strong>","<strong>Klinik Desa Jelawang<\/strong>","<strong>Klinik Desa Kampung Bahagia<\/strong>","<strong>Klinik Desa Kampung Chenulang<\/strong>","<strong>Klinik Desa Kampung Karangan<\/strong>","<strong>Klinik Desa Kampung Keroh<\/strong>","<strong>Klinik Desa Kampung Kuala Nal<\/strong>","<strong>Klinik Desa Kampung Laloh<\/strong>","<strong>Klinik Desa Kampung Peria<\/strong>","<strong>Klinik Desa Kampung Sri Mahligai<\/strong>","<strong>Klinik Desa Kampung Sungai Sok<\/strong>","<strong>Klinik Desa Kampung Telekong<\/strong>","<strong>Klinik Desa Kemubu<\/strong>","<strong>Klinik Desa Kuala Gris<\/strong>","<strong>Klinik Desa Pasir Kelang<\/strong>","<strong>Klinik Desa Sungai Mengkuang<\/strong>","<strong>Klinik Desa Sungai Pas (Sri Kenangan)<\/strong>","<strong>Klinik Desa Belukar Machang<\/strong>","<strong>Klinik Desa Bukit Bakar<\/strong>","<strong>Klinik Desa Kampung Bandar<\/strong>","<strong>Klinik Desa Kampung Binjai (Labok)<\/strong>","<strong>Klinik Desa Kampung Jakar<\/strong>","<strong>Klinik Desa Kampung Joh<\/strong>","<strong>Klinik Desa Kampung Kerilla<\/strong>","<strong>Klinik Desa Kampung Paloh Rawa<\/strong>","<strong>Klinik Desa Kampung Simpul Belubang<\/strong>","<strong>Klinik Desa Kampung Takil<\/strong>","<strong>Klinik Desa Mata Air<\/strong>","<strong>Klinik Desa Wakaf Bata<\/strong>","<strong>Klinik Desa Banggol Chicha<\/strong>","<strong>Klinik Desa Baroh Pial<\/strong>","<strong>Klinik Desa Bayu Lalang<\/strong>","<strong>Klinik Desa Bukit Perah<\/strong>","<strong>Klinik Desa Bunut Susu<\/strong>","<strong>Klinik Desa Cherang Hangus<\/strong>","<strong>Klinik Desa Chetok<\/strong>","<strong>Klinik Desa Chicha Tinggi<\/strong>","<strong>Klinik Desa Gual Periok<\/strong>","<strong>Klinik Desa Jejawi<\/strong>","<strong>Klinik Desa Kampung Gelam Mas<\/strong>","<strong>Klinik Desa Kampung Rahmat<\/strong>","<strong>Klinik Desa Kasar<\/strong>","<strong>Klinik Desa Kubang Kual<\/strong>","<strong>Klinik Desa Lati<\/strong>","<strong>Klinik Desa Lubok Setol<\/strong>","<strong>Klinik Desa Lubok Tapah<\/strong>","<strong>Klinik Desa Pangkal Kala<\/strong>","<strong>Klinik Desa Pohon Buloh<\/strong>","<strong>Klinik Desa Pohon Tanjung<\/strong>","<strong>Klinik Desa Repek<\/strong>","<strong>Klinik Desa Sungai Keladi<\/strong>","<strong>Klinik Desa (Rumah Sewa) Kg. Nara<\/strong>","<strong>Klinik Desa Banggol Pa' Esah<\/strong>","<strong>Klinik Desa Bukit Abal<\/strong>","<strong>Klinik Desa Bukit Awang<\/strong>","<strong>Klinik Desa Bukit Merbau<\/strong>","<strong>Klinik Desa Dalam Rhu<\/strong>","<strong>Klinik Desa Golok<\/strong>","<strong>Klinik Desa Gong Kulim<\/strong>","<strong>Klinik Desa Jelor<\/strong>","<strong>Klinik Desa Kampung Besar<\/strong>","<strong>Klinik Desa Kampung Lembah<\/strong>","<strong>Klinik Desa Padang Pak Amat<\/strong>","<strong>Klinik Desa Permatang Sungkai<\/strong>","<strong>Klinik Desa Sungai Petai<\/strong>","<strong>Klinik Desa Tasek Pauh<\/strong>","<strong>Klinik Desa Telosan<\/strong>","<strong>Klinik Desa Tok Bali<\/strong>","<strong>Klinik Desa Wakaf Bunut<\/strong>","<strong>Klinik Desa Wakaf Raja<\/strong>","<strong>Klinik Desa Alor Pasir<\/strong>","<strong>Klinik Desa Batang  Merbau<\/strong>","<strong>Klinik Desa Bechah Laut<\/strong>","<strong>Klinik Desa Belimbing<\/strong>","<strong>Klinik Desa Bendang Nyior<\/strong>","<strong>Klinik Desa Bukit Bunga<\/strong>","<strong>Klinik Desa Bukit Durian<\/strong>","<strong>Klinik Desa Bukit Gading<\/strong>","<strong>Klinik Desa Bukit Panau<\/strong>","<strong>Klinik Desa Gobek<\/strong>","<strong>Klinik Desa Kampung Kemahang 3<\/strong>","<strong>Klinik Desa Kampung Kuala Tiga<\/strong>","<strong>Klinik Desa Kampung Sokor<\/strong>","<strong>Klinik Desa Kampung Ulu Kusial<\/strong>","<strong>Klinik Desa Kulim<\/strong>","<strong>Klinik Desa Kusial Baru<\/strong>","<strong>Klinik Desa Lalang Pepuyu<\/strong>","<strong>Klinik Desa Lawang<\/strong>","<strong>Klinik Desa Nibong<\/strong>","<strong>Klinik Desa Panglima  Bayu<\/strong>","<strong>Klinik Desa Peralla<\/strong>","<strong>Klinik  Desa Cabang Empat<\/strong>","<strong>Klinik  Desa Palekbang<\/strong>","<strong>Klinik  Desa Pengkalan Nangka<\/strong>","<strong>Klinik  Desa Pulai Tongkang<\/strong>","<strong>Klinik Desa  Padang Mandol<\/strong>","<strong>Klinik Desa Air Dingin<\/strong>","<strong>Klinik Desa Bendang Kerian<\/strong>","<strong>Klinik Desa Bendang Pak Yong<\/strong>","<strong>Klinik Desa Bunut Sarang Burung<\/strong>","<strong>Klinik Desa Kamppung Bukit<\/strong>","<strong>Klinik Desa Kampung Laut<\/strong>","<strong>Klinik Desa Kok Keli<\/strong>","<strong>Klinik Desa Kok Pasir<\/strong>","<strong>Klinik Desa Kutan<\/strong>","<strong>Klinik Desa Morak<\/strong>","<strong>Klinik Desa Padang Rokma<\/strong>","<strong>Klinik Desa Pasir Pekan Hilir<\/strong>","<strong>Klinik Desa Pengkalan Kubor<\/strong>","<strong>Klinik Desa Simpangan<\/strong>","<strong>Klinik Desa Telok Jering<\/strong>","<strong>Klinik Desa Telok Renjuna<\/strong>","<strong>Klinik Desa Tujoh<\/strong>","<strong>Klinik Desa Wakaf Delima<\/strong>","<strong>Klinik Desa Air Molek<\/strong>","<strong>Klinik Desa Ayer Paabas<\/strong>","<strong>Klinik Desa Belimbing Dalam<\/strong>","<strong>Klinik Desa Brisu<\/strong>","<strong>Klinik Desa Durian Daun<\/strong>","<strong>Klinik Desa Gadek<\/strong>","<strong>Klinik Desa Kampung Pulau<\/strong>","<strong>Klinik Desa Kuala Linggi<\/strong>","<strong>Klinik Desa Lendu<\/strong>","<strong>Klinik Desa Machap Umboo<\/strong>","<strong>Klinik Desa Melaka Pindah<\/strong>","<strong>Klinik Desa Melekek<\/strong>","<strong>Klinik Desa Padang Sebang<\/strong>","<strong>Klinik Desa Pantai Belimbing<\/strong>","<strong>Klinik Desa Pegoh<\/strong>","<strong>Klinik Desa Pengkalan Balak<\/strong>","<strong>Klinik Desa Pulau Sebang<\/strong>","<strong>Klinik Desa Ramuan China Besar<\/strong>","<strong>Klinik Desa Rembia<\/strong>","<strong>Klinik Desa Solok Menggong<\/strong>","<strong>Klinik Desa Sungai Buluh<\/strong>","<strong>Klinik Desa Sungai Petai<\/strong>","<strong>Klinik Desa Sungai Siput<\/strong>","<strong>Klinik Desa Taboh Naning<\/strong>","<strong>Klinik Desa Tanjung Bidara<\/strong>","<strong>Klinik Desa Tebong<\/strong>","<strong>Klinik Desa Asahan<\/strong>","<strong>Klinik Desa Ayer Merbau<\/strong>","<strong>Klinik Desa Ayer Tawar<\/strong>","<strong>Klinik Desa Batang Melaka<\/strong>","<strong>Klinik Desa Batu Gajah Pasir<\/strong>","<strong>Klinik Desa Bemban<\/strong>","<strong>Klinik Desa Bukit Senggeh (Felda)<\/strong>","<strong>Klinik Desa Chenderah<\/strong>","<strong>Klinik Desa Chin Chin<\/strong>","<strong>Klinik Desa Kampung Tehel<\/strong>","<strong>Klinik Desa Kesang Pajak<\/strong>","<strong>Klinik Desa Kesang Tua<\/strong>","<strong>Klinik Desa Masjid Baru<\/strong>","<strong>Klinik Desa Nyalas<\/strong>","<strong>Klinik Desa On Lok<\/strong>","<strong>Klinik Desa Parit Gantong<\/strong>","<strong>Klinik Desa Pulai<\/strong>","<strong>Klinik Desa Sebatu<\/strong>","<strong>Klinik Desa Semujuk (Felcra)<\/strong>","<strong>Klinik Desa Simpang Kerayong<\/strong>","<strong>Klinik Desa Tedong<\/strong>","<strong>Klinik Desa Bachang<\/strong>","<strong>Klinik Desa Batu Berendam<\/strong>","<strong>Klinik Desa Bertam Ulu<\/strong>","<strong>Klinik Desa Bukit Katil<\/strong>","<strong>Klinik Desa Bukit Piatu<\/strong>","<strong>Klinik Desa Kampong Padang<\/strong>","<strong>Klinik Desa Krubong<\/strong>","<strong>Klinik Desa Pantai Kundor<\/strong>","<strong>Klinik Desa Paya Dalam<\/strong>","<strong>Klinik Desa Paya Rumput<\/strong>","<strong>Klinik Desa Semabok<\/strong>","<strong>Klinik Desa Tangga Batu<\/strong>","<strong>Klinik Desa Telok Mas<\/strong>","<strong>Klinik Desa Tiang Dua<\/strong>","<strong>Klinik Desa Felda Titi<\/strong>","<strong>Klinik Desa Jambatan Serong<\/strong>","<strong>Klinik Desa Jerang<\/strong>","<strong>Klinik Desa Kampung Chennah<\/strong>","<strong>Klinik Desa Lakai<\/strong>","<strong>Klinik Desa Pasoh 1<\/strong>","<strong>Klinik Desa Pasoh 4 (Kd Lama)<\/strong>","<strong>Klinik Desa Peradong<\/strong>","<strong>Klinik Desa Petaseh<\/strong>","<strong>Klinik Desa Rangoi (Kd Baru)<\/strong>","<strong>Klinik Desa Simpang Pertang<\/strong>","<strong>Klinik Desa Ulu Jelebu<\/strong>","<strong>Klinik Desa Ulu Klawang<\/strong>","<strong>Klinik Desa Ulu Triang<\/strong>","<strong>Kinik Desa Bukit Rokan Barat<\/strong>","<strong>Klinik Desa Air Hitam<\/strong>","<strong>Klinik Desa Batu Kikir<\/strong>","<strong>Klinik Desa Ladang Gaddes<\/strong>","<strong>Klinik Desa Lui Barat<\/strong>","<strong>Klinik Desa Lui Selatan<\/strong>","<strong>Klinik Desa Lui Timur (Felda)<\/strong>","<strong>Klinik Desa Palong 1<\/strong>","<strong>Klinik Desa Palong 12,13<\/strong>","<strong>Klinik Desa Palong 14, 15, 16<\/strong>","<strong>Klinik Desa Palong 2<\/strong>","<strong>Klinik Desa Palong 3<\/strong>","<strong>Klinik Desa Pasoh 2<\/strong>","<strong>Klinik Desa Pasoh 3<\/strong>","<strong>Klinik Desa Pulapah<\/strong>","<strong>Klinik Desa Rompin<\/strong>","<strong>Klinik Desa Serting Ilir<\/strong>","<strong>Klinik Desa Serting Tengah<\/strong>","<strong>Klinik Desa Serting Ulu<\/strong>","<strong>Klinik Desa Sungai Lui<\/strong>","<strong>Klinik Desa Ampang Tinggi<\/strong>","<strong>Klinik Desa Ayir Mawang<\/strong>","<strong>Klinik Desa Beting<\/strong>","<strong>Klinik Desa Betong<\/strong>","<strong>Klinik Desa Dangi<\/strong>","<strong>Klinik Desa Felda Kepis<\/strong>","<strong>Klinik Desa Gachong<\/strong>","<strong>Klinik Desa Inas<\/strong>","<strong>Klinik Desa Kampong Tengah<\/strong>","<strong>Klinik Desa Kampung Jelai<\/strong>","<strong>Klinik Desa Kampung Kepis<\/strong>","<strong>Klinik Desa Kampung Talang<\/strong>","<strong>Klinik Desa Melang Tengah<\/strong>","<strong>Klinik Desa Pelangai<\/strong>","<strong>Klinik Desa Rembang Panas<\/strong>","<strong>Klinik Desa Senaling<\/strong>","<strong>Klinik Desa Sungai Dua<\/strong>","<strong>Klinik Desa Tanjong Ipoh<\/strong>","<strong>Klinik Desa Tengkek<\/strong>","<strong>Klinik Desa Ulu Juasseh<\/strong>","<strong>Klinik Desa Ulu Pilah<\/strong>","<strong>Klinik Desa Bagan Pinang<\/strong>","<strong>Klinik Desa Bukit Pelanduk<\/strong>","<strong>Klinik Desa Chuah<\/strong>","<strong>Klinik Desa Pengkalan Kempas<\/strong>","<strong>Klinik Desa Sungai Raya<\/strong>","<strong>Klinik Desa Tampin Linggi<\/strong>","<strong>Klinik Desa Teluk Kemang<\/strong>","<strong>Klinik Desa Chembong Halt<\/strong>","<strong>Klinik Desa Gadong<\/strong>","<strong>Klinik Desa Kampung Bongek<\/strong>","<strong>Klinik Desa Kota<\/strong>","<strong>Klinik Desa Kundor<\/strong>","<strong>Klinik Desa Lubok China<\/strong>","<strong>Klinik Desa Pedas Hilir<\/strong>","<strong>Klinik Desa Pilin<\/strong>","<strong>Klinik Desa Pulau Mampat<\/strong>","<strong>Klinik Desa Sawah Raja<\/strong>","<strong>Klinik Desa Selamak<\/strong>","<strong>Klinik Desa Semerbok<\/strong>","<strong>Klinik Desa Sepri<\/strong>","<strong>Klinik Desa Batu 9 Labu<\/strong>","<strong>Klinik Desa Daching<\/strong>","<strong>Klinik Desa Felda Lbj<\/strong>","<strong>Klinik Desa Gadong Jaya<\/strong>","<strong>Klinik Desa Kampung Jijan<\/strong>","<strong>Klinik Desa Kampung Pulau<\/strong>","<strong>Klinik Desa Kuala Sawah<\/strong>","<strong>Klinik Desa Mambau<\/strong>","<strong>Klinik Desa Mantin Dalam<\/strong>","<strong>Klinik Desa Pajam<\/strong>","<strong>Klinik Desa Pantai<\/strong>","<strong>Klinik Desa Sikamat<\/strong>","<strong>Klinik Desa Siliau<\/strong>","<strong>Klinik Desa Sungai Machang<\/strong>","<strong>Klinik Desa Ulu Beranang<\/strong>","<strong>Klinik Desa Ulu Jimah<\/strong>","<strong>Klinik Desa Bengkahulu<\/strong>","<strong>Klinik Desa Bukit Jalor (Felda)<\/strong>","<strong>Klinik Desa Bukit Rokan (Felda)<\/strong>","<strong>Klinik Desa Bukit Rokan Utara<\/strong>","<strong>Klinik Desa Gedok<\/strong>","<strong>Klinik Desa Gemencheh<\/strong>","<strong>Klinik Desa Keru<\/strong>","<strong>Klinik Desa Pasir Besar<\/strong>","<strong>Klinik Desa Sungai Jernih<\/strong>","<strong>Klinik Desa Sungai Kelamah<\/strong>","<strong>Klinik Desa Tebong<\/strong>","<strong>Klinik Desa Ulu Rokan<\/strong>","<strong>Klinik Desa Bukit Tinggi<\/strong>","<strong>Klinik Desa Chemomoi<\/strong>","<strong>Klinik Desa Jambu Rias<\/strong>","<strong>Klinik Desa Janda Baik<\/strong>","<strong>Klinik Desa Kampung Benus<\/strong>","<strong>Klinik Desa Kampung Jawi-Jawi<\/strong>","<strong>Klinik Desa Kampung Lebu<\/strong>","<strong>Klinik Desa Kampung Mancis<\/strong>","<strong>Klinik Desa Kemansul<\/strong>","<strong>Klinik Desa Sertik (Felda)<\/strong>","<strong>Klinik Desa Sri Layang<\/strong>","<strong>Klinik Desa Sungai Dua<\/strong>","<strong>Klinik Desa Sungai Penjuring<\/strong>","<strong>Klinik Desa Taman Desa Damai<\/strong>","<strong>Klinik Desa Telemong<\/strong>","<strong>Klinik Desa Bukit Kepayang<\/strong>","<strong>Klinik Desa Bukit Puchong<\/strong>","<strong>Klinik Desa Durian Tawar<\/strong>","<strong>Klinik Desa Felda Tembangau<\/strong>","<strong>Klinik Desa Kampung Bohor Baru<\/strong>","<strong>Klinik Desa Kerayong<\/strong>","<strong>Klinik Desa Kuala Bera<\/strong>","<strong>Klinik Desa Kuala Triang<\/strong>","<strong>Klinik Desa Kumai<\/strong>","<strong>Klinik Desa Mayam<\/strong>","<strong>Klinik Desa Mengkarak<\/strong>","<strong>Klinik Desa Mengkuang<\/strong>","<strong>Klinik Desa Post Iskandar<\/strong>","<strong>Klinik Desa R/P Rentam<\/strong>","<strong>Klinik Desa Sungai Kemahal<\/strong>","<strong>Klinik Desa Triang 1<\/strong>","<strong>Klinik Desa Triang 3<\/strong>","<strong>Klinik Desa Kampung Raja<\/strong>","<strong>Klinik Desa Kuala Terla<\/strong>","<strong>Klinik Desa Lembah Bertam<\/strong>","<strong>Klinik Desa Ringlet<\/strong>","<strong>Klinik Desa Tringkap<\/strong>","<strong>Klinik Desa Batu Balai<\/strong>","<strong>Klinik Desa Bukit Dinding<\/strong>","<strong>Klinik Desa Bukit Genting<\/strong>","<strong>Klinik Desa Bukit Nikmat<\/strong>","<strong>Klinik Desa Jengka 12<\/strong>","<strong>Klinik Desa Jengka 13<\/strong>","<strong>Klinik Desa Jengka 24<\/strong>","<strong>Klinik Desa Jengka 9<\/strong>","<strong>Klinik Desa Jerantut Feri<\/strong>","<strong>Klinik Desa Kampung Baru<\/strong>","<strong>Klinik Desa Kampung Chebong<\/strong>","<strong>Klinik Desa Kampung Labu<\/strong>","<strong>Klinik Desa Kampung Pagi<\/strong>","<strong>Klinik Desa Kota Gelanggi I & Iii<\/strong>","<strong>Klinik Desa Kota Gelanggi Ii & Iv<\/strong>","<strong>Klinik Desa Kuala Sat<\/strong>","<strong>Klinik Desa Lepar Utara 3<\/strong>","<strong>Klinik Desa Mat Daling<\/strong>","<strong>Klinik Desa Padang Piol<\/strong>","<strong>Klinik Desa Paya Teh<\/strong>","<strong>Klinik Desa Pusat Penyelidikan Tun Razak<\/strong>","<strong>Klinik Desa Sungai Lekok<\/strong>","<strong>Klinik Desa Sungai Putat<\/strong>","<strong>Klinik Desa Sungai Retang<\/strong>","<strong>Klinik Desa Sungai Tekam Getah<\/strong>","<strong>Klinik Desa Temin<\/strong>","<strong>Klinik Desa Ulu Cheka<\/strong>","<strong>Klinik Desa Bukit Kuantan<\/strong>","<strong>Klinik Desa Bukit Kuin<\/strong>","<strong>Klinik Desa Bukit Sagu 1<\/strong>","<strong>Klinik Desa Bukit Sagu 4 & 5<\/strong>","<strong>Klinik Desa Chendor<\/strong>","<strong>Klinik Desa Cherating<\/strong>","<strong>Klinik Desa Cherok Paloh<\/strong>","<strong>Klinik Desa Indera Mahkota<\/strong>","<strong>Klinik Desa Kampung Alor Batu<\/strong>","<strong>Klinik Desa Kampung Kempadang<\/strong>","<strong>Klinik Desa Kampung Panching<\/strong>","<strong>Klinik Desa Kuala Kenau<\/strong>","<strong>Klinik Desa Lepar Hilir 1<\/strong>","<strong>Klinik Desa Lepar Hilir 2<\/strong>","<strong>Klinik Desa Lepar Hilir 3<\/strong>","<strong>Klinik Desa Paya Bungor<\/strong>","<strong>Klinik Desa Penor<\/strong>","<strong>Klinik Desa Permatang Badak<\/strong>","<strong>Klinik Desa R T P Bukit Goh<\/strong>","<strong>Klinik Desa Sg. Isap<\/strong>","<strong>Klinik Desa Sungai Panching Selatan (Felda)<\/strong>","<strong>Klinik Desa Sungai Panching Timur (Felda)<\/strong>","<strong>Klinik Desa Sungai Panching Utara<\/strong>","<strong>Klinik Desa Sungai Ular<\/strong>","<strong>Klinik Desa Tanjung Lumpur<\/strong>","<strong>Klinik Desa Bertang<\/strong>","<strong>Klinik Desa Chegar Perah/Paya<\/strong>","<strong>Klinik Desa Felda Chegar Perah<\/strong>","<strong>Klinik Desa Felda Kecau<\/strong>","<strong>Klinik Desa Jeransang<\/strong>","<strong>Klinik Desa Jerkoh<\/strong>","<strong>Klinik Desa Kampung Budu<\/strong>","<strong>Klinik Desa Kampung Chat<\/strong>","<strong>Klinik Desa Kampung Kemahang<\/strong>","<strong>Klinik Desa Kampung Penjom<\/strong>","<strong>Klinik Desa Kampung Relong<\/strong>","<strong>Klinik Desa Kampung Telang<\/strong>","<strong>Klinik Desa Kechau Tui<\/strong>","<strong>Klinik Desa Kerambit<\/strong>","<strong>Klinik Desa Kuala Kenong<\/strong>","<strong>Klinik Desa Kuala Lanar<\/strong>","<strong>Klinik Desa Kuala Medang<\/strong>","<strong>Klinik Desa Lubok Kulit<\/strong>","<strong>Klinik Desa Pos Betau<\/strong>","<strong>Klinik Desa Pos Lenjang<\/strong>","<strong>Klinik Desa Pos Sinderut<\/strong>","<strong>Klinik Desa Pos Titom<\/strong>","<strong>Klinik Desa Sentang/Pagar Sasak<\/strong>","<strong>Klinik Desa Tanjung Besar<\/strong>","<strong>Klinik Desa Tanjung Gahai<\/strong>","<strong>Klinik Desa Belimbing<\/strong>","<strong>Klinik Desa Bukit Tajau (Felda)<\/strong>","<strong>Klinik Desa Jengka 1<\/strong>","<strong>Klinik Desa Jengka 10<\/strong>","<strong>Klinik Desa Jengka 11<\/strong>","<strong>Klinik Desa Jengka 14<\/strong>","<strong>Klinik Desa Jengka 15<\/strong>","<strong>Klinik Desa Jengka 16<\/strong>","<strong>Klinik Desa Jengka 17<\/strong>","<strong>Klinik Desa Jengka 18<\/strong>","<strong>Klinik Desa Jengka 19<\/strong>","<strong>Klinik Desa Jengka 20<\/strong>","<strong>Klinik Desa Jengka 21<\/strong>","<strong>Klinik Desa Jengka 23<\/strong>","<strong>Klinik Desa Jengka 25<\/strong>","<strong>Klinik Desa Jengka 3<\/strong>","<strong>Klinik Desa Jengka 4<\/strong>","<strong>Klinik Desa Jengka 5<\/strong>","<strong>Klinik Desa Jengka 6<\/strong>","<strong>Klinik Desa Jengka 7<\/strong>","<strong>Klinik Desa Jengka Batu 13<\/strong>","<strong>Klinik Desa Kampung Awah (Felda)<\/strong>","<strong>Klinik Desa Kampung Luit<\/strong>","<strong>Klinik Desa Kampung New Zealand<\/strong>","<strong>Klinik Desa Kertau<\/strong>","<strong>Klinik Desa Kuala Sentul<\/strong>","<strong>Klinik Desa Kuala Wau<\/strong>","<strong>Klinik Desa Lubuk Paku<\/strong>","<strong>Klinik Desa Machang Gelap<\/strong>","<strong>Klinik Desa Paya Pasir<\/strong>","<strong>Klinik Desa Pekan Sari <\/strong>","<strong>Klinik Desa Pesagi<\/strong>","<strong>Klinik Desa Senggora<\/strong>","<strong>Klinik Desa Serengkam<\/strong>","<strong>Klinik Desa Sg. Jerek/Ng Tiong Kiat<\/strong>","<strong>Klinik Desa Sri Jaya<\/strong>","<strong>Klinik Desa Sri Makmur<\/strong>","<strong>Klinik Desa Sungai Nerek (Felda)<\/strong>","<strong>Klinik Desa Ulu Jempol<\/strong>","<strong>Klinik Desa Bandar 2<\/strong>","<strong>Klinik Desa Batu 8 Lepar<\/strong>","<strong>Klinik Desa Cini 2<\/strong>","<strong>Klinik Desa Cini 3(R.peneroka)<\/strong>","<strong>Klinik Desa Cini Timur (R.peneroka)<\/strong>","<strong>Klinik Desa Ganchong<\/strong>","<strong>Klinik Desa Kampung Marhum<\/strong>","<strong>Klinik Desa Kampung Merchong<\/strong>","<strong>Klinik Desa Kampung Pelak<\/strong>","<strong>Klinik Desa Kampung Sungai Miang<\/strong>","<strong>Klinik Desa Kota Perdana<\/strong>","<strong>Klinik Desa Kuala Pahang<\/strong>","<strong>Klinik Desa Langgar<\/strong>","<strong>Klinik Desa Lepar Hilir 7<\/strong>","<strong>Klinik Desa Mambang<\/strong>","<strong>Klinik Desa Pahang Tua<\/strong>","<strong>Klinik Desa Paloh Hinai<\/strong>","<strong>Klinik Desa Pasir Panjang<\/strong>","<strong>Klinik Desa Pulau Jawa<\/strong>","<strong>Klinik Desa Pulau Rusa<\/strong>","<strong>Klinik Desa Rps Runchang<\/strong>","<strong>Klinik Desa Salong<\/strong>","<strong>Klinik Desa Sawah Batu<\/strong>","<strong>Klinik Desa Simpai<\/strong>","<strong>Klinik Desa Tanjong Batu<\/strong>","<strong>Klinik Desa Tanjong Medang<\/strong>","<strong>Klinik Desa Tanjong Pulai<\/strong>","<strong>Klinik Desa Tanjong Selangor<\/strong>","<strong>Klinik Desa Temai<\/strong>","<strong>Klinik Desa Ubai<\/strong>","<strong>Klinik Desa Batu Malim<\/strong>","<strong>Klinik Desa Bukit Fraser<\/strong>","<strong>Klinik Desa Bukit Pampong<\/strong>","<strong>Klinik Desa Kampung Gali Hilir<\/strong>","<strong>Klinik Desa Kampung Gesing<\/strong>","<strong>Klinik Desa Krau 1<\/strong>","<strong>Klinik Desa Kuala Atok<\/strong>","<strong>Klinik Desa Pos Buntu<\/strong>","<strong>Klinik Desa Sang Lee<\/strong>","<strong>Klinik Desa Semantan<\/strong>","<strong>Klinik Desa Sungai Chetang<\/strong>","<strong>Klinik Desa Sungai Klau<\/strong>","<strong>Klinik Desa Sungai Ruan<\/strong>","<strong>Klinik Desa Tras<\/strong>","<strong>Klinik Desa Ulu Atok<\/strong>","<strong>Klinik Desa Ulu Dong<\/strong>","<strong>Klinik Desa Ulu Renggol<\/strong>","<strong>Klinik Desa Ulu Sungai<\/strong>","<strong>Klinik Desa Bukit Serok<\/strong>","<strong>Klinik Desa Buluh Nipis<\/strong>","<strong>Klinik Desa Cenderawasih<\/strong>","<strong>Klinik Desa Kampung Aur<\/strong>","<strong>Klinik Desa Kampung Juara<\/strong>","<strong>Klinik Desa Keratong 1<\/strong>","<strong>Klinik Desa Keratong 2<\/strong>","<strong>Klinik Desa Keratong 3<\/strong>","<strong>Klinik Desa Keratong 5<\/strong>","<strong>Klinik Desa Keratong 8<\/strong>","<strong>Klinik Desa Kota Bahagia<\/strong>","<strong>Klinik Desa Kpg. Genting<\/strong>","<strong>Klinik Desa Ladang Kosma<\/strong>","<strong>Klinik Desa Leban Chondong<\/strong>","<strong>Klinik Desa Mukut<\/strong>","<strong>Klinik Desa Pianggu<\/strong>","<strong>Klinik Desa Rps Kedaik<\/strong>","<strong>Klinik Desa Sawira<\/strong>","<strong>Klinik Desa Selancar 2<\/strong>","<strong>Klinik Desa Selancar 3<\/strong>","<strong>Klinik Desa Selancar 4<\/strong>","<strong>Klinik Desa Selendang<\/strong>","<strong>Klinik Desa Sepayang<\/strong>","<strong>Klinik Desa Bolok<\/strong>","<strong>Klinik Desa Bukit Damar<\/strong>","<strong>Klinik Desa Bukit Kelulut<\/strong>","<strong>Klinik Desa Caruk Puting<\/strong>","<strong>Klinik Desa Desa Bakti<\/strong>","<strong>Klinik Desa Desa Murni<\/strong>","<strong>Klinik Desa Jenderak Selatan (Felda)<\/strong>","<strong>Klinik Desa Jenderak Utara<\/strong>","<strong>Klinik Desa Kampung Bangau<\/strong>","<strong>Klinik Desa Kampung Bintang<\/strong>","<strong>Klinik Desa Kampung Guai<\/strong>","<strong>Klinik Desa Kampung Jenderak<\/strong>","<strong>Klinik Desa Kampung Penderas<\/strong>","<strong>Klinik Desa Kampung Raja<\/strong>","<strong>Klinik Desa Kerdau<\/strong>","<strong>Klinik Desa Kuala Kaung<\/strong>","<strong>Klinik Desa Kuala Mai<\/strong>","<strong>Klinik Desa Kuala Tekal<\/strong>","<strong>Klinik Desa Lakum<\/strong>","<strong>Klinik Desa Lebak<\/strong>","<strong>Klinik Desa Lebak Seberang<\/strong>","<strong>Klinik Desa Lipat Kajang<\/strong>","<strong>Klinik Desa Paya Pulai<\/strong>","<strong>Klinik Desa Paya Sok<\/strong>","<strong>Klinik Desa Purun<\/strong>","<strong>Klinik Desa Telok Sentang<\/strong>","<strong>Klinik Desa Ayer Kuning<\/strong>","<strong>Klinik Desa Batu 3<\/strong>","<strong>Klinik Desa Batu 6<\/strong>","<strong>Klinik Desa Batu Melintang<\/strong>","<strong>Klinik Desa Behrang Stesyen<\/strong>","<strong>Klinik Desa Behrang Ulu<\/strong>","<strong>Klinik Desa Changkat Sulaiman<\/strong>","<strong>Klinik Desa Chenderiang<\/strong>","<strong>Klinik Desa Gunung Besout (Felda)<\/strong>","<strong>Klinik Desa Jalan Ketoyong<\/strong>","<strong>Klinik Desa Jeram Mengkuang<\/strong>","<strong>Klinik Desa Kampung Banir<\/strong>","<strong>Klinik Desa Kampung Bikam<\/strong>","<strong>Klinik Desa Kampung Guntong<\/strong>","<strong>Klinik Desa Kampung Jambai<\/strong>","<strong>Klinik Desa Kampung Jaya<\/strong>","<strong>Klinik Desa Kampung Pasir<\/strong>","<strong>Klinik Desa Kampung Poh<\/strong>","<strong>Klinik Desa R.p. Gunung Besout 4<\/strong>","<strong>Klinik Desa Rasau<\/strong>","<strong>Klinik Desa Slim Village<\/strong>","<strong>Klinik Desa Sungai Behrang (Felda)<\/strong>","<strong>Klinik Desa Sungai Klah<\/strong>","<strong>Klinik Desa Sungai Lesong<\/strong>","<strong>Klinik Desa Tapah Road<\/strong>","<strong>Klinik Desa Temoh Pekan<\/strong>","<strong>Klinik Desa Temoh Stesyen<\/strong>","<strong>Klinik Desa Trolak Pekan<\/strong>","<strong>Klinik Desa Trolak Timur (Felda)<\/strong>","<strong>Klinik Desa Trolak Utara<\/strong>","<strong>Klinik Desa Ayer Itam<\/strong>","<strong>Klinik Desa Bagan Lalang<\/strong>","<strong>Klinik Desa Bagan Pasir <\/strong>","<strong>Klinik Desa Bagan Pasir Laut<\/strong>","<strong>Klinik Desa Batu 12<\/strong>","<strong>Klinik Desa Batu 8<\/strong>","<strong>Klinik Desa Changkat Jong<\/strong>","<strong>Klinik Desa Chikus<\/strong>","<strong>Klinik Desa Chui Chak<\/strong>","<strong>Klinik Desa Kampung Banjar<\/strong>","<strong>Klinik Desa Pekan Rabu<\/strong>","<strong>Klinik Desa Permatang <\/strong>","<strong>Klinik Desa Rungkup<\/strong>","<strong>Klinik Desa Selabak<\/strong>","<strong>Klinik Desa Selekoh<\/strong>","<strong>Klinik Desa Sungai Balai<\/strong>","<strong>Klinik Desa Sungai Dulang<\/strong>","<strong>Klinik Desa Sungai Lampam<\/strong>","<strong>Klinik Desa Sungai Manila<\/strong>","<strong>Klinik Desa Sungai Pergam<\/strong>","<strong>Klinik Desa Sungai Samak<\/strong>","<strong>Klinik Desa Sungai Tiang<\/strong>","<strong>Klinik Desa Sungai Tukang Sidin<\/strong>","<strong>Klinik Desa Sungai Tunku<\/strong>","<strong>Klinik Desa Tanjung Keramat<\/strong>","<strong>Klinik Desa Tanjung Sari<\/strong>","<strong>Klinik Desa Tebing Rebak<\/strong>","<strong>Klinik Desa Teluk Baru<\/strong>","<strong>Klinik Desa Teluk Buluh<\/strong>","<strong>Klinik Deas Kuala Kenering<\/strong>","<strong>Klinik Desa  Beng<\/strong>","<strong>Klinik Desa  Bukit Sapi<\/strong>","<strong>Klinik Desa  Gelok<\/strong>","<strong>Klinik Desa  Kerunai<\/strong>","<strong>Klinik Desa  Kota Tampan<\/strong>","<strong>Klinik Desa  Kuak<\/strong>","<strong>Klinik Desa Air Kala<\/strong>","<strong>Klinik Desa Air Panas<\/strong>","<strong>Klinik Desa Bandariang<\/strong>","<strong>Klinik Desa Chepor<\/strong>","<strong>Klinik Desa Felda Bersia<\/strong>","<strong>Klinik Desa Felda Papulut<\/strong>","<strong>Klinik Desa Kampung Air Ganda<\/strong>","<strong>Klinik Desa Kampung Tasek<\/strong>","<strong>Klinik Desa Klian Intan<\/strong>","<strong>Klinik Desa Kuak Luar<\/strong>","<strong>Klinik Desa Kuala Rui<\/strong>","<strong>Klinik Desa Lepang Nenering<\/strong>","<strong>Klinik Desa Luat<\/strong>","<strong>Klinik Desa Pahit Luar<\/strong>","<strong>Klinik Desa Sumpitan<\/strong>","<strong>Klinik Desa Tawai<\/strong>","<strong>Klinik Desa Bagan Tiang<\/strong>","<strong>Klinik Desa Balik Bukit Semanggol<\/strong>","<strong>Klinik Desa Batu 14<\/strong>","<strong>Klinik Desa Batu 38<\/strong>","<strong>Klinik Desa Bukit Merah<\/strong>","<strong>Klinik Desa Changkat Lobak<\/strong>","<strong>Klinik Desa Jalan Gula<\/strong>","<strong>Klinik Desa Kampung Dew<\/strong>","<strong>Klinik Desa Kampung Kedah<\/strong>","<strong>Klinik Desa Kampung Kedah 3<\/strong>","<strong>Klinik Desa Kedai Dua<\/strong>","<strong>Klinik Desa Lean Seng<\/strong>","<strong>Klinik Desa Matang Jelutong<\/strong>","<strong>Klinik Desa Nibong Hangus<\/strong>","<strong>Klinik Desa Padang Ladang<\/strong>","<strong>Klinik Desa Parit Haji Ali<\/strong>","<strong>Klinik Desa Parit Haji Amin<\/strong>","<strong>Klinik Desa Parit Haji Taib<\/strong>","<strong>Klinik Desa Parit Haji Wahab<\/strong>","<strong>Klinik Desa Parit Jawa<\/strong>","<strong>Klinik Desa Parit Tok Hin<\/strong>","<strong>Klinik Desa Parit Tok Ngah<\/strong>","<strong>Klinik Desa Selinsing<\/strong>","<strong>Klinik Desa Sungai Baru<\/strong>","<strong>Klinik Desa Sungai Bogak<\/strong>","<strong>Klinik Desa Sungai Gedung<\/strong>","<strong>Klinik Desa Sungai Labu<\/strong>","<strong>Klinik Desa Sungai Protan<\/strong>","<strong>Klinik Desa Tebok Matau<\/strong>","<strong>Klinik Desa Tebuk Panchor<\/strong>","<strong>Klinik Desa Teluk Pial<\/strong>","<strong>Klinik Desa Titi Serong<\/strong>","<strong>Klinik Desa Batu 8 (Pph Ulu Kinta)<\/strong>","<strong>Klinik Desa Bemban<\/strong>","<strong>Klinik Desa Bukit Pekan<\/strong>","<strong>Klinik Desa Changkat Tin<\/strong>","<strong>Klinik Desa Chendrong<\/strong>","<strong>Klinik Desa Gunung Panjang<\/strong>","<strong>Klinik Desa Jeram Mengkuang<\/strong>","<strong>Klinik Desa Kampung Bali<\/strong>","<strong>Klinik Desa Kampung Sahom<\/strong>","<strong>Klinik Desa Kampung Ulu Chepor<\/strong>","<strong>Klinik Desa Mambang Di Awan<\/strong>","<strong>Klinik Desa Pengkalan Pegoh<\/strong>","<strong>Klinik Desa Seri Rahmat<\/strong>","<strong>Klinik Desa Simpang Pulai<\/strong>","<strong>Klinik Desa Siputeh<\/strong>","<strong>Klinik Desa Sungai Durian<\/strong>","<strong>Klinik Desa Sungai Itek<\/strong>","<strong>Klinik Desa Sungai Terap<\/strong>","<strong>Klinik Desa Tambun<\/strong>","<strong>Klinik Desa Ulu Chemor<\/strong>","<strong>Klinik Desa Ara Panjang<\/strong>","<strong>Klinik Desa Bawong<\/strong>","<strong>Klinik Desa Bekor<\/strong>","<strong>Klinik Desa Beluru<\/strong>","<strong>Klinik Desa Benting<\/strong>","<strong>Klinik Desa Chegar Galah<\/strong>","<strong>Klinik Desa Elphil Estate<\/strong>","<strong>Klinik Desa Jalong<\/strong>","<strong>Klinik Desa Jamuan<\/strong>","<strong>Klinik Desa Jerlun<\/strong>","<strong>Klinik Desa Kampung Kenang<\/strong>","<strong>Klinik Desa Kampung Loh<\/strong>","<strong>Klinik Desa Kampung Lubok Merbau<\/strong>","<strong>Klinik Desa Kati<\/strong>","<strong>Klinik Desa Kota Lama Kanan<\/strong>","<strong>Klinik Desa Kota Lama Kiri<\/strong>","<strong>Klinik Desa Laneh<\/strong>","<strong>Klinik Desa Lasah (Felda)<\/strong>","<strong>Klinik Desa Menora<\/strong>","<strong>Klinik Desa Rimba Panjang<\/strong>","<strong>Klinik Desa Salak Baru<\/strong>","<strong>Klinik Desa Sayong <\/strong>","<strong>Klinik Desa Sewai<\/strong>","<strong>Klinik Desa Talang<\/strong>","<strong>Klinik Desa Temong Hulu <\/strong>","<strong>Klinik Desa Terosor<\/strong>","<strong>Klinik Desa Ulu Kenas<\/strong>","<strong>Klinik Desa Anak Kurau<\/strong>","<strong>Klinik Desa Ayer Putih<\/strong>","<strong>Klinik Desa Bagan Baru<\/strong>","<strong>Klinik Desa Batu Hampar<\/strong>","<strong>Klinik Desa Belia Pondok Tanjung<\/strong>","<strong>Klinik Desa Bukit Bertam<\/strong>","<strong>Klinik Desa Bukit Gantang<\/strong>","<strong>Klinik Desa Changkat Iboi<\/strong>","<strong>Klinik Desa Changkat Larah<\/strong>","<strong>Klinik Desa Felda Ijok<\/strong>","<strong>Klinik Desa Hujung Matang<\/strong>","<strong>Klinik Desa Jelai<\/strong>","<strong>Klinik Desa Kampung Cheh<\/strong>","<strong>Klinik Desa Kampung Masjid<\/strong>","<strong>Klinik Desa Kampung Perak Batu Kurau<\/strong>","<strong>Klinik Desa Kampung Perak Matang<\/strong>","<strong>Klinik Desa Kampung Pinang<\/strong>","<strong>Klinik Desa Kampung Repoh<\/strong>","<strong>Klinik Desa Kuala Trong<\/strong>","<strong>Klinik Desa Kubu Gajah<\/strong>","<strong>Klinik Desa Matang Batu<\/strong>","<strong>Klinik Desa Padang Gajah<\/strong>","<strong>Klinik Desa Pasir Hitam<\/strong>","<strong>Klinik Desa Permatang Raja<\/strong>","<strong>Klinik Desa Pondok Tanjung<\/strong>","<strong>Klinik Desa Rantau Panjang<\/strong>","<strong>Klinik Desa Sungai Ara<\/strong>","<strong>Klinik Desa Sungai Siputeh<\/strong>","<strong>Klinik Desa Temerloh<\/strong>","<strong>Klinik Desa Ulu Mengkuang<\/strong>","<strong>Klinik Desa Air Tawar Batu 16<\/strong>","<strong>Klinik Desa Batu 10 Lekir<\/strong>","<strong>Klinik Desa Batu 3<\/strong>","<strong>Klinik Desa Batu 8 Segari<\/strong>","<strong>Klinik Desa Felcra Lekir<\/strong>","<strong>Klinik Desa Kampong Teluk Kecil<\/strong>","<strong>Klinik Desa Kampung Banjar<\/strong>","<strong>Klinik Desa Kampung Baru<\/strong>","<strong>Klinik Desa Kampung Dato' Sri Kamaruddin<\/strong>","<strong>Klinik Desa Kampung Dendang<\/strong>","<strong>Klinik Desa Kampung Kayan<\/strong>","<strong>Klinik Desa Kampung Kedah<\/strong>","<strong>Klinik Desa Kampung Koh<\/strong>","<strong>Klinik Desa Kampung Panchor<\/strong>","<strong>Klinik Desa Kampung Raja Hitam<\/strong>","<strong>Klinik Desa Kampung Sitiawan<\/strong>","<strong>Klinik Desa Padang Serai<\/strong>","<strong>Klinik Desa Pasir Panjang Laut<\/strong>","<strong>Klinik Desa Pekan Gurney<\/strong>","<strong>Klinik Desa Pengkalan Baru<\/strong>","<strong>Klinik Desa Sungai Pinang Kecil<\/strong>","<strong>Klinik Desa Sungai Ramai<\/strong>","<strong>Klinik Desa Telaga Nenas<\/strong>","<strong>Klinik Desa Air Kuning<\/strong>","<strong>Klinik Desa Balun Bidai<\/strong>","<strong>Klinik Desa Belanja Kiri<\/strong>","<strong>Klinik Desa Bota Kanan<\/strong>","<strong>Klinik Desa Bukit Chupak<\/strong>","<strong>Klinik Desa Buloh Akar<\/strong>","<strong>Klinik Desa Felcra Nasarudin<\/strong>","<strong>Klinik Desa Kampung Sungai Galah<\/strong>","<strong>Klinik Desa Kota Setia<\/strong>","<strong>Klinik Desa Lambor Kanan<\/strong>","<strong>Klinik Desa Layang-Layang Kanan<\/strong>","<strong>Klinik Desa Layang-Layang Kiri<\/strong>","<strong>Klinik Desa Padang Changkat<\/strong>","<strong>Klinik Desa Pasir Gajah<\/strong>","<strong>Klinik Desa Pasir Garam<\/strong>","<strong>Klinik Desa Pasir Jenderis<\/strong>","<strong>Klinik Desa Pasir Puteh<\/strong>","<strong>Klinik Desa Pendiat<\/strong>","<strong>Klinik Desa Pulau Besar<\/strong>","<strong>Klinik Desa Pulau Tiga Kanan<\/strong>","<strong>Klinik Desa Pulau Tiga Kiri<\/strong>","<strong>Klinik Desa Selat Pulau<\/strong>","<strong>Klinik Desa Sungai Besar<\/strong>","<strong>Klinik Desa Sungai Jejawi<\/strong>","<strong>Klinik Desa Sungai Renggam<\/strong>","<strong>Klinik Desa Tanjung Belanja<\/strong>","<strong>Klinik Desa Tanjung Bidara<\/strong>","<strong>Klinik Desa Telok Bakong<\/strong>","<strong>Klinik Desa Teluk Kepayang<\/strong>","<strong>Klinik Desa Teluk Perang<\/strong>","<strong>Klinik Desa Teluk Sareh<\/strong>","<strong>Klinik Desa Teluk Sena<\/strong>","<strong>Klinik Desa Tepus<\/strong>","<strong>Klinik Desa Abi Batas Paip<\/strong>","<strong>Klinik Desa Batu Bertangkup<\/strong>","<strong>Klinik Desa Behor Lateh<\/strong>","<strong>Klinik Desa Behor Toi<\/strong>","<strong>Klinik Desa Bintong<\/strong>","<strong>Klinik Desa Felda Chuping<\/strong>","<strong>Klinik Desa Felda Mata Air<\/strong>","<strong>Klinik Desa Guar Nangka<\/strong>","<strong>Klinik Desa Guar Sanji<\/strong>","<strong>Klinik Desa Jejawi<\/strong>","<strong>Klinik Desa Kampung Surau <\/strong>","<strong>Klinik Desa Kepala Batas<\/strong>","<strong>Klinik Desa Long Boh<\/strong>","<strong>Klinik Desa Lubok Sireh<\/strong>","<strong>Klinik Desa Mata Air<\/strong>","<strong>Klinik Desa Padang Keria<\/strong>","<strong>Klinik Desa Padang Malau<\/strong>","<strong>Klinik Desa Padang Melangit<\/strong>","<strong>Klinik Desa Padang Pauh<\/strong>","<strong>Klinik Desa Padang Siding<\/strong>","<strong>Klinik Desa Panggas<\/strong>","<strong>Klinik Desa Pauh<\/strong>","<strong>Klinik Desa Santan<\/strong>","<strong>Klinik Desa Seberang Ramai<\/strong>","<strong>Klinik Desa Serdang<\/strong>","<strong>Klinik Desa Sungai Baru<\/strong>","<strong>Klinik Desa Sungai Padang<\/strong>","<strong>Klinik Desa Tambun Tulang<\/strong>","<strong>Klinik Desa Titi Tinggi<\/strong>","<strong>Klinik Desa Titi Tok Bandar<\/strong>","<strong>Klinik Desa Gertak Sanggul<\/strong>","<strong>Klinik Desa Kampung Perlis<\/strong>","<strong>Klinik Desa Pantai Acheh<\/strong>","<strong>Klinik Desa Permatang Damar Laut<\/strong>","<strong>Klinik Desa Permatang Pasir<\/strong>","<strong>Klinik Desa Pondok Upeh<\/strong>","<strong>Klinik Desa Relau<\/strong>","<strong>Klinik Desa Sungai Ara<\/strong>","<strong>Klinik Desa Sungai Batu<\/strong>","<strong>Klinik Desa Sungai Burung<\/strong>","<strong>Klinik Desa Sungai Pinang<\/strong>","<strong>Klinik Desa Telok Kumbar<\/strong>","<strong>Klinik Desa Batu Ferringhi<\/strong>","<strong>Klinik Desa Gelugor<\/strong>","<strong>Klinik Desa Paya Terubong<\/strong>","<strong>Klinik Desa Thean Teik<\/strong>","<strong>Klinik Desa Alma<\/strong>","<strong>Klinik Desa Bukit Indra Muda<\/strong>","<strong>Klinik Desa Bukit Tengah<\/strong>","<strong>Klinik Desa Juru<\/strong>","<strong>Klinik Desa Kampung Pertama<\/strong>","<strong>Klinik Desa Kampung Sekolah<\/strong>","<strong>Klinik Desa Kubang Ulu<\/strong>","<strong>Klinik Desa Macang Bubok<\/strong>","<strong>Klinik Desa Padang Ibu<\/strong>","<strong>Klinik Desa Permatang Pasir<\/strong>","<strong>Klinik Desa Permatang Pauh<\/strong>","<strong>Klinik Desa Permatang Rawa<\/strong>","<strong>Klinik Desa Permatang Tinggi<\/strong>","<strong>Klinik Desa Sungai Lembu<\/strong>","<strong>Klinik Desa Bagan Ajam<\/strong>","<strong>Klinik Desa Bagan Dalam<\/strong>","<strong>Klinik Desa Bumbung Lima<\/strong>","<strong>Klinik Desa Kampung Selamat<\/strong>","<strong>Klinik Desa Kuala Muda<\/strong>","<strong>Klinik Desa Lahar Kepar<\/strong>","<strong>Klinik Desa Lahar Yooi<\/strong>","<strong>Klinik Desa Padang Menora<\/strong>","<strong>Klinik Desa Pajak Song<\/strong>","<strong>Klinik Desa Pasir Gebu<\/strong>","<strong>Klinik Desa Paya Keladi<\/strong>","<strong>Klinik Desa Pekan Darat<\/strong>","<strong>Klinik Desa Permatang Bendahari<\/strong>","<strong>Klinik Desa Permatang Buloh<\/strong>","<strong>Klinik Desa Permatang Janggus<\/strong>","<strong>Klinik Desa Permatang Sintok<\/strong>","<strong>Klinik Desa Pinang Tunggal<\/strong>","<strong>Klinik Desa Pokok Sena<\/strong>","<strong>Klinik Desa Sungai Puyu<\/strong>","<strong>Klinik Desa Telok Air Tawar<\/strong>","<strong>Klinik Desa Tok Bedu<\/strong>","<strong>Klinik Desa Batu Kawan<\/strong>","<strong>Klinik Desa Bukit Tambun<\/strong>","<strong>Klinik Desa Changkat<\/strong>","<strong>Klinik Desa Permatang Tok Mahat<\/strong>","<strong>Klinik Desa Pulau Aman<\/strong>","<strong>Klinik Desa Sungai Bakau<\/strong>","<strong>Klinik Desa Sungai Duri<\/strong>","<strong>Klinik Desa Tanjung Berembang<\/strong>","<strong>Klinik Desa Tasek<\/strong>","<strong>Klinik Desa Valdor<\/strong>","<strong>Klinik Desa Wellesley<\/strong>","<strong>Klinik Desa Bangkalalak<\/strong>","<strong>Klinik Desa Binsuluk<\/strong>","<strong>Klinik Desa Bukau<\/strong>","<strong>Klinik Desa Gadong<\/strong>","<strong>Klinik Desa Kabajang<\/strong>","<strong>Klinik Desa Klias Scheme<\/strong>","<strong>Klinik Desa Lingkungan<\/strong>","<strong>Klinik Desa Lubak<\/strong>","<strong>Klinik Desa Pimping<\/strong>","<strong>Klinik Desa Sinoko<\/strong>","<strong>Klinik Desa Takuli<\/strong>","<strong>Klinik Desa Abuan<\/strong>","<strong>Klinik Desa Jambongan<\/strong>","<strong>Klinik Desa Kaniongan<\/strong>","<strong>Klinik Desa Kiabau<\/strong>","<strong>Klinik Desa Kolapis<\/strong>","<strong>Klinik Desa Lingkabau<\/strong>","<strong>Klinik Desa Tagas- Tagas<\/strong>","<strong>Klinik Desa Trusan Sugut<\/strong>","<strong>Klinik Desa Ansip<\/strong>","<strong>Klinik Desa Baginda<\/strong>","<strong>Klinik Desa Biah<\/strong>","<strong>Klinik Desa Bulu Silau<\/strong>","<strong>Klinik Desa Bunga Raya<\/strong>","<strong>Klinik Desa Dalit<\/strong>","<strong>Klinik Desa Karamatoi<\/strong>","<strong>Klinik Desa Kebatang Baru<\/strong>","<strong>Klinik Desa Merapok<\/strong>","<strong>Klinik Desa P. P. H. Kem<\/strong>","<strong>Klinik Desa Senagang<\/strong>","<strong>Klinik Desa Tiulon<\/strong>","<strong>Klinik Desa Tuarid Tuad<\/strong>","<strong>Klinik Desa Batu Putih<\/strong>","<strong>Klinik Desa Dudar<\/strong>","<strong>Klinik Desa Kaung Ulu<\/strong>","<strong>Klinik Desa Kebayau<\/strong>","<strong>Klinik Desa Kelawat<\/strong>","<strong>Klinik Desa Kiau<\/strong>","<strong>Klinik Desa Kuala Abai<\/strong>","<strong>Klinik Desa Lasau Takulung<\/strong>","<strong>Klinik Desa Pandasan<\/strong>","<strong>Klinik Desa Payas- Payas<\/strong>","<strong>Klinik Desa Pengkalan Abai<\/strong>","<strong>Klinik Desa Rampaian Laut<\/strong>","<strong>Klinik Desa Rosok<\/strong>","<strong>Klinik Desa Sayap<\/strong>","<strong>Klinik Desa Tamau<\/strong>","<strong>Klinik Desa Karambunai<\/strong>","<strong>Klinik Desa Kionsom<\/strong>","<strong>Klinik Desa Kokol<\/strong>","<strong>Klinik Desa Likas<\/strong>","<strong>Klinik Desa Promotodon<\/strong>","<strong>Klinik Desa Tombongan<\/strong>","<strong>Klinik Desa Gana<\/strong>","<strong>Klinik Desa Goshen<\/strong>","<strong>Klinik Desa Marak Parak<\/strong>","<strong>Klinik Desa Marudu<\/strong>","<strong>Klinik Desa Mosolog<\/strong>","<strong>Klinik Desa Salimandut<\/strong>","<strong>Klinik Desa Samparita<\/strong>","<strong>Klinik Desa Tagaroh<\/strong>","<strong>Klinik Desa Tanjong Batu<\/strong>","<strong>Klinik Desa Timbang Batu<\/strong>","<strong>Klinik Desa Bundu<\/strong>","<strong>Klinik Desa Kerukan<\/strong>","<strong>Klinik Desa Kiambor<\/strong>","<strong>Klinik Desa Bangau<\/strong>","<strong>Klinik Desa Dualog<\/strong>","<strong>Klinik Desa Indarason<\/strong>","<strong>Klinik Desa Lajong<\/strong>","<strong>Klinik Desa Milau<\/strong>","<strong>Klinik Desa Narandang<\/strong>","<strong>Klinik Desa Suangpai<\/strong>","<strong>Klinik Desa Tambuluran<\/strong>","<strong>Klinik Desa Lormalong<\/strong>","<strong>Klinik Desa Madai<\/strong>","<strong>Klinik Desa Bukit Belacan<\/strong>","<strong>Klinik Desa Cenderawasih<\/strong>","<strong>Klinik Desa Fajar Harapan<\/strong>","<strong>Klinik Desa Hamparan Badai<\/strong>","<strong>Klinik Desa Kembara Sakti<\/strong>","<strong>Klinik Desa Kuala Taburi<\/strong>","<strong>Klinik Desa Lamag<\/strong>","<strong>Klinik Desa Pulau Sakar<\/strong>","<strong>Klinik Desa Segama<\/strong>","<strong>Klinik Desa Sepagaya<\/strong>","<strong>Klinik Desa Silabukan<\/strong>","<strong>Klinik Desa Tanjung Labian<\/strong>","<strong>Klinik Desa Tengah Nipah<\/strong>","<strong>Klinik Desa Bahagia<\/strong>","<strong>Klinik Desa Pandewan<\/strong>","<strong>Klinik Desa Benoni<\/strong>","<strong>Klinik Desa Biau<\/strong>","<strong>Klinik Desa Gadong Kimanis<\/strong>","<strong>Klinik Desa Kawang<\/strong>","<strong>Klinik Desa Kelatuan<\/strong>","<strong>Klinik Desa Kuala Papar<\/strong>","<strong>Klinik Desa Pengalat Besar<\/strong>","<strong>Klinik Desa Simpudu<\/strong>","<strong>Klinik Desa Tibabar<\/strong>","<strong>Klinik Desa Ulu Kimanis<\/strong>","<strong>Klinik Desa Babagon<\/strong>","<strong>Klinik Desa Limbanak<\/strong>","<strong>Klinik Desa Moyog<\/strong>","<strong>Klinik Desa Nosoob<\/strong>","<strong>Klinik Desa Petagas<\/strong>","<strong>Klinik Desa Sungoi<\/strong>","<strong>Klinik Desa Bawing<\/strong>","<strong>Klinik Desa Kanibongan<\/strong>","<strong>Klinik Desa Mandurian<\/strong>","<strong>Klinik Desa Mapan- Mapan<\/strong>","<strong>Klinik Desa Mengkabau<\/strong>","<strong>Klinik Desa Pingan- Pingan<\/strong>","<strong>Klinik Desa Rosob<\/strong>","<strong>Klinik Desa Bongkud<\/strong>","<strong>Klinik Desa Kinarasan<\/strong>","<strong>Klinik Desa Lohan<\/strong>","<strong>Klinik Desa Malinsau<\/strong>","<strong>Klinik Desa Matupang<\/strong>","<strong>Klinik Desa Nalapak<\/strong>","<strong>Klinik Desa Narawang<\/strong>","<strong>Klinik Desa Pinawantai<\/strong>","<strong>Klinik Desa Rondugung<\/strong>","<strong>Klinik Desa Tampios<\/strong>","<strong>Klinik Desa Terolobou<\/strong>","<strong>Klinik Desa Batu 10<\/strong>","<strong>Klinik Desa Batu 7<\/strong>","<strong>Klinik Desa Berhala Darat<\/strong>","<strong>Klinik Desa Gum- Gum<\/strong>","<strong>Klinik Desa Karamunting<\/strong>","<strong>Klinik Desa Mumiang<\/strong>","<strong>Klinik Desa Nunuyan Laut<\/strong>","<strong>Klinik Desa Pulau Libaran<\/strong>","<strong>Klinik Desa Sibuga<\/strong>","<strong>Klinik Desa Tanjung Aru<\/strong>","<strong>Klinik Desa Tronglit<\/strong>","<strong>Klinik Desa Bait<\/strong>","<strong>Klinik Desa Bubul<\/strong>","<strong>Klinik Desa Egang- Egang<\/strong>","<strong>Klinik Desa Hampalan<\/strong>","<strong>Klinik Desa Kabogan<\/strong>","<strong>Klinik Desa Sungai Buaya<\/strong>","<strong>Klinik Desa Tagasan<\/strong>","<strong>Klinik Desa Tanjung Kapor<\/strong>","<strong>Klinik Desa Banting<\/strong>","<strong>Klinik Desa Long Pasia<\/strong>","<strong>Klinik Desa Malaman<\/strong>","<strong>Klinik Desa Mesapol<\/strong>","<strong>Klinik Desa Pantai<\/strong>","<strong>Klinik Desa Garas<\/strong>","<strong>Klinik Desa Kerokot<\/strong>","<strong>Klinik Desa Lotong<\/strong>","<strong>Klinik Desa Lumondou<\/strong>","<strong>Klinik Desa Nambayan<\/strong>","<strong>Klinik Desa Patau<\/strong>","<strong>Klinik Desa Rompon<\/strong>","<strong>Klinik Desa Toboh<\/strong>","<strong>Klinik Desa Tontolob Liwan<\/strong>","<strong>Klinik Desa Balung Cocos<\/strong>","<strong>Klinik Desa Kalabakan<\/strong>","<strong>Klinik Desa Kuala Merotai<\/strong>","<strong>Klinik Desa Quoin Hill<\/strong>","<strong>Klinik Desa Sungai Imam<\/strong>","<strong>Klinik Desa Tanjung Batu Darat<\/strong>","<strong>Klinik Desa Baru Jumpa<\/strong>","<strong>Klinik Desa Batu-Batu<\/strong>","<strong>Klinik Desa Lagud Sebarang<\/strong>","<strong>Klinik Desa Mandalom<\/strong>","<strong>Klinik Desa Paal<\/strong>","<strong>Klinik Desa Pamilaan<\/strong>","<strong>Klinik Desa Sapong<\/strong>","<strong>Klinik Desa Ulu Tomani<\/strong>","<strong>Klinik Desa Entilibon<\/strong>","<strong>Klinik Desa Karamuak<\/strong>","<strong>Klinik Desa Mengkawago<\/strong>","<strong>Klinik Desa Munusoh<\/strong>","<strong>Klinik Desa Bantayan<\/strong>","<strong>Klinik Desa Bolong<\/strong>","<strong>Klinik Desa Bundung<\/strong>","<strong>Klinik Desa Gaya Rantau<\/strong>","<strong>Klinik Desa Kauluan<\/strong>","<strong>Klinik Desa Kayangat<\/strong>","<strong>Klinik Desa Kelawat<\/strong>","<strong>Klinik Desa Mengkabong<\/strong>","<strong>Klinik Desa Pahu<\/strong>","<strong>Klinik Desa Pukak<\/strong>","<strong>Klinik Desa Serusop<\/strong>","<strong>Klinik Desa Simpangan<\/strong>","<strong>Klinik Desa Togop<\/strong>","<strong>Klinik Desa Topokon<\/strong>","<strong>Klinik Desa Krokong<\/strong>","<strong>Klinik Desa Siniawan<\/strong>","<strong>Klinik Desa Medong<\/strong>","<strong>Klinik Desa Bengoh<\/strong>","<strong>Klinik Desa Muara Tebas<\/strong>","<strong>Klinik Desa Kampung Teh<\/strong>","<strong>Klinik Desa Sungai Bayong<\/strong>","<strong>Klinik Desa Sungai Rusa<\/strong>","<strong>Klinik Desa Tamin<\/strong>","<strong>Klinik Desa Kedup<\/strong>","<strong>Klinik Desa Gombak Utara (Bt.8)<\/strong>","<strong>Klinik Desa Hulu Kelang<\/strong>","<strong>Klinik Desa Kampung Kenanga<\/strong>","<strong>Klinik Desa Kundang<\/strong>","<strong>Klinik Desa Selayang Baru<\/strong>","<strong>Klinik Desa Sungai Serai<\/strong>","<strong>Klinik Desa Balakong<\/strong>","<strong>Klinik Desa Bangi Lama<\/strong>","<strong>Klinik Desa Batu 18<\/strong>","<strong>Klinik Desa Broga<\/strong>","<strong>Klinik Desa Dusun Tua<\/strong>","<strong>Klinik Desa Kampong Padang<\/strong>","<strong>Klinik Desa Minangkabau<\/strong>","<strong>Klinik Desa Rinching Hilir<\/strong>","<strong>Klinik Desa Rincing Tengah<\/strong>","<strong>Klinik Desa Sungai Lalang<\/strong>","<strong>Klinik Desa Sungai Lui<\/strong>","<strong>Klinik Desa Sungai Ramal Luar<\/strong>","<strong>Klinik Desa Sungai Sekamat<\/strong>","<strong>Klinik Desa Sungai Tekali<\/strong>","<strong>Klinik Desa Batang Kali<\/strong>","<strong>Klinik Desa Gedangsa<\/strong>","<strong>Klinik Desa Genting Malek<\/strong>","<strong>Klinik Desa Hulu Rening<\/strong>","<strong>Klinik Desa Kampung Gesir Tengah<\/strong>","<strong>Klinik Desa Kampung Gurney<\/strong>","<strong>Klinik Desa Kerling<\/strong>","<strong>Klinik Desa Sungai Buaya<\/strong>","<strong>Klinik Desa Sungai Tengi<\/strong>","<strong>Klinik Desa Sungai Tengi Selatan<\/strong>","<strong>Klinik Desa Ulu Bernam<\/strong>","<strong>Klinik Desa Ulu Yam Lama<\/strong>","<strong>Klinik Desa Bagan Teochew<\/strong>","<strong>Klinik Desa Batu Belah Klang<\/strong>","<strong>Klinik Desa Bukit Kapar<\/strong>","<strong>Klinik Desa Bukit Naga<\/strong>","<strong>Klinik Desa Jalan Kebun<\/strong>","<strong>Klinik Desa Kampung Budiman<\/strong>","<strong>Klinik Desa Kampung Jawa<\/strong>","<strong>Klinik Desa Kampung Nenas<\/strong>","<strong>Klinik Desa Kampung Pendamar<\/strong>","<strong>Klinik Desa Kampung Tok Muda<\/strong>","<strong>Klinik Desa Padang Jawa<\/strong>","<strong>Klinik Desa Rantau Panjang<\/strong>","<strong>Klinik Desa Sementa<\/strong>","<strong>Klinik Desa Sungai Bertik<\/strong>","<strong>Klinik Desa Sungai Lima<\/strong>","<strong>Klinik Desa Sungai Serdang<\/strong>","<strong>Klinik Desa Sungai Udang<\/strong>","<strong>Klinik Desa Telok Gong<\/strong>","<strong>Klinik Desa Telok Menegon<\/strong>","<strong>Klinik Desa Batu Laut<\/strong>","<strong>Klinik Desa Kampung Endah<\/strong>","<strong>Klinik Desa Kampung Jenjarom<\/strong>","<strong>Klinik Desa Kampung Medan<\/strong>","<strong>Klinik Desa Kampung Sungai Lang<\/strong>","<strong>Klinik Desa Kanchong Tengah<\/strong>","<strong>Klinik Desa Kebun Baru<\/strong>","<strong>Klinik Desa Kelanang<\/strong>","<strong>Klinik Desa Kundang<\/strong>","<strong>Klinik Desa Labohan Dagang<\/strong>","<strong>Klinik Desa Morib<\/strong>","<strong>Klinik Desa Olak Lempit<\/strong>","<strong>Klinik Desa Permatang Pasir<\/strong>","<strong>Klinik Desa Sijangkang Dalam<\/strong>","<strong>Klinik Desa Sijangkang Luar<\/strong>","<strong>Klinik Desa Sri Cheeding<\/strong>","<strong>Klinik Desa Sungai Buaya<\/strong>","<strong>Klinik Desa Sungai Kelambu<\/strong>","<strong>Klinik Desa Teluk Bunut<\/strong>","<strong>Klinik Desa Tumbuk Darat<\/strong>","<strong>Kliik Desa Bukit Badong<\/strong>","<strong>Klinik Desa Asam Jawa<\/strong>","<strong>Klinik Desa Bagan Pasir<\/strong>","<strong>Klinik Desa Berjuntai Bestari<\/strong>","<strong>Klinik Desa Bukit Belimbing<\/strong>","<strong>Klinik Desa Bukit Cerakah<\/strong>","<strong>Klinik Desa Bukit Kerayong<\/strong>","<strong>Klinik Desa Bukit Kuching<\/strong>","<strong>Klinik Desa Kampung Jaya Setia<\/strong>","<strong>Klinik Desa Kampung Kuantan<\/strong>","<strong>Klinik Desa Parit Empat Ban 2<\/strong>","<strong>Klinik Desa Pasir Penambang<\/strong>","<strong>Klinik Desa Puncak Alam<\/strong>","<strong>Klinik Desa Raja Musa<\/strong>","<strong>Klinik Desa Sawah Sempadan<\/strong>","<strong>Klinik Desa Seri Tiram Jaya<\/strong>","<strong>Klinik Desa Sungai Burung<\/strong>","<strong>Klinik Desa Sungai Gulang-Gulang<\/strong>","<strong>Klinik Desa Sungai Sembilang<\/strong>","<strong>Klinik Desa Sungai Sireh<\/strong>","<strong>Klinik Desa Sungai Tengi Kanan<\/strong>","<strong>Klinik Desa Tiram Setia<\/strong>","<strong>Klinik Desa Batu 13 1/2<\/strong>","<strong>Klinik Desa Damansara<\/strong>","<strong>Klinik Desa Kampung Melayu Subang<\/strong>","<strong>Klinik Desa Merbau Sempak<\/strong>","<strong>Klinik Desa Paya Jaras<\/strong>","<strong>Klinik Desa Batu 4 Sepintas<\/strong>","<strong>Klinik Desa Kampung Banting<\/strong>","<strong>Klinik Desa Kampung Baru<\/strong>","<strong>Klinik Desa Kampung Batu 38<\/strong>","<strong>Klinik Desa Kampung Sekendi<\/strong>","<strong>Klinik Desa Kampung Sungai Pulai<\/strong>","<strong>Klinik Desa Kampung Sungai Tengar<\/strong>","<strong>Klinik Desa Lubuk Pusing<\/strong>","<strong>Klinik Desa Merbau Berdarah Iii<\/strong>","<strong>Klinik Desa Parit 12<\/strong>","<strong>Klinik Desa Parit 4<\/strong>","<strong>Klinik Desa Parit 6<\/strong>","<strong>Klinik Desa Parit 9<\/strong>","<strong>Klinik Desa Parit 9 Barat<\/strong>","<strong>Klinik Desa Parit Baru Baroh<\/strong>","<strong>Klinik Desa Pasir Panjang<\/strong>","<strong>Klinik Desa Simpang 4<\/strong>","<strong>Klinik Desa Simpang 5<\/strong>","<strong>Klinik Desa Sungai Burung<\/strong>","<strong>Klinik Desa Sungai Nibong<\/strong>","<strong>Klinik Desa Tebuk Mufrat<\/strong>","<strong>Klinik Desa Teluk Rhu<\/strong>","<strong>Klinik Desa Bukit Bangkong<\/strong>","<strong>Klinik Desa Dato Abu Bakar Baginda<\/strong>","<strong>Klinik Desa Geching<\/strong>","<strong>Klinik Desa Jenderam <\/strong>","<strong>Klinik Desa Pulau Meranti<\/strong>","<strong>Klinik Desa Rkt Sg. Merab Dalam<\/strong>","<strong>Klinik Desa Sepang<\/strong>","<strong>Klinik Desa Sg. Merab Luar<\/strong>","<strong>Klinik Desa Sungai Buah<\/strong>","<strong>Klinik Desa Ulu Cucuh<\/strong>","<strong>Kilnik Desa Keruak<\/strong>","<strong>Klinik Desa Air Tawar<\/strong>","<strong>Klinik Desa Alor Keladi<\/strong>","<strong>Klinik Desa Alor Lintah<\/strong>","<strong>Klinik Desa Anak Musang<\/strong>","<strong>Klinik Desa Apal<\/strong>","<strong>Klinik Desa Beris Baru<\/strong>","<strong>Klinik Desa Bukit Payong<\/strong>","<strong>Klinik Desa Felda Selasih<\/strong>","<strong>Klinik Desa Gong Bayor<\/strong>","<strong>Klinik Desa Gong Tanah Merah<\/strong>","<strong>Klinik Desa Kampung La<\/strong>","<strong>Klinik Desa Kerandang<\/strong>","<strong>Klinik Desa Padang Landak<\/strong>","<strong>Klinik Desa Pak Wong<\/strong>","<strong>Klinik Desa Pulau Perhentian<\/strong>","<strong>Klinik Desa Tembila<\/strong>","<strong>Klinik Desa Tempinis<\/strong>","<strong>Klinik Desa Tenang <\/strong>","<strong>Klinik Desa Tok Dor Dalam<\/strong>","<strong>Klinik Desa Bandar B1<\/strong>","<strong>Klinik Desa Delong<\/strong>","<strong>Klinik Desa Dendang<\/strong>","<strong>Klinik Desa Durian Mentangau<\/strong>","<strong>Klinik Desa Jerangau Barat<\/strong>","<strong>Klinik Desa Jongok Batu<\/strong>","<strong>Klinik Desa Kampung Nyior<\/strong>","<strong>Klinik Desa Kuala Jengal<\/strong>","<strong>Klinik Desa Nerang<\/strong>","<strong>Klinik Desa Padang Jambu<\/strong>","<strong>Klinik Desa Padang Pulut<\/strong>","<strong>Klinik Desa Pasir Raja<\/strong>","<strong>Klinik Desa Pulau Serai<\/strong>","<strong>Klinik Desa Seberang Pintasan<\/strong>","<strong>Klinik Desa Sura<\/strong>","<strong>Klinik Desa Tok Kah<\/strong>","<strong>Klinik Desa Bukit Apit<\/strong>","<strong>Klinik Desa Bukit Bading<\/strong>","<strong>Klinik Desa Bukit Diman<\/strong>","<strong>Klinik Desa Bukit Gemuruh<\/strong>","<strong>Klinik Desa Getang <\/strong>","<strong>Klinik Desa Kampung Buloh<\/strong>","<strong>Klinik Desa Kua<\/strong>","<strong>Klinik Desa Kuala Jeneris<\/strong>","<strong>Klinik Desa Menerong<\/strong>","<strong>Klinik Desa Mengkawang<\/strong>","<strong>Klinik Desa Padang Setar<\/strong>","<strong>Klinik Desa Pasir Tinggi<\/strong>","<strong>Klinik Desa Pauh<\/strong>","<strong>Klinik Desa Sungai Ular<\/strong>","<strong>Klinik Desa Tajin<\/strong>","<strong>Klinik Desa Tanggol<\/strong>","<strong>Klinik Desa Tersat<\/strong>","<strong>Klinik Desa Tok Dor<\/strong>","<strong>Klinik Desa Ayer Jernih<\/strong>","<strong>Klinik Desa Batu Putih<\/strong>","<strong>Klinik Desa Binjai<\/strong>","<strong>Klinik Desa Bukit Kuang<\/strong>","<strong>Klinik Desa Bukit Mentok<\/strong>","<strong>Klinik Desa Chabang<\/strong>","<strong>Klinik Desa Cherul<\/strong>","<strong>Klinik Desa Fikri Kemaman<\/strong>","<strong>Klinik Desa Ibok<\/strong>","<strong>Klinik Desa Kuala Kemaman<\/strong>","<strong>Klinik Desa Neram 1<\/strong>","<strong>Klinik Desa Neram 2<\/strong>","<strong>Klinik Desa Neram Tambahan 1<\/strong>","<strong>Klinik Desa Padang Kemunting<\/strong>","<strong>Klinik Desa Padang Kubu<\/strong>","<strong>Klinik Desa Pasir Gajah<\/strong>","<strong>Klinik Desa Paya Berenjut<\/strong>","<strong>Klinik Desa Perasing Jaya<\/strong>","<strong>Klinik Desa Seberang Tayor<\/strong>","<strong>Klinik Desa Tebak/Sungai Emas<\/strong>","<strong>Klinik Desa Telok Kalong<\/strong>","<strong>Klinik Desa Atas Tol<\/strong>","<strong>Klinik Desa Banggol Peradong<\/strong>","<strong>Klinik Desa Beladau Kolam<\/strong>","<strong>Klinik Desa Belara<\/strong>","<strong>Klinik Desa Bukit Cempaka<\/strong>","<strong>Klinik Desa Bukit Guntong<\/strong>","<strong>Klinik Desa Bukit Wan<\/strong>","<strong>Klinik Desa Chendering<\/strong>","<strong>Klinik Desa Durian Burong<\/strong>","<strong>Klinik Desa Gelugor<\/strong>","<strong>Klinik Desa Gemuroh<\/strong>","<strong>Klinik Desa Gong Pauh<\/strong>","<strong>Klinik Desa Gong Tok Nasek<\/strong>","<strong>Klinik Desa Kampung Laut<\/strong>","<strong>Klinik Desa Kebor Besar<\/strong>","<strong>Klinik Desa Kesom<\/strong>","<strong>Klinik Desa Kuala Ibai<\/strong>","<strong>Klinik Desa Losong<\/strong>","<strong>Klinik Desa Mengabang Telipot<\/strong>","<strong>Klinik Desa Padang Air<\/strong>","<strong>Klinik Desa Pangadang Baru<\/strong>","<strong>Klinik Desa Pantai Batu Rakit<\/strong>","<strong>Klinik Desa Petai Bubus<\/strong>","<strong>Klinik Desa Pulau Bahagia<\/strong>","<strong>Klinik Desa Pulau Duyong<\/strong>","<strong>Klinik Desa Pulau Redang<\/strong>","<strong>Klinik Desa Pulau Rusa<\/strong>","<strong>Klinik Desa Seberang Takir<\/strong>","<strong>Klinik Desa Serada<\/strong>","<strong>Klinik Desa Tualang<\/strong>","<strong>Klinik Desa Batangan<\/strong>","<strong>Klinik Desa Binjai Rendah<\/strong>","<strong>Klinik Desa Bukit Perpat<\/strong>","<strong>Klinik Desa Jambu Bongkok<\/strong>","<strong>Klinik Desa Jerong Seberang<\/strong>","<strong>Klinik Desa Medan Jaya<\/strong>","<strong>Klinik Desa Merchang<\/strong>","<strong>Klinik Desa Pasir Puteh<\/strong>","<strong>Klinik Desa Pulau Kerengga<\/strong>","<strong>Klinik Desa Rawai<\/strong>","<strong>Klinik Desa Rhu Muda<\/strong>","<strong>Klinik Desa Rusila<\/strong>","<strong>Klinik Desa Setor Kanan<\/strong>","<strong>Klinik Desa Tebakang<\/strong>","<strong>Klinik Desa Undang/Mak Kemas<\/strong>","<strong>Klinik Desa Banggol<\/strong>","<strong>Klinik Desa Bari Besar<\/strong>","<strong>Klinik Desa Bintang<\/strong>","<strong>Klinik Desa Bukit Mondok<\/strong>","<strong>Klinik Desa Chalok Barat (Felda)<\/strong>","<strong>Klinik Desa Fikri Permaisuri<\/strong>","<strong>Klinik Desa Gong Terap<\/strong>","<strong>Klinik Desa Guntong Luar<\/strong>","<strong>Klinik Desa Langkap<\/strong>","<strong>Klinik Desa Merang<\/strong>","<strong>Klinik Desa Pelong<\/strong>","<strong>Klinik Desa Penarik<\/strong>","<strong>Klinik Desa Sungai Lerek<\/strong>","<strong>Klinik Desa Batu Manikar<\/strong>","<strong>Klinik Desa Bebuloh<\/strong>","<strong>Klinik Desa Bukit Kalam<\/strong>","<strong>Klinik Desa Lajau<\/strong>","<strong>Klinik Desa Layang-Layang<\/strong>","<strong>Klinik Desa Lubok Temiang<\/strong>","<strong>Klinik Desa Ranca-Ranca<\/strong>","<strong>Klinik Desa Sungai Keling<\/strong>","<strong>Klinik Desa Sungai Lada<\/strong>","<strong>Klinik Desa Tanjong Aru<\/strong>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMiniMap","args":[null,"OpenStreetMap","bottomright",150,150,19,19,-3,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"limits":{"lat":[1.123323,6.997895],"lng":[99.70297,119.23639]}},"evals":[],"jsHooks":[]}</script>
+<p>Notice that the coordinates look more accurate as compared to the map I created with <code>ggplot2</code> previously.</p>
+<p>References:</p>
+<ul>
+<li><a href="https://lauriebaker.rbind.io/post/where_work/" class="uri">https://lauriebaker.rbind.io/post/where_work/</a></li>
+<li><a href="https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/" class="uri">https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/</a></li>
+</ul>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/spatial/">spatial</a>
+  
+  <a class="badge badge-light" href="/tag/map/">map</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://tengkuhanis.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/tengku-muhammad-hanis/avatar_hu2282885c81c6fc6803200ba05db8fa19_124392_270x270_fill_q90_lanczos_center.jpg" alt="Tengku Muhammad Hanis"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://tengkuhanis.netlify.app/">Tengku Muhammad Hanis</a></h5>
+      <h6 class="card-subtitle">PhD student (Public Health Epidemiology)</h6>
+      <p class="card-text">My research interests include medical statistics and machine learning application.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.researchgate.net/profile/Tengku-Muhammad-Hanis" target="_blank" rel="noopener">
+        <i class="fab fa-researchgate"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=VV2bHQcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/tengku-hanis" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/tmhanis" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/making-maps-with-r-my-first-attempt-ever/">Making maps with R (my first attempt ever!)</a></li>
+      
+      <li><a href="/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+      
+      <li><a href="/post/some-covid-19-plots-for-southeast-asian-countries/">Some COVID-19 plots for Southeast Asian countries</a></li>
+      
+      <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
+      
+      <li><a href="/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    ©Tengku Hanis 2020-2021 Made with <a href="https://github.com/rstudio/blogdown">blogdown</a>
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.a30e17c6197f21f7f966f9a6cd022a55.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

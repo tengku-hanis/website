@@ -1,0 +1,135 @@
+---
+title: My first interactive map with {leaflet}
+author: tengku-hanis
+date: '2021-11-28'
+slug: my-first-interactive-map-with-leaflet
+categories:
+  - R
+  - Map
+tags:
+  - spatial
+  - map
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-11-28T09:56:59+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+I have tried creating a map with ggplot2 [previously](https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/). In this post, I will try to create an interactive map using `leaflet` package in R.
+
+These are the required packages.
+
+```{r}
+library(tidyverse)
+library(tidygeocoder)
+library(leaflet)
+```
+
+So, I'm going to use a clinics location data in Malaysia. I already uploaded this data tomy [GitHub repo](https://github.com/tengku-hanis/clinic-data). I will skip the explanation for the pre-processing part, but it is the same pre-processing as my [previous post](https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/).
+
+```{r}
+# Read the data
+clinic1m <- read.csv("https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinic1m.csv")
+clinicDesa <- read.csv("https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv")
+```
+
+<details>
+  <summary>Show code for pre-processing</summary>
+```{r}
+# Get the missing coordinate based on postal codes
+clinic1m2 <- 
+  clinic1m %>%
+  mutate(country = "malaysia") %>% 
+  select(name, postcode, country) %>% 
+  mutate(postcode = ifelse(nchar(postcode) == 4, paste0(0, postcode), postcode)) %>%
+  geocode(postalcode = postcode, country = country, method = "osm")
+
+# Add coordinate from external sources for the still missing coordinates
+add_coord <- 
+  read.table(header = T, text = "
+postal_code    latitude   longitude
+16070            6.0334    102.3499
+26060            3.6228    102.3926
+90700            5.8456    118.0571
+26060            3.6228    102.3926")
+
+# Drop clinics with the still missing coordinate
+clinic1m2 <- 
+  clinic1m2 %>% 
+  mutate(lat = ifelse(postcode %in% add_coord$postal_code, add_coord$latitude, lat), 
+         long = ifelse(postcode %in% add_coord$postal_code, add_coord$longitude, long)) %>% 
+  drop_na() #drop 2 clinic1m
+
+# Bind the 2 data
+all_clinic <- 
+  clinic1m2 %>% 
+  mutate(Type = "1Malaysia") %>% 
+  select(name, Type, lat, long) %>% 
+  bind_rows(clinicDesa %>% 
+              mutate(Type = "Desa", 
+                     lat = latitude, 
+                     long = longitude) %>% 
+              select(name, Type, lat, long)) %>% 
+  mutate(name = str_to_title(name))
+```
+</details>
+
+First, we going to plot the coordinates to see if there is anything strange.
+
+```{r}
+ggplot(all_clinic, aes(long, lat, color = Type)) +
+  geom_point() +
+  theme_minimal()
+```
+
+So, we are going to remove the two isolated points as seen from the plot.
+
+```{r}
+all_clinic2 <- all_clinic %>% filter(long > 25)
+```
+
+Once we have our data ready, we can supply to `leaflet`. We can choose the type of map from `addProviderTiles()`. Some need an api, but the one we choose here does not. We supply the longitude and latitude of our data to `addCircleMarkers()`, and `clusterOptions` to cluster our data.
+
+```{r}
+leaflet(all_clinic2) %>% 
+  addProviderTiles(providers$Stamen.Watercolor) %>%
+  addProviderTiles(providers$Stamen.TerrainLabels) %>%
+  addCircleMarkers(~long, ~lat, 
+                   clusterOptions = markerClusterOptions())
+```
+
+Next, we can add a label.
+
+```{r}
+labels <- 
+  sprintf("<strong>%s</strong>", all_clinic$name) %>% 
+  lapply(htmltools::HTML)
+```
+
+Also, we can add a minimap to our map. Here, I change the type of map to a more appropriate one.
+
+```{r}
+leaflet(all_clinic2) %>% 
+  addProviderTiles(providers$OpenStreetMap) %>%
+  addCircleMarkers(~long, ~lat, popup = ~labels, # popup add the label
+                   clusterOptions = markerClusterOptions()) %>% 
+    # add a minimap
+  addMiniMap(tiles = providers$OpenStreetMap, zoomLevelOffset = -3)
+```
+
+Notice that the coordinates look more accurate as compared to the map I created with `ggplot2` previously.
+
+References:
+
+-   <https://lauriebaker.rbind.io/post/where_work/>
+-   <https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/>
