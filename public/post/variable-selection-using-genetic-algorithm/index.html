@@ -1,0 +1,1463 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Tengku Muhammad Hanis">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="BackgroundGenetic algorithm is inspired by a natural selection process by which the fittest individuals be selected to reproduce. This algorithm has been used in optimization and search problem, and also, can be used for variable selection.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
+
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Tengku Hanis">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/">
+  <meta property="og:title" content="Variable selection using genetic algorithm | Tengku Hanis">
+  <meta property="og:description" content="BackgroundGenetic algorithm is inspired by a natural selection process by which the fittest individuals be selected to reproduce. This algorithm has been used in optimization and search problem, and also, can be used for variable selection."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2022-01-02T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2022-01-02T09:09:43&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/"
+  },
+  "headline": "Variable selection using genetic algorithm",
+  
+  "datePublished": "2022-01-02T00:00:00Z",
+  "dateModified": "2022-01-02T09:09:43+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Tengku Muhammad Hanis"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tengku Hanis",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "Background\rGenetic algorithm is inspired by a natural selection process by which the fittest individuals be selected to reproduce. This algorithm has been used in optimization and search problem, and also, can be used for variable selection."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Variable selection using genetic algorithm | Tengku Hanis</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Ongoing</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Blog</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>Light</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>Dark</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>Automatic</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Variable selection using genetic algorithm</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Jan 2, 2022
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/machine-learning/">Machine Learning</a>, <a href="/category/applied-statistics/">applied statistics</a>, <a href="/category/variable-selection/">variable selection</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>Genetic algorithm is inspired by a natural selection process by which the fittest individuals be selected to reproduce. This algorithm has been used in optimization and search problem, and also, can be used for variable selection.</p>
+<div class="figure">
+<img src="images/ga_fig.png" alt="" />
+<p class="caption">Genetic algorithm - gene, chromosome, population, crossover (upper right), offspring (lower right)</p>
+</div>
+<p>First, let’s go into a few terms related to genetic algorithm theory.</p>
+<ol style="list-style-type: decimal">
+<li>Population - a set of chromosomes<br />
+</li>
+<li>Chromosome - a subset of variables (also known as individual by some reference)<br />
+</li>
+<li>Gene - a variable or feature<br />
+</li>
+<li>Fitness function - give fitness score to each chromosome and guide the selection<br />
+</li>
+<li>Selection - a process to select the two chromosome known as parents<br />
+</li>
+<li>Crossover - a process to generate offspring by parents (illustrate in the picture above, on the upper right side)<br />
+</li>
+<li>Mutation - the process by which the gene in the chromosome is randomly flipped into 1 or 0</li>
+</ol>
+<div class="figure">
+<img src="images/mutation.png" width="250" alt="" />
+<p class="caption">Mutation</p>
+</div>
+<p>So, the basic flow of genetic algorithm:</p>
+<ol style="list-style-type: decimal">
+<li><p>Algorithm starts with an initial population, often randomly generated<br />
+</p></li>
+<li><p>Create a successive generation by selecting a portion of the initial population (the selection is guided by the fitness function) - this includes selection -&gt; crossover -&gt; mutation<br />
+</p></li>
+<li><p>The algorithm terminates if certain predetermined criteria are met such as:</p>
+<ul>
+<li>Solution satisfies the minimum criteria<br />
+</li>
+<li>Fixed number of generation reached<br />
+</li>
+<li>Successive iteration no longer produce a better result</li>
+</ul></li>
+</ol>
+</div>
+<div id="example-in-r" class="section level2">
+<h2>Example in R</h2>
+<p>There is <code>GA</code> package in R, where we can implement the genetic algorithm a bit more manually where we can specify our own fitness function. However, I think it is easier to use a genetic algorithm implemented in <code>caret</code> package for variable selection.</p>
+<p>Load the packages.</p>
+<pre class="r"><code>library(caret)
+library(tidyverse)
+library(rsample)
+library(recipes)</code></pre>
+<p>The data.</p>
+<pre class="r"><code>dat &lt;- 
+  mtcars %&gt;% 
+  mutate(across(c(vs, am), as.factor),
+         am = fct_recode(am, auto = &quot;0&quot;, man = &quot;1&quot;))
+str(dat)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 2 2 1 2 1 2 2 2 ...
+##  $ am  : Factor w/ 2 levels &quot;auto&quot;,&quot;man&quot;: 2 2 2 1 1 1 1 1 1 1 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<p>For this, we going to use random forest (<code>rfGA</code>). Other options are bagged tree (<code>treebagGA</code>) and <code>caretGA</code>. We are able to use other method in <code>caret</code> if we use <code>caretGA</code>.</p>
+<pre class="r"><code># specify control
+ga_ctrl &lt;- gafsControl(functions = rfGA, method = &quot;cv&quot;, number = 5)
+
+# run random forest
+set.seed(123)
+rf_ga &lt;- gafs(x = dat %&gt;% select(-am), 
+              y = dat$am,
+              iters = 5,
+              gafsControl = ga_ctrl)
+rf_ga</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 32 samples
+## 10 predictors
+## 2 classes: &#39;auto&#39;, &#39;man&#39; 
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: Accuracy, Kappa
+## Subset selection driven to maximize internal Accuracy 
+## 
+## External performance values: Accuracy, Kappa
+## Best iteration chose by maximizing external Accuracy 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     qsec (60%), wt (60%), disp (40%), gear (40%), vs (40%)
+##   * on average, 3.2 variables were selected (min = 1, max = 7)
+## 
+## In the final search using the entire training set:
+##    * 7 features selected at iteration 3 including:
+##      cyl, hp, drat, qsec, vs ... 
+##    * external performance at this iteration is
+## 
+##    Accuracy       Kappa 
+##      0.9429      0.8831</code></pre>
+<p>The optimal features/variables:</p>
+<pre class="r"><code>rf_ga$optVariables</code></pre>
+<pre><code>## [1] &quot;cyl&quot;  &quot;hp&quot;   &quot;drat&quot; &quot;qsec&quot; &quot;vs&quot;   &quot;gear&quot; &quot;carb&quot;</code></pre>
+<p>This is the time taken for random forest approach.</p>
+<pre class="r"><code>rf_ga$times</code></pre>
+<pre><code>## $everything
+##    user  system elapsed 
+##   51.22    1.25   52.92</code></pre>
+<p>By default the algorithm will find a solution or a set of variable that reduce RMSE for numerical outcome, and accuracy for categorical outcome. Also, genetic algorithm tend to overfit, that’s why for the implementation in <code>caret</code> we have internal and external performance. So, for the 10-fold cross-validation, 10 genetic algorithm will be run separately. All the first nine folds are used for the genetic algorithm, and the 10th for external performance evaluation.</p>
+<p>Let’s try a variable selection using linear regression model.</p>
+<pre class="r"><code># specify control
+lm_ga_ctrl &lt;- gafsControl(functions = caretGA, method = &quot;cv&quot;, number = 5)
+
+# run lm
+set.seed(123)
+lm_ga &lt;- gafs(x = dat %&gt;% select(-mpg), 
+              y = dat$mpg,
+              iters = 5,
+              gafsControl = lm_ga_ctrl,
+              # below is the option for `train`
+              method = &quot;lm&quot;,
+              trControl = trainControl(method = &quot;cv&quot;, allowParallel = F))
+lm_ga</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 32 samples
+## 10 predictors
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: RMSE, Rsquared, MAE
+## Subset selection driven to minimize internal RMSE 
+## 
+## External performance values: RMSE, Rsquared, MAE
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     wt (100%), hp (80%), carb (60%), cyl (60%), am (40%)
+##   * on average, 4.4 variables were selected (min = 4, max = 5)
+## 
+## In the final search using the entire training set:
+##    * 5 features selected at iteration 5 including:
+##      cyl, disp, hp, wt, qsec  
+##    * external performance at this iteration is
+## 
+##        RMSE    Rsquared         MAE 
+##      3.3434      0.7624      2.6037</code></pre>
+<p>Now, let’s see how to integrate this in machine learning flow using recipes from <code>rsample</code>.</p>
+<p>First, we split the data.</p>
+<pre class="r"><code>set.seed(123)
+dat_split &lt;-initial_split(dat)
+dat_train &lt;- training(dat_split)
+dat_test &lt;- testing(dat_split)</code></pre>
+<p>We specify two recipes for numerical and categorical outcome.</p>
+<pre class="r"><code># Numerical
+rec_num &lt;- 
+  recipe(mpg ~., data = dat_train) %&gt;% 
+  step_center(all_numeric()) %&gt;% 
+  step_dummy(all_nominal_predictors())
+
+# Categorical
+rec_cat &lt;- 
+  recipe(am ~., data = dat_train) %&gt;% 
+  step_center(all_numeric()) %&gt;% 
+  step_dummy(all_nominal_predictors())</code></pre>
+<p>We run random forest for numerical outcome recipes.</p>
+<pre class="r"><code># specify control
+rf_ga_ctrl &lt;- gafsControl(functions = rfGA, method = &quot;cv&quot;, number = 5)
+
+# run random forest
+set.seed(123)
+rf_ga2 &lt;- 
+  gafs(rec_num,
+       data = dat_train,
+       iters = 5, 
+       gafsControl = rf_ga_ctrl) 
+rf_ga2</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 24 samples
+## 10 predictors
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: RMSE, Rsquared
+## Subset selection driven to minimize internal RMSE 
+## 
+## External performance values: RMSE, Rsquared, MAE
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     cyl (80%), disp (80%), hp (80%), wt (80%), carb (60%)
+##   * on average, 4.8 variables were selected (min = 2, max = 9)
+## 
+## In the final search using the entire training set:
+##    * 6 features selected at iteration 5 including:
+##      cyl, disp, hp, wt, gear ... 
+##    * external performance at this iteration is
+## 
+##       RMSE   Rsquared        MAE 
+##      2.830      0.928      2.408</code></pre>
+<p>The optimal variables.</p>
+<pre class="r"><code>rf_ga2$optVariables</code></pre>
+<pre><code>## [1] &quot;cyl&quot;   &quot;disp&quot;  &quot;hp&quot;    &quot;wt&quot;    &quot;gear&quot;  &quot;vs_X1&quot;</code></pre>
+<p>Let’s try run SVM for the numerical outcome recipes.</p>
+<pre class="r"><code># specify control
+svm_ga_ctrl &lt;- gafsControl(functions = caretGA, method = &quot;cv&quot;, number = 5)
+
+# run SVM
+set.seed(123)
+svm_ga &lt;- 
+  gafs(rec_cat,
+       data = dat_train,
+       iters = 5, 
+       gafsControl = svm_ga_ctrl,
+       # below is the options to `train` for caretGA
+       method = &quot;svmRadial&quot;, #SVM with Radial Basis Function Kernel
+       trControl = trainControl(method = &quot;cv&quot;, allowParallel = T))
+svm_ga</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 24 samples
+## 10 predictors
+## 2 classes: &#39;auto&#39;, &#39;man&#39; 
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: Accuracy, Kappa
+## Subset selection driven to maximize internal Accuracy 
+## 
+## External performance values: Accuracy, Kappa
+## Best iteration chose by maximizing external Accuracy 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     wt (80%), qsec (60%), vs_X1 (60%), carb (40%), disp (40%)
+##   * on average, 4 variables were selected (min = 3, max = 6)
+## 
+## In the final search using the entire training set:
+##    * 9 features selected at iteration 2 including:
+##      mpg, cyl, disp, hp, drat ... 
+##    * external performance at this iteration is
+## 
+##    Accuracy       Kappa 
+##      0.9200      0.8571</code></pre>
+<p>The optimal variables.</p>
+<pre class="r"><code>svm_ga$optVariables</code></pre>
+<pre><code>## [1] &quot;mpg&quot;   &quot;cyl&quot;   &quot;disp&quot;  &quot;hp&quot;    &quot;drat&quot;  &quot;wt&quot;    &quot;qsec&quot;  &quot;carb&quot;  &quot;vs_X1&quot;</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Although genetic algorithm seems quite good for variable selection, the main limitation I would say is the computational time. However, if we have a lot of variables or features to reduced, using the genetic algorithm despite the long computational time seems beneficial to me.</p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#ga" class="uri">https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#ga</a><br />
+</li>
+<li><a href="https://towardsdatascience.com/introduction-to-genetic-algorithms-including-example-code-e396e98d8bf3" class="uri">https://towardsdatascience.com/introduction-to-genetic-algorithms-including-example-code-e396e98d8bf3</a><br />
+</li>
+<li><a href="https://towardsdatascience.com/feature-selection-using-genetic-algorithms-in-r-3d9252f1aa66" class="uri">https://towardsdatascience.com/feature-selection-using-genetic-algorithms-in-r-3d9252f1aa66</a></li>
+</ul>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
+  <a class="badge badge-light" href="/tag/variable-selection/">variable selection</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://tengkuhanis.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/tengku-muhammad-hanis/avatar_hu2282885c81c6fc6803200ba05db8fa19_124392_270x270_fill_q90_lanczos_center.jpg" alt="Tengku Muhammad Hanis"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://tengkuhanis.netlify.app/">Tengku Muhammad Hanis</a></h5>
+      <h6 class="card-subtitle">PhD student (Public Health Epidemiology)</h6>
+      <p class="card-text">My research interests include medical statistics and machine learning application.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.researchgate.net/profile/Tengku-Muhammad-Hanis" target="_blank" rel="noopener">
+        <i class="fab fa-researchgate"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=VV2bHQcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/tengku-hanis" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/tmhanis" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/handling-imbalanced-data/">Handling imbalanced data</a></li>
+      
+      <li><a href="/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+      
+      <li><a href="/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a></li>
+      
+      <li><a href="/post/hyperparameter-tuning-in-tidymodels/">Hyperparameter tuning in tidymodels</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    ©Tengku Hanis 2020-2022 Made with <a href="https://github.com/rstudio/blogdown">blogdown</a>
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.a30e17c6197f21f7f966f9a6cd022a55.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

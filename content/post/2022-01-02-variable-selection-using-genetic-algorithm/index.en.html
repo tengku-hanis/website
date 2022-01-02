@@ -1,0 +1,320 @@
+---
+title: Variable selection using genetic algorithm
+author: ''
+date: '2022-01-02'
+slug: variable-selection-using-genetic-algorithm
+categories:
+  - Machine Learning
+  - applied statistics
+  - variable selection
+tags:
+  - Machine Learning
+  - variable selection
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-01-02T09:09:43+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>Genetic algorithm is inspired by a natural selection process by which the fittest individuals be selected to reproduce. This algorithm has been used in optimization and search problem, and also, can be used for variable selection.</p>
+<div class="figure">
+<img src="images/ga_fig.png" alt="" />
+<p class="caption">Genetic algorithm - gene, chromosome, population, crossover (upper right), offspring (lower right)</p>
+</div>
+<p>First, let’s go into a few terms related to genetic algorithm theory.</p>
+<ol style="list-style-type: decimal">
+<li>Population - a set of chromosomes<br />
+</li>
+<li>Chromosome - a subset of variables (also known as individual by some reference)<br />
+</li>
+<li>Gene - a variable or feature<br />
+</li>
+<li>Fitness function - give fitness score to each chromosome and guide the selection<br />
+</li>
+<li>Selection - a process to select the two chromosome known as parents<br />
+</li>
+<li>Crossover - a process to generate offspring by parents (illustrate in the picture above, on the upper right side)<br />
+</li>
+<li>Mutation - the process by which the gene in the chromosome is randomly flipped into 1 or 0</li>
+</ol>
+<div class="figure">
+<img src="images/mutation.png" width="250" alt="" />
+<p class="caption">Mutation</p>
+</div>
+<p>So, the basic flow of genetic algorithm:</p>
+<ol style="list-style-type: decimal">
+<li><p>Algorithm starts with an initial population, often randomly generated<br />
+</p></li>
+<li><p>Create a successive generation by selecting a portion of the initial population (the selection is guided by the fitness function) - this includes selection -&gt; crossover -&gt; mutation<br />
+</p></li>
+<li><p>The algorithm terminates if certain predetermined criteria are met such as:</p>
+<ul>
+<li>Solution satisfies the minimum criteria<br />
+</li>
+<li>Fixed number of generation reached<br />
+</li>
+<li>Successive iteration no longer produce a better result</li>
+</ul></li>
+</ol>
+</div>
+<div id="example-in-r" class="section level2">
+<h2>Example in R</h2>
+<p>There is <code>GA</code> package in R, where we can implement the genetic algorithm a bit more manually where we can specify our own fitness function. However, I think it is easier to use a genetic algorithm implemented in <code>caret</code> package for variable selection.</p>
+<p>Load the packages.</p>
+<pre class="r"><code>library(caret)
+library(tidyverse)
+library(rsample)
+library(recipes)</code></pre>
+<p>The data.</p>
+<pre class="r"><code>dat &lt;- 
+  mtcars %&gt;% 
+  mutate(across(c(vs, am), as.factor),
+         am = fct_recode(am, auto = &quot;0&quot;, man = &quot;1&quot;))
+str(dat)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 2 2 1 2 1 2 2 2 ...
+##  $ am  : Factor w/ 2 levels &quot;auto&quot;,&quot;man&quot;: 2 2 2 1 1 1 1 1 1 1 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<p>For this, we going to use random forest (<code>rfGA</code>). Other options are bagged tree (<code>treebagGA</code>) and <code>caretGA</code>. We are able to use other method in <code>caret</code> if we use <code>caretGA</code>.</p>
+<pre class="r"><code># specify control
+ga_ctrl &lt;- gafsControl(functions = rfGA, method = &quot;cv&quot;, number = 5)
+
+# run random forest
+set.seed(123)
+rf_ga &lt;- gafs(x = dat %&gt;% select(-am), 
+              y = dat$am,
+              iters = 5,
+              gafsControl = ga_ctrl)
+rf_ga</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 32 samples
+## 10 predictors
+## 2 classes: &#39;auto&#39;, &#39;man&#39; 
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: Accuracy, Kappa
+## Subset selection driven to maximize internal Accuracy 
+## 
+## External performance values: Accuracy, Kappa
+## Best iteration chose by maximizing external Accuracy 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     qsec (60%), wt (60%), disp (40%), gear (40%), vs (40%)
+##   * on average, 3.2 variables were selected (min = 1, max = 7)
+## 
+## In the final search using the entire training set:
+##    * 7 features selected at iteration 3 including:
+##      cyl, hp, drat, qsec, vs ... 
+##    * external performance at this iteration is
+## 
+##    Accuracy       Kappa 
+##      0.9429      0.8831</code></pre>
+<p>The optimal features/variables:</p>
+<pre class="r"><code>rf_ga$optVariables</code></pre>
+<pre><code>## [1] &quot;cyl&quot;  &quot;hp&quot;   &quot;drat&quot; &quot;qsec&quot; &quot;vs&quot;   &quot;gear&quot; &quot;carb&quot;</code></pre>
+<p>This is the time taken for random forest approach.</p>
+<pre class="r"><code>rf_ga$times</code></pre>
+<pre><code>## $everything
+##    user  system elapsed 
+##   51.22    1.25   52.92</code></pre>
+<p>By default the algorithm will find a solution or a set of variable that reduce RMSE for numerical outcome, and accuracy for categorical outcome. Also, genetic algorithm tend to overfit, that’s why for the implementation in <code>caret</code> we have internal and external performance. So, for the 10-fold cross-validation, 10 genetic algorithm will be run separately. All the first nine folds are used for the genetic algorithm, and the 10th for external performance evaluation.</p>
+<p>Let’s try a variable selection using linear regression model.</p>
+<pre class="r"><code># specify control
+lm_ga_ctrl &lt;- gafsControl(functions = caretGA, method = &quot;cv&quot;, number = 5)
+
+# run lm
+set.seed(123)
+lm_ga &lt;- gafs(x = dat %&gt;% select(-mpg), 
+              y = dat$mpg,
+              iters = 5,
+              gafsControl = lm_ga_ctrl,
+              # below is the option for `train`
+              method = &quot;lm&quot;,
+              trControl = trainControl(method = &quot;cv&quot;, allowParallel = F))
+lm_ga</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 32 samples
+## 10 predictors
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: RMSE, Rsquared, MAE
+## Subset selection driven to minimize internal RMSE 
+## 
+## External performance values: RMSE, Rsquared, MAE
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     wt (100%), hp (80%), carb (60%), cyl (60%), am (40%)
+##   * on average, 4.4 variables were selected (min = 4, max = 5)
+## 
+## In the final search using the entire training set:
+##    * 5 features selected at iteration 5 including:
+##      cyl, disp, hp, wt, qsec  
+##    * external performance at this iteration is
+## 
+##        RMSE    Rsquared         MAE 
+##      3.3434      0.7624      2.6037</code></pre>
+<p>Now, let’s see how to integrate this in machine learning flow using recipes from <code>rsample</code>.</p>
+<p>First, we split the data.</p>
+<pre class="r"><code>set.seed(123)
+dat_split &lt;-initial_split(dat)
+dat_train &lt;- training(dat_split)
+dat_test &lt;- testing(dat_split)</code></pre>
+<p>We specify two recipes for numerical and categorical outcome.</p>
+<pre class="r"><code># Numerical
+rec_num &lt;- 
+  recipe(mpg ~., data = dat_train) %&gt;% 
+  step_center(all_numeric()) %&gt;% 
+  step_dummy(all_nominal_predictors())
+
+# Categorical
+rec_cat &lt;- 
+  recipe(am ~., data = dat_train) %&gt;% 
+  step_center(all_numeric()) %&gt;% 
+  step_dummy(all_nominal_predictors())</code></pre>
+<p>We run random forest for numerical outcome recipes.</p>
+<pre class="r"><code># specify control
+rf_ga_ctrl &lt;- gafsControl(functions = rfGA, method = &quot;cv&quot;, number = 5)
+
+# run random forest
+set.seed(123)
+rf_ga2 &lt;- 
+  gafs(rec_num,
+       data = dat_train,
+       iters = 5, 
+       gafsControl = rf_ga_ctrl) 
+rf_ga2</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 24 samples
+## 10 predictors
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: RMSE, Rsquared
+## Subset selection driven to minimize internal RMSE 
+## 
+## External performance values: RMSE, Rsquared, MAE
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     cyl (80%), disp (80%), hp (80%), wt (80%), carb (60%)
+##   * on average, 4.8 variables were selected (min = 2, max = 9)
+## 
+## In the final search using the entire training set:
+##    * 6 features selected at iteration 5 including:
+##      cyl, disp, hp, wt, gear ... 
+##    * external performance at this iteration is
+## 
+##       RMSE   Rsquared        MAE 
+##      2.830      0.928      2.408</code></pre>
+<p>The optimal variables.</p>
+<pre class="r"><code>rf_ga2$optVariables</code></pre>
+<pre><code>## [1] &quot;cyl&quot;   &quot;disp&quot;  &quot;hp&quot;    &quot;wt&quot;    &quot;gear&quot;  &quot;vs_X1&quot;</code></pre>
+<p>Let’s try run SVM for the numerical outcome recipes.</p>
+<pre class="r"><code># specify control
+svm_ga_ctrl &lt;- gafsControl(functions = caretGA, method = &quot;cv&quot;, number = 5)
+
+# run SVM
+set.seed(123)
+svm_ga &lt;- 
+  gafs(rec_cat,
+       data = dat_train,
+       iters = 5, 
+       gafsControl = svm_ga_ctrl,
+       # below is the options to `train` for caretGA
+       method = &quot;svmRadial&quot;, #SVM with Radial Basis Function Kernel
+       trControl = trainControl(method = &quot;cv&quot;, allowParallel = T))
+svm_ga</code></pre>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 24 samples
+## 10 predictors
+## 2 classes: &#39;auto&#39;, &#39;man&#39; 
+## 
+## Maximum generations: 5 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: Accuracy, Kappa
+## Subset selection driven to maximize internal Accuracy 
+## 
+## External performance values: Accuracy, Kappa
+## Best iteration chose by maximizing external Accuracy 
+## External resampling method: Cross-Validated (5 fold) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 10):
+##     wt (80%), qsec (60%), vs_X1 (60%), carb (40%), disp (40%)
+##   * on average, 4 variables were selected (min = 3, max = 6)
+## 
+## In the final search using the entire training set:
+##    * 9 features selected at iteration 2 including:
+##      mpg, cyl, disp, hp, drat ... 
+##    * external performance at this iteration is
+## 
+##    Accuracy       Kappa 
+##      0.9200      0.8571</code></pre>
+<p>The optimal variables.</p>
+<pre class="r"><code>svm_ga$optVariables</code></pre>
+<pre><code>## [1] &quot;mpg&quot;   &quot;cyl&quot;   &quot;disp&quot;  &quot;hp&quot;    &quot;drat&quot;  &quot;wt&quot;    &quot;qsec&quot;  &quot;carb&quot;  &quot;vs_X1&quot;</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Although genetic algorithm seems quite good for variable selection, the main limitation I would say is the computational time. However, if we have a lot of variables or features to reduced, using the genetic algorithm despite the long computational time seems beneficial to me.</p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#ga" class="uri">https://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#ga</a><br />
+</li>
+<li><a href="https://towardsdatascience.com/introduction-to-genetic-algorithms-including-example-code-e396e98d8bf3" class="uri">https://towardsdatascience.com/introduction-to-genetic-algorithms-including-example-code-e396e98d8bf3</a><br />
+</li>
+<li><a href="https://towardsdatascience.com/feature-selection-using-genetic-algorithms-in-r-3d9252f1aa66" class="uri">https://towardsdatascience.com/feature-selection-using-genetic-algorithms-in-r-3d9252f1aa66</a></li>
+</ul>
+</div>
