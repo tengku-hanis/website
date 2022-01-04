@@ -1,0 +1,1704 @@
+<!DOCTYPE html><html lang="en-us" >
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  
+  <meta name="generator" content="Wowchemy 5.0.0-beta.0 for Hugo">
+  
+
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Tengku Muhammad Hanis">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Some noteI have written two post previously about multiple imputation using mice package:
+A short note on multiple imputation
+Variable selection for imputation model in {mice}This post probably my last post about multiple imputation using mice package.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/">
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  <script src="/js/mathjax-config.js"></script>
+  
+
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js" integrity="sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+    
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+    
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.css">
+
+  
+
+
+
+
+  
+
+  
+
+
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
+
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/">
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Tengku Hanis">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/">
+  <meta property="og:title" content="Stepwise selection after multiple imputation | Tengku Hanis">
+  <meta property="og:description" content="Some noteI have written two post previously about multiple imputation using mice package:
+A short note on multiple imputation
+Variable selection for imputation model in {mice}This post probably my last post about multiple imputation using mice package."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2022-01-04T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2022-01-04T13:53:56&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/"
+  },
+  "headline": "Stepwise selection after multiple imputation",
+  
+  "datePublished": "2022-01-04T00:00:00Z",
+  "dateModified": "2022-01-04T13:53:56+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Tengku Muhammad Hanis"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tengku Hanis",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "Some note\rI have written two post previously about multiple imputation using mice package:\nA short note on multiple imputation\n\rVariable selection for imputation model in {mice}\r\rThis post probably my last post about multiple imputation using mice package."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Stepwise selection after multiple imputation | Tengku Hanis</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  ">
+
+  
+  
+  
+    <script>window.wcDarkLightEnabled = true;</script>
+  
+  
+    <script>const isSiteThemeDark = false;</script>
+  
+  
+  <script src="/js/load-theme.js"></script>
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">Tengku Hanis</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Ongoing</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+              
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Blog</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/files/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      
+      <li class="nav-item dropdown theme-dropdown">
+        <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item js-set-theme-light">
+            <span>Light</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-dark">
+            <span>Dark</span>
+          </a>
+          <a href="#" class="dropdown-item js-set-theme-auto">
+            <span>Automatic</span>
+          </a>
+        </div>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Stepwise selection after multiple imputation</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Jan 4, 2022
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/applied-statistics/">applied statistics</a>, <a href="/category/variable-selection/">variable selection</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+<script src="https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="some-note" class="section level2">
+<h2>Some note</h2>
+<p>I have written two post previously about multiple imputation using <code>mice</code> package:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a><br />
+</li>
+<li><a href="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+</ol>
+<p>This post probably my last post about multiple imputation using <code>mice</code> package.</p>
+</div>
+<div id="stepwise-selection" class="section level2">
+<h2>Stepwise selection</h2>
+<p>The general steps in <code>mice</code> package are:</p>
+<ol style="list-style-type: decimal">
+<li><code>mice()</code> - impute the NAs<br />
+</li>
+<li><code>with()</code> - run the analysis (lm, glm, etc)<br />
+</li>
+<li><code>pool()</code> - pool the results</li>
+</ol>
+<p>For backward and forward selection, we can do it manually after pooling the results in step 3, but we cannot do this for stepwise selection.</p>
+<p><a href="https://books.google.com.my/books/about/Development_Implementation_and_Evaluatio.html?id=-Y0TywAACAAJ&amp;redir_esc=y">Brand (1999)</a> proposed this solution:</p>
+<ol style="list-style-type: decimal">
+<li>Perform stepwise selection separately on each imputed dataset<br />
+</li>
+<li>Fit a preliminary model that contains all variables that present in at least half of the models in the step 1<br />
+</li>
+<li>Apply backward elimination on the variables in the preliminary model (the variable is removed one by one if p &gt; 0.05)<br />
+</li>
+<li>Repeat step 3 until all variables have p values &lt; 0.05</li>
+</ol>
+<p>So, we going to do this solution and use multivariate Wald test (<code>D1()</code> in <code>mice</code> package) for model comparison instead of pooled likelihood ratio p value.</p>
+</div>
+<div id="example-in-r" class="section level2">
+<h2>Example in R</h2>
+<p>Load the packages.</p>
+<pre class="r"><code>library(mice)
+library(tidyverse)</code></pre>
+<p>Create a missing data. We going to use the famous <code>mtcars</code> dataset, which already available in R.</p>
+<pre class="r"><code>set.seed(123)
+dat &lt;- 
+  mtcars %&gt;% 
+  mutate(across(c(vs, am), as.factor)) %&gt;% 
+  select(-mpg) %&gt;% 
+  missForest::prodNA(0.1) %&gt;% 
+  bind_cols(mpg = mtcars$mpg)
+summary(dat)</code></pre>
+<pre><code>##       cyl             disp             hp             drat      
+##  Min.   :4.000   Min.   : 71.1   Min.   : 52.0   Min.   :2.760  
+##  1st Qu.:4.000   1st Qu.:120.7   1st Qu.:103.0   1st Qu.:3.150  
+##  Median :6.000   Median :225.0   Median :123.0   Median :3.715  
+##  Mean   :6.148   Mean   :232.8   Mean   :147.4   Mean   :3.642  
+##  3rd Qu.:8.000   3rd Qu.:334.0   3rd Qu.:180.0   3rd Qu.:3.920  
+##  Max.   :8.000   Max.   :472.0   Max.   :335.0   Max.   :4.930  
+##  NA&#39;s   :5       NA&#39;s   :1       NA&#39;s   :4       NA&#39;s   :2      
+##        wt             qsec          vs        am          gear     
+##  Min.   :1.513   Min.   :14.50   0   :17   0   :18   Min.   :3.00  
+##  1st Qu.:2.429   1st Qu.:16.88   1   :11   1   :10   1st Qu.:3.00  
+##  Median :3.203   Median :17.51   NA&#39;s: 4   NA&#39;s: 4   Median :4.00  
+##  Mean   :3.112   Mean   :17.75                       Mean   :3.71  
+##  3rd Qu.:3.533   3rd Qu.:18.83                       3rd Qu.:4.00  
+##  Max.   :5.424   Max.   :22.90                       Max.   :5.00  
+##  NA&#39;s   :4       NA&#39;s   :2                           NA&#39;s   :1     
+##       carb            mpg       
+##  Min.   :1.000   Min.   :10.40  
+##  1st Qu.:2.000   1st Qu.:15.43  
+##  Median :2.000   Median :19.20  
+##  Mean   :2.667   Mean   :20.09  
+##  3rd Qu.:4.000   3rd Qu.:22.80  
+##  Max.   :6.000   Max.   :33.90  
+##  NA&#39;s   :5</code></pre>
+<p>Run <code>mice()</code> on missing data with 10 imputed datasets (<code>m = 10</code>).</p>
+<pre class="r"><code>datImp &lt;- mice(dat, m = 10, printFlag = F, seed = 123)
+datImp</code></pre>
+<pre><code>## Class: mids
+## Number of multiple imputations:  10 
+## Imputation methods:
+##      cyl     disp       hp     drat       wt     qsec       vs       am 
+##    &quot;pmm&quot;    &quot;pmm&quot;    &quot;pmm&quot;    &quot;pmm&quot;    &quot;pmm&quot;    &quot;pmm&quot; &quot;logreg&quot; &quot;logreg&quot; 
+##     gear     carb      mpg 
+##    &quot;pmm&quot;    &quot;pmm&quot;       &quot;&quot; 
+## PredictorMatrix:
+##      cyl disp hp drat wt qsec vs am gear carb mpg
+## cyl    0    1  1    1  1    1  1  1    1    1   1
+## disp   1    0  1    1  1    1  1  1    1    1   1
+## hp     1    1  0    1  1    1  1  1    1    1   1
+## drat   1    1  1    0  1    1  1  1    1    1   1
+## wt     1    1  1    1  0    1  1  1    1    1   1
+## qsec   1    1  1    1  1    0  1  1    1    1   1</code></pre>
+<p>Run stepwise selection on each imputed dataset.</p>
+<pre class="r"><code>sc &lt;- list(upper = ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb, 
+           lower = ~ 1)
+exp &lt;- expression(f1 &lt;- lm(mpg ~ 1),
+                  f2 &lt;- step(f1, scope = sc, trace = 0))
+fit &lt;- with(datImp, exp)</code></pre>
+<p>Next, we calculate how many times each variable selected in the each model by stepwise selection.</p>
+<pre class="r"><code>fit$analyses %&gt;% 
+  map(formula) %&gt;% #get the formula
+  map(terms) %&gt;% #get the terms
+  map(labels) %&gt;% #get the name of variables
+  unlist() %&gt;% 
+  table()</code></pre>
+<pre><code>## .
+##   am carb  cyl disp drat   hp qsec   vs   wt 
+##    7    5    3    2    4    5    3    4    7</code></pre>
+<p>We going to select:</p>
+<ol style="list-style-type: decimal">
+<li>am<br />
+</li>
+<li>carb<br />
+</li>
+<li>hp<br />
+</li>
+<li>wt</li>
+</ol>
+<p>These variables appear at least in the half of the models. We have 10 imputed datasets, so, 10 models. Next, we fit a preliminary model.</p>
+<pre class="r"><code>fit_full1 &lt;- with(datImp, lm(mpg ~ am + carb + hp + wt))
+pool(fit_full1) %&gt;% 
+  summary()</code></pre>
+<pre><code>##          term    estimate  std.error statistic       df      p.value
+## 1 (Intercept) 33.33683070 3.30280913 10.093478 15.81838 2.688191e-08
+## 2         am1  3.06689135 1.94363342  1.577917 13.06329 1.384846e-01
+## 3        carb -0.64791214 0.65564816 -0.988201 11.64959 3.431353e-01
+## 4          hp -0.03414274 0.01159828 -2.943777 20.47239 7.895170e-03
+## 5          wt -2.39586280 1.22218829 -1.960306 13.54830 7.085513e-02</code></pre>
+<p>We exclude carb variable in the next model as it has the largest non-significant p value.</p>
+<pre class="r"><code>fit_full2 &lt;- with(datImp, lm(mpg ~ am + hp + wt))</code></pre>
+<p>Next, we compare using multivariate Wald test.</p>
+<pre class="r"><code>D1(fit_full1, fit_full2)</code></pre>
+<pre><code>##    test statistic df1     df2 dfcom   p.value       riv
+##  1 ~~ 2 0.9765411   1 9.21378    27 0.3482934 0.6935655</code></pre>
+<p>P &gt; 0.05. So, we opt for the simpler model.</p>
+<pre class="r"><code>pool(fit_full2) %&gt;% 
+  summary()</code></pre>
+<pre><code>##          term    estimate  std.error statistic       df      p.value
+## 1 (Intercept) 33.75666324 3.30083213 10.226713 16.87762 1.195383e-08
+## 2         am1  2.50264907 1.79966590  1.390619 15.31418 1.842201e-01
+## 3          hp -0.03950216 0.01162689 -3.397482 17.65719 3.280147e-03
+## 4          wt -2.75412354 1.15870950 -2.376889 15.03403 3.116779e-02</code></pre>
+<p>We see that am variable has the largest non-significant p value. So, we exclude this variable in the next model and compare the two latest models using multivariate Wald test.</p>
+<pre class="r"><code>fit_full3 &lt;- with(datImp, lm(mpg ~ hp + wt))
+D1(fit_full2, fit_full3)</code></pre>
+<pre><code>##    test statistic df1      df2 dfcom   p.value       riv
+##  1 ~~ 2   1.93382   1 12.90982    28 0.1878483 0.4392918</code></pre>
+<p>Again, we opt for the simple model.</p>
+<pre class="r"><code>pool(fit_full3) %&gt;% 
+  summary()</code></pre>
+<pre><code>##          term    estimate  std.error statistic       df      p.value
+## 1 (Intercept) 37.50546490 1.91102857 19.625800 23.65472 4.440892e-16
+## 2          hp -0.03263534 0.01042989 -3.129021 21.20234 5.031751e-03
+## 3          wt -3.92792051 0.75157304 -5.226266 19.78033 4.238231e-05</code></pre>
+<p>There is no non-significant variable in the model anymore. Thus, this is our final model.</p>
+<pre class="r"><code>gtsummary::tbl_regression(fit_full3)</code></pre>
+<div id="ybehlmrayy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ybehlmrayy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ybehlmrayy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ybehlmrayy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ybehlmrayy .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ybehlmrayy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ybehlmrayy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ybehlmrayy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ybehlmrayy .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ybehlmrayy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ybehlmrayy .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ybehlmrayy .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ybehlmrayy .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ybehlmrayy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#ybehlmrayy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ybehlmrayy .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ybehlmrayy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ybehlmrayy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ybehlmrayy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ybehlmrayy .gt_left {
+  text-align: left;
+}
+
+#ybehlmrayy .gt_center {
+  text-align: center;
+}
+
+#ybehlmrayy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ybehlmrayy .gt_font_normal {
+  font-weight: normal;
+}
+
+#ybehlmrayy .gt_font_bold {
+  font-weight: bold;
+}
+
+#ybehlmrayy .gt_font_italic {
+  font-style: italic;
+}
+
+#ybehlmrayy .gt_super {
+  font-size: 65%;
+}
+
+#ybehlmrayy .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Beta</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>95% CI</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">hp</td>
+<td class="gt_row gt_center">-0.03</td>
+<td class="gt_row gt_center">-0.05, -0.01</td>
+<td class="gt_row gt_center">0.005</td></tr>
+    <tr><td class="gt_row gt_left">wt</td>
+<td class="gt_row gt_center">-3.9</td>
+<td class="gt_row gt_center">-5.5, -2.4</td>
+<td class="gt_row gt_center"><0.001</td></tr>
+  </tbody>
+  
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td colspan="4">
+        <p class="gt_footnote">
+          <sup class="gt_footnote_marks">
+            <em>1</em>
+          </sup>
+           
+          CI = Confidence Interval
+          <br />
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p><br></p>
+<p>Reference:</p>
+<p><a href="https://stefvanbuuren.name/fimd/sec-stepwise.html" class="uri">https://stefvanbuuren.name/fimd/sec-stepwise.html</a></p>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/missing-data/">missing data</a>
+  
+  <a class="badge badge-light" href="/tag/variable-selection/">variable selection</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://tengkuhanis.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/tengku-muhammad-hanis/avatar_hu2282885c81c6fc6803200ba05db8fa19_124392_270x270_fill_q90_lanczos_center.jpg" alt="Tengku Muhammad Hanis"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://tengkuhanis.netlify.app/">Tengku Muhammad Hanis</a></h5>
+      <h6 class="card-subtitle">PhD student (Public Health Epidemiology)</h6>
+      <p class="card-text">My research interests include medical statistics and machine learning application.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.researchgate.net/profile/Tengku-Muhammad-Hanis" target="_blank" rel="noopener">
+        <i class="fab fa-researchgate"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=VV2bHQcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/tengku-hanis" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/tengku-muhammad-hanis-9a7222144/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/tmhanis" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/post/variable-selection-using-genetic-algorithm/">Variable selection using genetic algorithm</a></li>
+      
+      <li><a href="/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+      
+      <li><a href="/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    ©Tengku Hanis 2020-2022 Made with <a href="https://github.com/rstudio/blogdown">blogdown</a>
+  </p>
+
+  
+  
+
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+    Published with
+    <a href="https://wowchemy.com" target="_blank" rel="noopener">Wowchemy</a>  —
+    the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">
+    open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/5.1.0/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.8.0/mermaid.min.js" integrity="sha512-ja+hSBi4JDtjSqc4LTBsSwuBT3tdZ3oKYKd07lTVYmCnTCor56AnRql00ssqnTOR9Ss4gOP/ROGB3SfcJnZkeg==" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/latex.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks",
+        'slides' : "Slides"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/wowchemy.min.a30e17c6197f21f7f966f9a6cd022a55.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

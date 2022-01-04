@@ -1,0 +1,162 @@
+---
+title: Stepwise selection after multiple imputation
+author: ''
+date: '2022-01-04'
+slug: stepwise-selection-after-multiple-imputation
+categories:
+  - applied statistics
+  - variable selection
+tags:
+  - missing data
+  - variable selection
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-01-04T13:53:56+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Some note
+
+I have written two post previously about multiple imputation using `mice` package:
+
+1. [A short note on multiple imputation](https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/)\
+2. [Variable selection for imputation model in {mice}](https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/)
+
+This post probably my last post about multiple imputation using `mice` package.
+
+## Stepwise selection
+
+The general steps in `mice` package are:
+
+1. `mice()` - impute the NAs\
+2. `with()` - run the analysis (lm, glm, etc)\
+3. `pool()` - pool the results
+
+For backward and forward selection, we can do it manually after pooling the results in step 3, but we cannot do this for stepwise selection.
+
+[Brand (1999)](https://books.google.com.my/books/about/Development_Implementation_and_Evaluatio.html?id=-Y0TywAACAAJ&redir_esc=y) proposed this solution:
+
+1. Perform stepwise selection separately on each imputed dataset\
+2. Fit a preliminary model that contains all variables that present in at least half of the models in the step 1\
+3. Apply backward elimination on the variables in the preliminary model (the variable is removed one by one if p > 0.05)\
+4. Repeat step 3 until all variables have p values < 0.05
+
+So, we going to do this solution and use multivariate Wald test (`D1()` in `mice` package) for model comparison instead of pooled likelihood ratio p value.
+
+## Example in R
+
+Load the packages.
+
+```{r, message=FALSE, warning=FALSE}
+library(mice)
+library(tidyverse)
+```
+
+Create a missing data. We going to use the famous `mtcars` dataset, which already available in R.
+
+```{r}
+set.seed(123)
+dat <- 
+  mtcars %>% 
+  mutate(across(c(vs, am), as.factor)) %>% 
+  select(-mpg) %>% 
+  missForest::prodNA(0.1) %>% 
+  bind_cols(mpg = mtcars$mpg)
+summary(dat)
+```
+
+Run `mice()` on missing data with 10 imputed datasets (`m = 10`).
+
+```{r}
+datImp <- mice(dat, m = 10, printFlag = F, seed = 123)
+datImp
+```
+
+Run stepwise selection on each imputed dataset.
+
+```{r}
+sc <- list(upper = ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb, 
+           lower = ~ 1)
+exp <- expression(f1 <- lm(mpg ~ 1),
+                  f2 <- step(f1, scope = sc, trace = 0))
+fit <- with(datImp, exp)
+```
+
+Next, we calculate how many times each variable selected in the each model by stepwise selection.
+
+```{r}
+fit$analyses %>% 
+  map(formula) %>% #get the formula
+  map(terms) %>% #get the terms
+  map(labels) %>% #get the name of variables
+  unlist() %>% 
+  table()
+```
+
+We going to select:
+
+1. am\
+2. carb\
+3. hp\
+4. wt
+
+These variables appear at least in the half of the models. We have 10 imputed datasets, so, 10 models. Next, we fit a preliminary model.
+
+```{r}
+fit_full1 <- with(datImp, lm(mpg ~ am + carb + hp + wt))
+pool(fit_full1) %>% 
+  summary()
+```
+
+We exclude carb variable in the next model as it has the largest non-significant p value.
+
+```{r}
+fit_full2 <- with(datImp, lm(mpg ~ am + hp + wt))
+```
+
+Next, we compare using multivariate Wald test.
+
+```{r}
+D1(fit_full1, fit_full2)
+```
+
+P > 0.05. So, we opt for the simpler model.
+
+```{r}
+pool(fit_full2) %>% 
+  summary()
+```
+
+We see that am variable has the largest non-significant p value. So, we exclude this variable in the next model and compare the two latest models using multivariate Wald test.
+
+```{r}
+fit_full3 <- with(datImp, lm(mpg ~ hp + wt))
+D1(fit_full2, fit_full3)
+```
+
+Again, we opt for the simple model.
+
+```{r}
+pool(fit_full3) %>% 
+  summary()
+```
+
+There is no non-significant variable in the model anymore. Thus, this is our final model.
+
+```{r, warning=FALSE, message=FALSE}
+gtsummary::tbl_regression(fit_full3)
+```
+<br>
+
+Reference:
+
+https://stefvanbuuren.name/fimd/sec-stepwise.html

@@ -5,12 +5,556 @@
     <link>https://tengkuhanis.netlify.app/category/variable-selection/</link>
       <atom:link href="https://tengkuhanis.netlify.app/category/variable-selection/index.xml" rel="self" type="application/rss+xml" />
     <description>variable selection</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 02 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 04 Jan 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>variable selection</title>
       <link>https://tengkuhanis.netlify.app/category/variable-selection/</link>
     </image>
+    
+    <item>
+      <title>Stepwise selection after multiple imputation</title>
+      <link>https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/</link>
+      <pubDate>Tue, 04 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;some-note&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Some note&lt;/h2&gt;
+&lt;p&gt;I have written two post previously about multiple imputation using &lt;code&gt;mice&lt;/code&gt; package:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/&#34;&gt;A short note on multiple imputation&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/&#34;&gt;Variable selection for imputation model in {mice}&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This post probably my last post about multiple imputation using &lt;code&gt;mice&lt;/code&gt; package.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;stepwise-selection&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Stepwise selection&lt;/h2&gt;
+&lt;p&gt;The general steps in &lt;code&gt;mice&lt;/code&gt; package are:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;mice()&lt;/code&gt; - impute the NAs&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;with()&lt;/code&gt; - run the analysis (lm, glm, etc)&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pool()&lt;/code&gt; - pool the results&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For backward and forward selection, we can do it manually after pooling the results in step 3, but we cannot do this for stepwise selection.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://books.google.com.my/books/about/Development_Implementation_and_Evaluatio.html?id=-Y0TywAACAAJ&amp;amp;redir_esc=y&#34;&gt;Brand (1999)&lt;/a&gt; proposed this solution:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Perform stepwise selection separately on each imputed dataset&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Fit a preliminary model that contains all variables that present in at least half of the models in the step 1&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Apply backward elimination on the variables in the preliminary model (the variable is removed one by one if p &amp;gt; 0.05)&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Repeat step 3 until all variables have p values &amp;lt; 0.05&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;So, we going to do this solution and use multivariate Wald test (&lt;code&gt;D1()&lt;/code&gt; in &lt;code&gt;mice&lt;/code&gt; package) for model comparison instead of pooled likelihood ratio p value.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;example-in-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example in R&lt;/h2&gt;
+&lt;p&gt;Load the packages.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(mice)
+library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a missing data. We going to use the famous &lt;code&gt;mtcars&lt;/code&gt; dataset, which already available in R.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(123)
+dat &amp;lt;- 
+  mtcars %&amp;gt;% 
+  mutate(across(c(vs, am), as.factor)) %&amp;gt;% 
+  select(-mpg) %&amp;gt;% 
+  missForest::prodNA(0.1) %&amp;gt;% 
+  bind_cols(mpg = mtcars$mpg)
+summary(dat)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       cyl             disp             hp             drat      
+##  Min.   :4.000   Min.   : 71.1   Min.   : 52.0   Min.   :2.760  
+##  1st Qu.:4.000   1st Qu.:120.7   1st Qu.:103.0   1st Qu.:3.150  
+##  Median :6.000   Median :225.0   Median :123.0   Median :3.715  
+##  Mean   :6.148   Mean   :232.8   Mean   :147.4   Mean   :3.642  
+##  3rd Qu.:8.000   3rd Qu.:334.0   3rd Qu.:180.0   3rd Qu.:3.920  
+##  Max.   :8.000   Max.   :472.0   Max.   :335.0   Max.   :4.930  
+##  NA&amp;#39;s   :5       NA&amp;#39;s   :1       NA&amp;#39;s   :4       NA&amp;#39;s   :2      
+##        wt             qsec          vs        am          gear     
+##  Min.   :1.513   Min.   :14.50   0   :17   0   :18   Min.   :3.00  
+##  1st Qu.:2.429   1st Qu.:16.88   1   :11   1   :10   1st Qu.:3.00  
+##  Median :3.203   Median :17.51   NA&amp;#39;s: 4   NA&amp;#39;s: 4   Median :4.00  
+##  Mean   :3.112   Mean   :17.75                       Mean   :3.71  
+##  3rd Qu.:3.533   3rd Qu.:18.83                       3rd Qu.:4.00  
+##  Max.   :5.424   Max.   :22.90                       Max.   :5.00  
+##  NA&amp;#39;s   :4       NA&amp;#39;s   :2                           NA&amp;#39;s   :1     
+##       carb            mpg       
+##  Min.   :1.000   Min.   :10.40  
+##  1st Qu.:2.000   1st Qu.:15.43  
+##  Median :2.000   Median :19.20  
+##  Mean   :2.667   Mean   :20.09  
+##  3rd Qu.:4.000   3rd Qu.:22.80  
+##  Max.   :6.000   Max.   :33.90  
+##  NA&amp;#39;s   :5&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run &lt;code&gt;mice()&lt;/code&gt; on missing data with 10 imputed datasets (&lt;code&gt;m = 10&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;datImp &amp;lt;- mice(dat, m = 10, printFlag = F, seed = 123)
+datImp&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Class: mids
+## Number of multiple imputations:  10 
+## Imputation methods:
+##      cyl     disp       hp     drat       wt     qsec       vs       am 
+##    &amp;quot;pmm&amp;quot;    &amp;quot;pmm&amp;quot;    &amp;quot;pmm&amp;quot;    &amp;quot;pmm&amp;quot;    &amp;quot;pmm&amp;quot;    &amp;quot;pmm&amp;quot; &amp;quot;logreg&amp;quot; &amp;quot;logreg&amp;quot; 
+##     gear     carb      mpg 
+##    &amp;quot;pmm&amp;quot;    &amp;quot;pmm&amp;quot;       &amp;quot;&amp;quot; 
+## PredictorMatrix:
+##      cyl disp hp drat wt qsec vs am gear carb mpg
+## cyl    0    1  1    1  1    1  1  1    1    1   1
+## disp   1    0  1    1  1    1  1  1    1    1   1
+## hp     1    1  0    1  1    1  1  1    1    1   1
+## drat   1    1  1    0  1    1  1  1    1    1   1
+## wt     1    1  1    1  0    1  1  1    1    1   1
+## qsec   1    1  1    1  1    0  1  1    1    1   1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run stepwise selection on each imputed dataset.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sc &amp;lt;- list(upper = ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb, 
+           lower = ~ 1)
+exp &amp;lt;- expression(f1 &amp;lt;- lm(mpg ~ 1),
+                  f2 &amp;lt;- step(f1, scope = sc, trace = 0))
+fit &amp;lt;- with(datImp, exp)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we calculate how many times each variable selected in the each model by stepwise selection.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit$analyses %&amp;gt;% 
+  map(formula) %&amp;gt;% #get the formula
+  map(terms) %&amp;gt;% #get the terms
+  map(labels) %&amp;gt;% #get the name of variables
+  unlist() %&amp;gt;% 
+  table()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## .
+##   am carb  cyl disp drat   hp qsec   vs   wt 
+##    7    5    3    2    4    5    3    4    7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We going to select:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;am&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;carb&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;hp&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;wt&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These variables appear at least in the half of the models. We have 10 imputed datasets, so, 10 models. Next, we fit a preliminary model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_full1 &amp;lt;- with(datImp, lm(mpg ~ am + carb + hp + wt))
+pool(fit_full1) %&amp;gt;% 
+  summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          term    estimate  std.error statistic       df      p.value
+## 1 (Intercept) 33.33683070 3.30280913 10.093478 15.81838 2.688191e-08
+## 2         am1  3.06689135 1.94363342  1.577917 13.06329 1.384846e-01
+## 3        carb -0.64791214 0.65564816 -0.988201 11.64959 3.431353e-01
+## 4          hp -0.03414274 0.01159828 -2.943777 20.47239 7.895170e-03
+## 5          wt -2.39586280 1.22218829 -1.960306 13.54830 7.085513e-02&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We exclude carb variable in the next model as it has the largest non-significant p value.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_full2 &amp;lt;- with(datImp, lm(mpg ~ am + hp + wt))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we compare using multivariate Wald test.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;D1(fit_full1, fit_full2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    test statistic df1     df2 dfcom   p.value       riv
+##  1 ~~ 2 0.9765411   1 9.21378    27 0.3482934 0.6935655&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;P &amp;gt; 0.05. So, we opt for the simpler model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pool(fit_full2) %&amp;gt;% 
+  summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          term    estimate  std.error statistic       df      p.value
+## 1 (Intercept) 33.75666324 3.30083213 10.226713 16.87762 1.195383e-08
+## 2         am1  2.50264907 1.79966590  1.390619 15.31418 1.842201e-01
+## 3          hp -0.03950216 0.01162689 -3.397482 17.65719 3.280147e-03
+## 4          wt -2.75412354 1.15870950 -2.376889 15.03403 3.116779e-02&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We see that am variable has the largest non-significant p value. So, we exclude this variable in the next model and compare the two latest models using multivariate Wald test.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_full3 &amp;lt;- with(datImp, lm(mpg ~ hp + wt))
+D1(fit_full2, fit_full3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    test statistic df1      df2 dfcom   p.value       riv
+##  1 ~~ 2   1.93382   1 12.90982    28 0.1878483 0.4392918&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, we opt for the simple model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pool(fit_full3) %&amp;gt;% 
+  summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          term    estimate  std.error statistic       df      p.value
+## 1 (Intercept) 37.50546490 1.91102857 19.625800 23.65472 4.440892e-16
+## 2          hp -0.03263534 0.01042989 -3.129021 21.20234 5.031751e-03
+## 3          wt -3.92792051 0.75157304 -5.226266 19.78033 4.238231e-05&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There is no non-significant variable in the model anymore. Thus, this is our final model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gtsummary::tbl_regression(fit_full3)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;ybehlmrayy&#34; style=&#34;overflow-x:auto;overflow-y:auto;width:auto;height:auto;&#34;&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Oxygen, Ubuntu, Cantarell, &#39;Helvetica Neue&#39;, &#39;Fira Sans&#39;, &#39;Droid Sans&#39;, Arial, sans-serif;
+}
+
+#ybehlmrayy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ybehlmrayy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ybehlmrayy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ybehlmrayy .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ybehlmrayy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ybehlmrayy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ybehlmrayy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ybehlmrayy .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ybehlmrayy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ybehlmrayy .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#ybehlmrayy .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#ybehlmrayy .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ybehlmrayy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#ybehlmrayy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ybehlmrayy .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ybehlmrayy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ybehlmrayy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ybehlmrayy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ybehlmrayy .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ybehlmrayy .gt_left {
+  text-align: left;
+}
+
+#ybehlmrayy .gt_center {
+  text-align: center;
+}
+
+#ybehlmrayy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ybehlmrayy .gt_font_normal {
+  font-weight: normal;
+}
+
+#ybehlmrayy .gt_font_bold {
+  font-weight: bold;
+}
+
+#ybehlmrayy .gt_font_italic {
+  font-style: italic;
+}
+
+#ybehlmrayy .gt_super {
+  font-size: 65%;
+}
+
+#ybehlmrayy .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class=&#34;gt_table&#34;&gt;
+  
+  &lt;thead class=&#34;gt_col_headings&#34;&gt;
+    &lt;tr&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_left&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;Characteristic&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;Beta&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;sup class=&#34;gt_footnote_marks&#34;&gt;1&lt;/sup&gt;&lt;/th&gt;
+      &lt;th class=&#34;gt_col_heading gt_columns_bottom_border gt_center&#34; rowspan=&#34;1&#34; colspan=&#34;1&#34;&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class=&#34;gt_table_body&#34;&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;hp&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.03&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-0.05, -0.01&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;0.005&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&#34;gt_row gt_left&#34;&gt;wt&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-3.9&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;-5.5, -2.4&lt;/td&gt;
+&lt;td class=&#34;gt_row gt_center&#34;&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  &lt;tfoot&gt;
+    &lt;tr class=&#34;gt_footnotes&#34;&gt;
+      &lt;td colspan=&#34;4&#34;&gt;
+        &lt;p class=&#34;gt_footnote&#34;&gt;
+          &lt;sup class=&#34;gt_footnote_marks&#34;&gt;
+            &lt;em&gt;1&lt;/em&gt;
+          &lt;/sup&gt;
+           
+          CI = Confidence Interval
+          &lt;br /&gt;
+        &lt;/p&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Reference:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://stefvanbuuren.name/fimd/sec-stepwise.html&#34; class=&#34;uri&#34;&gt;https://stefvanbuuren.name/fimd/sec-stepwise.html&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Variable selection using genetic algorithm</title>
