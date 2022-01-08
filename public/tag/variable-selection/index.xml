@@ -28,8 +28,10 @@
 &lt;p&gt;&lt;strong&gt;1. Intrinsic (or built-in feature selection)&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;An intrinsic feature selection is a feature selection embedded in the algorithm. Some examples include:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;Tree-and-rule-based model - decision tree, random forest, etc/&lt;/li&gt;
-&lt;li&gt;Multivariate adaptive regression spline (MARS)/&lt;/li&gt;
+&lt;li&gt;Tree-and-rule-based model - decision tree, random forest, etc&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Multivariate adaptive regression spline (MARS)&lt;br /&gt;
+&lt;/li&gt;
 &lt;li&gt;Regularization method such as least absolute shrinkage and selection operator (LASSO or L1)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Advantages of this type of approach are they are fast and computationally efficient. However, the best variable selected in this approach is model dependent.&lt;/p&gt;
@@ -61,12 +63,12 @@ Figure 1: Local minima and global minima
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;&lt;p&gt;Start with an intrinsic approach&lt;br /&gt;
 &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Then, do a wrapper approach:&lt;br /&gt;
-&lt;/p&gt;
-&lt;ol style=&#34;list-style-type: lower-alpha&#34;&gt;
-&lt;li&gt;If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model
-b. If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Then, do a wrapper approach:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model&lt;br /&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;If several approach select a large number of predictors, it may not feasible to reduce the number of features&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;References:&lt;/p&gt;

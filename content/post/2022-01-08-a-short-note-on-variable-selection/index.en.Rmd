@@ -19,6 +19,7 @@ image:
   preview_only: no
 projects: []
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -33,13 +34,13 @@ There are three types of approaches in variable selection:
 
 An intrinsic feature selection is a feature selection embedded in the algorithm. Some examples include:
 
-1. Tree-and-rule-based model - decision tree, random forest, etc/
-2. Multivariate adaptive regression spline (MARS)/
-3. Regularization method such as least absolute shrinkage and selection operator (LASSO or L1)
+1.  Tree-and-rule-based model - decision tree, random forest, etc\
+2.  Multivariate adaptive regression spline (MARS)\
+3.  Regularization method such as least absolute shrinkage and selection operator (LASSO or L1)
 
 Advantages of this type of approach are they are fast and computationally efficient. However, the best variable selected in this approach is model dependent.
 
-**2. Filter** 
+**2. Filter**
 
 In filter approach we determine the variable importance, usually separately though not necessarily. An example of this approach is univariate filter. If the outcome is two categories, we can use t-test to assess the numerical predictors. Variables with a significant p-value or a large t-statistics will be chosen.
 
@@ -49,9 +50,9 @@ This approach is very simple and fast. However, the best subset of variables sel
 
 There two types of wrapper approaches:
 
-1. Greedy wrapper
+1.  Greedy wrapper
 
-Greedy approach or algorithm direct a search path towards the best at times to achieve the best immediate benefit. Due to this reason this approach cannot escape local minima. We can assume in Figure 1 below local minima represents locally best predictors and global minima represents globally best predictors. 
+Greedy approach or algorithm direct a search path towards the best at times to achieve the best immediate benefit. Due to this reason this approach cannot escape local minima. We can assume in Figure 1 below local minima represents locally best predictors and global minima represents globally best predictors.
 
 ```{r, echo=FALSE, fig.cap="Local minima and global minima", fig.align="center"}
 knitr::include_graphics("img.png")
@@ -59,7 +60,7 @@ knitr::include_graphics("img.png")
 
 An example of this approach is recursive feature elimination or backward selection. The main weakness of this greedy approach is the selected subset of features identified by this approach may not has the best predictive performance.
 
-2. Non-greedy wrapper
+2.  Non-greedy wrapper
 
 The examples of this approach are simulated annealing and [genetic algorithm](https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/). Both of these algorithm incorporate a randomness in their approach. Hence, it is classified as non-greedy wrapper. Due to this randomness, it can escape a local minima (see Figure 1 above).
 
@@ -69,18 +70,17 @@ The wrapper type has the best chance to find the globally best predictors. Howev
 
 [Kuhn & Johnson (2019)](https://bookdown.org/max/FES/) suggested this approach:
 
-1. Start with an intrinsic approach\
-2. Then, do a wrapper approach:\
+1.  Start with an intrinsic approach\
 
-    a.    If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model
-		b.    If non-linear intrinsic approach  has a better performance - proceed to wrapper method with a non-linear model
-3. If several approach select a large number of predictors, it may not feasible to reduce the number of features
+2.  Then, do a wrapper approach:
+
+    -   If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model
+
+    -   If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model\
+
+3.  If several approach select a large number of predictors, it may not feasible to reduce the number of features
 
 References:
 
-- <https://bookdown.org/max/FES/classes-of-feature-selection-methodologies.html>\
-- <http://topepo.github.io/caret/feature-selection-overview.html>
-
-
-
-
+-   <https://bookdown.org/max/FES/classes-of-feature-selection-methodologies.html>\
+-   <http://topepo.github.io/caret/feature-selection-overview.html>

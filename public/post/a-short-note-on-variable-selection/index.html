@@ -806,8 +806,10 @@
 <p><strong>1. Intrinsic (or built-in feature selection)</strong></p>
 <p>An intrinsic feature selection is a feature selection embedded in the algorithm. Some examples include:</p>
 <ol style="list-style-type: decimal">
-<li>Tree-and-rule-based model - decision tree, random forest, etc/</li>
-<li>Multivariate adaptive regression spline (MARS)/</li>
+<li>Tree-and-rule-based model - decision tree, random forest, etc<br />
+</li>
+<li>Multivariate adaptive regression spline (MARS)<br />
+</li>
 <li>Regularization method such as least absolute shrinkage and selection operator (LASSO or L1)</li>
 </ol>
 <p>Advantages of this type of approach are they are fast and computationally efficient. However, the best variable selected in this approach is model dependent.</p>
@@ -839,12 +841,12 @@ Figure 1: Local minima and global minima
 <ol style="list-style-type: decimal">
 <li><p>Start with an intrinsic approach<br />
 </p></li>
-<li><p>Then, do a wrapper approach:<br />
-</p>
-<ol style="list-style-type: lower-alpha">
-<li>If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model
-b. If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model</li>
-</ol></li>
+<li><p>Then, do a wrapper approach:</p>
+<ul>
+<li><p>If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model</p></li>
+<li><p>If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model<br />
+</p></li>
+</ul></li>
 <li><p>If several approach select a large number of predictors, it may not feasible to reduce the number of features</p></li>
 </ol>
 <p>References:</p>
