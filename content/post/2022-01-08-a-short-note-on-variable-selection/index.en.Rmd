@@ -67,7 +67,7 @@ The wrapper type has the best chance to find the globally best predictors. Howev
 
 ## Suggested approach
 
-[Kuhn & Johnson (2019)](https://bookdown.org/max/FES/) suggested this approach in their books:
+[Kuhn & Johnson (2019)](https://bookdown.org/max/FES/) suggested this approach:
 
 1. Start with an intrinsic approach\
 2. Then, do a wrapper approach:\
