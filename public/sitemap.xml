@@ -11,37 +11,40 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/applied-statistics/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/variable-selection/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/variable-selection/</loc>
+    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/applied-statistics/</loc>
     <lastmod>2022-01-04T13:53:56+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/missing-data/</loc>
     <lastmod>2022-01-04T13:53:56+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/</loc>
     <lastmod>2022-01-04T13:53:56+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/variable-selection/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/variable-selection/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/machine-learning/</loc>
-    <lastmod>2022-01-02T09:09:43+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
     <lastmod>2022-01-02T09:09:43+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/</loc>

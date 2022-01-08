@@ -5,12 +5,79 @@
     <link>https://tengkuhanis.netlify.app/tag/variable-selection/</link>
       <atom:link href="https://tengkuhanis.netlify.app/tag/variable-selection/index.xml" rel="self" type="application/rss+xml" />
     <description>variable selection</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 04 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sat, 08 Jan 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>variable selection</title>
       <link>https://tengkuhanis.netlify.app/tag/variable-selection/</link>
     </image>
+    
+    <item>
+      <title>A short note on variable selection</title>
+      <link>https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/</link>
+      <pubDate>Sat, 08 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;variable-selection&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Variable selection&lt;/h2&gt;
+&lt;p&gt;Variable or feature selection is one of the important step whether in machine learning or statistical analysis. This post is geared more to the machine learning side. Certain machine learning models such as Support vector machine (SVM) and neural network do not handle irrelevant predictors very well, whereas models such as linear and logistic regression do not handle correlated predictors very well. Thus, careful selection of the variables will help mitigate this issue and further improve the predictive performance.&lt;/p&gt;
+&lt;p&gt;There are three types of approaches in variable selection:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Intrinsic (or built-in feature selection)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;An intrinsic feature selection is a feature selection embedded in the algorithm. Some examples include:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Tree-and-rule-based model - decision tree, random forest, etc/&lt;/li&gt;
+&lt;li&gt;Multivariate adaptive regression spline (MARS)/&lt;/li&gt;
+&lt;li&gt;Regularization method such as least absolute shrinkage and selection operator (LASSO or L1)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Advantages of this type of approach are they are fast and computationally efficient. However, the best variable selected in this approach is model dependent.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Filter&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In filter approach we determine the variable importance, usually separately though not necessarily. An example of this approach is univariate filter. If the outcome is two categories, we can use t-test to assess the numerical predictors. Variables with a significant p-value or a large t-statistics will be chosen.&lt;/p&gt;
+&lt;p&gt;This approach is very simple and fast. However, the best subset of variables selected using some filtering criteria such as statistical significance may not reflect the best predictive performance of the model. Additionally, this approach is prone to over-selection of the predictors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Wrapper&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;There two types of wrapper approaches:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Greedy wrapper&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Greedy approach or algorithm direct a search path towards the best at times to achieve the best immediate benefit. Due to this reason this approach cannot escape local minima. We can assume in Figure 1 below local minima represents locally best predictors and global minima represents globally best predictors.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;img.png&#34; alt=&#34;Local minima and global minima&#34; width=&#34;576&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Local minima and global minima
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;An example of this approach is recursive feature elimination or backward selection. The main weakness of this greedy approach is the selected subset of features identified by this approach may not has the best predictive performance.&lt;/p&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Non-greedy wrapper&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The examples of this approach are simulated annealing and &lt;a href=&#34;https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/&#34;&gt;genetic algorithm&lt;/a&gt;. Both of these algorithm incorporate a randomness in their approach. Hence, it is classified as non-greedy wrapper. Due to this randomness, it can escape a local minima (see Figure 1 above).&lt;/p&gt;
+&lt;p&gt;The wrapper type has the best chance to find the globally best predictors. However, this approach is computationally expensive. Not to mention, this approach has a tendency to overfit (some packages like &lt;code&gt;caret&lt;/code&gt; use resampling to avoid this issue).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;suggested-approach&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Suggested approach&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://bookdown.org/max/FES/&#34;&gt;Kuhn &amp;amp; Johnson (2019)&lt;/a&gt; suggested this approach in their books:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;Start with an intrinsic approach&lt;br /&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Then, do a wrapper approach:&lt;br /&gt;
+&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: lower-alpha&#34;&gt;
+&lt;li&gt;If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model
+b. If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If several approach select a large number of predictors, it may not feasible to reduce the number of features&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://bookdown.org/max/FES/classes-of-feature-selection-methodologies.html&#34; class=&#34;uri&#34;&gt;https://bookdown.org/max/FES/classes-of-feature-selection-methodologies.html&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://topepo.github.io/caret/feature-selection-overview.html&#34; class=&#34;uri&#34;&gt;http://topepo.github.io/caret/feature-selection-overview.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Stepwise selection after multiple imputation</title>
