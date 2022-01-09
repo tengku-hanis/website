@@ -146,7 +146,7 @@ So, this is the values we get from the first observation.
 coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species
 ```
 
-However, in `predict(type = "terms")` the values is [centered](https://www.statology.org/center-data-in-r/), thus we have a different values for constant/intercept and for $\beta_1(Sepal.Length)$,$\beta_1(Sepal.Length)$ and so on. For example, the values for intercept for both models are:
+However, in `predict(type = "terms")` the values is [centered](https://www.statology.org/center-data-in-r/), thus we have a different values for constant/intercept and for $\beta_1(Sepal.Length)$,$\beta_2(Sepal.Width)$ and so on. For example, the values for intercept for both models are:
 
 ```{r}
 # Intercept/constant from predict(type = "terms")

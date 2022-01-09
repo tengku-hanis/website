@@ -166,7 +166,7 @@ So, this is the values we get from the first observation.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## (Intercept) 
 ##   -0.374315&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;However, in &lt;code&gt;predict(type = &#34;terms&#34;)&lt;/code&gt; the values is &lt;a href=&#34;https://www.statology.org/center-data-in-r/&#34;&gt;centered&lt;/a&gt;, thus we have a different values for constant/intercept and for &lt;span class=&#34;math inline&#34;&gt;\(\beta_1(Sepal.Length)\)&lt;/span&gt;,&lt;span class=&#34;math inline&#34;&gt;\(\beta_1(Sepal.Length)\)&lt;/span&gt; and so on. For example, the values for intercept for both models are:&lt;/p&gt;
+&lt;p&gt;However, in &lt;code&gt;predict(type = &#34;terms&#34;)&lt;/code&gt; the values is &lt;a href=&#34;https://www.statology.org/center-data-in-r/&#34;&gt;centered&lt;/a&gt;, thus we have a different values for constant/intercept and for &lt;span class=&#34;math inline&#34;&gt;\(\beta_1(Sepal.Length)\)&lt;/span&gt;,&lt;span class=&#34;math inline&#34;&gt;\(\beta_2(Sepal.Width)\)&lt;/span&gt; and so on. For example, the values for intercept for both models are:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Intercept/constant from predict(type = &amp;quot;terms&amp;quot;)
 attr(predTerm, &amp;quot;constant&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -0.02537694&lt;/code&gt;&lt;/pre&gt;

@@ -908,7 +908,7 @@ So, this is the values we get from the first observation.</p>
 <pre class="r"><code>coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species</code></pre>
 <pre><code>## (Intercept) 
 ##   -0.374315</code></pre>
-<p>However, in <code>predict(type = "terms")</code> the values is <a href="https://www.statology.org/center-data-in-r/">centered</a>, thus we have a different values for constant/intercept and for <span class="math inline">\(\beta_1(Sepal.Length)\)</span>,<span class="math inline">\(\beta_1(Sepal.Length)\)</span> and so on. For example, the values for intercept for both models are:</p>
+<p>However, in <code>predict(type = "terms")</code> the values is <a href="https://www.statology.org/center-data-in-r/">centered</a>, thus we have a different values for constant/intercept and for <span class="math inline">\(\beta_1(Sepal.Length)\)</span>,<span class="math inline">\(\beta_2(Sepal.Width)\)</span> and so on. For example, the values for intercept for both models are:</p>
 <pre class="r"><code># Intercept/constant from predict(type = &quot;terms&quot;)
 attr(predTerm, &quot;constant&quot;)</code></pre>
 <pre><code>## [1] -0.02537694</code></pre>
