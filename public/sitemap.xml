@@ -11,22 +11,37 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/applied-statistics/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/base-r/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/comparison/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
+  </url><url>
     <loc>https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/</loc>
     <lastmod>2022-01-08T22:35:46+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/categories/</loc>
-    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
-    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
-    <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/</loc>
     <lastmod>2022-01-08T22:35:46+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/variable-selection/</loc>
@@ -34,9 +49,6 @@
   </url><url>
     <loc>https://tengkuhanis.netlify.app/category/variable-selection/</loc>
     <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/applied-statistics/</loc>
-    <lastmod>2022-01-04T13:53:56+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/missing-data/</loc>
     <lastmod>2022-01-04T13:53:56+08:00</lastmod>
@@ -57,9 +69,6 @@
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/</loc>
-    <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/spatial/</loc>
@@ -215,14 +224,8 @@
     <loc>https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/base-r/</loc>
-    <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/post/2021-05-04-base-r-vs-tidyverse/</loc>
     <lastmod>2021-05-04T16:48:49+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/comparison/</loc>
-    <lastmod>2021-05-04T17:40:15+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>

@@ -34,11 +34,13 @@
   
     
   
-  <meta name="description" content="Some noteI have written a short post about missing data and multiple imputation in mice package previously. This post will add to that previous post.
-Imputation modelImputation model is the model that we use for our imputation approach.">
+  <meta name="description" content="There are two functions in R that seems almost similar yet different:
+fitted()
+predict()First let’s prepare some data first.
+# Packageslibrary(dplyr)# Dataset.seed(123)dat &lt;- iris %&gt;% mutate(twoGp = sample(c(&quot;Gp1&quot;, &quot;Gp2&quot;), 150, replace = T), #create two group factortwoGp = as.">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/">
 
   
 
@@ -263,7 +265,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
 
-  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/">
 
   
   
@@ -279,16 +281,18 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Tengku Hanis">
-  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/">
-  <meta property="og:title" content="Variable selection for imputation model in {mice} | Tengku Hanis">
-  <meta property="og:description" content="Some noteI have written a short post about missing data and multiple imputation in mice package previously. This post will add to that previous post.
-Imputation modelImputation model is the model that we use for our imputation approach."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/">
+  <meta property="og:title" content="Fitted vs predict in R | Tengku Hanis">
+  <meta property="og:description" content="There are two functions in R that seems almost similar yet different:
+fitted()
+predict()First let’s prepare some data first.
+# Packageslibrary(dplyr)# Dataset.seed(123)dat &lt;- iris %&gt;% mutate(twoGp = sample(c(&quot;Gp1&quot;, &quot;Gp2&quot;), 150, replace = T), #create two group factortwoGp = as."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
   <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2021-11-22T00:00:00&#43;00:00">
+      <meta property="article:published_time" content="2022-01-09T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2021-11-22T07:55:40&#43;08:00">
+    <meta property="article:modified_time" content="2022-01-09T18:30:38&#43;08:00">
   
 
   
@@ -312,12 +316,12 @@
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/"
+    "@id": "https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/"
   },
-  "headline": "Variable selection for imputation model in {mice}",
+  "headline": "Fitted vs predict in R",
   
-  "datePublished": "2021-11-22T00:00:00Z",
-  "dateModified": "2021-11-22T07:55:40+08:00",
+  "datePublished": "2022-01-09T00:00:00Z",
+  "dateModified": "2022-01-09T18:30:38+08:00",
   
   "author": {
     "@type": "Person",
@@ -332,7 +336,7 @@
       "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "Some note\rI have written a short post about missing data and multiple imputation in mice package previously. This post will add to that previous post.\n\rImputation model\rImputation model is the model that we use for our imputation approach."
+  "description": "There are two functions in R that seems almost similar yet different:\nfitted()\n\rpredict()\r\rFirst let’s prepare some data first.\n# Packages\rlibrary(dplyr)\r# Data\rset.seed(123)\rdat \u0026lt;- iris %\u0026gt;% mutate(twoGp = sample(c(\u0026quot;Gp1\u0026quot;, \u0026quot;Gp2\u0026quot;), 150, replace = T), #create two group factor\rtwoGp = as."
 }
 </script>
 
@@ -350,7 +354,7 @@
 
 
 
-  <title>Variable selection for imputation model in {mice} | Tengku Hanis</title>
+  <title>Fitted vs predict in R | Tengku Hanis</title>
 
 </head>
 
@@ -725,7 +729,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Variable selection for imputation model in {mice}</h1>
+  <h1>Fitted vs predict in R</h1>
 
   
 
@@ -746,7 +750,7 @@
           Last updated on
       
     
-    Nov 22, 2021
+    Jan 9, 2022
   </span>
   
 
@@ -755,7 +759,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    7 min read
+    4 min read
   </span>
   
 
@@ -769,7 +773,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a>, <a href="/category/applied-statistics/">applied statistics</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="/category/applied-statistics/">applied statistics</a>, <a href="/category/r/">R</a></span>
   
 
 </div>
@@ -798,145 +802,126 @@
 
     <div class="article-style">
       
-<script src="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/index.en_files/header-attrs/header-attrs.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/index.en_files/header-attrs/header-attrs.js"></script>
 
 
-<div id="some-note" class="section level2">
-<h2>Some note</h2>
-<p>I have written a <a href="https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/">short post</a> about missing data and multiple imputation in <code>mice</code> package previously. This post will add to that previous post.</p>
-</div>
-<div id="imputation-model" class="section level2">
-<h2>Imputation model</h2>
-<p>Imputation model is the model that we use for our imputation approach. There is another term which is complete-data model. This is a model that we want to fit after we impute the missing values (i.e; the complete-data model is the final model).</p>
-<p>Generally, we need to include as many relevant variables into the imputation model. However, this general advise may not be very efficient as we may have multicollinearity and computational issue if we include too many predictors. As a rule of thumb, the number of included variables should be no more than 15-20. <a href="https://www.jstatsoft.org/article/view/v045i03">van Buuren <em>et al</em></a><em>.</em> <a href="https://www.jstatsoft.org/article/view/v045i03">(2011)</a> mentioned that increased in explained variance in linear regression is negligible after 15 variables are included.</p>
-<p>There are 4 steps suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multivariate%20-%20TNO99054%201999.pdf">van Buuren <em>et al.</em> (1999)</a> for variable selection in the case of big data:</p>
+<p>There are two functions in R that seems almost similar yet different:</p>
 <ol style="list-style-type: decimal">
-<li><p>Include all variables that appear in the complete-data model (final model)</p>
-<ul>
-<li>This may include the interaction terms as well (passive imputation can be used to specify the interaction terms in <code>mice</code> package)</li>
-</ul></li>
-<li><p>Include variable that have influence on the occurrence of the missing data</p>
-<ul>
-<li>This can be assessed by a correlation matrix between NAs variables and non-NAs variables</li>
-</ul></li>
-<li><p>Include variable that explain a considerable amount of variance</p>
-<ul>
-<li>This can be crudely assessed by a correlation matrix between NAs variables and non-NAs variables</li>
-</ul></li>
-<li><p>Remove variable that have too many missing values within the subgroup of incomplete cases</p>
-<ul>
-<li>This can be assessed by a proportion of usable cases (PUC) - how many cases with missing data in a certain variable have an observed values on the predictor variables</li>
-</ul></li>
+<li><code>fitted()</code><br />
+</li>
+<li><code>predict()</code></li>
 </ol>
-<p>All these steps should be done on the key variables only. There is another more efficient yet laborious approach suggested by <a href="https://stefvanbuuren.name/publications/Flexible%20multiple%20-%20TNO99045%201999.pdf">Oudshoorn <em>et al.</em> (1999)</a>, which take into account important predictor of predictors. We are going to focus on the four steps above, and not cover the latter suggested approach in this post.</p>
-</div>
-<div id="r-codes" class="section level2">
-<h2>R codes</h2>
-<p>These are the required packages.</p>
-<pre class="r"><code>library(mice)
-library(corrplot)</code></pre>
-<p>Our data.</p>
-<pre class="r"><code>summary(airquality)</code></pre>
-<pre><code>##      Ozone           Solar.R           Wind             Temp      
-##  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
-##  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
-##  Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
-##  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
-##  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
-##  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
-##  NA&#39;s   :37       NA&#39;s   :7                                       
-##      Month            Day      
-##  Min.   :5.000   Min.   : 1.0  
-##  1st Qu.:6.000   1st Qu.: 8.0  
-##  Median :7.000   Median :16.0  
-##  Mean   :6.993   Mean   :15.8  
-##  3rd Qu.:8.000   3rd Qu.:23.0  
-##  Max.   :9.000   Max.   :31.0  
+<p>First let’s prepare some data first.</p>
+<pre class="r"><code># Packages
+library(dplyr)
+
+# Data
+set.seed(123)
+dat &lt;- 
+  iris %&gt;% 
+  mutate(twoGp = sample(c(&quot;Gp1&quot;, &quot;Gp2&quot;), 150, replace = T), #create two group factor
+         twoGp = as.factor(twoGp))</code></pre>
+<p>This is our data.</p>
+<pre class="r"><code>summary(dat)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species   twoGp   
+##  setosa    :50   Gp1:76  
+##  versicolor:50   Gp2:74  
+##  virginica :50           
+##                          
+##                          
 ## </code></pre>
-<p>We have 2 variables; Ozone and Solar.R with missing values or NAs. We can further explore the pattern of missing variable.</p>
-<pre class="r"><code>md.pattern(airquality)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre><code>##     Wind Temp Month Day Solar.R Ozone   
-## 111    1    1     1   1       1     1  0
-## 35     1    1     1   1       1     0  1
-## 5      1    1     1   1       0     1  1
-## 2      1    1     1   1       0     0  2
-##        0    0     0   0       7    37 44</code></pre>
-<p>There are 2 rows with NAs in Ozone and Solar.R, 35 rows with NAs only in Ozone, and 5 rows with NAs only in Solar.R. Next, we can check the correlation.</p>
-<pre class="r"><code>cor(airquality, use = &quot;pairwise.complete.obs&quot;) |&gt;
-  corrplot(method = &quot;number&quot;, type = &quot;upper&quot;)</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>The correlations of Ozone-Temp and Ozone-Wind are the highest. Now, let’s do a correlation between the NAs variable and non-NAs variable.</p>
-<pre class="r"><code>cor(y = airquality, x = !is.na(airquality), use = &quot;pairwise.complete.obs&quot;) |&gt;
-  round(digits = 2)</code></pre>
-<pre><code>##         Ozone Solar.R  Wind Temp Month   Day
-## Ozone      NA   -0.02 -0.05 0.00  0.26 -0.05
-## Solar.R     0      NA  0.06 0.11  0.11  0.17
-## Wind       NA      NA    NA   NA    NA    NA
-## Temp       NA      NA    NA   NA    NA    NA
-## Month      NA      NA    NA   NA    NA    NA
-## Day        NA      NA    NA   NA    NA    NA</code></pre>
-<p>We can ignore the warnings and the NAs as only Ozone and Solar.R have a missing values. So, the highest correlation is 0.26 between Month-Ozone - correlation between Month values with Ozone-related NAs and Month values with non-Ozone-related NAs. The column variable in the correlation matrix is the indicators of NAs and the row variables is the variable with observed values.</p>
-<p>Lastly we can calculate ‘manually’ the PUC (proportion of usable cases). <code>md.pairs()</code> here calculate the number of observation per variable pair.</p>
-<pre class="r"><code>var_pair &lt;- md.pairs(airquality)
-round(var_pair$mr / (var_pair$mr + var_pair$mm), digits = 3)</code></pre>
-<pre><code>##         Ozone Solar.R Wind Temp Month Day
-## Ozone   0.000   0.946    1    1     1   1
-## Solar.R 0.714   0.000    1    1     1   1
-## Wind      NaN     NaN  NaN  NaN   NaN NaN
-## Temp      NaN     NaN  NaN  NaN   NaN NaN
-## Month     NaN     NaN  NaN  NaN   NaN NaN
-## Day       NaN     NaN  NaN  NaN   NaN NaN</code></pre>
-<p>Low value of PUC indicate there is a little information on the predictor to impute the target NAs variable. NaN is shown as the variables have no missing values. The row variable are the target variables to be imputed, and the column variables are the predictors in imputation model. We can see that to impute Solar.R (on the row) Ozone has a little less information (0.714) compare to Wind, Temp, and Day. The diagonal elements will always be 0 or NaN. So, from here we can drop predictors with say, 0 PUC as they contain no information to help impute the target NAs variable.</p>
-<p>Actually, we have a nice function from <code>mice</code> that can do what we ‘manually’ did just now.</p>
-<pre class="r"><code>quickpred(airquality)</code></pre>
-<pre><code>##         Ozone Solar.R Wind Temp Month Day
-## Ozone       0       1    1    1     1   0
-## Solar.R     1       0    0    1     1   1
-## Wind        0       0    0    0     0   0
-## Temp        0       0    0    0     0   0
-## Month       0       0    0    0     0   0
-## Day         0       0    0    0     0   0</code></pre>
-<p>Again, the column variables are the predictors, and the row variables are the target NAs variables. The above matrix is known as predictor matrix, which going to be used in the imputation model. 1 denote a variable included as predictors and 0 vice versa. The two main arguments in <code>quickpred()</code> are:</p>
-<ul>
-<li><p>mincor - if any of the absolute values in the two correlation matrix that we did earlier above 0.1 (default), the predictors will be included in the predictor matrix</p></li>
-<li><p>minpuc - the default values for PUC is 0, so the predictors are retained even if they have no information to help imputation model</p></li>
-</ul>
-<p>Notice that, variable Day is excluded from the predictors of Ozone. The correlation values are 0 and -0.05 from the first and second correlation matrices, respectively which do not exceed the default setting of 0.1. That’s why, variable Day is excluded. Also, we can observe a similar situation for variable Wind , which is excluded from the predictors of Solar.R (the correlation coefficients are -0.60 and 0.06). The negative (-) sign does not matter as we actually evaluate the absolute values.</p>
-<p>Intuitively, we can change these two arguments as we see fit to do a variable selection for imputation model. Once we finalise our variable selection, we can do the multiple imputation using <code>mice()</code>.</p>
-<pre class="r"><code># Finalised variable selection
-var_sel &lt;- quickpred(airquality)
-var_sel</code></pre>
-<pre><code>##         Ozone Solar.R Wind Temp Month Day
-## Ozone       0       1    1    1     1   0
-## Solar.R     1       0    0    1     1   1
-## Wind        0       0    0    0     0   0
-## Temp        0       0    0    0     0   0
-## Month       0       0    0    0     0   0
-## Day         0       0    0    0     0   0</code></pre>
-<pre class="r"><code># Impute
-imp &lt;- mice(airquality, m = 5, predictorMatrix = var_sel, printFlag = F)
-imp</code></pre>
-<pre><code>## Class: mids
-## Number of multiple imputations:  5 
-## Imputation methods:
-##   Ozone Solar.R    Wind    Temp   Month     Day 
-##   &quot;pmm&quot;   &quot;pmm&quot;      &quot;&quot;      &quot;&quot;      &quot;&quot;      &quot;&quot; 
-## PredictorMatrix:
-##         Ozone Solar.R Wind Temp Month Day
-## Ozone       0       1    1    1     1   0
-## Solar.R     1       0    0    1     1   1
-## Wind        0       0    0    0     0   0
-## Temp        0       0    0    0     0   0
-## Month       0       0    0    0     0   0
-## Day         0       0    0    0     0   0</code></pre>
-<p>Notice that <code>mice()</code> uses the predictor matrix that we provide.</p>
-<p>References:</p>
+<p><code>fitted()</code> is used to get a predicted values or <span class="math inline">\(\hat{y}\)</span> based on the data. Let’s see this on the logistic regression.</p>
+<pre class="r"><code>logR &lt;- glm(twoGp ~ ., family = binomial(), data = dat)</code></pre>
+<p>These are the fitted values.</p>
+<pre class="r"><code>fitted(logR) %&gt;% head()</code></pre>
+<pre><code>##         1         2         3         4         5         6 
+## 0.4074988 0.3385228 0.3772767 0.3555640 0.4255196 0.4602198</code></pre>
+<p>For <code>predict()</code>, we have three types:</p>
 <ol style="list-style-type: decimal">
-<li><p><a href="https://www.jstatsoft.org/article/view/v045i03" class="uri">https://www.jstatsoft.org/article/view/v045i03</a> - paper written by Staf van Buuren (a bit outdated in terms of codes, but runnable)</p></li>
-<li><p><a href="https://stefvanbuuren.name/fimd/" class="uri">https://stefvanbuuren.name/fimd/</a> - online book written by Stef van Buuren (See chapter 6.3.2 and 9.1.6)</p></li>
+<li>Response<br />
+</li>
+<li>Link - default<br />
+</li>
+<li>Terms</li>
 </ol>
-</div>
+<p>If no new data supplied to <code>predict()</code>, it will use the original data used to fit the model.</p>
+<p><strong>1. Response</strong></p>
+<p>The type response is identical to <code>fitted()</code>.</p>
+<pre class="r"><code>predict(logR, type = &quot;response&quot;) %&gt;% head()</code></pre>
+<pre><code>##         1         2         3         4         5         6 
+## 0.4074988 0.3385228 0.3772767 0.3555640 0.4255196 0.4602198</code></pre>
+<p>We can confirm this as below.</p>
+<pre class="r"><code>all.equal(fitted(logR), predict(logR, type = &quot;response&quot;))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Thus, <code>fitted()</code> and <code>predict(type = "response")</code> give use predicted probabilities on the scale of the response variable. The first observation of this values can be interpreted as probability of Gp2 (Gp1 is a reference group) for first observation is 0.41.</p>
+<p><strong>2. Link</strong></p>
+<p><code>predict(type = "link")</code> gives us predicted probabilities on the logit scale or log odds prediction.</p>
+<pre class="r"><code>predict(logR, type = &quot;link&quot;) %&gt;% head() #similar to predict(logR)</code></pre>
+<pre><code>##          1          2          3          4          5          6 
+## -0.3743150 -0.6698840 -0.5011235 -0.5946702 -0.3001551 -0.1594578</code></pre>
+<p>So, the log odds prediction of Gp2 for the first observation is -0.37. Hence, we can get the same values if we apply a <a href="https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function">link function</a> to the fitted values.</p>
+<p>The link function for logistic regression is:</p>
+<p><span class="math display">\[
+ln(\frac{\mu}{1 - \mu})
+\]</span>
+So, we apply this link function to the fitted values.</p>
+<pre class="r"><code>logOddsProb &lt;- log(fitted(logR) / (1 - fitted(logR))) 
+head(logOddsProb)</code></pre>
+<pre><code>##          1          2          3          4          5          6 
+## -0.3743150 -0.6698840 -0.5011235 -0.5946702 -0.3001551 -0.1594578</code></pre>
+<p>We can further confirm this as we did previously.</p>
+<pre class="r"><code>all.equal(logOddsProb, predict(logR, type = &quot;link&quot;))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Also, we can conclude <code>predict(type = "link")</code> give use a fitted values before an application of link function (log odds).</p>
+<p><strong>3. Terms</strong></p>
+<p>Lastly, we have <code>predict(type = "terms")</code>. This type gives us a matrix of fitted values for each variable of each observation in the model on the scale of linear predictor.</p>
+<pre class="r"><code>predict(logR, type = &quot;terms&quot;) %&gt;% head() </code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1   0.07988782  0.28070682    0.4819893  -0.2736677 -0.9178543
+## 2   0.10138230 -0.03635661    0.4819893  -0.2736677 -0.9178543
+## 3   0.12287679  0.09046877    0.5024299  -0.2736677 -0.9178543
+## 4   0.13362403  0.02705608    0.4615487  -0.2736677 -0.9178543
+## 5   0.09063506  0.34411951    0.4819893  -0.2736677 -0.9178543
+## 6   0.04764610  0.53435757    0.4206675  -0.2188976 -0.9178543</code></pre>
+<p>So, if we add up the values of the first observation and the constant (or intercept), we will get the same values as the log odds prediction (<code>predict(type = "link")</code>).</p>
+<pre class="r"><code>predTerm &lt;- predict(logR, type = &quot;terms&quot;)
+sum(predTerm[1, ], attr(predTerm, &quot;constant&quot;)) #add up the first observation and the constant</code></pre>
+<pre><code>## [1] -0.374315</code></pre>
+<pre class="r"><code>logOddsProb[1]</code></pre>
+<pre><code>##         1 
+## -0.374315</code></pre>
+<p>Those values also similar to if we calculate manually using coefficient from the <code>summary()</code>.</p>
+<p><span class="math display">\[
+LogOdds(Gp2) = \beta_0 + \beta_1(Sepal.Length) + \beta_2(Sepal.Width) + 
+\]</span>
+<span class="math display">\[
+\beta_3(Petal.Length) + \beta_4(Petal.Width) + \beta_5(Species)
+\]</span>
+So, this is the values we get from the first observation.</p>
+<pre class="r"><code>coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species</code></pre>
+<pre><code>## (Intercept) 
+##   -0.374315</code></pre>
+<p>However, in <code>predict(type = "terms")</code> the values is <a href="https://www.statology.org/center-data-in-r/">centered</a>, thus we have a different values for constant/intercept and for <span class="math inline">\(\beta_1(Sepal.Length)\)</span>,<span class="math inline">\(\beta_1(Sepal.Length)\)</span> and so on. For example, the values for intercept for both models are:</p>
+<pre class="r"><code># Intercept/constant from predict(type = &quot;terms&quot;)
+attr(predTerm, &quot;constant&quot;)</code></pre>
+<pre><code>## [1] -0.02537694</code></pre>
+<pre class="r"><code># Intercept/constant from summary()
+coef(logR)[1]</code></pre>
+<pre><code>## (Intercept) 
+##   -1.814251</code></pre>
+<p>References:</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/12201502/11215767" class="uri">https://stackoverflow.com/a/12201502/11215767</a><br />
+</li>
+<li><a href="https://stackoverflow.com/a/47854088/11215767" class="uri">https://stackoverflow.com/a/47854088/11215767</a></li>
+</ul>
 
     </div>
 
@@ -949,7 +934,9 @@ imp</code></pre>
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tag/missing-data/">missing data</a>
+  <a class="badge badge-light" href="/tag/base-r/">base R</a>
+  
+  <a class="badge badge-light" href="/tag/comparison/">comparison</a>
   
 </div>
 
@@ -1100,15 +1087,15 @@ imp</code></pre>
     <h3>Related</h3>
     <ul>
       
+      <li><a href="/post/loop-vs-apply-in-r/">Loop vs apply in R</a></li>
+      
+      <li><a href="/post/2021-05-04-base-r-vs-tidyverse/">Base R vs tidyverse</a></li>
+      
+      <li><a href="/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+      
       <li><a href="/post/a-short-note-on-multiple-imputation/">A short note on multiple imputation</a></li>
       
       <li><a href="/post/stepwise-selection-after-multiple-imputation/">Stepwise selection after multiple imputation</a></li>
-      
-      <li><a href="/post/fitted-vs-predict-in-r/">Fitted vs predict in R</a></li>
-      
-      <li><a href="/post/variable-selection-using-genetic-algorithm/">Variable selection using genetic algorithm</a></li>
-      
-      <li><a href="/post/my-first-interactive-map-with-leaflet/">My first interactive map with {leaflet}</a></li>
       
     </ul>
   </div>

@@ -5,12 +5,141 @@
     <link>https://tengkuhanis.netlify.app/tag/base-r/</link>
       <atom:link href="https://tengkuhanis.netlify.app/tag/base-r/index.xml" rel="self" type="application/rss+xml" />
     <description>base R</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 04 May 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 09 Jan 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>base R</title>
       <link>https://tengkuhanis.netlify.app/tag/base-r/</link>
     </image>
+    
+    <item>
+      <title>Fitted vs predict in R</title>
+      <link>https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/</link>
+      <pubDate>Sun, 09 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;There are two functions in R that seems almost similar yet different:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;fitted()&lt;/code&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;predict()&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;First let’s prepare some data first.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Packages
+library(dplyr)
+
+# Data
+set.seed(123)
+dat &amp;lt;- 
+  iris %&amp;gt;% 
+  mutate(twoGp = sample(c(&amp;quot;Gp1&amp;quot;, &amp;quot;Gp2&amp;quot;), 150, replace = T), #create two group factor
+         twoGp = as.factor(twoGp))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is our data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(dat)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species   twoGp   
+##  setosa    :50   Gp1:76  
+##  versicolor:50   Gp2:74  
+##  virginica :50           
+##                          
+##                          
+## &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;fitted()&lt;/code&gt; is used to get a predicted values or &lt;span class=&#34;math inline&#34;&gt;\(\hat{y}\)&lt;/span&gt; based on the data. Let’s see this on the logistic regression.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;logR &amp;lt;- glm(twoGp ~ ., family = binomial(), data = dat)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;These are the fitted values.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fitted(logR) %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         1         2         3         4         5         6 
+## 0.4074988 0.3385228 0.3772767 0.3555640 0.4255196 0.4602198&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For &lt;code&gt;predict()&lt;/code&gt;, we have three types:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Response&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Link - default&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Terms&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If no new data supplied to &lt;code&gt;predict()&lt;/code&gt;, it will use the original data used to fit the model.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Response&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The type response is identical to &lt;code&gt;fitted()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(logR, type = &amp;quot;response&amp;quot;) %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         1         2         3         4         5         6 
+## 0.4074988 0.3385228 0.3772767 0.3555640 0.4255196 0.4602198&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can confirm this as below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;all.equal(fitted(logR), predict(logR, type = &amp;quot;response&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Thus, &lt;code&gt;fitted()&lt;/code&gt; and &lt;code&gt;predict(type = &#34;response&#34;)&lt;/code&gt; give use predicted probabilities on the scale of the response variable. The first observation of this values can be interpreted as probability of Gp2 (Gp1 is a reference group) for first observation is 0.41.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Link&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;predict(type = &#34;link&#34;)&lt;/code&gt; gives us predicted probabilities on the logit scale or log odds prediction.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(logR, type = &amp;quot;link&amp;quot;) %&amp;gt;% head() #similar to predict(logR)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          1          2          3          4          5          6 
+## -0.3743150 -0.6698840 -0.5011235 -0.5946702 -0.3001551 -0.1594578&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, the log odds prediction of Gp2 for the first observation is -0.37. Hence, we can get the same values if we apply a &lt;a href=&#34;https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function&#34;&gt;link function&lt;/a&gt; to the fitted values.&lt;/p&gt;
+&lt;p&gt;The link function for logistic regression is:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+ln(\frac{\mu}{1 - \mu})
+\]&lt;/span&gt;
+So, we apply this link function to the fitted values.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;logOddsProb &amp;lt;- log(fitted(logR) / (1 - fitted(logR))) 
+head(logOddsProb)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          1          2          3          4          5          6 
+## -0.3743150 -0.6698840 -0.5011235 -0.5946702 -0.3001551 -0.1594578&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can further confirm this as we did previously.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;all.equal(logOddsProb, predict(logR, type = &amp;quot;link&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] TRUE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Also, we can conclude &lt;code&gt;predict(type = &#34;link&#34;)&lt;/code&gt; give use a fitted values before an application of link function (log odds).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. Terms&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, we have &lt;code&gt;predict(type = &#34;terms&#34;)&lt;/code&gt;. This type gives us a matrix of fitted values for each variable of each observation in the model on the scale of linear predictor.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(logR, type = &amp;quot;terms&amp;quot;) %&amp;gt;% head() &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1   0.07988782  0.28070682    0.4819893  -0.2736677 -0.9178543
+## 2   0.10138230 -0.03635661    0.4819893  -0.2736677 -0.9178543
+## 3   0.12287679  0.09046877    0.5024299  -0.2736677 -0.9178543
+## 4   0.13362403  0.02705608    0.4615487  -0.2736677 -0.9178543
+## 5   0.09063506  0.34411951    0.4819893  -0.2736677 -0.9178543
+## 6   0.04764610  0.53435757    0.4206675  -0.2188976 -0.9178543&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, if we add up the values of the first observation and the constant (or intercept), we will get the same values as the log odds prediction (&lt;code&gt;predict(type = &#34;link&#34;)&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predTerm &amp;lt;- predict(logR, type = &amp;quot;terms&amp;quot;)
+sum(predTerm[1, ], attr(predTerm, &amp;quot;constant&amp;quot;)) #add up the first observation and the constant&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -0.374315&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;logOddsProb[1]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##         1 
+## -0.374315&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Those values also similar to if we calculate manually using coefficient from the &lt;code&gt;summary()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+LogOdds(Gp2) = \beta_0 + \beta_1(Sepal.Length) + \beta_2(Sepal.Width) + 
+\]&lt;/span&gt;
+&lt;span class=&#34;math display&#34;&gt;\[
+\beta_3(Petal.Length) + \beta_4(Petal.Width) + \beta_5(Species)
+\]&lt;/span&gt;
+So, this is the values we get from the first observation.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## (Intercept) 
+##   -0.374315&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, in &lt;code&gt;predict(type = &#34;terms&#34;)&lt;/code&gt; the values is &lt;a href=&#34;https://www.statology.org/center-data-in-r/&#34;&gt;centered&lt;/a&gt;, thus we have a different values for constant/intercept and for &lt;span class=&#34;math inline&#34;&gt;\(\beta_1(Sepal.Length)\)&lt;/span&gt;,&lt;span class=&#34;math inline&#34;&gt;\(\beta_1(Sepal.Length)\)&lt;/span&gt; and so on. For example, the values for intercept for both models are:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Intercept/constant from predict(type = &amp;quot;terms&amp;quot;)
+attr(predTerm, &amp;quot;constant&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] -0.02537694&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Intercept/constant from summary()
+coef(logR)[1]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## (Intercept) 
+##   -1.814251&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://stackoverflow.com/a/12201502/11215767&#34; class=&#34;uri&#34;&gt;https://stackoverflow.com/a/12201502/11215767&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://stackoverflow.com/a/47854088/11215767&#34; class=&#34;uri&#34;&gt;https://stackoverflow.com/a/47854088/11215767&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Base R vs tidyverse</title>

@@ -1,0 +1,161 @@
+---
+title: Fitted vs predict in R
+author: ''
+date: '2022-01-09'
+slug: fitted-vs-predict-in-r
+categories:
+  - applied statistics
+  - R
+tags:
+  - base R
+  - comparison
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-01-09T18:30:38+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+There are two functions in R that seems almost similar yet different: 
+
+1. `fitted()`\
+2. `predict()`
+
+First let's prepare some data first.
+
+```{r warning=FALSE, message=FALSE}
+# Packages
+library(dplyr)
+
+# Data
+set.seed(123)
+dat <- 
+  iris %>% 
+  mutate(twoGp = sample(c("Gp1", "Gp2"), 150, replace = T), #create two group factor
+         twoGp = as.factor(twoGp))
+```
+
+This is our data.
+```{r}
+summary(dat)
+```
+
+
+`fitted()` is used to get a predicted values or $\hat{y}$ based on the data. Let's see this on the logistic regression.
+
+```{r}
+logR <- glm(twoGp ~ ., family = binomial(), data = dat)
+```
+
+These are the fitted values.
+
+```{r}
+fitted(logR) %>% head()
+```
+
+For `predict()`, we have three types:
+
+1. Response\
+2. Link - default\
+3. Terms
+
+If no new data supplied to `predict()`, it will use the original data used to fit the model.
+
+**1. Response**
+
+The type response is identical to `fitted()`.
+
+```{r}
+predict(logR, type = "response") %>% head()
+```
+
+We can confirm this as below.
+
+```{r}
+all.equal(fitted(logR), predict(logR, type = "response"))
+```
+
+Thus, `fitted()` and `predict(type = "response")` give use predicted probabilities on the scale of the response variable. The first observation of this values can be interpreted as probability of Gp2 (Gp1 is a reference group) for first observation is 0.41. 
+
+**2. Link**
+
+`predict(type = "link")` gives us predicted probabilities on the logit scale or log odds prediction.
+
+```{r}
+predict(logR, type = "link") %>% head() #similar to predict(logR)
+```
+
+So, the log odds prediction of Gp2 for the first observation is -0.37. Hence, we can get the same values if we apply a [link function](https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function) to the fitted values. 
+
+The link function for logistic regression is:
+
+$$
+ln(\frac{\mu}{1 - \mu})
+$$
+So, we apply this link function to the fitted values.
+
+```{r}
+logOddsProb <- log(fitted(logR) / (1 - fitted(logR))) 
+head(logOddsProb)
+```
+
+We can further confirm this as we did previously.
+
+```{r}
+all.equal(logOddsProb, predict(logR, type = "link"))
+```
+
+Also, we can conclude `predict(type = "link")` give use a fitted values before an application of link function (log odds).
+
+**3. Terms**
+
+Lastly, we have `predict(type = "terms")`. This type gives us a matrix of fitted values for each variable of each observation in the model on the scale of linear predictor. 
+
+```{r}
+predict(logR, type = "terms") %>% head() 
+```
+
+So, if we add up the values of the first observation and the constant (or intercept), we will get the same values as the log odds prediction (`predict(type = "link")`).
+
+```{r}
+predTerm <- predict(logR, type = "terms")
+sum(predTerm[1, ], attr(predTerm, "constant")) #add up the first observation and the constant
+logOddsProb[1]
+```
+
+Those values also similar to if we calculate manually using coefficient from the `summary()`.
+
+$$
+LogOdds(Gp2) = \beta_0 + \beta_1(Sepal.Length) + \beta_2(Sepal.Width) + 
+$$
+$$
+\beta_3(Petal.Length) + \beta_4(Petal.Width) + \beta_5(Species)
+$$
+So, this is the values we get from the first observation.
+
+```{r}
+coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species
+```
+
+However, in `predict(type = "terms")` the values is [centered](https://www.statology.org/center-data-in-r/), thus we have a different values for constant/intercept and for $\beta_1(Sepal.Length)$,$\beta_1(Sepal.Length)$ and so on. For example, the values for intercept for both models are:
+
+```{r}
+# Intercept/constant from predict(type = "terms")
+attr(predTerm, "constant")
+# Intercept/constant from summary()
+coef(logR)[1]
+```
+
+References:
+
+- <https://stackoverflow.com/a/12201502/11215767>\
+- <https://stackoverflow.com/a/47854088/11215767>

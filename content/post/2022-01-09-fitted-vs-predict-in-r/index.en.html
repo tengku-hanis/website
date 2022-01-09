@@ -1,0 +1,143 @@
+---
+title: Fitted vs predict in R
+author: ''
+date: '2022-01-09'
+slug: fitted-vs-predict-in-r
+categories:
+  - applied statistics
+  - R
+tags:
+  - base R
+  - comparison
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-01-09T18:30:38+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>There are two functions in R that seems almost similar yet different:</p>
+<ol style="list-style-type: decimal">
+<li><code>fitted()</code><br />
+</li>
+<li><code>predict()</code></li>
+</ol>
+<p>First let’s prepare some data first.</p>
+<pre class="r"><code># Packages
+library(dplyr)
+
+# Data
+set.seed(123)
+dat &lt;- 
+  iris %&gt;% 
+  mutate(twoGp = sample(c(&quot;Gp1&quot;, &quot;Gp2&quot;), 150, replace = T), #create two group factor
+         twoGp = as.factor(twoGp))</code></pre>
+<p>This is our data.</p>
+<pre class="r"><code>summary(dat)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species   twoGp   
+##  setosa    :50   Gp1:76  
+##  versicolor:50   Gp2:74  
+##  virginica :50           
+##                          
+##                          
+## </code></pre>
+<p><code>fitted()</code> is used to get a predicted values or <span class="math inline">\(\hat{y}\)</span> based on the data. Let’s see this on the logistic regression.</p>
+<pre class="r"><code>logR &lt;- glm(twoGp ~ ., family = binomial(), data = dat)</code></pre>
+<p>These are the fitted values.</p>
+<pre class="r"><code>fitted(logR) %&gt;% head()</code></pre>
+<pre><code>##         1         2         3         4         5         6 
+## 0.4074988 0.3385228 0.3772767 0.3555640 0.4255196 0.4602198</code></pre>
+<p>For <code>predict()</code>, we have three types:</p>
+<ol style="list-style-type: decimal">
+<li>Response<br />
+</li>
+<li>Link - default<br />
+</li>
+<li>Terms</li>
+</ol>
+<p>If no new data supplied to <code>predict()</code>, it will use the original data used to fit the model.</p>
+<p><strong>1. Response</strong></p>
+<p>The type response is identical to <code>fitted()</code>.</p>
+<pre class="r"><code>predict(logR, type = &quot;response&quot;) %&gt;% head()</code></pre>
+<pre><code>##         1         2         3         4         5         6 
+## 0.4074988 0.3385228 0.3772767 0.3555640 0.4255196 0.4602198</code></pre>
+<p>We can confirm this as below.</p>
+<pre class="r"><code>all.equal(fitted(logR), predict(logR, type = &quot;response&quot;))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Thus, <code>fitted()</code> and <code>predict(type = "response")</code> give use predicted probabilities on the scale of the response variable. The first observation of this values can be interpreted as probability of Gp2 (Gp1 is a reference group) for first observation is 0.41.</p>
+<p><strong>2. Link</strong></p>
+<p><code>predict(type = "link")</code> gives us predicted probabilities on the logit scale or log odds prediction.</p>
+<pre class="r"><code>predict(logR, type = &quot;link&quot;) %&gt;% head() #similar to predict(logR)</code></pre>
+<pre><code>##          1          2          3          4          5          6 
+## -0.3743150 -0.6698840 -0.5011235 -0.5946702 -0.3001551 -0.1594578</code></pre>
+<p>So, the log odds prediction of Gp2 for the first observation is -0.37. Hence, we can get the same values if we apply a <a href="https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function">link function</a> to the fitted values.</p>
+<p>The link function for logistic regression is:</p>
+<p><span class="math display">\[
+ln(\frac{\mu}{1 - \mu})
+\]</span>
+So, we apply this link function to the fitted values.</p>
+<pre class="r"><code>logOddsProb &lt;- log(fitted(logR) / (1 - fitted(logR))) 
+head(logOddsProb)</code></pre>
+<pre><code>##          1          2          3          4          5          6 
+## -0.3743150 -0.6698840 -0.5011235 -0.5946702 -0.3001551 -0.1594578</code></pre>
+<p>We can further confirm this as we did previously.</p>
+<pre class="r"><code>all.equal(logOddsProb, predict(logR, type = &quot;link&quot;))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Also, we can conclude <code>predict(type = "link")</code> give use a fitted values before an application of link function (log odds).</p>
+<p><strong>3. Terms</strong></p>
+<p>Lastly, we have <code>predict(type = "terms")</code>. This type gives us a matrix of fitted values for each variable of each observation in the model on the scale of linear predictor.</p>
+<pre class="r"><code>predict(logR, type = &quot;terms&quot;) %&gt;% head() </code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1   0.07988782  0.28070682    0.4819893  -0.2736677 -0.9178543
+## 2   0.10138230 -0.03635661    0.4819893  -0.2736677 -0.9178543
+## 3   0.12287679  0.09046877    0.5024299  -0.2736677 -0.9178543
+## 4   0.13362403  0.02705608    0.4615487  -0.2736677 -0.9178543
+## 5   0.09063506  0.34411951    0.4819893  -0.2736677 -0.9178543
+## 6   0.04764610  0.53435757    0.4206675  -0.2188976 -0.9178543</code></pre>
+<p>So, if we add up the values of the first observation and the constant (or intercept), we will get the same values as the log odds prediction (<code>predict(type = "link")</code>).</p>
+<pre class="r"><code>predTerm &lt;- predict(logR, type = &quot;terms&quot;)
+sum(predTerm[1, ], attr(predTerm, &quot;constant&quot;)) #add up the first observation and the constant</code></pre>
+<pre><code>## [1] -0.374315</code></pre>
+<pre class="r"><code>logOddsProb[1]</code></pre>
+<pre><code>##         1 
+## -0.374315</code></pre>
+<p>Those values also similar to if we calculate manually using coefficient from the <code>summary()</code>.</p>
+<p><span class="math display">\[
+LogOdds(Gp2) = \beta_0 + \beta_1(Sepal.Length) + \beta_2(Sepal.Width) + 
+\]</span>
+<span class="math display">\[
+\beta_3(Petal.Length) + \beta_4(Petal.Width) + \beta_5(Species)
+\]</span>
+So, this is the values we get from the first observation.</p>
+<pre class="r"><code>coef(logR)[1] + coef(logR)[2]*dat$Sepal.Length[1] + coef(logR)[3]*dat$Sepal.Width[1] + coef(logR)[4]*dat$Petal.Length[1] + coef(logR)[5]*dat$Petal.Width[1] + 0 #setosa species</code></pre>
+<pre><code>## (Intercept) 
+##   -0.374315</code></pre>
+<p>However, in <code>predict(type = "terms")</code> the values is <a href="https://www.statology.org/center-data-in-r/">centered</a>, thus we have a different values for constant/intercept and for <span class="math inline">\(\beta_1(Sepal.Length)\)</span>,<span class="math inline">\(\beta_1(Sepal.Length)\)</span> and so on. For example, the values for intercept for both models are:</p>
+<pre class="r"><code># Intercept/constant from predict(type = &quot;terms&quot;)
+attr(predTerm, &quot;constant&quot;)</code></pre>
+<pre><code>## [1] -0.02537694</code></pre>
+<pre class="r"><code># Intercept/constant from summary()
+coef(logR)[1]</code></pre>
+<pre><code>## (Intercept) 
+##   -1.814251</code></pre>
+<p>References:</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/12201502/11215767" class="uri">https://stackoverflow.com/a/12201502/11215767</a><br />
+</li>
+<li><a href="https://stackoverflow.com/a/47854088/11215767" class="uri">https://stackoverflow.com/a/47854088/11215767</a></li>
+</ul>
