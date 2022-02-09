@@ -222,11 +222,11 @@ pca_tidied3&lt;/code&gt;&lt;/pre&gt;
   ggplot(aes(PC1, PC2)) +
   geom_point(aes(color = diabetes, shape = diabetes), size = 2, alpha = 0.6) +
   geom_segment(data = pca_tidied3, 
-               aes(x = 0, y = 0, xend = PC1*5, yend = PC2 * 5), 
+               aes(x = 0, y = 0, xend = PC1 * 5, yend = PC2 * 5), 
                arrow = arrow(length = unit(1/2, &amp;quot;picas&amp;quot;)),
                color = &amp;quot;blue&amp;quot;) +
   annotate(&amp;quot;text&amp;quot;, 
-           x = pca_tidied3$PC1*5.2, 
+           x = pca_tidied3$PC1 * 5.2, 
            y = pca_tidied3$PC2 * 5.2, 
            label = pca_tidied3$terms) +
   theme_minimal() +
@@ -237,7 +237,7 @@ pca_tidied3&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;(triceps, insulin, pedigree and mass), (glucose and pressure) and (pregnant and age) are correlated as their lines are close to each other&lt;br /&gt;
 &lt;/li&gt;
-&lt;li&gt;As PC1 and PC2 increases, triceps, insulin, pedigree and mass also increase&lt;/li&gt;
+&lt;li&gt;As PC1 and PC2 increase, triceps, insulin, pedigree and mass also increase&lt;/li&gt;
 &lt;li&gt;As PC2 decreases, pregnant and age increase&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;References:&lt;/p&gt;
