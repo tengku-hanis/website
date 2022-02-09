@@ -91,7 +91,7 @@ pca_tidied</code></pre>
   xlab(&quot;Loadings&quot;) + 
   theme_minimal()</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Besides the loadings, we can also get a variance information. Variance of each component (or PC) measures how much that particular component exlains the variability in the data. For example, PC1 explain 26.2% variance in the data.</p>
+<p>Besides the loadings, we can also get a variance information. Variance of each component (or PC) measures how much that particular component explains the variability in the data. For example, PC1 explain 26.2% variance in the data.</p>
 <pre class="r"><code>pca_tidied2 &lt;- tidy(pca_prep, 2, type = &quot;variance&quot;)
 
 pca_tidied2 %&gt;% 
@@ -178,7 +178,7 @@ pca_tidied3</code></pre>
 ## 6 mass     0.447  0.121
 ## 7 pedigree 0.315  0.110
 ## 8 age      0.158 -0.638</code></pre>
-<p>Now, we can make a scatter plot using trainnig set data (<code>juice(pca_prep)</code>) and the loadings data (<code>pca_tidied3</code>). Also, we going to add percentage of variance for PC1 and PC2 in the axis labels.</p>
+<p>Now, we can make a scatter plot using training set data (<code>juice(pca_prep)</code>) and the loadings data (<code>pca_tidied3</code>). Also, we going to add percentage of variance for PC1 and PC2 in the axis labels.</p>
 <pre class="r"><code>juice(pca_prep) %&gt;% 
   ggplot(aes(PC1, PC2)) +
   geom_point(aes(color = diabetes, shape = diabetes), size = 2, alpha = 0.6) +
