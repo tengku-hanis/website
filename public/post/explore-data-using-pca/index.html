@@ -34,10 +34,10 @@
   
     
   
-  <meta name="description" content="Variable selectionVariable or feature selection is one of the important step whether in machine learning or statistical analysis. This post is geared more to the machine learning side.">
+  <meta name="description" content="Principal component analysis (PCA)PCA is a dimension reduction techniques. So, if we have a large number of predictors, instead of using all the predictors for modelling or other analysis, we can compressed all the information from the variables and create a new set of variables.">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/">
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/explore-data-using-pca/">
 
   
 
@@ -262,7 +262,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
 
-  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/">
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/explore-data-using-pca/">
 
   
   
@@ -278,15 +278,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Tengku Hanis">
-  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/">
-  <meta property="og:title" content="A short note on variable selection | Tengku Hanis">
-  <meta property="og:description" content="Variable selectionVariable or feature selection is one of the important step whether in machine learning or statistical analysis. This post is geared more to the machine learning side."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/explore-data-using-pca/">
+  <meta property="og:title" content="Explore data using PCA | Tengku Hanis">
+  <meta property="og:description" content="Principal component analysis (PCA)PCA is a dimension reduction techniques. So, if we have a large number of predictors, instead of using all the predictors for modelling or other analysis, we can compressed all the information from the variables and create a new set of variables."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
   <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2022-01-08T00:00:00&#43;00:00">
+      <meta property="article:published_time" content="2022-02-09T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2022-01-08T22:35:46&#43;08:00">
+    <meta property="article:modified_time" content="2022-02-10T02:46:09&#43;08:00">
   
 
   
@@ -310,12 +310,12 @@
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/"
+    "@id": "https://tengkuhanis.netlify.app/post/explore-data-using-pca/"
   },
-  "headline": "A short note on variable selection",
+  "headline": "Explore data using PCA",
   
-  "datePublished": "2022-01-08T00:00:00Z",
-  "dateModified": "2022-01-08T22:35:46+08:00",
+  "datePublished": "2022-02-09T00:00:00Z",
+  "dateModified": "2022-02-10T02:46:09+08:00",
   
   "author": {
     "@type": "Person",
@@ -330,7 +330,7 @@
       "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "Variable selection\rVariable or feature selection is one of the important step whether in machine learning or statistical analysis. This post is geared more to the machine learning side."
+  "description": "Principal component analysis (PCA)\rPCA is a dimension reduction techniques. So, if we have a large number of predictors, instead of using all the predictors for modelling or other analysis, we can compressed all the information from the variables and create a new set of variables."
 }
 </script>
 
@@ -348,7 +348,7 @@
 
 
 
-  <title>A short note on variable selection | Tengku Hanis</title>
+  <title>Explore data using PCA | Tengku Hanis</title>
 
 </head>
 
@@ -723,7 +723,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>A short note on variable selection</h1>
+  <h1>Explore data using PCA</h1>
 
   
 
@@ -744,7 +744,7 @@
           Last updated on
       
     
-    Jan 8, 2022
+    Feb 10, 2022
   </span>
   
 
@@ -753,7 +753,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    3 min read
+    5 min read
   </span>
   
 
@@ -767,7 +767,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="/category/machine-learning/">Machine Learning</a>, <a href="/category/variable-selection/">variable selection</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="/category/machine-learning/">Machine Learning</a></span>
   
 
 </div>
@@ -796,64 +796,191 @@
 
     <div class="article-style">
       
-<script src="https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/index.en_files/header-attrs/header-attrs.js"></script>
+<script src="https://tengkuhanis.netlify.app/post/explore-data-using-pca/index.en_files/header-attrs/header-attrs.js"></script>
 
 
-<div id="variable-selection" class="section level2">
-<h2>Variable selection</h2>
-<p>Variable or feature selection is one of the important step whether in machine learning or statistical analysis. This post is geared more to the machine learning side. Certain machine learning models such as Support vector machine (SVM) and neural network do not handle irrelevant predictors very well, whereas models such as linear and logistic regression do not handle correlated predictors very well. Thus, careful selection of the variables will help mitigate this issue and further improve the predictive performance.</p>
-<p>There are three types of approaches in variable selection:</p>
-<p><strong>1. Intrinsic (or built-in feature selection)</strong></p>
-<p>An intrinsic feature selection is a feature selection embedded in the algorithm. Some examples include:</p>
-<ol style="list-style-type: decimal">
-<li>Tree-and-rule-based model - decision tree, random forest, etc<br />
-</li>
-<li>Multivariate adaptive regression spline (MARS)<br />
-</li>
-<li>Regularization method such as least absolute shrinkage and selection operator (LASSO or L1)</li>
-</ol>
-<p>Advantages of this type of approach are they are fast and computationally efficient. However, the best variable selected in this approach is model dependent.</p>
-<p><strong>2. Filter</strong></p>
-<p>In filter approach we determine the variable importance, usually separately though not necessarily. An example of this approach is univariate filter. If the outcome is two categories, we can use t-test to assess the numerical predictors. Variables with a significant p-value or a large t-statistics will be chosen.</p>
-<p>This approach is very simple and fast. However, the best subset of variables selected using some filtering criteria such as statistical significance may not reflect the best predictive performance of the model. Additionally, this approach is prone to over-selection of the predictors.</p>
-<p><strong>3. Wrapper</strong></p>
-<p>There two types of wrapper approaches:</p>
-<ol style="list-style-type: decimal">
-<li>Greedy wrapper</li>
-</ol>
-<p>Greedy approach or algorithm direct a search path towards the best at times to achieve the best immediate benefit. Due to this reason this approach cannot escape local minima. We can assume in Figure 1 below local minima represents locally best predictors and global minima represents globally best predictors.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
-<img src="img.png" alt="Local minima and global minima" width="576" />
-<p class="caption">
-Figure 1: Local minima and global minima
-</p>
+<div id="principal-component-analysis-pca" class="section level2">
+<h2>Principal component analysis (PCA)</h2>
+<p>PCA is a dimension reduction techniques. So, if we have a large number of predictors, instead of using all the predictors for modelling or other analysis, we can compressed all the information from the variables and create a new set of variables. This new set of variables are known as components or principal component (PC). So, now we have a smaller number of variables which contain the information from the original variables.</p>
+<p>PCA usually used for a dataset with a large features or predictors like genomic data. Additionally, PCA is a good pre-processing option if you have a correlated variable or have a multicollinearity issue in the model. Also, we can use PCA for exploration of the data and have a better understanding of our data.</p>
+<p>For those who want to study the theoretical side of PCA can further read on this <a href="http://strata.uga.edu/8370/lecturenotes/principalComponents.html">link</a>. We going to focus more on the coding part in the machine learning framework (using <code>tidymodels</code> package) in this post.</p>
 </div>
-<p>An example of this approach is recursive feature elimination or backward selection. The main weakness of this greedy approach is the selected subset of features identified by this approach may not has the best predictive performance.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Non-greedy wrapper</li>
-</ol>
-<p>The examples of this approach are simulated annealing and <a href="https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/">genetic algorithm</a>. Both of these algorithm incorporate a randomness in their approach. Hence, it is classified as non-greedy wrapper. Due to this randomness, it can escape a local minima (see Figure 1 above).</p>
-<p>The wrapper type has the best chance to find the globally best predictors. However, this approach is computationally expensive. Not to mention, this approach has a tendency to overfit (some packages like <code>caret</code> use resampling to avoid this issue).</p>
-</div>
-<div id="suggested-approach" class="section level2">
-<h2>Suggested approach</h2>
-<p><a href="https://bookdown.org/max/FES/">Kuhn &amp; Johnson (2019)</a> suggested this approach:</p>
-<ol style="list-style-type: decimal">
-<li><p>Start with an intrinsic approach<br />
-</p></li>
-<li><p>Then, do a wrapper approach:</p>
+<div id="example-in-r" class="section level2">
+<h2>Example in R</h2>
+<p>These are the packages that we going to use.</p>
+<pre class="r"><code>library(tidymodels)
+library(tidyverse)
+library(mlbench) #data</code></pre>
+<p>We going to use diabetes dataset. The outcome is binary; positive = diabetes and negative = non-diabetes/healthy. All other variables are numerical values.</p>
+<pre class="r"><code>data(&quot;PimaIndiansDiabetes&quot;)
+glimpse(PimaIndiansDiabetes)</code></pre>
+<pre><code>## Rows: 768
+## Columns: 9
+## $ pregnant &lt;dbl&gt; 6, 1, 8, 1, 0, 5, 3, 10, 2, 8, 4, 10, 10, 1, 5, 7, 0, 7, 1, 1~
+## $ glucose  &lt;dbl&gt; 148, 85, 183, 89, 137, 116, 78, 115, 197, 125, 110, 168, 139,~
+## $ pressure &lt;dbl&gt; 72, 66, 64, 66, 40, 74, 50, 0, 70, 96, 92, 74, 80, 60, 72, 0,~
+## $ triceps  &lt;dbl&gt; 35, 29, 0, 23, 35, 0, 32, 0, 45, 0, 0, 0, 0, 23, 19, 0, 47, 0~
+## $ insulin  &lt;dbl&gt; 0, 0, 0, 94, 168, 0, 88, 0, 543, 0, 0, 0, 0, 846, 175, 0, 230~
+## $ mass     &lt;dbl&gt; 33.6, 26.6, 23.3, 28.1, 43.1, 25.6, 31.0, 35.3, 30.5, 0.0, 37~
+## $ pedigree &lt;dbl&gt; 0.627, 0.351, 0.672, 0.167, 2.288, 0.201, 0.248, 0.134, 0.158~
+## $ age      &lt;dbl&gt; 50, 31, 32, 21, 33, 30, 26, 29, 53, 54, 30, 34, 57, 59, 51, 3~
+## $ diabetes &lt;fct&gt; pos, neg, pos, neg, pos, neg, pos, neg, pos, pos, neg, pos, n~</code></pre>
+<p>We going to split the data and extract the training dataset. We going to explore only the training set since we going to do this in a machine learning framework.</p>
+<pre class="r"><code>set.seed(1)
+
+ind &lt;- initial_split(PimaIndiansDiabetes)
+dat_train &lt;- training(ind)</code></pre>
+<p>We create a recipe and apply normalization and PCA techniques. Then, we prep it.</p>
+<pre class="r"><code># Recipe
+pca_rec &lt;- 
+  recipe(diabetes ~ ., data = dat_train) %&gt;% 
+  step_normalize(all_numeric_predictors()) %&gt;% 
+  step_pca(all_numeric_predictors())
+
+# Prep
+pca_prep &lt;- prep(pca_rec)</code></pre>
+<p>So, we can extract the PCA data using <code>tidy()</code>. <code>type = "coef"</code> indicates that we want the loadings values. So, the values in the data are the loadings.</p>
+<pre class="r"><code>pca_tidied &lt;- tidy(pca_prep, 2, type = &quot;coef&quot;)
+pca_tidied</code></pre>
+<pre><code>## # A tibble: 64 x 4
+##    terms     value component id       
+##    &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    
+##  1 pregnant  0.107 PC1       pca_JtuLZ
+##  2 glucose   0.357 PC1       pca_JtuLZ
+##  3 pressure  0.330 PC1       pca_JtuLZ
+##  4 triceps   0.460 PC1       pca_JtuLZ
+##  5 insulin   0.466 PC1       pca_JtuLZ
+##  6 mass      0.447 PC1       pca_JtuLZ
+##  7 pedigree  0.315 PC1       pca_JtuLZ
+##  8 age       0.158 PC1       pca_JtuLZ
+##  9 pregnant -0.597 PC2       pca_JtuLZ
+## 10 glucose  -0.192 PC2       pca_JtuLZ
+## # ... with 54 more rows</code></pre>
+<p>So, basically the loadings indicate how much each variable contributes to each component (PC). A large loading (positive or negative) indicates a strong relationship between the variables and the related components. The sign indicates a negative or positive correlation between the variables and components.</p>
+<p>We can further visualise these loadings.</p>
+<pre class="r"><code>pca_tidied %&gt;% 
+  ggplot(aes(value, terms, fill = terms)) +
+  geom_col(show.legend = F) +
+  facet_wrap(~ component) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;Loadings&quot;) + 
+  theme_minimal()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/explore-data-using-pca/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Besides the loadings, we can also get a variance information. Variance of each component (or PC) measures how much that particular component explains the variability in the data. For example, PC1 explain 26.2% variance in the data.</p>
+<pre class="r"><code>pca_tidied2 &lt;- tidy(pca_prep, 2, type = &quot;variance&quot;)
+
+pca_tidied2 %&gt;% 
+  pivot_wider(names_from = component, values_from = value, names_prefix = &quot;PC&quot;) %&gt;% 
+  select(-id) %&gt;% 
+  mutate_if(is.numeric, round, digits = 1) %&gt;% 
+  kableExtra::kable(&quot;simple&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">terms</th>
+<th align="right">PC1</th>
+<th align="right">PC2</th>
+<th align="right">PC3</th>
+<th align="right">PC4</th>
+<th align="right">PC5</th>
+<th align="right">PC6</th>
+<th align="right">PC7</th>
+<th align="right">PC8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">variance</td>
+<td align="right">2.1</td>
+<td align="right">1.7</td>
+<td align="right">1.0</td>
+<td align="right">0.8</td>
+<td align="right">0.8</td>
+<td align="right">0.7</td>
+<td align="right">0.5</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="left">cumulative variance</td>
+<td align="right">2.1</td>
+<td align="right">3.8</td>
+<td align="right">4.9</td>
+<td align="right">5.7</td>
+<td align="right">6.5</td>
+<td align="right">7.2</td>
+<td align="right">7.6</td>
+<td align="right">8.0</td>
+</tr>
+<tr class="odd">
+<td align="left">percent variance</td>
+<td align="right">26.2</td>
+<td align="right">21.5</td>
+<td align="right">12.9</td>
+<td align="right">10.6</td>
+<td align="right">9.9</td>
+<td align="right">8.5</td>
+<td align="right">5.7</td>
+<td align="right">4.7</td>
+</tr>
+<tr class="even">
+<td align="left">cumulative percent variance</td>
+<td align="right">26.2</td>
+<td align="right">47.7</td>
+<td align="right">60.7</td>
+<td align="right">71.2</td>
+<td align="right">81.1</td>
+<td align="right">89.6</td>
+<td align="right">95.3</td>
+<td align="right">100.0</td>
+</tr>
+</tbody>
+</table>
+<p>Next, we can visualise PC1 and PC2 in a scatter plot and see how each variable influences both PCs. First, we need to extract the loadings and convert into a wide format for our arrow coordinate in the scatter plot.</p>
+<pre class="r"><code>pca_tidied3 &lt;- 
+  pca_tidied %&gt;% 
+  filter(component %in% c(&quot;PC1&quot;, &quot;PC2&quot;)) %&gt;% 
+  select(-id) %&gt;% 
+  pivot_wider(names_from = component, values_from = value)
+pca_tidied3</code></pre>
+<pre><code>## # A tibble: 8 x 3
+##   terms      PC1    PC2
+##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 pregnant 0.107 -0.597
+## 2 glucose  0.357 -0.192
+## 3 pressure 0.330 -0.234
+## 4 triceps  0.460  0.279
+## 5 insulin  0.466  0.200
+## 6 mass     0.447  0.121
+## 7 pedigree 0.315  0.110
+## 8 age      0.158 -0.638</code></pre>
+<p>Now, we can make a scatter plot using training set data (<code>juice(pca_prep)</code>) and the loadings data (<code>pca_tidied3</code>). Also, we going to add percentage of variance for PC1 and PC2 in the axis labels.</p>
+<pre class="r"><code>juice(pca_prep) %&gt;% 
+  ggplot(aes(PC1, PC2)) +
+  geom_point(aes(color = diabetes, shape = diabetes), size = 2, alpha = 0.6) +
+  geom_segment(data = pca_tidied3, 
+               aes(x = 0, y = 0, xend = PC1*5, yend = PC2 * 5), 
+               arrow = arrow(length = unit(1/2, &quot;picas&quot;)),
+               color = &quot;blue&quot;) +
+  annotate(&quot;text&quot;, 
+           x = pca_tidied3$PC1*5.2, 
+           y = pca_tidied3$PC2 * 5.2, 
+           label = pca_tidied3$terms) +
+  theme_minimal() +
+  xlab(&quot;PC1 (26.2%)&quot;) +
+  ylab(&quot;PC2 (21.5%)&quot;) </code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/explore-data-using-pca/index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>So, from this scatter plot we learn that:</p>
 <ul>
-<li><p>If a linear intrinsic approach has a better performance - proceed to wrapper method with a linear model</p></li>
-<li><p>If non-linear intrinsic approach has a better performance - proceed to wrapper method with a non-linear model<br />
-</p></li>
-</ul></li>
-<li><p>If several approach select a large number of predictors, it may not feasible to reduce the number of features</p></li>
-</ol>
+<li>(triceps, insulin, pedigree and mass), (glucose and pressure) and (pregnant and age) are correlated as their lines are close to each other<br />
+</li>
+<li>As PC1 and PC2 increases, triceps, insulin, pedigree and mass also increase</li>
+<li>As PC2 decreases, pregnant and age increase</li>
+</ul>
 <p>References:</p>
 <ul>
-<li><a href="https://bookdown.org/max/FES/classes-of-feature-selection-methodologies.html" class="uri">https://bookdown.org/max/FES/classes-of-feature-selection-methodologies.html</a><br />
+<li><a href="http://strata.uga.edu/8370/lecturenotes/principalComponents.html" class="uri">http://strata.uga.edu/8370/lecturenotes/principalComponents.html</a><br />
 </li>
-<li><a href="http://topepo.github.io/caret/feature-selection-overview.html" class="uri">http://topepo.github.io/caret/feature-selection-overview.html</a></li>
+<li><a href="https://juliasilge.com/blog/cocktail-recipes-umap/" class="uri">https://juliasilge.com/blog/cocktail-recipes-umap/</a></li>
 </ul>
 </div>
 
@@ -868,7 +995,11 @@ Figure 1: Local minima and global minima
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tag/variable-selection/">variable selection</a>
+  <a class="badge badge-light" href="/tag/data-exploration/">Data exploration</a>
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
+  
+  <a class="badge badge-light" href="/tag/tidymodels/">tidymodels</a>
   
 </div>
 
@@ -1021,13 +1152,13 @@ Figure 1: Local minima and global minima
       
       <li><a href="/post/variable-selection-using-genetic-algorithm/">Variable selection using genetic algorithm</a></li>
       
-      <li><a href="/post/stepwise-selection-after-multiple-imputation/">Stepwise selection after multiple imputation</a></li>
-      
       <li><a href="/post/hyperparameter-tuning-in-tidymodels/">Hyperparameter tuning in tidymodels</a></li>
       
       <li><a href="/post/handling-imbalanced-data/">Handling imbalanced data</a></li>
       
-      <li><a href="/post/explore-data-using-pca/">Explore data using PCA</a></li>
+      <li><a href="/post/extract-a-table-from-a-pdf/">Extract a table from a pdf</a></li>
+      
+      <li><a href="/post/data-exploration-in-r/">Data exploration in R</a></li>
       
     </ul>
   </div>

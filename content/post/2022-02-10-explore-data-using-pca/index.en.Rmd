@@ -1,24 +1,20 @@
 ---
 title: Explore data using PCA
 author: ''
-date: '2022-02-10'
-slug: explore-data-using-pca
+date: '2022-02-09'
 categories:
   - Machine Learning
 tags:
+  - Data exploration
   - Machine Learning
   - tidymodels
-  - Data exploration
-subtitle: ''
-summary: ''
-authors: []
+slug: explore-data-using-pca
 lastmod: '2022-02-10T02:46:09+08:00'
 featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
-projects: []
 ---
 
 ```{r setup, include=FALSE}

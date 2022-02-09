@@ -5,12 +5,208 @@
     <link>https://tengkuhanis.netlify.app/tag/machine-learning/</link>
       <atom:link href="https://tengkuhanis.netlify.app/tag/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <description>Machine Learning</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 02 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 09 Feb 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Machine Learning</title>
       <link>https://tengkuhanis.netlify.app/tag/machine-learning/</link>
     </image>
+    
+    <item>
+      <title>Explore data using PCA</title>
+      <link>https://tengkuhanis.netlify.app/post/explore-data-using-pca/</link>
+      <pubDate>Wed, 09 Feb 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/explore-data-using-pca/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/explore-data-using-pca/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;principal-component-analysis-pca&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Principal component analysis (PCA)&lt;/h2&gt;
+&lt;p&gt;PCA is a dimension reduction techniques. So, if we have a large number of predictors, instead of using all the predictors for modelling or other analysis, we can compressed all the information from the variables and create a new set of variables. This new set of variables are known as components or principal component (PC). So, now we have a smaller number of variables which contain the information from the original variables.&lt;/p&gt;
+&lt;p&gt;PCA usually used for a dataset with a large features or predictors like genomic data. Additionally, PCA is a good pre-processing option if you have a correlated variable or have a multicollinearity issue in the model. Also, we can use PCA for exploration of the data and have a better understanding of our data.&lt;/p&gt;
+&lt;p&gt;For those who want to study the theoretical side of PCA can further read on this &lt;a href=&#34;http://strata.uga.edu/8370/lecturenotes/principalComponents.html&#34;&gt;link&lt;/a&gt;. We going to focus more on the coding part in the machine learning framework (using &lt;code&gt;tidymodels&lt;/code&gt; package) in this post.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;example-in-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example in R&lt;/h2&gt;
+&lt;p&gt;These are the packages that we going to use.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidymodels)
+library(tidyverse)
+library(mlbench) #data&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We going to use diabetes dataset. The outcome is binary; positive = diabetes and negative = non-diabetes/healthy. All other variables are numerical values.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;quot;PimaIndiansDiabetes&amp;quot;)
+glimpse(PimaIndiansDiabetes)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Rows: 768
+## Columns: 9
+## $ pregnant &amp;lt;dbl&amp;gt; 6, 1, 8, 1, 0, 5, 3, 10, 2, 8, 4, 10, 10, 1, 5, 7, 0, 7, 1, 1~
+## $ glucose  &amp;lt;dbl&amp;gt; 148, 85, 183, 89, 137, 116, 78, 115, 197, 125, 110, 168, 139,~
+## $ pressure &amp;lt;dbl&amp;gt; 72, 66, 64, 66, 40, 74, 50, 0, 70, 96, 92, 74, 80, 60, 72, 0,~
+## $ triceps  &amp;lt;dbl&amp;gt; 35, 29, 0, 23, 35, 0, 32, 0, 45, 0, 0, 0, 0, 23, 19, 0, 47, 0~
+## $ insulin  &amp;lt;dbl&amp;gt; 0, 0, 0, 94, 168, 0, 88, 0, 543, 0, 0, 0, 0, 846, 175, 0, 230~
+## $ mass     &amp;lt;dbl&amp;gt; 33.6, 26.6, 23.3, 28.1, 43.1, 25.6, 31.0, 35.3, 30.5, 0.0, 37~
+## $ pedigree &amp;lt;dbl&amp;gt; 0.627, 0.351, 0.672, 0.167, 2.288, 0.201, 0.248, 0.134, 0.158~
+## $ age      &amp;lt;dbl&amp;gt; 50, 31, 32, 21, 33, 30, 26, 29, 53, 54, 30, 34, 57, 59, 51, 3~
+## $ diabetes &amp;lt;fct&amp;gt; pos, neg, pos, neg, pos, neg, pos, neg, pos, pos, neg, pos, n~&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We going to split the data and extract the training dataset. We going to explore only the training set since we going to do this in a machine learning framework.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(1)
+
+ind &amp;lt;- initial_split(PimaIndiansDiabetes)
+dat_train &amp;lt;- training(ind)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We create a recipe and apply normalization and PCA techniques. Then, we prep it.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Recipe
+pca_rec &amp;lt;- 
+  recipe(diabetes ~ ., data = dat_train) %&amp;gt;% 
+  step_normalize(all_numeric_predictors()) %&amp;gt;% 
+  step_pca(all_numeric_predictors())
+
+# Prep
+pca_prep &amp;lt;- prep(pca_rec)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, we can extract the PCA data using &lt;code&gt;tidy()&lt;/code&gt;. &lt;code&gt;type = &#34;coef&#34;&lt;/code&gt; indicates that we want the loadings values. So, the values in the data are the loadings.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tidied &amp;lt;- tidy(pca_prep, 2, type = &amp;quot;coef&amp;quot;)
+pca_tidied&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 64 x 4
+##    terms     value component id       
+##    &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;     &amp;lt;chr&amp;gt;    
+##  1 pregnant  0.107 PC1       pca_JtuLZ
+##  2 glucose   0.357 PC1       pca_JtuLZ
+##  3 pressure  0.330 PC1       pca_JtuLZ
+##  4 triceps   0.460 PC1       pca_JtuLZ
+##  5 insulin   0.466 PC1       pca_JtuLZ
+##  6 mass      0.447 PC1       pca_JtuLZ
+##  7 pedigree  0.315 PC1       pca_JtuLZ
+##  8 age       0.158 PC1       pca_JtuLZ
+##  9 pregnant -0.597 PC2       pca_JtuLZ
+## 10 glucose  -0.192 PC2       pca_JtuLZ
+## # ... with 54 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, basically the loadings indicate how much each variable contributes to each component (PC). A large loading (positive or negative) indicates a strong relationship between the variables and the related components. The sign indicates a negative or positive correlation between the variables and components.&lt;/p&gt;
+&lt;p&gt;We can further visualise these loadings.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tidied %&amp;gt;% 
+  ggplot(aes(value, terms, fill = terms)) +
+  geom_col(show.legend = F) +
+  facet_wrap(~ component) +
+  ylab(&amp;quot;&amp;quot;) +
+  xlab(&amp;quot;Loadings&amp;quot;) + 
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/explore-data-using-pca/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Besides the loadings, we can also get a variance information. Variance of each component (or PC) measures how much that particular component explains the variability in the data. For example, PC1 explain 26.2% variance in the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tidied2 &amp;lt;- tidy(pca_prep, 2, type = &amp;quot;variance&amp;quot;)
+
+pca_tidied2 %&amp;gt;% 
+  pivot_wider(names_from = component, values_from = value, names_prefix = &amp;quot;PC&amp;quot;) %&amp;gt;% 
+  select(-id) %&amp;gt;% 
+  mutate_if(is.numeric, round, digits = 1) %&amp;gt;% 
+  kableExtra::kable(&amp;quot;simple&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;terms&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC1&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC2&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC3&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC4&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC5&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC6&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC7&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;PC8&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;variance&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;cumulative variance&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;percent variance&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26.2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;21.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;cumulative percent variance&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;26.2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;47.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;60.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;71.2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;81.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;95.3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;100.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Next, we can visualise PC1 and PC2 in a scatter plot and see how each variable influences both PCs. First, we need to extract the loadings and convert into a wide format for our arrow coordinate in the scatter plot.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tidied3 &amp;lt;- 
+  pca_tidied %&amp;gt;% 
+  filter(component %in% c(&amp;quot;PC1&amp;quot;, &amp;quot;PC2&amp;quot;)) %&amp;gt;% 
+  select(-id) %&amp;gt;% 
+  pivot_wider(names_from = component, values_from = value)
+pca_tidied3&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 8 x 3
+##   terms      PC1    PC2
+##   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
+## 1 pregnant 0.107 -0.597
+## 2 glucose  0.357 -0.192
+## 3 pressure 0.330 -0.234
+## 4 triceps  0.460  0.279
+## 5 insulin  0.466  0.200
+## 6 mass     0.447  0.121
+## 7 pedigree 0.315  0.110
+## 8 age      0.158 -0.638&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, we can make a scatter plot using training set data (&lt;code&gt;juice(pca_prep)&lt;/code&gt;) and the loadings data (&lt;code&gt;pca_tidied3&lt;/code&gt;). Also, we going to add percentage of variance for PC1 and PC2 in the axis labels.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;juice(pca_prep) %&amp;gt;% 
+  ggplot(aes(PC1, PC2)) +
+  geom_point(aes(color = diabetes, shape = diabetes), size = 2, alpha = 0.6) +
+  geom_segment(data = pca_tidied3, 
+               aes(x = 0, y = 0, xend = PC1*5, yend = PC2 * 5), 
+               arrow = arrow(length = unit(1/2, &amp;quot;picas&amp;quot;)),
+               color = &amp;quot;blue&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, 
+           x = pca_tidied3$PC1*5.2, 
+           y = pca_tidied3$PC2 * 5.2, 
+           label = pca_tidied3$terms) +
+  theme_minimal() +
+  xlab(&amp;quot;PC1 (26.2%)&amp;quot;) +
+  ylab(&amp;quot;PC2 (21.5%)&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/explore-data-using-pca/index.en_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;So, from this scatter plot we learn that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(triceps, insulin, pedigree and mass), (glucose and pressure) and (pregnant and age) are correlated as their lines are close to each other&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;As PC1 and PC2 increases, triceps, insulin, pedigree and mass also increase&lt;/li&gt;
+&lt;li&gt;As PC2 decreases, pregnant and age increase&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://strata.uga.edu/8370/lecturenotes/principalComponents.html&#34; class=&#34;uri&#34;&gt;http://strata.uga.edu/8370/lecturenotes/principalComponents.html&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://juliasilge.com/blog/cocktail-recipes-umap/&#34; class=&#34;uri&#34;&gt;https://juliasilge.com/blog/cocktail-recipes-umap/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Variable selection using genetic algorithm</title>
