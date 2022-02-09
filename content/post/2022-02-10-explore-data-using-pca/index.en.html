@@ -1,0 +1,210 @@
+---
+title: Explore data using PCA
+author: ''
+date: '2022-02-10'
+slug: explore-data-using-pca
+categories:
+  - Machine Learning
+tags:
+  - tidymodels
+  - Machine Learning
+  - Data exploration
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-02-10T02:07:10+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="principal-component-analysis-pca" class="section level2">
+<h2>Principal component analysis (PCA)</h2>
+<p>PCA is a dimension reduction techniques. So, if we have a large number of predictors, instead of using all the predictors for modelling or other analysis, we can compressed all the information from the variables and create a new set of variables. This new set of variables are known as components or principal component (PC). So, now we have a smaller number of variables which contain the information from the original variables.</p>
+<p>PCA usually used for a dataset with a large features or predictors like genomic data. Additionally, PCA is a good pre-processing option if you have a correlated variable or have a multicollinearity issue in the model. Also, we can use PCA for exploration of the data and have a better understanding of our data.</p>
+<p>For those who want to study the theoretical side of PCA can further read on this <a href="http://strata.uga.edu/8370/lecturenotes/principalComponents.html">link</a>. We going to focus more on the coding part in the machine learning framework (using <code>tidymodels</code> package) in this post.</p>
+</div>
+<div id="example-in-r" class="section level2">
+<h2>Example in R</h2>
+<p>These are the packages that we going to use.</p>
+<pre class="r"><code>library(tidymodels)
+library(tidyverse)
+library(mlbench) #data</code></pre>
+<p>We going to use diabetes dataset. The outcome is binary; positive = diabetes and negative = non-diabetes/healthy. All other variables are numerical values.</p>
+<pre class="r"><code>data(&quot;PimaIndiansDiabetes&quot;)
+glimpse(PimaIndiansDiabetes)</code></pre>
+<pre><code>## Rows: 768
+## Columns: 9
+## $ pregnant &lt;dbl&gt; 6, 1, 8, 1, 0, 5, 3, 10, 2, 8, 4, 10, 10, 1, 5, 7, 0, 7, 1, 1~
+## $ glucose  &lt;dbl&gt; 148, 85, 183, 89, 137, 116, 78, 115, 197, 125, 110, 168, 139,~
+## $ pressure &lt;dbl&gt; 72, 66, 64, 66, 40, 74, 50, 0, 70, 96, 92, 74, 80, 60, 72, 0,~
+## $ triceps  &lt;dbl&gt; 35, 29, 0, 23, 35, 0, 32, 0, 45, 0, 0, 0, 0, 23, 19, 0, 47, 0~
+## $ insulin  &lt;dbl&gt; 0, 0, 0, 94, 168, 0, 88, 0, 543, 0, 0, 0, 0, 846, 175, 0, 230~
+## $ mass     &lt;dbl&gt; 33.6, 26.6, 23.3, 28.1, 43.1, 25.6, 31.0, 35.3, 30.5, 0.0, 37~
+## $ pedigree &lt;dbl&gt; 0.627, 0.351, 0.672, 0.167, 2.288, 0.201, 0.248, 0.134, 0.158~
+## $ age      &lt;dbl&gt; 50, 31, 32, 21, 33, 30, 26, 29, 53, 54, 30, 34, 57, 59, 51, 3~
+## $ diabetes &lt;fct&gt; pos, neg, pos, neg, pos, neg, pos, neg, pos, pos, neg, pos, n~</code></pre>
+<p>We going to split the data and extract the training dataset. We going to explore only the training set since we going to do this in a machine learning framework.</p>
+<pre class="r"><code>set.seed(1)
+
+ind &lt;- initial_split(PimaIndiansDiabetes)
+dat_train &lt;- training(ind)</code></pre>
+<p>We create a recipe and apply normalization and PCA techniques. Then, we prep it.</p>
+<pre class="r"><code># Recipe
+pca_rec &lt;- 
+  recipe(diabetes ~ ., data = dat_train) %&gt;% 
+  step_normalize(all_numeric_predictors()) %&gt;% 
+  step_pca(all_numeric_predictors())
+
+# Prep
+pca_prep &lt;- prep(pca_rec)</code></pre>
+<p>So, we can extract the PCA data using <code>tidy()</code>. <code>type = "coef"</code> indicates that we want the loadings values. So, the values in the data are the loadings.</p>
+<pre class="r"><code>pca_tidied &lt;- tidy(pca_prep, 2, type = &quot;coef&quot;)
+pca_tidied</code></pre>
+<pre><code>## # A tibble: 64 x 4
+##    terms     value component id       
+##    &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    
+##  1 pregnant  0.107 PC1       pca_JtuLZ
+##  2 glucose   0.357 PC1       pca_JtuLZ
+##  3 pressure  0.330 PC1       pca_JtuLZ
+##  4 triceps   0.460 PC1       pca_JtuLZ
+##  5 insulin   0.466 PC1       pca_JtuLZ
+##  6 mass      0.447 PC1       pca_JtuLZ
+##  7 pedigree  0.315 PC1       pca_JtuLZ
+##  8 age       0.158 PC1       pca_JtuLZ
+##  9 pregnant -0.597 PC2       pca_JtuLZ
+## 10 glucose  -0.192 PC2       pca_JtuLZ
+## # ... with 54 more rows</code></pre>
+<p>So, basically the loadings indicate how much each variable contributes to each component (PC). A large loading (positive or negative) indicates a strong relationship between the variables and the related components. The sign indicates a negative or positive correlation between the variables and components.</p>
+<p>We can further visualise these loadings.</p>
+<pre class="r"><code>pca_tidied %&gt;% 
+  ggplot(aes(value, terms, fill = terms)) +
+  geom_col(show.legend = F) +
+  facet_wrap(~ component) +
+  ylab(&quot;&quot;) +
+  xlab(&quot;Loadings&quot;) + 
+  theme_minimal()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Besides the loadings, we can also get a variance information. Variance of each component (or PC) measures how much that particular component exlains the variability in the data. For example, PC1 explain 26.2% variance in the data.</p>
+<pre class="r"><code>pca_tidied2 &lt;- tidy(pca_prep, 2, type = &quot;variance&quot;)
+
+pca_tidied2 %&gt;% 
+  pivot_wider(names_from = component, values_from = value, names_prefix = &quot;PC&quot;) %&gt;% 
+  select(-id) %&gt;% 
+  mutate_if(is.numeric, round, digits = 1) %&gt;% 
+  kableExtra::kable(&quot;simple&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">terms</th>
+<th align="right">PC1</th>
+<th align="right">PC2</th>
+<th align="right">PC3</th>
+<th align="right">PC4</th>
+<th align="right">PC5</th>
+<th align="right">PC6</th>
+<th align="right">PC7</th>
+<th align="right">PC8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">variance</td>
+<td align="right">2.1</td>
+<td align="right">1.7</td>
+<td align="right">1.0</td>
+<td align="right">0.8</td>
+<td align="right">0.8</td>
+<td align="right">0.7</td>
+<td align="right">0.5</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="left">cumulative variance</td>
+<td align="right">2.1</td>
+<td align="right">3.8</td>
+<td align="right">4.9</td>
+<td align="right">5.7</td>
+<td align="right">6.5</td>
+<td align="right">7.2</td>
+<td align="right">7.6</td>
+<td align="right">8.0</td>
+</tr>
+<tr class="odd">
+<td align="left">percent variance</td>
+<td align="right">26.2</td>
+<td align="right">21.5</td>
+<td align="right">12.9</td>
+<td align="right">10.6</td>
+<td align="right">9.9</td>
+<td align="right">8.5</td>
+<td align="right">5.7</td>
+<td align="right">4.7</td>
+</tr>
+<tr class="even">
+<td align="left">cumulative percent variance</td>
+<td align="right">26.2</td>
+<td align="right">47.7</td>
+<td align="right">60.7</td>
+<td align="right">71.2</td>
+<td align="right">81.1</td>
+<td align="right">89.6</td>
+<td align="right">95.3</td>
+<td align="right">100.0</td>
+</tr>
+</tbody>
+</table>
+<p>Next, we can visualise PC1 and PC2 in a scatter plot and see how each variable influences both PCs. First, we need to extract the loadings and convert into a wide format for our arrow coordinate in the scatter plot.</p>
+<pre class="r"><code>pca_tidied3 &lt;- 
+  pca_tidied %&gt;% 
+  filter(component %in% c(&quot;PC1&quot;, &quot;PC2&quot;)) %&gt;% 
+  select(-id) %&gt;% 
+  pivot_wider(names_from = component, values_from = value)
+pca_tidied3</code></pre>
+<pre><code>## # A tibble: 8 x 3
+##   terms      PC1    PC2
+##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1 pregnant 0.107 -0.597
+## 2 glucose  0.357 -0.192
+## 3 pressure 0.330 -0.234
+## 4 triceps  0.460  0.279
+## 5 insulin  0.466  0.200
+## 6 mass     0.447  0.121
+## 7 pedigree 0.315  0.110
+## 8 age      0.158 -0.638</code></pre>
+<p>Now, we can make a scatter plot using trainnig set data (<code>juice(pca_prep)</code>) and the loadings data (<code>pca_tidied3</code>). Also, we going to add percentage of variance for PC1 and PC2 in the axis labels.</p>
+<pre class="r"><code>juice(pca_prep) %&gt;% 
+  ggplot(aes(PC1, PC2)) +
+  geom_point(aes(color = diabetes, shape = diabetes), size = 2, alpha = 0.6) +
+  geom_segment(data = pca_tidied3, 
+               aes(x = 0, y = 0, xend = PC1*5, yend = PC2 * 5), 
+               arrow = arrow(length = unit(1/2, &quot;picas&quot;)),
+               color = &quot;blue&quot;) +
+  annotate(&quot;text&quot;, 
+           x = pca_tidied3$PC1*5.2, 
+           y = pca_tidied3$PC2 * 5.2, 
+           label = pca_tidied3$terms) +
+  theme_minimal() +
+  xlab(&quot;PC1 (26.2%)&quot;) +
+  ylab(&quot;PC2 (21.5%)&quot;) </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>So, from this scatter plot we learn that:</p>
+<ul>
+<li>(triceps, insulin, pedigree and mass), (glucose and pressure) and (pregnant and age) are correlated as their lines are close to each other<br />
+</li>
+<li>As PC1 and PC2 increases, triceps, insulin, pedigree and mass also increase</li>
+<li>As PC2 decreases, pregnant and age increase</li>
+</ul>
+<p>References:</p>
+<ul>
+<li><a href="http://strata.uga.edu/8370/lecturenotes/principalComponents.html" class="uri">http://strata.uga.edu/8370/lecturenotes/principalComponents.html</a><br />
+</li>
+<li><a href="https://juliasilge.com/blog/cocktail-recipes-umap/" class="uri">https://juliasilge.com/blog/cocktail-recipes-umap/</a></li>
+</ul>
+</div>
