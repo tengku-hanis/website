@@ -5,12 +5,252 @@
     <link>https://tengkuhanis.netlify.app/post/</link>
       <atom:link href="https://tengkuhanis.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 09 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 16 Mar 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://tengkuhanis.netlify.app/post/</link>
     </image>
+    
+    <item>
+      <title>Using UMAP preprocessing for image classification</title>
+      <link>https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/</link>
+      <pubDate>Wed, 16 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/</guid>
+      <description>
+&lt;script src=&#34;https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;umap&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;UMAP&lt;/h2&gt;
+&lt;p&gt;Uniform manifold approximation and projection or in short UMAP is a type of dimension reduction techniques. So, basically UMAP will project a set of features into a smaller space. UMAP can be a supervised technique in which we give a label or an outcome or an unsupervised one. For those interested to know in detail how UMAP works can refer to this &lt;a href=&#34;https://umap-learn.readthedocs.io/en/latest/how_umap_works.html&#34;&gt;reference&lt;/a&gt;. For those prefer a much simpler or shorter version of it, I recommend a &lt;a href=&#34;https://www.youtube.com/watch?v=eN0wFzBA4Sc&amp;amp;list=WL&amp;amp;index=2&#34;&gt;YouTube video by John Stamer&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;example-in-r&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Example in R&lt;/h2&gt;
+&lt;p&gt;We going to see how to apply a UMAP techniques for image preprocessing and further classify the images using kNN and naive bayes.&lt;/p&gt;
+&lt;p&gt;These are the packages that we need.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(keras) #for data and reshape to tabular format
+library(tidymodels)
+library(embed) #for umap
+library(discrim) #for naive bayes model&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We going to use the famous MNIST dataset. This dataset contained a handwritten digit from 0 to 9. This dataset is available in &lt;code&gt;keras&lt;/code&gt; package.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mnist_data &amp;lt;- dataset_mnist()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loaded Tensorflow version 2.2.0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;image_data &amp;lt;- mnist_data$train$x
+image_labels &amp;lt;- mnist_data$train$y
+image_data %&amp;gt;% dim()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 60000    28    28&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example this is the image for the second row.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;image_data[2, 1:28, 1:28] %&amp;gt;% 
+  t() %&amp;gt;% 
+  image(col = gray.colors(256))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/index.en_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Next, we going to change the image into a tabular data frame format. We going to limit the data to the first 1000 rows or images out of the total 6000 images.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Reformat to tabular format
+image_data &amp;lt;- array_reshape(image_data, dim = c(60000, 28*28))
+image_data %&amp;gt;% dim()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 60000   784&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;image_data &amp;lt;- image_data[1:10000,]
+image_labels &amp;lt;- image_labels[1:10000]
+
+# Reformat to data frame
+full_data &amp;lt;- 
+  data.frame(image_data) %&amp;gt;% 
+  bind_cols(label = image_labels) %&amp;gt;% 
+  mutate(label = as.factor(label))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then, we going to split the data and create a 3-folds cross-validation sets for the sake of simplicity.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Split data
+set.seed(123)
+ind &amp;lt;- initial_split(full_data)
+data_train &amp;lt;- training(ind)  
+data_test &amp;lt;- testing(ind)
+
+# 10-folds CV
+set.seed(123)
+data_cv &amp;lt;- vfold_cv(data_train, v = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For recipe specification, we going to scale and center all the predictor after creating a new variable using &lt;code&gt;step_umap()&lt;/code&gt;. Notice that in &lt;code&gt;step_umap()&lt;/code&gt; we supply the outcome and we tune the number of components (&lt;code&gt;num_comp&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;rec &amp;lt;- 
+  recipe(label ~ ., data = data_train) %&amp;gt;% 
+  step_umap(all_predictors(), outcome = vars(label), num_comp = tune()) %&amp;gt;% 
+  step_center(all_predictors()) %&amp;gt;% 
+  step_scale(all_predictors())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We create a a base workflow.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;wf &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_recipe(rec) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We going to use two models as classifier:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;kNN&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Naive bayes&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For each classifier, we going to create a regular grid of parameters to be tuned and further run a regular grid search.&lt;/p&gt;
+&lt;p&gt;For kNN.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# knn model
+knn_mod &amp;lt;- 
+  nearest_neighbor(neighbors = tune()) %&amp;gt;% 
+  set_mode(&amp;quot;classification&amp;quot;) %&amp;gt;% 
+  set_engine(&amp;quot;kknn&amp;quot;)
+
+# knn grid
+knn_grid &amp;lt;- grid_regular(neighbors(), num_comp(range = c(2, 8)), levels = 3)
+
+# Tune grid search
+knn_tune &amp;lt;- 
+  tune_grid(
+  wf %&amp;gt;% add_model(knn_mod),
+  resamples = data_cv,
+  grid = knn_grid, 
+  control = control_grid(verbose = F)
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For naive bayes.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# nb model
+nb_mod &amp;lt;- 
+  naive_Bayes(smoothness = tune()) %&amp;gt;% 
+  set_mode(&amp;quot;classification&amp;quot;) %&amp;gt;% 
+  set_engine(&amp;quot;naivebayes&amp;quot;)
+
+# nb grid
+nb_grid &amp;lt;- grid_regular(smoothness(), num_comp(range = c(2, 10)), levels = 3)
+
+# Tune grid search
+nb_tune &amp;lt;- 
+  tune_grid(
+    wf %&amp;gt;% add_model(nb_mod),
+    resamples = data_cv,
+    grid = nb_grid, 
+    control = control_grid(verbose = F)
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s see our tuning performance of our model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# knn model
+knn_tune %&amp;gt;% 
+  show_best(&amp;quot;roc_auc&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 8
+##   neighbors num_comp .metric .estimator  mean     n  std_err .config            
+##       &amp;lt;int&amp;gt;    &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;      &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;    &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;              
+## 1        10        8 roc_auc hand_till  0.961     3 0.000268 Preprocessor3_Mode~
+## 2        10        5 roc_auc hand_till  0.961     3 0.000421 Preprocessor2_Mode~
+## 3         5        8 roc_auc hand_till  0.959     3 0.000757 Preprocessor3_Mode~
+## 4        10        2 roc_auc hand_till  0.959     3 0.000737 Preprocessor1_Mode~
+## 5         5        5 roc_auc hand_till  0.958     3 0.000740 Preprocessor2_Mode~&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knn_tune %&amp;gt;% 
+  show_best(&amp;quot;accuracy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 8
+##   neighbors num_comp .metric  .estimator  mean     n std_err .config            
+##       &amp;lt;int&amp;gt;    &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;      &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;              
+## 1        10        8 accuracy multiclass 0.914     3 0.00104 Preprocessor3_Mode~
+## 2         5        8 accuracy multiclass 0.913     3 0.00315 Preprocessor3_Mode~
+## 3        10        5 accuracy multiclass 0.912     3 0.00114 Preprocessor2_Mode~
+## 4         5        5 accuracy multiclass 0.91      3 0.00139 Preprocessor2_Mode~
+## 5        10        2 accuracy multiclass 0.910     3 0.00175 Preprocessor1_Mode~&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# nb model
+nb_tune %&amp;gt;% 
+  show_best(&amp;quot;roc_auc&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 8
+##   smoothness num_comp .metric .estimator  mean     n  std_err .config           
+##        &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;      &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;    &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;             
+## 1        1.5       10 roc_auc hand_till  0.971     3 0.000400 Preprocessor3_Mod~
+## 2        1.5        6 roc_auc hand_till  0.971     3 0.000997 Preprocessor2_Mod~
+## 3        1         10 roc_auc hand_till  0.971     3 0.000634 Preprocessor3_Mod~
+## 4        1          6 roc_auc hand_till  0.970     3 0.00124  Preprocessor2_Mod~
+## 5        0.5       10 roc_auc hand_till  0.969     3 0.000808 Preprocessor3_Mod~&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nb_tune %&amp;gt;% 
+  show_best(&amp;quot;accuracy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 5 x 8
+##   smoothness num_comp .metric  .estimator  mean     n  std_err .config          
+##        &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;      &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;    &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;            
+## 1        1         10 accuracy multiclass 0.913     3 0.000481 Preprocessor3_Mo~
+## 2        1.5       10 accuracy multiclass 0.913     3 0.000267 Preprocessor3_Mo~
+## 3        0.5       10 accuracy multiclass 0.912     3 0.000462 Preprocessor3_Mo~
+## 4        1.5        6 accuracy multiclass 0.911     3 0.00135  Preprocessor2_Mo~
+## 5        1          6 accuracy multiclass 0.910     3 0.00157  Preprocessor2_Mo~&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we going to select the best model from the tuned parameters and finalise our model using &lt;code&gt;last_fit()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For knn model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Finalize
+knn_best &amp;lt;- knn_tune %&amp;gt;% select_best(&amp;quot;roc_auc&amp;quot;)
+knn_rec &amp;lt;- 
+  recipe(label ~ ., data = data_train) %&amp;gt;% 
+  step_umap(all_predictors(), outcome = vars(label), num_comp = knn_best$num_comp) %&amp;gt;% 
+  step_center(all_predictors()) %&amp;gt;% 
+  step_scale(all_predictors())
+
+knn_wf &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_recipe(knn_rec) %&amp;gt;% 
+  add_model(knn_mod) %&amp;gt;% 
+  finalize_workflow(knn_best) 
+
+# Last fit
+knn_lastfit &amp;lt;- 
+  knn_wf %&amp;gt;% 
+  last_fit(ind)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For naive bayes model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Finalize
+nb_best &amp;lt;- nb_tune %&amp;gt;% select_best(&amp;quot;roc_auc&amp;quot;)
+nb_rec &amp;lt;- 
+  recipe(label ~ ., data = data_train) %&amp;gt;% 
+  step_umap(all_predictors(), outcome = vars(label), num_comp = nb_best$num_comp) %&amp;gt;% 
+  step_center(all_predictors()) %&amp;gt;% 
+  step_scale(all_predictors())
+
+nb_wf &amp;lt;- 
+  workflow() %&amp;gt;% 
+  add_recipe(nb_rec) %&amp;gt;% 
+  add_model(nb_mod) %&amp;gt;% 
+  finalize_workflow(nb_best) 
+
+# Last fit
+nb_lastfit &amp;lt;- 
+  nb_wf %&amp;gt;% 
+  last_fit(ind)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s see the model performance on the testing data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knn_lastfit %&amp;gt;% 
+  collect_metrics() %&amp;gt;% 
+  mutate(model = &amp;quot;knn&amp;quot;) %&amp;gt;% 
+  dplyr::bind_rows(nb_lastfit %&amp;gt;% 
+                     collect_metrics() %&amp;gt;% 
+                     mutate(model = &amp;quot;nb&amp;quot;)) %&amp;gt;% 
+  select(-.config)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 4 x 4
+##   .metric  .estimator .estimate model
+##   &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;          &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;
+## 1 accuracy multiclass     0.938 knn  
+## 2 roc_auc  hand_till      0.971 knn  
+## 3 accuracy multiclass     0.936 nb   
+## 4 roc_auc  hand_till      0.980 nb&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;These are the confusion matrices.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knn_lastfit %&amp;gt;% 
+  collect_predictions() %&amp;gt;%
+  conf_mat(label, .pred_class) %&amp;gt;% 
+  autoplot(type = &amp;quot;heatmap&amp;quot;) +
+  labs(title = &amp;quot;Confusion matrix - kNN&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/index.en_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nb_lastfit %&amp;gt;% 
+  collect_predictions() %&amp;gt;%
+  conf_mat(label, .pred_class) %&amp;gt;% 
+  autoplot(type = &amp;quot;heatmap&amp;quot;) +
+  labs(title = &amp;quot;Confusion matrix - naive bayes&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/index.en_files/figure-html/unnamed-chunk-14-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, we can compare the ROC plots for each class.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knn_lastfit %&amp;gt;% 
+  collect_predictions() %&amp;gt;%
+  mutate(id = &amp;quot;knn&amp;quot;) %&amp;gt;% 
+  bind_rows(
+    nb_lastfit %&amp;gt;% 
+      collect_predictions() %&amp;gt;% 
+      mutate(id = &amp;quot;nb&amp;quot;)
+            ) %&amp;gt;% 
+  group_by(id) %&amp;gt;% 
+  roc_curve(label, .pred_0:.pred_9) %&amp;gt;% 
+  autoplot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/index.en_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I believe UMAP is quite good and can be used as one of preprocessing step in image classification. We are able to get a pretty good performance result in this post. I believe if the the parameter tuning approach is a bit more rigorous, the performance result will be a lot better.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Explore data using PCA</title>
