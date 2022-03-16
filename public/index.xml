@@ -65,7 +65,7 @@
 
 &lt;div id=&#34;umap&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;UMAP&lt;/h2&gt;
-&lt;p&gt;Uniform manifold approximation and projection or in short UMAP is a type of dimension reduction techniques. So, basically UMAP will project a set of features into a smaller space. UMAP can be a supervised technique in which we give a label or an outcome or an unsupervised one. For those interested to know in detail how UMAP works can refer to this &lt;a href=&#34;https://umap-learn.readthedocs.io/en/latest/how_umap_works.html&#34;&gt;reference&lt;/a&gt;. For those prefer a much simpler or shorter version of it, I recommend a &lt;a href=&#34;https://www.youtube.com/watch?v=eN0wFzBA4Sc&amp;amp;list=WL&amp;amp;index=2&#34;&gt;YouTube video by John Stamer&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Uniform manifold approximation and projection or in short UMAP is a type of dimension reduction techniques. So, basically UMAP will project a set of features into a smaller space. UMAP can be a supervised technique in which we give a label or an outcome or an unsupervised one. For those interested to know in detail how UMAP works can refer to this &lt;a href=&#34;https://umap-learn.readthedocs.io/en/latest/how_umap_works.html&#34;&gt;reference&lt;/a&gt;. For those prefer a much simpler or shorter version of it, I recommend a &lt;a href=&#34;https://www.youtube.com/watch?v=eN0wFzBA4Sc&amp;amp;list=WL&amp;amp;index=2&#34;&gt;YouTube video by Joshua Starmer&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;example-in-r&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Example in R&lt;/h2&gt;

@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## UMAP
 
-Uniform manifold approximation and projection or in short UMAP is a type of dimension reduction techniques. So, basically UMAP will project a set of features into a smaller space. UMAP can be a supervised technique in which we give a label or an outcome or an unsupervised one. For those interested to know in detail how UMAP works can refer to this [reference](https://umap-learn.readthedocs.io/en/latest/how_umap_works.html). For those prefer a much simpler or shorter version of it, I recommend a [YouTube video by John Stamer](https://www.youtube.com/watch?v=eN0wFzBA4Sc&list=WL&index=2). 
+Uniform manifold approximation and projection or in short UMAP is a type of dimension reduction techniques. So, basically UMAP will project a set of features into a smaller space. UMAP can be a supervised technique in which we give a label or an outcome or an unsupervised one. For those interested to know in detail how UMAP works can refer to this [reference](https://umap-learn.readthedocs.io/en/latest/how_umap_works.html). For those prefer a much simpler or shorter version of it, I recommend a [YouTube video by Joshua Starmer](https://www.youtube.com/watch?v=eN0wFzBA4Sc&list=WL&index=2). 
 
 ## Example in R
 
