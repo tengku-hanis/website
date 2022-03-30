@@ -1,0 +1,274 @@
+---
+title: Using UMAP preprocessing for image classification
+author: ''
+date: '2022-03-16'
+slug: using-umap-preprocessing-for-image-classification
+categories:
+  - R
+  - Machine Learning
+tags:
+  - Machine Learning
+  - tidymodels
+  - Image analysis
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-03-16T12:17:10+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## UMAP
+
+Uniform manifold approximation and projection or in short UMAP is a type of dimension reduction techniques. So, basically UMAP will project a set of features into a smaller space. UMAP can be a supervised technique in which we give a label or an outcome or an unsupervised one. For those interested to know in detail how UMAP works can refer to this [reference](https://umap-learn.readthedocs.io/en/latest/how_umap_works.html). For those prefer a much simpler or shorter version of it, I recommend a [YouTube video by Joshua Starmer](https://www.youtube.com/watch?v=eN0wFzBA4Sc&list=WL&index=2). 
+
+## Example in R
+
+We going to see how to apply a UMAP techniques for image preprocessing and further classify the images using kNN and naive bayes.
+
+These are the packages that we need.
+
+```{r warning=FALSE, message=FALSE}
+library(keras) #for data and reshape to tabular format
+library(tidymodels)
+library(embed) #for umap
+library(discrim) #for naive bayes model
+```
+
+We going to use the famous MNIST dataset. This dataset contained a handwritten digit from 0 to 9. This dataset is available in `keras` package.
+
+```{r}
+mnist_data <- dataset_mnist()
+image_data <- mnist_data$train$x
+image_labels <- mnist_data$train$y
+image_data %>% dim()
+```
+
+For example this is the image for the second row.
+
+```{r}
+image_data[2, 1:28, 1:28] %>% 
+  t() %>% 
+  image(col = gray.colors(256))
+```
+
+Next, we going to change the image into a tabular data frame format. We going to limit the data to the first 1000 rows or images out of the total 6000 images.
+
+```{r}
+# Reformat to tabular format
+image_data <- array_reshape(image_data, dim = c(60000, 28*28))
+image_data %>% dim()
+image_data <- image_data[1:10000,]
+image_labels <- image_labels[1:10000]
+
+# Reformat to data frame
+full_data <- 
+  data.frame(image_data) %>% 
+  bind_cols(label = image_labels) %>% 
+  mutate(label = as.factor(label))
+```
+
+Then, we going to split the data and create a 3-folds cross-validation sets for the sake of simplicity.
+
+```{r}
+# Split data
+set.seed(123)
+ind <- initial_split(full_data)
+data_train <- training(ind)  
+data_test <- testing(ind)
+
+# 10-folds CV
+set.seed(123)
+data_cv <- vfold_cv(data_train, v = 3)
+```
+
+For recipe specification, we going to scale and center all the predictor after creating a new variable using `step_umap()`. Notice that in `step_umap()` we supply the outcome and we tune the number of components (`num_comp`).
+
+```{r}
+rec <- 
+  recipe(label ~ ., data = data_train) %>% 
+  step_umap(all_predictors(), outcome = vars(label), num_comp = tune()) %>% 
+  step_center(all_predictors()) %>% 
+  step_scale(all_predictors())
+```
+
+We create a a base workflow.
+
+```{r}
+wf <- 
+  workflow() %>% 
+  add_recipe(rec) 
+```
+
+We going to use two models as classifier:
+
+1. kNN\
+2. Naive bayes
+
+For each classifier, we going to create a regular grid of parameters to be tuned and further run a regular grid search.
+
+For kNN.
+
+```{r}
+# knn model
+knn_mod <- 
+  nearest_neighbor(neighbors = tune()) %>% 
+  set_mode("classification") %>% 
+  set_engine("kknn")
+
+# knn grid
+knn_grid <- grid_regular(neighbors(), num_comp(range = c(2, 8)), levels = 3)
+
+# Tune grid search
+knn_tune <- 
+  tune_grid(
+  wf %>% add_model(knn_mod),
+  resamples = data_cv,
+  grid = knn_grid, 
+  control = control_grid(verbose = F)
+)
+```
+
+For naive bayes.
+
+```{r}
+# nb model
+nb_mod <- 
+  naive_Bayes(smoothness = tune()) %>% 
+  set_mode("classification") %>% 
+  set_engine("naivebayes")
+
+# nb grid
+nb_grid <- grid_regular(smoothness(), num_comp(range = c(2, 10)), levels = 3)
+
+# Tune grid search
+nb_tune <- 
+  tune_grid(
+    wf %>% add_model(nb_mod),
+    resamples = data_cv,
+    grid = nb_grid, 
+    control = control_grid(verbose = F)
+  )
+```
+
+Let's see our tuning performance of our model.
+
+```{r}
+# knn model
+knn_tune %>% 
+  show_best("roc_auc")
+
+knn_tune %>% 
+  show_best("accuracy")
+
+# nb model
+nb_tune %>% 
+  show_best("roc_auc")
+
+nb_tune %>% 
+  show_best("accuracy")
+```
+
+Next, we going to select the best model from the tuned parameters and finalise our model using `last_fit()`.
+
+For knn model.
+
+```{r}
+# Finalize
+knn_best <- knn_tune %>% select_best("roc_auc")
+knn_rec <- 
+  recipe(label ~ ., data = data_train) %>% 
+  step_umap(all_predictors(), outcome = vars(label), num_comp = knn_best$num_comp) %>% 
+  step_center(all_predictors()) %>% 
+  step_scale(all_predictors())
+
+knn_wf <- 
+  workflow() %>% 
+  add_recipe(knn_rec) %>% 
+  add_model(knn_mod) %>% 
+  finalize_workflow(knn_best) 
+
+# Last fit
+knn_lastfit <- 
+  knn_wf %>% 
+  last_fit(ind)
+```
+
+For naive bayes model.
+
+```{r}
+# Finalize
+nb_best <- nb_tune %>% select_best("roc_auc")
+nb_rec <- 
+  recipe(label ~ ., data = data_train) %>% 
+  step_umap(all_predictors(), outcome = vars(label), num_comp = nb_best$num_comp) %>% 
+  step_center(all_predictors()) %>% 
+  step_scale(all_predictors())
+
+nb_wf <- 
+  workflow() %>% 
+  add_recipe(nb_rec) %>% 
+  add_model(nb_mod) %>% 
+  finalize_workflow(nb_best) 
+
+# Last fit
+nb_lastfit <- 
+  nb_wf %>% 
+  last_fit(ind)
+```
+
+Let's see the model performance on the testing data.
+
+```{r}
+knn_lastfit %>% 
+  collect_metrics() %>% 
+  mutate(model = "knn") %>% 
+  dplyr::bind_rows(nb_lastfit %>% 
+                     collect_metrics() %>% 
+                     mutate(model = "nb")) %>% 
+  select(-.config)
+```
+
+These are the confusion matrices.
+
+```{r}
+knn_lastfit %>% 
+  collect_predictions() %>%
+  conf_mat(label, .pred_class) %>% 
+  autoplot(type = "heatmap") +
+  labs(title = "Confusion matrix - kNN")
+
+nb_lastfit %>% 
+  collect_predictions() %>%
+  conf_mat(label, .pred_class) %>% 
+  autoplot(type = "heatmap") +
+  labs(title = "Confusion matrix - naive bayes")
+```
+
+Lastly, we can compare the ROC plots for each class.
+
+```{r}
+knn_lastfit %>% 
+  collect_predictions() %>%
+  mutate(id = "knn") %>% 
+  bind_rows(
+    nb_lastfit %>% 
+      collect_predictions() %>% 
+      mutate(id = "nb")
+            ) %>% 
+  group_by(id) %>% 
+  roc_curve(label, .pred_0:.pred_9) %>% 
+  autoplot()
+```
+
+## Conclusion
+
+I believe UMAP is quite good and can be used as one of preprocessing step in image classification. We are able to get a pretty good performance result in this post. I believe if the the parameter tuning approach is a bit more rigorous, the performance result will be a lot better.

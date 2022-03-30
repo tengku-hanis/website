@@ -1,295 +1,499 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
   <url>
     <loc>https://tengkuhanis.netlify.app/courses/example/example1/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/courses/example/</loc>
     <lastmod>2018-09-09T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/categories/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/tag/image-analysis/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/tag/machine-learning/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/tag/tidymodels/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/</loc>
+    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/data-exploration/</loc>
     <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/explore-data-using-pca/</loc>
     <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/machine-learning/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/tidymodels/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/invited-lecture-university-of-cyberjaya/</loc>
     <lastmod>2022-01-28T12:02:43+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/</loc>
     <lastmod>2022-01-28T12:02:43+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/category/applied-statistics/</loc>
     <lastmod>2022-01-09T18:30:38+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/base-r/</loc>
     <lastmod>2022-01-09T18:30:38+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/comparison/</loc>
     <lastmod>2022-01-09T18:30:38+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/fitted-vs-predict-in-r/</loc>
     <lastmod>2022-01-09T18:30:38+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
-    <lastmod>2022-01-09T18:30:38+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/a-short-note-on-variable-selection/</loc>
     <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/variable-selection/</loc>
     <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/category/variable-selection/</loc>
     <lastmod>2022-01-08T22:35:46+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/missing-data/</loc>
     <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/stepwise-selection-after-multiple-imputation/</loc>
     <lastmod>2022-01-04T13:53:56+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/variable-selection-using-genetic-algorithm/</loc>
     <lastmod>2022-01-02T09:09:43+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/category/map/</loc>
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/map/</loc>
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/</loc>
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/spatial/</loc>
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/</loc>
     <lastmod>2021-11-22T07:55:40+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/category/epidemiology/</loc>
     <lastmod>2021-11-12T09:58:02+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/</loc>
     <lastmod>2021-11-12T09:58:02+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/covid-19/</loc>
     <lastmod>2021-11-10T22:33:31+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/some-covid-19-plots-for-southeast-asian-countries/</loc>
     <lastmod>2021-11-10T22:33:31+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/vaccine/</loc>
     <lastmod>2021-11-10T22:33:31+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication-type/2/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/authors/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/kamarul-imran-musa/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/md-asiful-islam/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication_types/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_top_100_most-cited_p/</loc>
     <lastmod>2021-11-07T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/pre-conference-workshop-an-introduction-to-meta-analysis-in-r/</loc>
     <lastmod>2021-11-04T23:28:14+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication-type/3/</loc>
     <lastmod>2021-11-05T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</loc>
     <lastmod>2021-11-05T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/extract-a-table-from-a-pdf/</loc>
     <lastmod>2021-11-01T13:13:11+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/a-short-note-on-multiple-imputation/</loc>
     <lastmod>2021-10-29T20:35:04+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/workshop-sytematic-review-and-meta-analysis-using-rstudio/</loc>
     <lastmod>2021-11-04T23:13:36+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/covid-19-vaccine-interest-in-malaysia/</loc>
     <lastmod>2021-10-17T12:36:00+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/text-analysis/</loc>
     <lastmod>2021-10-17T12:36:00+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/category/text-analysis/</loc>
     <lastmod>2021-10-17T12:36:00+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_a_brief_analysis_of_/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/che-muhammad-nur-hidayat-che-nawi/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/erwan-ershad-ahmad-khan/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/mohd-azmi-suliman/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/sahrol-azmi-termizi/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/wan-nor-arifin/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/wan-shakira-rodzlan-hasani/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/wira-alfatah-ab-aziz/</loc>
     <lastmod>2021-09-29T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/wordcloud/</loc>
     <lastmod>2021-09-11T11:08:50+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/wordcloud-of-covid-19-research-in-malaysia/</loc>
     <lastmod>2021-09-11T11:08:50+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/hyperparameter-tuning-in-tidymodels/</loc>
     <lastmod>2021-09-05T14:45:32+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/data-exploration-in-r/</loc>
     <lastmod>2021-08-22T05:10:54+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/webinar-basic-of-meta-analysis-using-r/</loc>
     <lastmod>2021-11-04T23:06:33+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-meta-analysis-using-r/</loc>
     <lastmod>2021-11-04T22:52:48+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/a-summary-of-forcats-package/</loc>
     <lastmod>2021-05-18T20:15:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/najib-majdi-yaacob/</loc>
     <lastmod>2021-05-18T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_net_survival_differe/</loc>
     <lastmod>2021-05-18T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/sarimah-abdullah/</loc>
     <lastmod>2021-05-18T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/suhaily-mohd-hairon/</loc>
     <lastmod>2021-05-18T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/tidyverse/</loc>
     <lastmod>2021-05-18T20:15:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/handling-imbalanced-data/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/tag/deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/category/deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/2021-05-04-base-r-vs-tidyverse/</loc>
     <lastmod>2021-05-04T16:48:49+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/loop-vs-apply-in-r/</loc>
     <lastmod>2021-05-04T17:40:15+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/awang-bulgiba/</loc>
     <lastmod>2021-03-22T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/2021-01-01_measuring_time-varyi/</loc>
     <lastmod>2021-03-22T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/mohammad-subhi-jamiluddin/</loc>
     <lastmod>2021-03-22T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/mohd-hafiz-mohd/</loc>
     <lastmod>2021-03-22T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/noor-atinah-ahmad/</loc>
     <lastmod>2021-03-22T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/xin-wee-chen/</loc>
     <lastmod>2021-03-22T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/post/how-many-malaysian-should-be-vaccinated-to-get-herd-immunity-from-covid-19/</loc>
     <lastmod>2020-12-07T11:13:19+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</loc>
     <lastmod>2021-11-04T20:27:05+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/talk/webinar-an-introduction-to-bibliometric-analysis-using-r/</loc>
     <lastmod>2021-11-04T22:36:22+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/publication/2019-01-01_modelling_excess_mor/</loc>
     <lastmod>2019-12-30T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/mohd-faiz-md-ariffin/</loc>
     <lastmod>2019-12-30T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/noor-hashimah-abdullah/</loc>
     <lastmod>2019-12-30T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/noorfariza-nordin/</loc>
     <lastmod>2019-12-30T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/courses/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/slides/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/slides/example/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/project/external-project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
   </url>
+  
 </urlset>
