@@ -1,7 +1,7 @@
 +++
 title = "Developing an over-the-counter screening model for breast cancer among the Asian women population"
 date = "2022-06-13"
-authors = ["Tengku Muhammad Hanis", "Nur Intan Raihana Ruhaiyem", "Wan Nor Arifin", "Juhara Haron", "Wan Faiziah {Wan Abdul Rahman}", "Rosni Abdullah", "Kamarul Imran Musa"]
+authors = ["Tengku Muhammad Hanis", "Nur Intan Raihana Ruhaiyem", "Wan Nor Arifin", "Juhara Haron", "Wan Faiziah Wan Abdul Rahman", "Rosni Abdullah", "Kamarul Imran Musa"]
 publication_types = ["3"]
 publication = "Preprints, https://doi.org/doi: 10.20944/preprints202206.0186.v1"
 publication_short = "Preprints, https://doi.org/doi: 10.20944/preprints202206.0186.v1"
