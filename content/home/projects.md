@@ -52,13 +52,5 @@ item:
   title: Breast cancer predictive model
   url: ""
 
-- certificate_url: ""
-  date_end: ""
-  date_start: "2021-01-01"
-  description: ""
-  organization: Research project
-  organization_url: ""
-  title: Diagnostic accuracy of breast cancer predictive models
-  url: ""
-  
+
 ---
