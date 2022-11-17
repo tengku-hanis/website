@@ -5,12 +5,52 @@
     <link>https://tengkuhanis.netlify.app/publication-type/2/</link>
       <atom:link href="https://tengkuhanis.netlify.app/publication-type/2/index.xml" rel="self" type="application/rss+xml" />
     <description>2</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 07 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 16 Nov 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>2</title>
       <link>https://tengkuhanis.netlify.app/publication-type/2/</link>
     </image>
+    
+    <item>
+      <title>Over-the-Counter Breast Cancer Classification Using Machine Learning and Patient Registration Records</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_over-the-counter_bre/</link>
+      <pubDate>Wed, 16 Nov 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_over-the-counter_bre/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bibliometric Analysis of Global Research Activity on Premature Mortality</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_bibliometric_analysi/</link>
+      <pubDate>Mon, 03 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_bibliometric_analysi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A Global Bibliometric Analysis on Antibiotic-Resistant Active Pulmonary Tuberculosis Over the Last 25 Years (1996-2020)</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_a_global_bibliometri/</link>
+      <pubDate>Wed, 27 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_a_global_bibliometri/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Diagnostic Accuracy of Machine Learning Models on Mammography in Breast Cancer Classification: A Meta-Analysis</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</link>
+      <pubDate>Tue, 05 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Factors Influencing Mammographic Density in Asian Women: A Retrospective Cohort Study in the Northeast Region of Peninsular Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_factors_influencing_/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_factors_influencing_/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Top 100 most-cited publications on breast cancer and machine learning research: a bibliometric analysis</title>

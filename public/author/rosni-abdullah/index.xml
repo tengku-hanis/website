@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rosni Abdullah | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/author/rosni-abdullah/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/author/rosni-abdullah/index.xml" rel="self" type="application/rss+xml" />
+    <description>Rosni Abdullah</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 16 Nov 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>Rosni Abdullah</title>
+      <link>https://tengkuhanis.netlify.app/author/rosni-abdullah/</link>
+    </image>
+    
+    <item>
+      <title>Over-the-Counter Breast Cancer Classification Using Machine Learning and Patient Registration Records</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_over-the-counter_bre/</link>
+      <pubDate>Wed, 16 Nov 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_over-the-counter_bre/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Developing an over-the-counter screening model for breast cancer among the Asian women population</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_developing_an_over-t/</link>
+      <pubDate>Mon, 13 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_developing_an_over-t/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Factors Influencing Mammographic Density in Asian Women: A Retrospective Cohort Study in the Northeast Region of Peninsular Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_factors_influencing_/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_factors_influencing_/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

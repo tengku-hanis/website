@@ -5,9 +5,9 @@
     <link>https://tengkuhanis.netlify.app/</link>
       <atom:link href="https://tengkuhanis.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     <description>Tengku Hanis</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 16 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 16 Nov 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Tengku Hanis</title>
       <link>https://tengkuhanis.netlify.app/</link>
     </image>
@@ -52,6 +52,54 @@
 &lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
 &lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>Over-the-Counter Breast Cancer Classification Using Machine Learning and Patient Registration Records</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_over-the-counter_bre/</link>
+      <pubDate>Wed, 16 Nov 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_over-the-counter_bre/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workshop on scoping review &amp; bibliometric analysis</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-on-scoping-review-bibliometric-analysis/</link>
+      <pubDate>Thu, 20 Oct 2022 10:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-on-scoping-review-bibliometric-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bibliometric Analysis of Global Research Activity on Premature Mortality</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_bibliometric_analysi/</link>
+      <pubDate>Mon, 03 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_bibliometric_analysi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A Global Bibliometric Analysis on Antibiotic-Resistant Active Pulmonary Tuberculosis Over the Last 25 Years (1996-2020)</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_a_global_bibliometri/</link>
+      <pubDate>Wed, 27 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_a_global_bibliometri/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Diagnostic Accuracy of Machine Learning Models on Mammography in Breast Cancer Classification: A Meta-Analysis</title>
+      <link>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</link>
+      <pubDate>Tue, 05 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Developing an over-the-counter screening model for breast cancer among the Asian women population</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_developing_an_over-t/</link>
+      <pubDate>Mon, 13 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_developing_an_over-t/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -1546,6 +1594,22 @@ svm_ga&lt;/code&gt;&lt;/pre&gt;
     </item>
     
     <item>
+      <title>Factors Influencing Mammographic Density in Asian Women: A Retrospective Cohort Study in the Northeast Region of Peninsular Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_factors_influencing_/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_factors_influencing_/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Premature Cardiovascular Death and its Modifiable Risk Factors: Protocol of a Systematic Review and Meta-Analysis</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-01-01_premature_cardiovasc/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-01-01_premature_cardiovasc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>My first interactive map with {leaflet}</title>
       <link>https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/</link>
       <pubDate>Sun, 28 Nov 2021 00:00:00 +0000</pubDate>
@@ -2032,14 +2096,6 @@ covid_sea &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/tengku-
       <link>https://tengkuhanis.netlify.app/talk/pre-conference-workshop-an-introduction-to-meta-analysis-in-r/</link>
       <pubDate>Sat, 06 Nov 2021 14:00:00 +0000</pubDate>
       <guid>https://tengkuhanis.netlify.app/talk/pre-conference-workshop-an-introduction-to-meta-analysis-in-r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>A meta-analysis of diagnostic accuracy of machine learning models on mammography in breast cancer classification</title>
-      <link>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</link>
-      <pubDate>Fri, 05 Nov 2021 00:00:00 +0000</pubDate>
-      <guid>https://tengkuhanis.netlify.app/publication/2021-11-06-a-meta-analysis-of-diagnostic-accuracy-of-machine-learning-models-on-mammography-in-breast-cancer-classification/</guid>
       <description></description>
     </item>
     
@@ -4931,13 +4987,13 @@ $$&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Press &lt;code&gt;Space&lt;/code&gt; to play!&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;fragment &#34; &gt;
-One 
+One
 &lt;/span&gt;
 &lt;span class=&#34;fragment &#34; &gt;
-&lt;strong&gt;Two&lt;/strong&gt; 
+&lt;strong&gt;Two&lt;/strong&gt;
 &lt;/span&gt;
 &lt;span class=&#34;fragment &#34; &gt;
-Three 
+Three
 &lt;/span&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;A fragment can accept two optional parameters:&lt;/p&gt;
