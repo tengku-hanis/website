@@ -5,12 +5,20 @@
     <link>https://tengkuhanis.netlify.app/author/wan-nor-arifin/</link>
       <atom:link href="https://tengkuhanis.netlify.app/author/wan-nor-arifin/index.xml" rel="self" type="application/rss+xml" />
     <description>Wan Nor Arifin</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 16 Nov 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2022 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 14 Dec 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Wan Nor Arifin</title>
       <link>https://tengkuhanis.netlify.app/author/wan-nor-arifin/</link>
     </image>
+    
+    <item>
+      <title>Mapping Breast Cancer Research in Malaysia: A Scientometric Analysis</title>
+      <link>https://tengkuhanis.netlify.app/publication/2022-12-14-mapping-breast-cancer-research/</link>
+      <pubDate>Wed, 14 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2022-12-14-mapping-breast-cancer-research/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Over-the-Counter Breast Cancer Classification Using Machine Learning and Patient Registration Records</title>
