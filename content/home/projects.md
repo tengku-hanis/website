@@ -36,15 +36,6 @@ item:
   
 - certificate_url: ""
   date_end: ""
-  date_start: "2020-09-30"
-  description: ""
-  organization: Draft
-  organization_url: ""
-  title: Mapping breast cancer researches in Malaysia
-  url: ""
-  
-- certificate_url: ""
-  date_end: ""
   date_start: "2021-01-01"
   description: ""
   organization: Research project
