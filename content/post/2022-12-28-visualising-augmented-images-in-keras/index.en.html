@@ -1,0 +1,82 @@
+---
+title: Visualising augmented images in Keras
+author: ''
+date: '2022-12-28'
+slug: visualising-augmented-images-in-keras
+categories: []
+tags:
+  - Deep Learning
+  - Image analysis
+  - keras
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2022-12-28T19:37:45+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<div id="data-augmentation" class="section level2">
+<h2>Data augmentation</h2>
+<p>Data augmentation is been used in deep learning for many reasons. One of the reason is to reduce overfitting and makes the model more robust. Data augmentation can be done relatively easy in <code>keras</code> package in R. However, I have not found any resources on how to visualise the augmented image in R except in Python. Visualising the augmented image can be quite useful to get an idea of how the image looks like. So, this post covers a simple to do this in R.</p>
+</div>
+<div id="r-code" class="section level2">
+<h2>R code</h2>
+<p>Let’s load the <code>keras</code> library</p>
+<pre class="r"><code>library(keras)</code></pre>
+<pre><code>## Warning: package &#39;keras&#39; was built under R version 4.2.2</code></pre>
+<p>Next, we load the image from the internet.</p>
+<pre class="r"><code>r_logo &lt;- 
+  get_file(&quot;img&quot;, &quot;https://ih1.redbubble.net/image.522493300.6771/st,small,507x507-pad,600x600,f8f8f8.jpg&quot;) %&gt;% 
+  image_load()</code></pre>
+<p>Our image right now is 600x 600 x 3. The 3 at the back because the image is coloured (RGB channels).</p>
+<pre class="r"><code>r_logo$size</code></pre>
+<pre><code>## [[1]]
+## [1] 600
+## 
+## [[2]]
+## [1] 600</code></pre>
+<p>So, we need to change the image into an array with the dimension of 1 x 600 x 600 x 3. The number 1 indicates we have only one image.</p>
+<pre class="r"><code>r_logo &lt;- 
+  r_logo %&gt;% 
+  image_to_array() %&gt;% 
+  array_reshape(c(1, dim(.)))
+dim(r_logo)</code></pre>
+<pre><code>## [1]   1 600 600   3</code></pre>
+<p>Once we have a correct dimension, we can specify the parameters for the data augmentation.</p>
+<pre class="r"><code>augment_params &lt;- image_data_generator(horizontal_flip = T, 
+                                       vertical_flip = T,
+                                       rotation_range = 0.5,
+                                       zoom_range = 0.5,
+                                       fill_mode = &quot;reflect&quot;)</code></pre>
+<p>I am not going to into the details of the parameters. For those interested, the <a href="https://tensorflow.rstudio.com/reference/keras/image_data_generator">TensorFlow for R website</a> explain this very well.</p>
+<p>Next, we can generate the batch of augmented data at random. This function, however, will only run once we fit the model.</p>
+<pre class="r"><code>img_gen &lt;- flow_images_from_data(r_logo,
+                                 generator = augment_params, 
+                                 batch_size = 1)</code></pre>
+<p>Finally, we can plot the image. Firstly, this is our original image.</p>
+<pre class="r"><code>img_gen$x [1,,,] %&gt;% 
+  as.raster(max = 255) %&gt;% 
+  as.array() %&gt;% 
+  plot()</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Now, we going to loop the augmentation process. Here, we going to generate six augmented images. The <code>set.seed</code> for reproducibility.</p>
+<pre class="r"><code>set.seed(123)
+par(mfrow = c(3, 2), mar = c(1, 0, 1, 0))
+
+for (i in 1:6) {
+  IMG &lt;- img_gen$`next`()
+  IMG[1,,,] %&gt;% as.raster(max = 255) %&gt;% as.array() %&gt;% plot()
+}</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>I believe this is quite useful to get a sense of how your data is augmented. Consequently, this may help in selecting the parameters for the data augmentation.</p>
+</div>

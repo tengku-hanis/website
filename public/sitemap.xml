@@ -11,6 +11,27 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/deep-learning/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/image-analysis/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/keras/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/</loc>
+    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
+  </url><url>
     <loc>https://tengkuhanis.netlify.app/publication-type/2/</loc>
     <lastmod>2022-12-25T00:00:00+00:00</lastmod>
   </url><url>
@@ -42,9 +63,6 @@
     <lastmod>2022-12-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/author/shahnon-anuar-shahrani/</loc>
-    <lastmod>2022-12-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/</loc>
     <lastmod>2022-12-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/author/tengku-muhammad-hanis/</loc>
@@ -122,22 +140,13 @@
     <loc>https://tengkuhanis.netlify.app/categories/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/image-analysis/</loc>
-    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/machine-learning/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/category/r/</loc>
-    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/tidymodels/</loc>
@@ -292,9 +301,6 @@
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/handling-imbalanced-data/</loc>
     <lastmod>2021-05-14T09:29:34+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/deep-learning/</loc>
-    <lastmod>2021-05-09T14:33:51+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/category/deep-learning/</loc>
     <lastmod>2021-05-09T14:33:51+08:00</lastmod>

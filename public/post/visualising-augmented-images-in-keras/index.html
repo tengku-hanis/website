@@ -34,10 +34,10 @@
   
     
   
-  <meta name="description" content="I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA.">
+  <meta name="description" content="Data augmentationData augmentation is been used in deep learning for many reasons. One of the reason is to reduce overfitting and makes the model more robust. Data augmentation can be done relatively easy in keras package in R.">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/">
+  <link rel="alternate" hreflang="en-us" href="https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/">
 
   
 
@@ -262,7 +262,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png">
 
-  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/">
+  <link rel="canonical" href="https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/">
 
   
   
@@ -278,15 +278,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Tengku Hanis">
-  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/">
-  <meta property="og:title" content="Exponentially Weighted Average in Deep Learning | Tengku Hanis">
-  <meta property="og:description" content="I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
+  <meta property="og:url" content="https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/">
+  <meta property="og:title" content="Visualising augmented images in Keras | Tengku Hanis">
+  <meta property="og:description" content="Data augmentationData augmentation is been used in deep learning for many reasons. One of the reason is to reduce overfitting and makes the model more robust. Data augmentation can be done relatively easy in keras package in R."><meta property="og:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png">
   <meta property="twitter:image" content="https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2021-05-09T00:00:00&#43;00:00">
+      <meta property="article:published_time" content="2022-12-28T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2021-05-09T14:33:51&#43;08:00">
+    <meta property="article:modified_time" content="2022-12-28T19:37:45&#43;08:00">
   
 
   
@@ -310,12 +310,12 @@
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/"
+    "@id": "https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/"
   },
-  "headline": "Exponentially Weighted Average in Deep Learning",
+  "headline": "Visualising augmented images in Keras",
   
-  "datePublished": "2021-05-09T00:00:00Z",
-  "dateModified": "2021-05-09T14:33:51+08:00",
+  "datePublished": "2022-12-28T00:00:00Z",
+  "dateModified": "2022-12-28T19:37:45+08:00",
   
   "author": {
     "@type": "Person",
@@ -330,7 +330,7 @@
       "url": "https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA."
+  "description": "Data augmentation\rData augmentation is been used in deep learning for many reasons. One of the reason is to reduce overfitting and makes the model more robust. Data augmentation can be done relatively easy in keras package in R."
 }
 </script>
 
@@ -348,7 +348,7 @@
 
 
 
-  <title>Exponentially Weighted Average in Deep Learning | Tengku Hanis</title>
+  <title>Visualising augmented images in Keras | Tengku Hanis</title>
 
 </head>
 
@@ -723,7 +723,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Exponentially Weighted Average in Deep Learning</h1>
+  <h1>Visualising augmented images in Keras</h1>
 
   
 
@@ -744,7 +744,7 @@
           Last updated on
       
     
-    May 9, 2021
+    Dec 28, 2022
   </span>
   
 
@@ -753,7 +753,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    3 min read
+    2 min read
   </span>
   
 
@@ -764,10 +764,6 @@
   
 
   
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="/category/r/">R</a>, <a href="/category/deep-learning/">Deep Learning</a></span>
   
 
 </div>
@@ -796,77 +792,65 @@
 
     <div class="article-style">
       
-<script src="https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/index.en_files/header-attrs/header-attrs.js"></script>
 
 
-<p>I have been reading about lost functions and optimisers in deep learning for the last couple of days when I stumble upon the term Exponentially Weighted Average (EWA). So, in this post I aims to explain my understanding of EWA.</p>
-<div id="overview-of-ewa" class="section level2">
-<h2>Overview of EWA</h2>
-<p>EWA basically is an important concept in deep learning and have been used in several optimisers to smoothen the noise of the data.</p>
-<p>Let’s see the formula for EWA:</p>
-<p><img src="formula.png" width="60%" style="display: block; margin: auto;" /></p>
-<p><em>V<sub>t</sub></em> is some smoothen value at point <em>t</em>, while <em>S<sub>t</sub></em> is a data point at point <em>t</em>. <em>B</em> here is a hyperparameter that we need to tune in our network. So, the choice of <em>B</em> will determine how many data points that we average the value of <em>V<sub>t</sub></em> as shown below:</p>
-<p><img src="beta.png" width="80%" style="display: block; margin: auto;" /></p>
+<div id="data-augmentation" class="section level2">
+<h2>Data augmentation</h2>
+<p>Data augmentation is been used in deep learning for many reasons. One of the reason is to reduce overfitting and makes the model more robust. Data augmentation can be done relatively easy in <code>keras</code> package in R. However, I have not found any resources on how to visualise the augmented image in R except in Python. Visualising the augmented image can be quite useful to get an idea of how the image looks like. So, this post covers a simple to do this in R.</p>
 </div>
-<div id="ewa-in-deep-learnings-optimiser" class="section level2">
-<h2>EWA in deep learnings’ optimiser</h2>
-<p>So, some of the optimisers that adopt the approach of EWA are (red box indicates the EWA part in each formula):</p>
-<ol style="list-style-type: decimal">
-<li>Stochastic gradient descent (SGD) with momentum</li>
-</ol>
-<p>The issue with SGD is the present of noise while searching for global minima. So, SGD with momentum integrated the EWA, which reduces these noises and helps the network converges faster.</p>
-<p><img src="SGD-momentum2.png" width="80%" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>Adaptive delta (Adadelta) and Root Mean Square Propagation (RMSprop)</li>
-</ol>
-<p>Adadelta and RMSprop are proposed in attempt to solve the issue of diminishing learning rate of adaptive gradient (Adagrad) optimiser. The use of EWA in both optimisers actually helps to achieve this. Both optimisers have quite a similar formula, but attached below is the formula for Adadelta.</p>
-<p><img src="adadelta2.png" width="80%" style="display: block; margin: auto;" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Adaptive moment estimation (ADAM)</li>
-</ol>
-<p>ADAM basically combined the SGD with momentum with Adadelta. As shown earlier, both optimisers use EWA.</p>
+<div id="r-code" class="section level2">
+<h2>R code</h2>
+<p>Let’s load the <code>keras</code> library</p>
+<pre class="r"><code>library(keras)</code></pre>
+<pre><code>## Warning: package &#39;keras&#39; was built under R version 4.2.2</code></pre>
+<p>Next, we load the image from the internet.</p>
+<pre class="r"><code>r_logo &lt;- 
+  get_file(&quot;img&quot;, &quot;https://ih1.redbubble.net/image.522493300.6771/st,small,507x507-pad,600x600,f8f8f8.jpg&quot;) %&gt;% 
+  image_load()</code></pre>
+<p>Our image right now is 600x 600 x 3. The 3 at the back because the image is coloured (RGB channels).</p>
+<pre class="r"><code>r_logo$size</code></pre>
+<pre><code>## [[1]]
+## [1] 600
+## 
+## [[2]]
+## [1] 600</code></pre>
+<p>So, we need to change the image into an array with the dimension of 1 x 600 x 600 x 3. The number 1 indicates we have only one image.</p>
+<pre class="r"><code>r_logo &lt;- 
+  r_logo %&gt;% 
+  image_to_array() %&gt;% 
+  array_reshape(c(1, dim(.)))
+dim(r_logo)</code></pre>
+<pre><code>## [1]   1 600 600   3</code></pre>
+<p>Once we have a correct dimension, we can specify the parameters for the data augmentation.</p>
+<pre class="r"><code>augment_params &lt;- image_data_generator(horizontal_flip = T, 
+                                       vertical_flip = T,
+                                       rotation_range = 0.5,
+                                       zoom_range = 0.5,
+                                       fill_mode = &quot;reflect&quot;)</code></pre>
+<p>I am not going to into the details of the parameters. For those interested, the <a href="https://tensorflow.rstudio.com/reference/keras/image_data_generator">TensorFlow for R website</a> explain this very well.</p>
+<p>Next, we can generate the batch of augmented data at random. This function, however, will only run once we fit the model.</p>
+<pre class="r"><code>img_gen &lt;- flow_images_from_data(r_logo,
+                                 generator = augment_params, 
+                                 batch_size = 1)</code></pre>
+<p>Finally, we can plot the image. Firstly, this is our original image.</p>
+<pre class="r"><code>img_gen$x [1,,,] %&gt;% 
+  as.raster(max = 255) %&gt;% 
+  as.array() %&gt;% 
+  plot()</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Now, we going to loop the augmentation process. Here, we going to generate six augmented images. The <code>set.seed</code> for reproducibility.</p>
+<pre class="r"><code>set.seed(123)
+par(mfrow = c(3, 2), mar = c(1, 0, 1, 0))
+
+for (i in 1:6) {
+  IMG &lt;- img_gen$`next`()
+  IMG[1,,,] %&gt;% as.raster(max = 255) %&gt;% as.array() %&gt;% plot()
+}</code></pre>
+<p><img src="https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
-<div id="more-details-on-ewa" class="section level2">
-<h2>More details on EWA</h2>
-<p>Now, let’s go back to EWA. Here is the example of calculation of EWA:</p>
-<p><img src="seq1.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>Keep in mind that <em>t<sub>3</sub></em> is the latest time point, followed by <em>t<sub>2</sub></em> and <em>t<sub>1</sub></em>, respectively. So, if we want to calculate <em>V<sub>3</sub></em>:</p>
-<p><img src="seq2.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>So, if we were to varies the value of <em>B</em> across the equation (while the values of <em>a<sub>1</sub>…a<sub>n</sub></em> remain constant), we can do so in R.</p>
-<pre class="r"><code>library(tidyverse) 
-
-func &lt;- function(b) (1 - b) * b^((20:1) - 1)
-beta &lt;- seq(0.1, 0.9, by=0.2)
-
-dat &lt;- t(sapply(beta, func)) %&gt;% 
-  as.data.frame()
-colnames(dat)[1:20] &lt;- 1:20
-
-dat %&gt;%  
-  mutate(beta = as_factor(beta)) %&gt;%
-  pivot_longer(cols = 1:20, names_to = &quot;data_point&quot;, values_to = &quot;weight&quot;) %&gt;% 
-  ggplot(aes(x=as.numeric(data_point), y=weight, color=beta)) +
-  geom_line() +
-  geom_point() +
-  scale_x_continuous(breaks = 1:20) +
-  labs(title = &quot;Change of Exponentially Weighted Average function&quot;, 
-       subtitle = &quot;Time at t20 is the recent time, and t1 is the initial time&quot;) +
-  scale_colour_discrete(&quot;Beta:&quot;) +
-  xlab(&quot;Time(t)&quot;) +
-  ylab(&quot;Weights/Coefficients&quot;) +
-  theme_bw()</code></pre>
-<p><img src="https://tengkuhanis.netlify.app/post/exponentially-weighted-average-in-deep-learning/index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>Note that time at t<sub>20</sub> is the recent time, and t<sub>1</sub> is the initial time. Thus, two main points from the above plot are:</p>
-<ol style="list-style-type: decimal">
-<li>The EWA function acts in a decaying manner.<br />
-</li>
-<li>As beta, <em>B</em> increases we actually put more emphasize on the recent data point.</li>
-</ol>
-<p><em>Side note: I have tried to do the plot in plotly, not sure why it did not work</em> 😕</p>
-<p>References:<br />
-1) <a href="https://towardsdatascience.com/deep-learning-optimizers-436171c9e23f" class="uri">https://towardsdatascience.com/deep-learning-optimizers-436171c9e23f</a> (all the equations are from this reference)<br />
-2) <a href="https://youtu.be/NxTFlzBjS-4" class="uri">https://youtu.be/NxTFlzBjS-4</a><br />
-3) <a href="https://medium.com/@dhartidhami/exponentially-weighted-averages-5de212b5be46" class="uri">https://medium.com/@dhartidhami/exponentially-weighted-averages-5de212b5be46</a></p>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>I believe this is quite useful to get a sense of how your data is augmented. Consequently, this may help in selecting the parameters for the data augmentation.</p>
 </div>
 
     </div>
@@ -881,6 +865,10 @@ dat %&gt;%
 <div class="article-tags">
   
   <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
+  
+  <a class="badge badge-light" href="/tag/image-analysis/">Image analysis</a>
+  
+  <a class="badge badge-light" href="/tag/keras/">keras</a>
   
 </div>
 
@@ -1031,15 +1019,9 @@ dat %&gt;%
     <h3>Related</h3>
     <ul>
       
-      <li><a href="/post/visualising-augmented-images-in-keras/">Visualising augmented images in Keras</a></li>
-      
       <li><a href="/post/using-umap-preprocessing-for-image-classification/">Using UMAP preprocessing for image classification</a></li>
       
-      <li><a href="/post/fitted-vs-predict-in-r/">Fitted vs predict in R</a></li>
-      
-      <li><a href="/post/my-first-interactive-map-with-leaflet/">My first interactive map with {leaflet}</a></li>
-      
-      <li><a href="/post/variable-selection-for-imputation-model-in-mice/">Variable selection for imputation model in {mice}</a></li>
+      <li><a href="/post/exponentially-weighted-average-in-deep-learning/">Exponentially Weighted Average in Deep Learning</a></li>
       
     </ul>
   </div>
