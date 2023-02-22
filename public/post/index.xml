@@ -5,12 +5,211 @@
     <link>https://tengkuhanis.netlify.app/post/</link>
       <atom:link href="https://tengkuhanis.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 28 Dec 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 22 Feb 2023 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Posts</title>
       <link>https://tengkuhanis.netlify.app/post/</link>
     </image>
+    
+    <item>
+      <title>Mapping the states in Malaysia</title>
+      <link>https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/</link>
+      <pubDate>Wed, 22 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/</guid>
+      <description>
+
+
+&lt;p&gt;I have written two blog posts about making map in R:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/&#34;&gt;Making maps with R (my first attempt ever!)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/&#34;&gt;My first interactive map with {leaflet}&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This post is sort of a continuation to the &lt;a href=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/&#34;&gt;first blog post&lt;/a&gt;. I have shown how to plot a coordinate to a map in that post specifically for Malaysia.&lt;/p&gt;
+&lt;p&gt;However, using the two approaches in the previous blog post, we cannot plot the coordinate to a certain states in Malaysia. At least I am not unable to find how to do that after googling around. But, we can plot the borneo or peninsular of Malaysia using the two approaches.&lt;/p&gt;
+&lt;div id=&#34;plot-the-peninsular-of-malaysia-not-the-best-way&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plot the peninsular of Malaysia (not the best way)&lt;/h2&gt;
+&lt;p&gt;Load the necessary packages.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rworldmap) 
+library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First, we get the data. The data is about desa clinic (klinik desa) in Malaysia.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinicDesa &amp;lt;- read.csv(&amp;quot;https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv&amp;quot;)
+head(clinicDesa)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   id facilities_id                     name              address postcode
+## 1  1    KD01010019  KLINIK DESA ASSAM BUBOK     Jalan Batu Pahat    86400
+## 2  2    KD01010020   KLINIK DESA BATU PUTIH    Jalan Behor Temak    83000
+## 3  3    KD01010021      KLINIK DESA BEROLEH    Jalan Parit Besar    83300
+## 4  4    KD01010022        KLINIK DESA BINDU Jalan Tongkang Pecah    83010
+## 5  5    KD01010023 KLINIK DESA KAMPUNG BARU   Jalan Parit Kemang    83710
+## 6  6    KD01010024 KLINIK DESA KANGKAR BARU      Jalan Meng Seng    85400
+##             city   district  state tel fax website email image latitude
+## 1     Ayer Hitam Batu Pahat Johor       NA      NA    NA    NA 1.933330
+## 2          Bagan Batu Pahat Johor       NA      NA    NA    NA 1.889100
+## 3     Sri Gading Batu Pahat Johor       NA      NA    NA    NA 1.877890
+## 4 Tongkang Pecah Batu Pahat Johor       NA      NA    NA    NA 1.901515
+## 5    Parit Yaani Batu Pahat Johor       NA      NA    NA    NA 1.905120
+## 6      Yong Peng Batu Pahat Johor       NA      NA    NA    NA 2.065310
+##   longitude likes rating status
+## 1  103.1167     0      0    NEW
+## 2  102.8778     0      0    NEW
+## 3  102.9858     0      0    NEW
+## 4  102.9665     0      0    NEW
+## 5  103.0372     0      0    NEW
+## 6  103.1248     0      0    NEW&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First we plot the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(clinicDesa, aes(longitude, latitude)) +
+  geom_point() +
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Remove the two points.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinicDesa2 &amp;lt;- clinicDesa %&amp;gt;% filter(longitude &amp;gt; 25)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, plot the updated data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(clinicDesa2, aes(longitude, latitude)) +
+  geom_point() +
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;From the plot, we already know the left side consists of the coordinates in the peninsular of Malaysia. So, we can limit our plot by limit the longitude &amp;lt; 105 and longitude &amp;gt; 97.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Get base map
+global &amp;lt;- map_data(&amp;quot;world&amp;quot;) 
+
+# Plot
+ggplot() + 
+  geom_polygon(data = global %&amp;gt;% filter(region == &amp;quot;Malaysia&amp;quot;), aes(x=long, y = lat, group = group), 
+               fill = &amp;quot;gray85&amp;quot;) + 
+  coord_fixed(1.3) +
+  geom_point(data = clinicDesa2, aes(x = longitude, y = latitude)) +
+  theme_minimal() + 
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Desa clinic in the peninsular of Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data last updated: Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;)))) +
+  xlim(97, 105) #limit overall map to peninsular of Malaysia&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I am not going to re-explain the above and below codes as I have explain it in &lt;a href=&#34;https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/&#34;&gt;the previous blog post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This approach also works with &lt;code&gt;rworldmap&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Get base map
+world &amp;lt;- getMap(resolution = &amp;quot;low&amp;quot;)
+msia &amp;lt;- world[world@data$ADMIN == &amp;quot;Malaysia&amp;quot;, ]
+
+# Plot
+ggplot() +
+  geom_polygon(data = msia, aes(x = long, y = lat, group = group), fill = NA, colour = &amp;quot;black&amp;quot;) +
+  geom_point(data = clinicDesa2, aes(x = longitude, y = latitude)) +
+  coord_quickmap() + 
+  theme_minimal() + 
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Desa clinic in the peninsular of Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data last updated: Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;)))) +
+  xlim(97, 105) #limit overall map to peninsular of Malaysia&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we can see using the two approaches, we can plot the borne and peninsular sides of Malaysia. But, at least to my knowledge we cannot apply this approach if we want to plot a coordinate to certain states in Malaysia.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plot-the-states-in-malaysia&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plot the states in Malaysia&lt;/h2&gt;
+&lt;p&gt;Load the necessary package.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(geodata)
+library(tidyterra)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As we can see from the package, we going to use a &lt;code&gt;geodata&lt;/code&gt; package. &lt;code&gt;tidyterra&lt;/code&gt; is used to supplements the ggplot. First, let’s limit the data into desa clinics in Terengganu only.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;clinic_trg &amp;lt;- 
+  clinicDesa %&amp;gt;% 
+  filter(state == &amp;quot;Terengganu&amp;quot;) %&amp;gt;% 
+  dplyr::select(latitude, longitude) 
+head(clinic_trg)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   latitude longitude
+## 1  5.48533  102.4914
+## 2  5.81578  102.5778
+## 3  5.70886  102.4892
+## 4  5.75722  102.5303
+## 5  5.67444  102.6289
+## 6  5.69875  102.5430&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we get the map from the &lt;code&gt;geodata&lt;/code&gt; package with the boundaries at the district level.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Malaysia &amp;lt;- gadm(country = &amp;quot;MYS&amp;quot;, level = 2, path=tempdir())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can use the below information to limit the map to Terengganu state only.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Malaysia$NAME_1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   [1] &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;          
+##   [5] &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;          
+##   [9] &amp;quot;Johor&amp;quot;           &amp;quot;Johor&amp;quot;           &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;          
+##  [13] &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;          
+##  [17] &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;          
+##  [21] &amp;quot;Kedah&amp;quot;           &amp;quot;Kedah&amp;quot;           &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;       
+##  [25] &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;       
+##  [29] &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;        &amp;quot;Kelantan&amp;quot;       
+##  [33] &amp;quot;Kuala Lumpur&amp;quot;    &amp;quot;Labuan&amp;quot;          &amp;quot;Melaka&amp;quot;          &amp;quot;Melaka&amp;quot;         
+##  [37] &amp;quot;Melaka&amp;quot;          &amp;quot;Negeri Sembilan&amp;quot; &amp;quot;Negeri Sembilan&amp;quot; &amp;quot;Negeri Sembilan&amp;quot;
+##  [41] &amp;quot;Negeri Sembilan&amp;quot; &amp;quot;Negeri Sembilan&amp;quot; &amp;quot;Negeri Sembilan&amp;quot; &amp;quot;Negeri Sembilan&amp;quot;
+##  [45] &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;         
+##  [49] &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;         
+##  [53] &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;          &amp;quot;Pahang&amp;quot;          &amp;quot;Perak&amp;quot;          
+##  [57] &amp;quot;Perak&amp;quot;           &amp;quot;Perak&amp;quot;           &amp;quot;Perak&amp;quot;           &amp;quot;Perak&amp;quot;          
+##  [61] &amp;quot;Perak&amp;quot;           &amp;quot;Perak&amp;quot;           &amp;quot;Perak&amp;quot;           &amp;quot;Perak&amp;quot;          
+##  [65] &amp;quot;Perak&amp;quot;           &amp;quot;Perlis&amp;quot;          &amp;quot;Pulau Pinang&amp;quot;    &amp;quot;Pulau Pinang&amp;quot;   
+##  [69] &amp;quot;Pulau Pinang&amp;quot;    &amp;quot;Pulau Pinang&amp;quot;    &amp;quot;Pulau Pinang&amp;quot;    &amp;quot;Putrajaya&amp;quot;      
+##  [73] &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;          
+##  [77] &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;          
+##  [81] &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;          
+##  [85] &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;          
+##  [89] &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;          
+##  [93] &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;           &amp;quot;Sabah&amp;quot;          
+##  [97] &amp;quot;Sabah&amp;quot;           &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [101] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [105] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [109] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [113] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [117] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [121] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [125] &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;         &amp;quot;Sarawak&amp;quot;        
+## [129] &amp;quot;Selangor&amp;quot;        &amp;quot;Selangor&amp;quot;        &amp;quot;Selangor&amp;quot;        &amp;quot;Selangor&amp;quot;       
+## [133] &amp;quot;Selangor&amp;quot;        &amp;quot;Selangor&amp;quot;        &amp;quot;Selangor&amp;quot;        &amp;quot;Selangor&amp;quot;       
+## [137] &amp;quot;Selangor&amp;quot;        &amp;quot;Trengganu&amp;quot;       &amp;quot;Trengganu&amp;quot;       &amp;quot;Trengganu&amp;quot;      
+## [141] &amp;quot;Trengganu&amp;quot;       &amp;quot;Trengganu&amp;quot;       &amp;quot;Trengganu&amp;quot;       &amp;quot;Trengganu&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, this is the plot for Terengganu.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Trg &amp;lt;- Malaysia[138:144,]
+plot(Trg)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We going to the map this in ggplot, and stacked the map layer with the coordinate layer.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() +
+  geom_spatvector(data = Trg, color = &amp;quot;grey&amp;quot;, fill = NA) +
+  geom_point(data = clinic_trg, aes(x = longitude, y = latitude, color = &amp;quot;red&amp;quot;)) +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Desa clinic in Terengganu, Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data last updated: Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;)))) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;geom_spatvector&lt;/code&gt; is from &lt;code&gt;tidyterra&lt;/code&gt; package. Alternatively, we can plot using &lt;code&gt;geom_sf&lt;/code&gt;but we need to convert the &lt;code&gt;SpatVector&lt;/code&gt; data into &lt;code&gt;sf&lt;/code&gt; object using &lt;code&gt;sf::st_as_sf&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = sf::st_as_sf(Trg)) +
+  geom_sf(color = &amp;quot;grey&amp;quot;, fill = NA) +
+  geom_point(data = clinic_trg, aes(x = longitude, y = latitude, color = &amp;quot;red&amp;quot;)) +
+  theme_minimal() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Desa clinic in Terengganu, Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data last updated: Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;)))) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Both approaches produce the same plot.&lt;/p&gt;
+&lt;p&gt;We can further add district labels to the plots. For example, using the &lt;code&gt;geom_sf&lt;/code&gt;, we can stack it with &lt;code&gt;geom_sf_label&lt;/code&gt; layer. We can alternatively use &lt;code&gt;theme_void&lt;/code&gt; to remove the background and the map axis.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = sf::st_as_sf(Trg)) +
+  geom_sf(color = &amp;quot;grey&amp;quot;, fill = NA) +
+  geom_sf_label(aes(label = NAME_2)) +
+  geom_point(data = clinic_trg, aes(x = longitude, y = latitude, color = &amp;quot;red&amp;quot;)) +
+  theme_void() +
+  theme(legend.position = &amp;quot;none&amp;quot;) +
+  xlab(&amp;quot;Longitude&amp;quot;) +
+  ylab(&amp;quot;Latitude&amp;quot;) +
+  labs(title = &amp;quot;Desa clinic in Terengganu, Malaysia&amp;quot;, 
+       subtitle = &amp;quot;(Data last updated: Klinik Desa - 9 Mac 2021)&amp;quot;,
+       caption = expression(paste(italic(&amp;quot;Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan&amp;quot;)))) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/index.en_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Visualising augmented images in Keras</title>

@@ -1,7 +1,7 @@
 ---
 title: Mapping the states in Malaysia
 author: ''
-date: '2023-02-23'
+date: '2023-02-22'
 slug: mapping-the-states-in-malaysia
 categories:
   - R
@@ -21,8 +21,6 @@ image:
   preview_only: no
 projects: []
 ---
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```

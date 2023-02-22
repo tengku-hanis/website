@@ -11,6 +11,36 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
+    <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/epidemiology/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/map/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/map/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/mapping-the-states-in-malaysia/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/spatial/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2023-02-23T03:29:21+08:00</lastmod>
+  </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/deep-learning/</loc>
     <lastmod>2022-12-28T19:37:45+08:00</lastmod>
   </url><url>
@@ -18,15 +48,6 @@
     <lastmod>2022-12-28T19:37:45+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/keras/</loc>
-    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
-    <lastmod>2022-12-28T19:37:45+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/</loc>
     <lastmod>2022-12-28T19:37:45+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/visualising-augmented-images-in-keras/</loc>
@@ -137,16 +158,10 @@
     <loc>https://tengkuhanis.netlify.app/publication/2022-01-01_developing_an_over-t/</loc>
     <lastmod>2022-06-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/categories/</loc>
-    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/machine-learning/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/category/machine-learning/</loc>
-    <lastmod>2022-03-16T12:17:10+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/r/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/tidymodels/</loc>
@@ -203,23 +218,11 @@
     <loc>https://tengkuhanis.netlify.app/publication/2022-01-01_premature_cardiovasc/</loc>
     <lastmod>2022-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/map/</loc>
-    <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/map/</loc>
-    <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/</loc>
-    <lastmod>2021-11-28T09:56:59+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/spatial/</loc>
     <lastmod>2021-11-28T09:56:59+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/variable-selection-for-imputation-model-in-mice/</loc>
     <lastmod>2021-11-22T07:55:40+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/epidemiology/</loc>
-    <lastmod>2021-11-12T09:58:02+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/</loc>
     <lastmod>2021-11-12T09:58:02+08:00</lastmod>
