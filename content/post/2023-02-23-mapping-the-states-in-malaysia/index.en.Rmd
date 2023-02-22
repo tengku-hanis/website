@@ -1,0 +1,208 @@
+---
+title: Mapping the states in Malaysia
+author: ''
+date: '2023-02-23'
+slug: mapping-the-states-in-malaysia
+categories:
+  - R
+  - Epidemiology
+  - Map
+tags:
+  - map
+  - spatial
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2023-02-23T03:29:21+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+I have written two blog posts about making map in R:
+
+1) [Making maps with R (my first attempt ever!)](https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/)
+2) [My first interactive map with {leaflet}](https://tengkuhanis.netlify.app/post/my-first-interactive-map-with-leaflet/)
+
+This post is sort of a continuation to the [first blog post](https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/). I have shown how to plot a coordinate to a map in that post specifically for Malaysia.
+
+However, using the two approaches in the previous blog post, we cannot plot the coordinate to a certain states in Malaysia. At least I am not unable to find how to do that after googling around. But, we can plot the borneo or peninsular of Malaysia using the two approaches.
+
+## Plot the peninsular of Malaysia (not the best way)
+
+Load the necessary packages.
+
+```{r}
+library(rworldmap) 
+library(tidyverse)
+```
+
+First, we get the data. The data is about desa clinic (klinik desa) in Malaysia.
+
+```{r}
+clinicDesa <- read.csv("https://raw.githubusercontent.com/tengku-hanis/clinic-data/main/clinicdesa.csv")
+head(clinicDesa)
+```
+
+First we plot the data.
+
+```{r}
+ggplot(clinicDesa, aes(longitude, latitude)) +
+  geom_point() +
+  theme_minimal()
+```
+
+Remove the two points.
+
+```{r}
+clinicDesa2 <- clinicDesa %>% filter(longitude > 25)
+```
+
+Again, plot the updated data.
+
+```{r}
+ggplot(clinicDesa2, aes(longitude, latitude)) +
+  geom_point() +
+  theme_minimal()
+```
+
+From the plot, we already know the left side consists of the coordinates in the peninsular of Malaysia. So, we can limit our plot by limit the longitude < 105 and longitude > 97.  
+
+```{r}
+# Get base map
+global <- map_data("world") 
+
+# Plot
+ggplot() + 
+  geom_polygon(data = global %>% filter(region == "Malaysia"), aes(x=long, y = lat, group = group), 
+               fill = "gray85") + 
+  coord_fixed(1.3) +
+  geom_point(data = clinicDesa2, aes(x = longitude, y = latitude)) +
+  theme_minimal() + 
+  xlab("Longitude") +
+  ylab("Latitude") +
+  labs(title = "Desa clinic in the peninsular of Malaysia", 
+       subtitle = "(Data last updated: Klinik Desa - 9 Mac 2021)",
+       caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan")))) +
+  xlim(97, 105) #limit overall map to peninsular of Malaysia
+```
+
+I am not going to re-explain the above and below codes as I have explain it in [the previous blog post](https://tengkuhanis.netlify.app/post/making-maps-with-r-my-first-attempt-ever/).
+
+This approach also works with `rworldmap`.
+
+```{r}
+# Get base map
+world <- getMap(resolution = "low")
+msia <- world[world@data$ADMIN == "Malaysia", ]
+
+# Plot
+ggplot() +
+  geom_polygon(data = msia, aes(x = long, y = lat, group = group), fill = NA, colour = "black") +
+  geom_point(data = clinicDesa2, aes(x = longitude, y = latitude)) +
+  coord_quickmap() + 
+  theme_minimal() + 
+  xlab("Longitude") +
+  ylab("Latitude") +
+  labs(title = "Desa clinic in the peninsular of Malaysia", 
+       subtitle = "(Data last updated: Klinik Desa - 9 Mac 2021)",
+       caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan")))) +
+  xlim(97, 105) #limit overall map to peninsular of Malaysia
+```
+
+As we can see using the two approaches, we can plot the borne and peninsular sides of Malaysia. But, at least to my knowledge we cannot apply this approach if we want to plot a coordinate to certain states in Malaysia.
+
+## Plot the states in Malaysia
+
+Load the necessary package.
+
+```{r}
+library(geodata)
+library(tidyterra)
+```
+
+As we can see from the package, we going to use a `geodata` package. `tidyterra` is used to supplements the ggplot. First, let's limit the data into desa clinics in Terengganu only.
+
+```{r}
+clinic_trg <- 
+  clinicDesa %>% 
+  filter(state == "Terengganu") %>% 
+  dplyr::select(latitude, longitude) 
+head(clinic_trg)
+```
+
+Now we get the map from the `geodata` package with the boundaries at the district level.
+```{r}
+Malaysia <- gadm(country = "MYS", level = 2, path=tempdir())
+```
+
+We can use the below information to limit the map to Terengganu state only.
+
+```{r}
+Malaysia$NAME_1
+```
+
+So, this is the plot for Terengganu.
+
+```{r}
+Trg <- Malaysia[138:144,]
+plot(Trg)
+```
+
+We going to the map this in ggplot, and stacked the map layer with the coordinate layer.
+
+```{r}
+ggplot() +
+  geom_spatvector(data = Trg, color = "grey", fill = NA) +
+  geom_point(data = clinic_trg, aes(x = longitude, y = latitude, color = "red")) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  labs(title = "Desa clinic in Terengganu, Malaysia", 
+       subtitle = "(Data last updated: Klinik Desa - 9 Mac 2021)",
+       caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan")))) 
+```
+
+`geom_spatvector` is from `tidyterra` package. Alternatively, we can plot using `geom_sf`but we need to convert the `SpatVector` data into `sf` object using `sf::st_as_sf`.
+
+```{r}
+ggplot(data = sf::st_as_sf(Trg)) +
+  geom_sf(color = "grey", fill = NA) +
+  geom_point(data = clinic_trg, aes(x = longitude, y = latitude, color = "red")) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  labs(title = "Desa clinic in Terengganu, Malaysia", 
+       subtitle = "(Data last updated: Klinik Desa - 9 Mac 2021)",
+       caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan")))) 
+  
+```
+
+Both approaches produce the same plot.
+
+We can further add district labels to the plots. For example, using the `geom_sf`, we can stack it with `geom_sf_label` layer. We can alternatively use `theme_void` to remove the background and the map axis.
+
+```{r}
+ggplot(data = sf::st_as_sf(Trg)) +
+  geom_sf(color = "grey", fill = NA) +
+  geom_sf_label(aes(label = NAME_2)) +
+  geom_point(data = clinic_trg, aes(x = longitude, y = latitude, color = "red")) +
+  theme_void() +
+  theme(legend.position = "none") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  labs(title = "Desa clinic in Terengganu, Malaysia", 
+       subtitle = "(Data last updated: Klinik Desa - 9 Mac 2021)",
+       caption = expression(paste(italic("Sumber data: https://www.data.gov.my/data/ms_MY/group/pemetaan")))) 
+```
+
