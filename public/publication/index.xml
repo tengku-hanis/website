@@ -5,12 +5,20 @@
     <link>https://tengkuhanis.netlify.app/publication/</link>
       <atom:link href="https://tengkuhanis.netlify.app/publication/index.xml" rel="self" type="application/rss+xml" />
     <description>Publications</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 06 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Fri, 21 Apr 2023 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_2.png</url>
       <title>Publications</title>
       <link>https://tengkuhanis.netlify.app/publication/</link>
     </image>
+    
+    <item>
+      <title>The burden of premature mortality from cardiovascular diseases: A systematic review of years of life lost</title>
+      <link>https://tengkuhanis.netlify.app/publication/2023-04-30-the-burden-of-premature-mortality-from-cardiovascular-diseases-a-systematic-review-of-years-of-life-lost/</link>
+      <pubDate>Fri, 21 Apr 2023 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/2023-04-30-the-burden-of-premature-mortality-from-cardiovascular-diseases-a-systematic-review-of-years-of-life-lost/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>A Bibliometric Analysis of Stroke Caregiver Research from 1989 to 2022</title>
