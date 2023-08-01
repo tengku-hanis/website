@@ -5,12 +5,20 @@
     <link>https://tengkuhanis.netlify.app/talk/</link>
       <atom:link href="https://tengkuhanis.netlify.app/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Talks and Presentations</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 27 Nov 2022 14:00:00 +0800</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Thu, 27 Jul 2023 11:40:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Talks and Presentations</title>
       <link>https://tengkuhanis.netlify.app/talk/</link>
     </image>
+    
+    <item>
+      <title>Talk - A guide to conducting systematic review on stroke</title>
+      <link>https://tengkuhanis.netlify.app/talk/talk-a-guide-to-conducting-systematic-review-on-stroke/</link>
+      <pubDate>Thu, 27 Jul 2023 11:40:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/talk-a-guide-to-conducting-systematic-review-on-stroke/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Talks - Exploring past literature: A bibliometric approach</title>
