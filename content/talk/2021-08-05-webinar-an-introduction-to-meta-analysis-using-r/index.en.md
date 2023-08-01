@@ -14,7 +14,7 @@ slug: webinar-an-introduction-to-meta-analysis-using-r
 categories: []
 tags: []
 subtitle: Organised by USM Epidemiological Group
-summary: This webinar was organised by USM Epidemiological Group
+summary: This webinar was organised by USM Epidemiological Group.
 abstract: Meta-analysis is a statistical approach that combine the results of the multiple scientific studies into a pooled result. Meta-analysis is widely used in various research areas, including health and medical sciences. This webinar demonstrated a meta-analysis hands-on using R.
 authors: []
 lastmod: '2021-11-04T22:52:48+08:00'

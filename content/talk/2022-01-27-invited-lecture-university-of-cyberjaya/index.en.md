@@ -9,7 +9,7 @@ slug: invited-lecture-university-of-cyberjaya
 categories: []
 tags: []
 subtitle: Invited by University of Cyberjaya
-summary: This virtual lecture session at University of Cyberjaya was organised for Research & Evidence Based Medicine III (REBMI III) for systematic review topic
+summary: This virtual lecture session at University of Cyberjaya was organised for Research & Evidence Based Medicine III (REBMI III) for systematic review topic.
 abstract: This session covered a systematic review, a topic under Research & Evidence Based Medicine III (REBMI III) subject. This session was attended by 4th year medical students at University of Cyberjaya. This session discussed mainly about the aims and general steps of doing a systematic review.
 authors: []
 lastmod: '2022-01-28T12:02:43+08:00'

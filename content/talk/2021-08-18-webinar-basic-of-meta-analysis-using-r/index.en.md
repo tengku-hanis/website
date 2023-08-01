@@ -14,7 +14,7 @@ slug: webinar-basic-of-meta-analysis-using-r
 categories: []
 tags: []
 subtitle: Organised by [Unit of Biostatistics and Research Methodology](https://medic.usm.my/biostat/en/aboutus/about), School of Medical Sciences, USM
-summary: This webinar was organised by [Unit of biostatistics and research methodology](https://medic.usm.my/biostat/en/aboutus/about), School of medical sciences, USM
+summary: This webinar was organised by [Unit of biostatistics and research methodology](https://medic.usm.my/biostat/en/aboutus/about), School of medical sciences, USM.
 abstract: Meta-analysis is a statistical approach that combine the results of the multiple scientific studies into a pooled result. Meta-analysis is widely used in various research areas, including health and medical sciences. This webinar demonstrated a meta-analysis hands-on using R.
 authors: []
 lastmod: '2021-11-04T23:06:33+08:00'

@@ -14,7 +14,7 @@ slug: workshop-sytematic-review-and-meta-analysis-using-rstudio
 categories: []
 tags: []
 subtitle: Organised by [Department of Medical Microbiology and Parasitology](https://medic.usm.my/microbiology/en/), School of Medical Sciences, USM
-summary: This workshop was part of series of workshop organised by [Department of Medical Microbiology and Parasitology](https://medic.usm.my/microbiology/en/), School of Medical Sciences, USM
+summary: This workshop was part of series of workshop organised by [Department of Medical Microbiology and Parasitology](https://medic.usm.my/microbiology/en/), School of Medical Sciences, USM.
 abstract: Meta-analysis is a statistical approach that combine the results of the multiple scientific studies into a pooled result. Meta-analysis is widely used in various research areas, including health and medical sciences. This webinar demonstrated a meta-analysis hands-on using R.
 authors: []
 lastmod: '2021-11-04T23:13:36+08:00'

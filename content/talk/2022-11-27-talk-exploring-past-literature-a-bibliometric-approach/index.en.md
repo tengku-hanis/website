@@ -16,7 +16,7 @@ slug: talk-exploring-past-literature-a-bibliometric-approach
 categories: []
 tags: []
 subtitle: 'Organised by [Malaysia R User Group (MyRUG)](https://www.facebook.com/rusergroupmalaysia)'
-summary: 'This talk was part of R confeRence 2022 organised by [Malaysia R User Group (MyRUG)](https://www.facebook.com/rusergroupmalaysia)'
+summary: 'This talk was part of R confeRence 2022 organised by [Malaysia R User Group (MyRUG)](https://www.facebook.com/rusergroupmalaysia).'
 abstract: 'Bibliometric analysis is a quantitative approach in exploring the patterns of publications and literature in a research area. This talk introduced audience to bibliometrics in general and demonstrated the analysis using the bibliometrix package in R.'
 authors: []
 lastmod: '2022-11-27T15:15:28+08:00'

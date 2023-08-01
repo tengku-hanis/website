@@ -14,7 +14,7 @@ slug: workshop-on-scoping-review-bibliometric-analysis
 categories: []
 tags: []
 subtitle: Organised by Department of Community Medicine, USM and Innovative Network of Community Club (INCOME)
-summary: Organised by Department of Community Medicine, USM and Innovative Network of Community Club (INCOME)
+summary: Organised by Department of Community Medicine, USM and Innovative Network of Community Club (INCOME).
 abstract: Bibliometric analysis is a quantitative approach in exploring the patterns of publications and literatures in certain research area. This workshop demonstrated a bibliometric analysis using bibliometrix package in R. This workshop was exclusively organised for Doctorate of Public Health (DrPH) candidates in Univerisiti Sains Malaysia.
 authors: []
 lastmod: '2022-10-18T23:50:27+08:00'
