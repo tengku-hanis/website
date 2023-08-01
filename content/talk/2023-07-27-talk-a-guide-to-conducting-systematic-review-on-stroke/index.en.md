@@ -10,7 +10,7 @@ url_slides: talks/msc2023/SRslides.pdf
 categories: []
 subtitle: Organised by [Malaysia Stroke Council](https://www.strokecouncil.org/)
 summary: This talk was part of [Malaysia Stroke Conference 2023](https://strokeconference.com.my/index.php) organised by [Malaysia Stroke Council](https://www.strokecouncil.org/).
-abstract: Systematic review is crucial in assessing previous studies and research done on stroke. This talk covered a step by step on conducting a systematic review.
+abstract: Systematic review is crucial in assessing previous studies and research done on stroke. This talk covered a step by step guide on conducting a systematic review.
 authors: []
 featured: no
 image:
