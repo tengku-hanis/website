@@ -25,9 +25,20 @@ date_format: Jan 2006
 #   Leave `date_end` empty if it's your current employer.
 #   You can begin a multiline `description` using YAML's `|-`.
 experience:
-- company: Universiti Sains Malaysia
-  company_url: ""
+- company: Jom Research
+  company_url: "https://jomresearch.netlify.app/"
   date_end: ""
+  date_start: "2023-08-01"
+  description: |-
+    Responsibilities include:
+    * Develops modules and materials for workshops
+    * Conducts workshops virtually
+    * Manages preparations for incoming workshops including poster design, workshop promotion, and administration tasks
+  location: Terengganu, Malaysia
+  title: Founder and Lead Academic Trainer
+- company: Universiti Sains Malaysia
+  company_url: "https://www.usm.my/"
+  date_end: "2023-02-28"
   date_start: "2019-11-01"
   description: |-
     Responsibilities include:
