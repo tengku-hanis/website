@@ -5,12 +5,36 @@
     <link>https://tengkuhanis.netlify.app/talk/</link>
       <atom:link href="https://tengkuhanis.netlify.app/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Talks and Presentations</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Thu, 27 Jul 2023 11:40:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2023 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sat, 02 Sep 2023 10:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Talks and Presentations</title>
       <link>https://tengkuhanis.netlify.app/talk/</link>
     </image>
+    
+    <item>
+      <title>Webinar - How to write a scientific paper for beginners (for health sciences)</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-how-to-write-a-scientific-paper-for-beginners-for-health-sciences/</link>
+      <pubDate>Sat, 02 Sep 2023 10:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-how-to-write-a-scientific-paper-for-beginners-for-health-sciences/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - How to read a paper for beginners</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-how-to-read-a-paper-for-beginners/</link>
+      <pubDate>Thu, 17 Aug 2023 20:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-how-to-read-a-paper-for-beginners/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - How to publish a paper for beginners and newbies (for health sciences)</title>
+      <link>https://tengkuhanis.netlify.app/talk/how-to-publish-a-paper-for-beginners-and-newbies-for-health-sciences/</link>
+      <pubDate>Sat, 05 Aug 2023 09:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/how-to-publish-a-paper-for-beginners-and-newbies-for-health-sciences/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Talk - A guide to conducting systematic review on stroke</title>
