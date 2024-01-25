@@ -4,7 +4,7 @@ education:
   courses:
   - course: PhD in Public Health Epidemiology
     institution: Universiti Sains Malaysia
-    year: 2020-Present
+    year: 2020-2024
   - course: MSc in Medical Statistics
     institution: Universiti Sains Malaysia
     year: 2017-2019
@@ -19,9 +19,9 @@ interests:
 - Text analysis, bibliometrics, sciencetometrics
 - Use of R and Python in medical sciences
 organizations:
-- name: Universiti Sains Malaysia
-  url: https://www.usm.my/
-role: PhD student (Public Health Epidemiology)
+- name: at Jom Research
+  url: https://jomresearch.netlify.app/
+role: Lead academic trainer
 social:
 - icon: researchgate
   icon_pack: fab
@@ -46,10 +46,10 @@ user_groups:
 
 **From a medical graduate to a quantitative researcher**
 
-I am a PhD student in the field of public health epidemiology in [Universiti Sains Malaysia](https://www.usm.my/). In my PhD study, I explored the potential application of machine learning and deep learning in the diagnosis and prognosis of breast cancer. I have submitted my thesis draft to the university and currently, I am waiting for my Viva-voce examination.
+I did my PhD in the field of public health epidemiology in [Universiti Sains Malaysia](https://www.usm.my/). During my PhD, I explored the potential application of machine learning and deep learning in the screening and diagnosis of breast cancer among Asian women population.
 
-I did my degree in medicine. However, I believed that working as a doctor in a clinical setting is not for me. Thus, I continued my master study in [medical statistics](http://www.medic.usm.my/biostat/en/79-main). Data and analysis has sparked my interest since then. I believes that coming from medical background, give me an edge to see data in a new perspective.
+I did my degree in medicine. However, I believed that working as a doctor in a clinical setting is not for me. Thus, I continued my master study in [medical statistics](https://medic.usm.my/index.php/biostat). Data and analysis has sparked my interest since then. I believes that coming from medical background, give me an edge to see data in a new perspective.
 
-As of now, I am working with [Jom Research](https://jomresearch.netlify.app/) to provides easily accessible webinars centered around research and statistical analysis at a reasonable price point. Do check out our [future webinars](https://jomresearch.netlify.app/webinars/)!
+As of now, I am working with [Jom Research](https://jomresearch.netlify.app/) to provides easily accessible webinars centered around research and statistical analysis at a reasonable price point. Do check out our [webinars](https://jomresearch.netlify.app/webinars/)!
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "media/resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
