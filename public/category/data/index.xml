@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/category/data/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/category/data/index.xml" rel="self" type="application/rss+xml" />
+    <description>Data</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Thu, 29 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>Data</title>
+      <link>https://tengkuhanis.netlify.app/category/data/</link>
+    </image>
+    
+    <item>
+      <title>What makes data &#34;good enough&#34; for a statistical analysis?</title>
+      <link>https://tengkuhanis.netlify.app/post/what-makes-data-good-enough-for-a-statistical-analysis/</link>
+      <pubDate>Thu, 29 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/what-makes-data-good-enough-for-a-statistical-analysis/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;img src=&#34;images/_34facba1-9993-41d5-ae25-c0cab57f2184.jpg&#34; style=&#34;width:60.0%;height:40.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A few days earlier, someone asked me to help her with the data analysis. However, the data that she gave me was so bad that it was completely impossible to run the analysis unless a serious data cleaning was done first.&lt;/p&gt;
+&lt;p&gt;So, I am thinking about what is a general guideline to consider a data is good enough to run the statistical analysis with it.&lt;/p&gt;
+&lt;p&gt;First thing first, what are the basic format of a “good enough” data.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. Each row represents an observation&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. For a categorical variable, make sure the levels are standardised.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, for gender variable, make sure to have only “male” and “female” instead of “male”, “female”, “men”, and “women”.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. For a numerical variable, make sure the value is numeric and do not contain any text.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, for height variable, do not put “1.68m” or “1.68 meter”.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4. For numerical variable as well, make sure the numeric values in the variable are in the same scale.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, for weight variable, do not mix the weight in grams and kilograms. If you want to use grams, use it consistently throughout the data, or at least throughout the variable.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5. Do not use symbol in your data.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, do not use “X” as no and “/” as yes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;6. The data should be an individual data.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;An individual data means that each row consists of information about each sample or observation. Each observation in the dataset represents a single entity or unit (e.g., a person, a transaction, a product) and includes all relevant attributes or variables for that unit. Individual data allow for detailed analysis at the level of individual observations. Here is an example of individual data:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;right&#34;&gt;Id&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Age&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Obese&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;no&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;no&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Aggregated data, on the other hand, combines multiple individual observations into summary statistics or groups. Instead of representing individual units, aggregated data presents information at a higher level of abstraction, such as groups, categories, or intervals. This aggregation typically involves summarizing data using functions like sums, averages, counts, or percentages. Here is an example of aggregated data based on the individual data previously:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;Age&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Obese&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Count&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;yes&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;no&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;lt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;no&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;&amp;gt;50&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;yes&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;I think the above six points are the basics of building a good enough dataset for a statistical analysis. While we are at it, let’s go through the two main formats of a dataset. These formats are more common when you have a repeated measure study design whereby each participant has several values/measurements/responds at several time points.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: lower-alpha&#34;&gt;
+&lt;li&gt;Wide format&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In the wide format, the response of each participant will be in a single row. For example, below is the data of time taking by two participants in answering three questions in second. As we can see each row consists of the time in second in answering all three questions.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;right&#34;&gt;ID&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Question1&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Question2&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Question3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: lower-alpha&#34;&gt;
+&lt;li&gt;Long format&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In the long format (also known as tidy format in R community), the response at each time point of each participant will be in a single row. By using the same data previously, below is the in the long format. As we can see the data is arrange in format that each row represents each time taking to answer the question by each participant.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;right&#34;&gt;ID&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Time&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Question&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;50&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;20&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;40&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
