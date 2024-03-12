@@ -5,12 +5,60 @@
     <link>https://tengkuhanis.netlify.app/talk/</link>
       <atom:link href="https://tengkuhanis.netlify.app/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Talks and Presentations</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Thu, 23 Nov 2023 09:30:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 11 Mar 2024 09:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Talks and Presentations</title>
       <link>https://tengkuhanis.netlify.app/talk/</link>
     </image>
+    
+    <item>
+      <title>Webinar - Correlation and regression analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-correlation-and-regression-analysis-using-r/</link>
+      <pubDate>Mon, 11 Mar 2024 09:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-correlation-and-regression-analysis-using-r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - Correlation and regression analysis using SPSS &amp; jamovi</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-correlation-and-regression-analysis-using-spss-jamovi/</link>
+      <pubDate>Sun, 10 Mar 2024 09:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-correlation-and-regression-analysis-using-spss-jamovi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - Simple categorical analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-simple-categorical-analysis-using-r/</link>
+      <pubDate>Wed, 28 Feb 2024 09:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-simple-categorical-analysis-using-r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - Simple categorical analysis using SPSS &amp; jamovi</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-simple-categorical-analysis-using-spss-jamovi/</link>
+      <pubDate>Mon, 26 Feb 2024 09:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-simple-categorical-analysis-using-spss-jamovi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - Simple numerical analysis using SPSS &amp; jamovi</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-simple-numerical-analysis-using-spss-jamovi/</link>
+      <pubDate>Wed, 31 Jan 2024 09:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-simple-numerical-analysis-using-spss-jamovi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webinar - Simple numerical analysis using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/webinar-simple-numerical-analysis-using-r/</link>
+      <pubDate>Sun, 21 Jan 2024 09:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/webinar-simple-numerical-analysis-using-r/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Webinar - How to do a meta-analysis</title>
