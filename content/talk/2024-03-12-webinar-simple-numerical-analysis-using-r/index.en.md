@@ -1,8 +1,8 @@
 ---
 title: Webinar - Simple numerical analysis using R
 author: ''
-date: '2024-01-21T09:30:00Z'
-date_end: '2024-01-21T14:00:00Z'
+date: '2024-02-21T09:30:00Z'
+date_end: '2024-02-21T14:00:00Z'
 slug: webinar-simple-numerical-analysis-using-r
 categories: []
 tags: []
