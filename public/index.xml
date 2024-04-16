@@ -328,7 +328,10 @@
       <link>https://tengkuhanis.netlify.app/books/data-analysis-in-medicine-and-health-using-r/</link>
       <pubDate>Sat, 16 Sep 2023 00:00:00 +0000</pubDate>
       <guid>https://tengkuhanis.netlify.app/books/data-analysis-in-medicine-and-health-using-r/</guid>
-      <description></description>
+      <description>&lt;h2 id=&#34;abstract&#34;&gt;&lt;strong&gt;Abstract&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;The 1st edition of the printed book was published in 2024 by Chapman &amp;amp; Hall. This book is both comprehensive and highly practical, gives a solid foundation of data and statistical theory for readers. Subsequently, it equips them with practical skills to conduct analyses using the powerful R programming language, widely used by statisticians. The book takes a gentle approach to help readers navigate data and statistical analysis using R, minimizing the learning curve. RStudio is used as the integrated development environment (IDE) for enhanced productivity for readers to run their R codes.&lt;/p&gt;
+&lt;p&gt;The online version of this book is available for free at &lt;a href=&#34;https://bookdown.org/drki_musa/dataanalysis/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;bookdown website&lt;/a&gt;. The printed version of the book is available for purchase at &lt;a href=&#34;https://www.routledge.com/Data-Analysis-in-Medicine-and-Health-using-R/Musa-Mansor-Hanis/p/book/9781032284149&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Routledge website&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>
