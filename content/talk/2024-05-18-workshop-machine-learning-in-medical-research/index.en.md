@@ -8,7 +8,7 @@ slug: workshop-machine-learning-in-medical-research
 categories: []
 tags: []
 subtitle: Organised by [Biostatistics and Research Methodology Unit, USM](https://medic.usm.my/biostat/)
-summary: This webinar was Organised by [Biostatistics and Research Methodology Unit, USM](https://medic.usm.my/biostat/).
+summary: This webinar was organised by [Biostatistics and Research Methodology Unit, USM](https://medic.usm.my/biostat/).
 abstract: This virtual workshop covered an introduction to machine learning and deep learning in medical research. The participants were exposed to practical application of the subjects in R. The first half of the workshop covered the theory and hands-on of machine learning, while the second half covered the deep neural network (DNN) and convolutional neural network (CNN).
 location: Virtual (Webex)
 authors: []
