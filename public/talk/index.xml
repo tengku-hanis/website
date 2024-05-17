@@ -5,12 +5,20 @@
     <link>https://tengkuhanis.netlify.app/talk/</link>
       <atom:link href="https://tengkuhanis.netlify.app/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Talks and Presentations</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Mon, 11 Mar 2024 09:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Thu, 16 May 2024 09:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Talks and Presentations</title>
       <link>https://tengkuhanis.netlify.app/talk/</link>
     </image>
+    
+    <item>
+      <title>Workshop - Machine learning in medical research</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-machine-learning-in-medical-research/</link>
+      <pubDate>Thu, 16 May 2024 09:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-machine-learning-in-medical-research/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Webinar - Correlation and regression analysis using R</title>
