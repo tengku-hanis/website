@@ -52,4 +52,4 @@ I did my degree in medicine. However, I believed that working as a doctor in a c
 
 As of now, I am working with [Jom Research](https://jomresearch.netlify.app/) to provides easily accessible webinars centered around research and statistical analysis at a reasonable price point. Do check out our [webinars](https://jomresearch.netlify.app/webinars/)!
 
-{{< icon name="download" pack="fas" >}} Download my {{< staticref "media/resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
+{{< icon name="download" pack="fas" >}} Download my {{< staticref "media/resume30062024.pdf" "newtab" >}}resumé{{< /staticref >}}.
