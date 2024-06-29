@@ -1,7 +1,6 @@
 ---
 title: Workshop - Machine learning in medical research
 author: ''
-date: ''
 date: '2024-05-16T09:00:00Z'
 date_end: '2024-05-16T16:30:00Z'
 slug: workshop-machine-learning-in-medical-research
