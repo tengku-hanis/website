@@ -11,10 +11,31 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/talk/</loc>
-    <lastmod>2024-06-30T04:29:15+08:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/post/basic-data-wrangling-with-python/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/data/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/data/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/python/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/talk/</loc>
     <lastmod>2024-06-30T04:29:15+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/talk/webinar-basics-of-meta-analysis/</loc>
@@ -29,22 +50,7 @@
     <loc>https://tengkuhanis.netlify.app/talk/webinar-correlation-and-regression-analysis-using-spss-jamovi/</loc>
     <lastmod>2024-03-12T19:04:32+08:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/categories/</loc>
-    <lastmod>2024-02-29T22:49:30+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/data/</loc>
-    <lastmod>2024-02-29T22:49:30+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/data/</loc>
-    <lastmod>2024-02-29T22:49:30+08:00</lastmod>
-  </url><url>
     <loc>https://tengkuhanis.netlify.app/category/general/</loc>
-    <lastmod>2024-02-29T22:49:30+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2024-02-29T22:49:30+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
     <lastmod>2024-02-29T22:49:30+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/what-makes-data-good-enough-for-a-statistical-analysis/</loc>

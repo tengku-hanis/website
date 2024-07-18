@@ -1,0 +1,169 @@
+---
+title: Basic data wrangling with Python
+author: ''
+date: '2024-07-18'
+slug: basic-data-wrangling-with-python
+categories:
+  - Python
+  - Data
+tags:
+  - Data
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2024-07-18T06:17:38+08:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+![](images/img2.jpeg){width=60% height=40%}
+
+Python is one of the most popular programming language and software. In this post, I will demonstrate how to do a basic data wrangling with Python. This is going to be one of the several series of post related to Python (hopefully). My plan is to cover these topics:
+
+1. Basic data wrangling with Python\
+2. Basic plotting with matplotlib and seaborn\
+3. Comparison of ggplot in R versus in Python
+
+Once I finish writing any of the topics, I will link it to the above. 
+
+So, let's start.
+
+## Loading necessary packages
+
+Before loading the packages, you need to install the packages. Basically, there are two ways to install the Python packages. Either by pip command or conda command. I will skip this part, but you can refer to [this link to install the packages using pip command](https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-packages) or [this link to install the packages using conda command](https://conda.io/projects/conda/en/latest/user-guide/concepts/installing-with-conda.html#installing-with-conda). For those who has both R and Python in your machine, I suggest to use a conda command.
+
+Let's load the required packages.
+```{python}
+import numpy as np 
+import pandas as pd
+from seaborn import load_dataset
+```
+
+All the functions from each package can be assessed from the alias or the abbreviated text above. For example, functions in `pandas` package can be accessed through `pd` or to be specific `pd.`. You will see this many times through out this blog post, so do not worry much about this. I am sure you will get the gist of it once you see this later on. In practice, you don't actually need to use `pd` for `pandas` and `np` for `numpy`, but this is a convention or standard practice widely adopted in the Python community.
+
+```{r include=FALSE, echo=FALSE}
+reticulate::py_install('pandas')
+reticulate::py_install('seaborn')
+```
+
+## Load the data
+
+We going to use [iris dataset](https://archive.ics.uci.edu/dataset/53/iris). This dataset is readily available in seaborn package. 
+```{python}
+iris = load_dataset('iris')
+```
+
+Once we load the data, we need to check the variable type. 
+```{python}
+iris.dtypes
+```
+
+Variable species, by right, is a categorical variable. So, we can use `Categorical()` from `pandas` to change it from an object variable type to a category. `pd.` here, means we access the function from `pandas` package as I explained it previously.
+```{python}
+iris['species'] = pd.Categorical(iris['species'])
+```
+
+If we check the variable type again, we can see the species variable is a category.
+```{python}
+iris.dtypes
+```
+
+Next, we can also see the data. Let's see the first 10 rows.
+```{python}
+iris.head(10)
+```
+
+## Slicing and indexing
+
+To see a specific column, we can index as below. Notice, that the row number starts with 0 as opposed to R (if you have used R previously) in which the row number starts with 1.
+```{python}
+iris['sepal_length'][0:10]
+```
+
+Similarly, we can also index as below to get the first 10 rows of sepal_length variable.
+```{python}
+iris['sepal_length'][:10]
+```
+
+Next to access the first 5 rows, we can do as below.
+```{python}
+iris[0:5]
+```
+
+We can also use `iloc()` and `loc()` functions. The main difference between the two functions is that `iloc()` can only accept a numerical value and `loc()` function can accept a string value.
+```{python}
+iris.iloc[0:2, 0:3] #rows, then columns
+iris.loc[0:2, ['sepal_length', 'species']]
+```
+
+Subsequently, we can also slice according a logical condition. Below, we slice the petal_length variable that is above the value of 6.
+```{python}
+ind = iris['petal_length'] > 6
+iris['petal_length'][ind]
+```
+
+Let's say we want our data to include only setosa species.
+```{python}
+ind = iris['species'] == 'setosa'
+iris.loc[ind, :].head()
+```
+
+Once we know about slicing and indexing, we can use this knowledge to change certain values. For example, below we change:
+
+- row 1, 2, 3, and 4 of sepal_length to NA values\
+- row 6 of species and sepal_width to NA values
+```{python}
+iris.loc[0:3, 'sepal_length'] = np.nan 
+iris.iloc[5, [1, 4]] = np.nan
+```
+
+Let's see the result.
+```{python}
+iris.head(6)
+```
+
+## Missing values
+
+If we want to see if we have any missing values in our data, we can use `isnull()` function.
+```{python}
+iris.isnull().any().any() #For overall
+iris.isnull().any() #Check for each column
+```
+
+We can further calculate how many missing values that we have.
+```{python}
+iris.isnull().sum()
+```
+
+## Descriptive statistics
+
+To get a basic descriptive statistics, we can use `describe()` function. Below, we additionally use `round()` to round up the results into one decimal points.
+```{python}
+iris.describe().round()
+```
+
+Notice that the results above only include numerical variables. So, to get the results for categorical variables as well, we need to add `include = all` as below.
+```{python}
+iris.describe(include = 'all').round()
+```
+
+Alternatively, we can also calculate the unique values for the categorical variable. `value_counts()` only calculate the non-missing values.
+```{python}
+iris['species'].value_counts()
+```
+
+Similarly, for numerical variable we can also do manually each statistics. For example to calculate mean, we can use `mean()`. 
+```{python}
+iris['sepal_width'].mean().round()
+```
+
+That's it. These are the basics of handling a dataset in Python. With this knowledge, I hope you feel ready to dive in and explore more on your own.
