@@ -11,28 +11,37 @@
     <loc>https://tengkuhanis.netlify.app/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/basic-data-wrangling-with-python/</loc>
-    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
+    <loc>https://tengkuhanis.netlify.app/post/basic-plotting-in-python/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/categories/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tag/data-exploration/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/python/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/tags/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/category/visualisation/</loc>
+    <lastmod>2024-08-07T16:52:11+08:00</lastmod>
+  </url><url>
+    <loc>https://tengkuhanis.netlify.app/post/basic-data-wrangling-with-python/</loc>
     <lastmod>2024-07-18T06:17:38+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/tag/data/</loc>
     <lastmod>2024-07-18T06:17:38+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/category/data/</loc>
-    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/post/</loc>
-    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/category/python/</loc>
-    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tags/</loc>
-    <lastmod>2024-07-18T06:17:38+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/</loc>
     <lastmod>2024-07-18T06:17:38+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/talk/</loc>
@@ -292,9 +301,6 @@
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/using-umap-preprocessing-for-image-classification/</loc>
     <lastmod>2022-03-16T12:17:10+08:00</lastmod>
-  </url><url>
-    <loc>https://tengkuhanis.netlify.app/tag/data-exploration/</loc>
-    <lastmod>2022-02-10T02:46:09+08:00</lastmod>
   </url><url>
     <loc>https://tengkuhanis.netlify.app/post/explore-data-using-pca/</loc>
     <lastmod>2022-02-10T02:46:09+08:00</lastmod>

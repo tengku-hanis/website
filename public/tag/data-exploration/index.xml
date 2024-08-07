@@ -5,12 +5,144 @@
     <link>https://tengkuhanis.netlify.app/tag/data-exploration/</link>
       <atom:link href="https://tengkuhanis.netlify.app/tag/data-exploration/index.xml" rel="self" type="application/rss+xml" />
     <description>Data exploration</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 09 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 07 Aug 2024 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Data exploration</title>
       <link>https://tengkuhanis.netlify.app/tag/data-exploration/</link>
     </image>
+    
+    <item>
+      <title>Basic plotting with Matplotlib and Seaborn</title>
+      <link>https://tengkuhanis.netlify.app/post/basic-plotting-in-python/</link>
+      <pubDate>Wed, 07 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/post/basic-plotting-in-python/</guid>
+      <description>
+
+
+&lt;p&gt;This post is continuation of my previous post about Python. For those interested:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;a href=&#34;https://tengkuhanis.netlify.app/post/basic-data-wrangling-with-python/&#34;&gt;Basic data wrangling with Python&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Basic plotting with matplotlib and seaborn&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Comparison of ggplot in R versus in Python&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are several packages or libraries available in Python for plotting and visualization. However, the most commonly used package is &lt;a href=&#34;https://matplotlib.org/&#34;&gt;matplotlib&lt;/a&gt;. This package is quite extensive and often time can be quite complicated to use. Thus, &lt;a href=&#34;https://seaborn.pydata.org/&#34;&gt;seaborn&lt;/a&gt; package is another alternative and complementary to matplotlib. Seaborn is based on matplotlib and provides a high-level functionality compare to matplotlib.&lt;/p&gt;
+&lt;p&gt;So, in this blog post, let us compare several basic plots using both packages.&lt;/p&gt;
+&lt;div id=&#34;load-packages&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Load packages&lt;/h2&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;load-dataset&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Load dataset&lt;/h2&gt;
+&lt;p&gt;We going to use the &lt;a href=&#34;https://www.kaggle.com/datasets/arshid/dat-flower-dataset&#34;&gt;iris dataset&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;dat = sns.load_dataset(&amp;#39;iris&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can further see the information on this dataset.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;dat.head(5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    sepal_length  sepal_width  petal_length  petal_width species
+## 0           5.1          3.5           1.4          0.2  setosa
+## 1           4.9          3.0           1.4          0.2  setosa
+## 2           4.7          3.2           1.3          0.2  setosa
+## 3           4.6          3.1           1.5          0.2  setosa
+## 4           5.0          3.6           1.4          0.2  setosa&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;histogram&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Histogram&lt;/h2&gt;
+&lt;p&gt;Let’s plot the histogram using matplotlib first.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;plt.hist(dat[&amp;#39;sepal_length&amp;#39;], bins=30)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Notice that this histogram does not has any label. So, to add a label, we need to do this manually.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;plt.hist(dat[&amp;#39;sepal_length&amp;#39;], bins=30)
+plt.xlabel(&amp;#39;Sepal length&amp;#39;) #x-axis label
+plt.ylabel(&amp;#39;Frequency&amp;#39;) #y-axis label
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-5-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, using seaborn, the label is extracted from the variable name, which is pretty convenient.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;sns.histplot(dat[&amp;#39;sepal_length&amp;#39;], bins=30)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-6-5.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Let’s say we want to plot the histogram according to different levels.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;species = [&amp;#39;setosa&amp;#39;, &amp;#39;versicolor&amp;#39;, &amp;#39;virginica&amp;#39;]
+
+for i in species:
+    subset = dat[dat[&amp;#39;species&amp;#39;] == i]
+    plt.hist(subset[&amp;#39;sepal_length&amp;#39;], label = i)
+
+plt.legend(loc = &amp;#39;upper right&amp;#39;)
+plt.xlabel(&amp;#39;Sepal length&amp;#39;)
+plt.ylabel(&amp;#39;Frequency&amp;#39;)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-7-7.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The codes above are quite long. In seaborn, the histogram above can be generated quite easily.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;sns.histplot(x = &amp;#39;sepal_length&amp;#39;, hue = &amp;#39;species&amp;#39;, data = dat)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-8-9.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;boxplot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Boxplot&lt;/h2&gt;
+&lt;p&gt;First, let’s do boxplot using matplotlib.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;bp = plt.boxplot(dat[&amp;#39;sepal_length&amp;#39;])
+plt.xlabel(&amp;#39;Sepal length&amp;#39;)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-9-11.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If we wanto to do boxplot according to other variable. The codes become a bit complicated especially for beginners.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;species = dat.groupby(&amp;#39;species&amp;#39;)
+setosa = species.get_group(&amp;#39;setosa&amp;#39;)[&amp;#39;sepal_length&amp;#39;]
+versicolor = species.get_group(&amp;#39;versicolor&amp;#39;)[&amp;#39;sepal_length&amp;#39;]
+virginica = species.get_group(&amp;#39;virginica&amp;#39;)[&amp;#39;sepal_length&amp;#39;]
+
+bp = plt.boxplot([setosa, versicolor, virginica], labels = [&amp;#39;setosa&amp;#39;, &amp;#39;versicolor&amp;#39;, &amp;#39;virginica&amp;#39;])
+plt.xlabel(&amp;#39;Sepal length&amp;#39;)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-10-13.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Both plots above are quite easy to do in seaborn. Below are the codes for the basic histogram.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;sns.boxplot(dat[&amp;#39;sepal_length&amp;#39;])
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-11-15.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Next, to plot &lt;code&gt;sepal_length&lt;/code&gt; based on &lt;code&gt;species&lt;/code&gt; is pretty much straightforward in seaborn.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;sns.boxplot(y=&amp;#39;sepal_length&amp;#39;, hue=&amp;#39;species&amp;#39;, data=dat)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-12-17.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;scatter-plot&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Scatter plot&lt;/h2&gt;
+&lt;p&gt;Lastly, let’s see the scatter plot using matplotlib.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;plt.scatter(x=dat[&amp;#39;sepal_length&amp;#39;], y=dat[&amp;#39;sepal_width&amp;#39;])
+plt.xlabel(&amp;#39;Sepal length&amp;#39;)
+plt.ylabel(&amp;#39;Sepal width&amp;#39;)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-13-19.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can further extend this plot by categorising it into different species.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;# Define the species to colors mapping
+species_to_color = {&amp;#39;setosa&amp;#39;: &amp;#39;blue&amp;#39;, &amp;#39;versicolor&amp;#39;: &amp;#39;green&amp;#39;, &amp;#39;virginica&amp;#39;: &amp;#39;red&amp;#39;}
+colors = dat[&amp;#39;species&amp;#39;].map(species_to_color)
+
+# Create the scatter plot
+plt.scatter(x=dat[&amp;#39;sepal_length&amp;#39;], y=dat[&amp;#39;sepal_width&amp;#39;], c=colors)
+plt.xlabel(&amp;#39;Sepal length&amp;#39;)
+plt.ylabel(&amp;#39;Sepal width&amp;#39;)
+plt.legend(handles=[plt.Line2D([0], [0], marker=&amp;#39;o&amp;#39;, color=&amp;#39;w&amp;#39;, markerfacecolor=color, markersize=10, label=species) for species, color in species_to_color.items()], title=&amp;#39;Species&amp;#39;)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-14-21.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Now, let’s see the seaborn package. This is the basic scatter plot.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;sns.scatterplot(x=&amp;#39;sepal_length&amp;#39;, y=&amp;#39;sepal_width&amp;#39;, data=dat)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-15-23.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To extend this plot by categorising it into different species in seaborn is actually quite simple.&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;sns.scatterplot(x=&amp;#39;sepal_length&amp;#39;, y=&amp;#39;sepal_width&amp;#39;, hue=&amp;#39;species&amp;#39;, data=dat)
+plt.show()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://tengkuhanis.netlify.app/post/basic-plotting-in-python/index.en_files/figure-html/unnamed-chunk-16-25.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In conclusion, matplotlib and seaborn complement each other well. Seaborn is an excellent choice for quick and standard plots, thanks to its high-level interface. On the other hand, matplotlib offers a more extensive range of customization options and is ideal for creating complex and detailed visualizations. Ultimately, choosing between matplotlib and seaborn depends on the specific requirements of the visualization task.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Explore data using PCA</title>
