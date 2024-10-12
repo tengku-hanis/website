@@ -21,7 +21,7 @@ image:
   caption: ''
   focal_point: ''
   preview_only: no
-url_slides: https://tengku-hanis.github.io/bibliometrics_Nov2022/#1
+url_slides: https://tengku-hanis.github.io/bibliocovidmalaysia/
 url_code: ~
 url_pdf: ~
 url_video: ~
