@@ -5,7 +5,7 @@
     <link>https://tengkuhanis.netlify.app/</link>
       <atom:link href="https://tengkuhanis.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     <description>Tengku Hanis</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Wed, 07 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 27 Oct 2024 11:30:00 +0800</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Tengku Hanis</title>
@@ -52,6 +52,38 @@
 &lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
 &lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>Talk - Exploring the COVID-19 Research Landscape in Malaysia: A Bibliometric Case Study</title>
+      <link>https://tengkuhanis.netlify.app/talk/talks-exploring-the-covid-19-research-landscape-in-malaysia-a-bibliometric-case-study/</link>
+      <pubDate>Sun, 27 Oct 2024 11:30:00 +0800</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/talks-exploring-the-covid-19-research-landscape-in-malaysia-a-bibliometric-case-study/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workshop - Machine learning application in epidemiological research</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-machine-learning-application-in-epidemiological-research/</link>
+      <pubDate>Tue, 22 Oct 2024 08:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-machine-learning-application-in-epidemiological-research/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Prognostic factors for premature cardiovascular disease mortality in Malaysia: a modelling approach using semi-parametric and parametric survival analysis with national health and morbidity survey linked mortality data</title>
+      <link>https://tengkuhanis.netlify.app/publication/prognostic-factors-for-premature-cardiovascular-disease-mortality-in-malaysia/</link>
+      <pubDate>Tue, 08 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/prognostic-factors-for-premature-cardiovascular-disease-mortality-in-malaysia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workshop - Bibliometric analysis and systematic review using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-bibliometric-analysis-and-systematic-review-using-r/</link>
+      <pubDate>Thu, 15 Aug 2024 08:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-bibliometric-analysis-and-systematic-review-using-r/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -1052,7 +1084,7 @@ for (i in 1:6) {
     </item>
     
     <item>
-      <title>Talks - Exploring past literature: A bibliometric approach</title>
+      <title>Talk - Exploring past literature: A bibliometric approach</title>
       <link>https://tengkuhanis.netlify.app/talk/talk-exploring-past-literature-a-bibliometric-approach/</link>
       <pubDate>Sun, 27 Nov 2022 14:00:00 +0800</pubDate>
       <guid>https://tengkuhanis.netlify.app/talk/talk-exploring-past-literature-a-bibliometric-approach/</guid>
@@ -5917,7 +5949,7 @@ Figure 1: Basic idea of R&lt;sub&gt;0&lt;/sub&gt;(image from &lt;a href=&#34;htt
     </item>
     
     <item>
-      <title>Talks - An introduction to relative survival analysis using R</title>
+      <title>Talk - An introduction to relative survival analysis using R</title>
       <link>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</link>
       <pubDate>Sun, 22 Nov 2020 12:45:00 +0000</pubDate>
       <guid>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</guid>

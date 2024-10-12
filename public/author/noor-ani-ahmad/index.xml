@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Noor Ani Ahmad  | Tengku Hanis</title>
+    <link>https://tengkuhanis.netlify.app/author/noor-ani-ahmad/</link>
+      <atom:link href="https://tengkuhanis.netlify.app/author/noor-ani-ahmad/index.xml" rel="self" type="application/rss+xml" />
+    <description>Noor Ani Ahmad </description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 08 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <title>Noor Ani Ahmad </title>
+      <link>https://tengkuhanis.netlify.app/author/noor-ani-ahmad/</link>
+    </image>
+    
+    <item>
+      <title>Prognostic factors for premature cardiovascular disease mortality in Malaysia: a modelling approach using semi-parametric and parametric survival analysis with national health and morbidity survey linked mortality data</title>
+      <link>https://tengkuhanis.netlify.app/publication/prognostic-factors-for-premature-cardiovascular-disease-mortality-in-malaysia/</link>
+      <pubDate>Tue, 08 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/publication/prognostic-factors-for-premature-cardiovascular-disease-mortality-in-malaysia/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

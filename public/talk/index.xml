@@ -5,12 +5,36 @@
     <link>https://tengkuhanis.netlify.app/talk/</link>
       <atom:link href="https://tengkuhanis.netlify.app/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Talks and Presentations</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sat, 29 Jun 2024 09:30:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sun, 27 Oct 2024 11:30:00 +0800</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Talks and Presentations</title>
       <link>https://tengkuhanis.netlify.app/talk/</link>
     </image>
+    
+    <item>
+      <title>Talk - Exploring the COVID-19 Research Landscape in Malaysia: A Bibliometric Case Study</title>
+      <link>https://tengkuhanis.netlify.app/talk/talks-exploring-the-covid-19-research-landscape-in-malaysia-a-bibliometric-case-study/</link>
+      <pubDate>Sun, 27 Oct 2024 11:30:00 +0800</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/talks-exploring-the-covid-19-research-landscape-in-malaysia-a-bibliometric-case-study/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workshop - Machine learning application in epidemiological research</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-machine-learning-application-in-epidemiological-research/</link>
+      <pubDate>Tue, 22 Oct 2024 08:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-machine-learning-application-in-epidemiological-research/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Workshop - Bibliometric analysis and systematic review using R</title>
+      <link>https://tengkuhanis.netlify.app/talk/workshop-bibliometric-analysis-and-systematic-review-using-r/</link>
+      <pubDate>Thu, 15 Aug 2024 08:30:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/talk/workshop-bibliometric-analysis-and-systematic-review-using-r/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Webinar - Basics of meta-analysis</title>
@@ -157,7 +181,7 @@
     </item>
     
     <item>
-      <title>Talks - Exploring past literature: A bibliometric approach</title>
+      <title>Talk - Exploring past literature: A bibliometric approach</title>
       <link>https://tengkuhanis.netlify.app/talk/talk-exploring-past-literature-a-bibliometric-approach/</link>
       <pubDate>Sun, 27 Nov 2022 14:00:00 +0800</pubDate>
       <guid>https://tengkuhanis.netlify.app/talk/talk-exploring-past-literature-a-bibliometric-approach/</guid>
@@ -213,7 +237,7 @@
     </item>
     
     <item>
-      <title>Talks - An introduction to relative survival analysis using R</title>
+      <title>Talk - An introduction to relative survival analysis using R</title>
       <link>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</link>
       <pubDate>Sun, 22 Nov 2020 12:45:00 +0000</pubDate>
       <guid>https://tengkuhanis.netlify.app/talk/talks-an-introduction-to-relative-survival-analysis-using-r/</guid>

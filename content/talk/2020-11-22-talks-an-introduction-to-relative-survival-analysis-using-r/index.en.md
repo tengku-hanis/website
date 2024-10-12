@@ -1,5 +1,5 @@
 ---
-title: Talks - An introduction to relative survival analysis using R
+title: Talk - An introduction to relative survival analysis using R
 author: tengku-hanis
 date: '2020-11-22T12:45:00Z'
 date_end: '2020-11-22T13:30:00Z'

@@ -1,5 +1,5 @@
 ---
-title: 'Talks - Exploring past literature: A bibliometric approach'
+title: 'Talk - Exploring past literature: A bibliometric approach'
 author: 'tengku-hanis'
 date: '2022-11-27T14:00:00+08:00'
 date_end: '2022-11-27T14:50:00+08:00'
