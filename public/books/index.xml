@@ -5,12 +5,22 @@
     <link>https://tengkuhanis.netlify.app/books/</link>
       <atom:link href="https://tengkuhanis.netlify.app/books/index.xml" rel="self" type="application/rss+xml" />
     <description>Books</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Sat, 16 Sep 2023 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>©Tengku Hanis 2020-2024 Made with [blogdown](https://github.com/rstudio/blogdown)</copyright><lastBuildDate>Tue, 29 Oct 2024 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://tengkuhanis.netlify.app/images/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Books</title>
       <link>https://tengkuhanis.netlify.app/books/</link>
     </image>
+    
+    <item>
+      <title>R Essentials: A Beginner&#39;s Guide to Data Analysis</title>
+      <link>https://tengkuhanis.netlify.app/books/r-essentials-a-beginner-s-guide-to-data-analysis/</link>
+      <pubDate>Tue, 29 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://tengkuhanis.netlify.app/books/r-essentials-a-beginner-s-guide-to-data-analysis/</guid>
+      <description>&lt;h2 id=&#34;abstract&#34;&gt;&lt;strong&gt;Abstract&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;The book provides essential knowledge for beginners looking to start data analysis with R. Covering foundational concepts such as data exploration, plotting and descriptive statistics, it is designed to guide new users through the basics, making R more accessible for data analysis tasks. The book is still a work in progress, but an early draft is available for free on &lt;a href=&#34;https://tengku-hanis.github.io/r_essential/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;the author&amp;rsquo;s GitHub page&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Data analysis in medicine and Health using R</title>
