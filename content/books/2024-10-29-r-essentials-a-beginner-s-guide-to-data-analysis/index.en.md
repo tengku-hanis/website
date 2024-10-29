@@ -8,7 +8,7 @@ tags: []
 subtitle: 'Authored by Tengku Muhammad Hanis'
 summary: "The book is still a work in progress, but an early draft is available for free on [the author's GitHub page](https://tengku-hanis.github.io/r_essential/)."
 authors: []
-lastmod: '2024-10-29T08:56:48+08:00'
+lastmod: ''
 featured: no
 image:
   caption: ''
@@ -19,5 +19,5 @@ projects: []
 
 ## **Abstract**
 
-The book provides essential knowledge for beginners looking to start data analysis with R. Covering foundational concepts such as data exploration, plotting and descriptive statistics, it is designed to guide new users through the basics, making R more accessible for data analysis tasks. The book is still a work in progress, but an early draft is available for free on [the author's GitHub page](https://tengku-hanis.github.io/r_essential/).
+The book provides essential knowledge for beginners looking to start data analysis with R. Covering foundational concepts such as data exploration, plotting, and descriptive statistics, it is designed to guide readers through the basics, making R more accessible for data analysis tasks. The book is still a work in progress, but an early draft is available for free on [the author's GitHub page](https://tengku-hanis.github.io/r_essential/).
 
