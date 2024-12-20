@@ -6,7 +6,7 @@ slug: r-essentials-a-beginner-s-guide-to-data-analysis
 categories: []
 tags: []
 subtitle: 'Authored by Tengku Muhammad Hanis'
-summary: "The book is still a work in progress, but an early draft is available for free on [the author's GitHub page](https://tengku-hanis.github.io/r_essential/)."
+summary: "The book is not yet published, but a complete early draft is freely available on [the author's GitHub page](https://tengku-hanis.github.io/r_essential/)."
 authors: []
 lastmod: ''
 featured: no
